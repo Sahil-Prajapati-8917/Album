@@ -5,9 +5,6 @@ import { Button } from '@/components/ui/button'
 import {
   User,
   Camera,
-  MapPin,
-  Phone,
-  Mail,
   Instagram,
   Facebook,
   Youtube,
@@ -15,10 +12,8 @@ import {
   Twitter,
   Save,
   CheckCircle,
-  Crown,
-  Calendar,
-  Upload
 } from 'lucide-react'
+import { getUserProfile, updateUserProfile, getUser } from '@/services/api'
 
 const Profile = () => {
   const [user, setUser] = useState(null)
@@ -42,25 +37,40 @@ const Profile = () => {
   const [saveSuccess, setSaveSuccess] = useState(false)
 
   useEffect(() => {
-    // Load user data from localStorage
-    const userData = localStorage.getItem('user')
-    if (userData) {
-      const parsedUser = JSON.parse(userData)
-      setUser(parsedUser)
-
-      // Load profile data or set defaults
-      const profileData = localStorage.getItem('profile')
-      if (profileData) {
-        setProfileData(JSON.parse(profileData))
-      } else {
-        setProfileData(prev => ({
-          ...prev,
-          personalName: parsedUser.name || '',
-          email: parsedUser.email || ''
-        }))
+    const loadProfileData = async () => {
+      try {
+        const userData = getUser()
+        if (userData) {
+          setUser(userData)
+          
+          // Get full profile data from API
+          const response = await getUserProfile()
+          if (response.success) {
+            setProfileData({
+              personalName: response.data.personalName || '',
+              studioName: response.data.studioName || '',
+              address: response.data.address || '',
+              mobileNumber: response.data.mobileNumber || '',
+              email: response.data.email || '',
+              profilePicture: response.data.profilePicture || null,
+              socialMedia: response.data.socialMedia || {
+                instagram: '',
+                facebook: '',
+                youtube: '',
+                whatsapp: '',
+                twitter: ''
+              }
+            })
+          }
+        }
+      } catch (error) {
+        console.error('Error loading profile:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
-    setIsLoading(false)
+
+    loadProfileData()
   }, [])
 
   const handleInputChange = (e) => {
@@ -97,13 +107,16 @@ const Profile = () => {
 
   const handleSave = async () => {
     setIsSaving(true)
-    // Simulate API call
-    setTimeout(() => {
-      localStorage.setItem('profile', JSON.stringify(profileData))
-      setIsSaving(false)
+    try {
+      await updateUserProfile(profileData)
       setSaveSuccess(true)
       setTimeout(() => setSaveSuccess(false), 3000)
-    }, 1500)
+    } catch (error) {
+      console.error('Error saving profile:', error)
+      // You could show an error message here
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   const socialMediaPlatforms = [
@@ -114,13 +127,6 @@ const Profile = () => {
     { key: 'twitter', name: 'Twitter', icon: Twitter, placeholder: '@username' }
   ]
 
-  const planDetails = {
-    planName: 'Professional Plan',
-    status: 'Active',
-    expiryDate: '2026-01-15',
-    features: ['Unlimited Albums', 'Advanced Analytics', 'Priority Support', 'Custom Branding']
-  }
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -130,13 +136,13 @@ const Profile = () => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-7xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">Profile Settings</h1>
         <p className="text-gray-600">Manage your account information and social media links</p>
       </div>
 
-      <div className="space-y-8">
+      <div className="space-y-6">
         {/* Personal Information */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -266,13 +272,13 @@ const Profile = () => {
         >
           <h2 className="text-xl font-semibold text-gray-900 mb-6">Social Media Links</h2>
 
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {socialMediaPlatforms.map((platform) => (
-              <div key={platform.key} className="flex items-center space-x-4">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+              <div key={platform.key} className="flex items-center space-x-3">
+                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                   <platform.icon className="h-4 w-4 text-gray-600" />
                 </div>
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     {platform.name}
                   </label>
@@ -281,51 +287,11 @@ const Profile = () => {
                     value={profileData.socialMedia[platform.key]}
                     onChange={(e) => handleSocialMediaChange(platform.key, e.target.value)}
                     placeholder={platform.placeholder}
+                    className="text-sm"
                   />
                 </div>
               </div>
             ))}
-          </div>
-        </motion.div>
-
-        {/* Plan Details */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
-        >
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <Crown className="h-5 w-5 mr-2 text-yellow-500" />
-            Plan Details
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">{planDetails.planName}</h3>
-              <div className="flex items-center mb-4">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                  <CheckCircle className="h-3 w-3 mr-1" />
-                  {planDetails.status}
-                </span>
-              </div>
-              <div className="flex items-center text-sm text-gray-600 mb-4">
-                <Calendar className="h-4 w-4 mr-2" />
-                Expires on {new Date(planDetails.expiryDate).toLocaleDateString()}
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-sm font-medium text-gray-700 mb-3">Plan Features</h4>
-              <ul className="space-y-2">
-                {planDetails.features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-600">
-                    <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
           </div>
         </motion.div>
 

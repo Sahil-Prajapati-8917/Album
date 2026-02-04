@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import DateSelector from '@/components/DateSelector'
 import {
   Upload,
   Music,
@@ -370,22 +371,16 @@ const CreateNew = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Function Date *
-                </label>
-                <Input
-                  type="date"
-                  name="functionDate"
+                <DateSelector 
                   value={formData.functionDate}
-                  onChange={handleInputChange}
-                  className={errors.functionDate ? 'border-red-300' : ''}
+                  onChange={(value) => {
+                    setFormData(prev => ({ ...prev, functionDate: value }))
+                    if (errors.functionDate) {
+                      setErrors(prev => ({ ...prev, functionDate: '' }))
+                    }
+                  }}
+                  error={errors.functionDate}
                 />
-                {errors.functionDate && (
-                  <p className="mt-1 text-sm text-red-600 flex items-center">
-                    <AlertCircle className="h-4 w-4 mr-1" />
-                    {errors.functionDate}
-                  </p>
-                )}
               </div>
             </div>
           </div>

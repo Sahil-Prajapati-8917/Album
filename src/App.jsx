@@ -1,14 +1,12 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom'
-import { Navbar, NavBody, NavItems, MobileNav, MobileNavHeader, MobileNavMenu, MobileNavToggle, NavbarLogo, NavbarButton } from './components/ui/resizable-navbar'
+import Navigation from './components/Navigation'
 // import Header from './components/Header'
 import { Footer as AnimatedFooter } from './components/ui/modem-animated-footer'
 import { Camera, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
 import DashboardLayout from './components/DashboardLayout'
 import Home from './pages/Home'
-import About from './pages/About'
 import Pricing from './pages/Pricing'
-import Contact from './pages/Contact'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
@@ -19,19 +17,13 @@ import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import ZoomParallaxDemo from './pages/ZoomParallaxDemo'
 import VisualBookViewer from './components/VisualBookViewer'
+import VisualBookDemo from './pages/VisualBookDemo'
 
 function AppContent() {
   const location = useLocation()
   const isDashboardPage = location.pathname.startsWith('/dashboard')
   const isVisualBookViewer = location.pathname.startsWith('/viewer')
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-
-  const navItems = [
-    { name: "Home", link: "/" },
-    { name: "About", link: "/about" },
-    { name: "Pricing", link: "/pricing" },
-    { name: "Contact", link: "/contact" },
-  ]
+  const isDemoPage = location.pathname === '/demo'
 
   const socialLinks = [
     {
@@ -58,73 +50,22 @@ function AppContent() {
 
   const footerNavLinks = [
     { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Contact", href: "/contact" },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {!isDashboardPage && !isVisualBookViewer && (
-        <Navbar className="fixed inset-x-0 top-0 z-50 w-full bg-transparent">
-          <NavBody>
-            <NavbarLogo />
-            <NavItems items={navItems} />
-            <div className="flex items-center space-x-4">
-              <Link to="/login" className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors">
-                Login
-              </Link>
-              <NavbarButton href="/signup" variant="primary">
-                Join Now
-              </NavbarButton>
-            </div>
-          </NavBody>
-          <MobileNav>
-            <MobileNavHeader>
-              <NavbarLogo />
-              <MobileNavToggle
-                isOpen={isMobileMenuOpen}
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              />
-            </MobileNavHeader>
-            <MobileNavMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)}>
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.link}
-                  className="block py-2 text-black dark:text-white"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="border-t pt-4 mt-4 space-y-2">
-                <Link
-                  to="/login"
-                  className="block py-2 text-blue-600 dark:text-blue-400"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="block py-2 bg-blue-600 text-white text-center rounded-lg"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Join Now
-                </Link>
-              </div>
-            </MobileNavMenu>
-          </MobileNav>
-        </Navbar>
+      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && (
+        <div className="fixed inset-x-0 top-0 z-50 w-full bg-white/80 backdrop-blur-sm">
+          <Navigation />
+        </div>
       )}
       <main id="main-content" className={isDashboardPage ? "pt-0" : ""}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
           <Route path="/pricing" element={<Pricing />} />
           <Route path="/zoom-parallax-demo" element={<ZoomParallaxDemo />} />
-          <Route path="/contact" element={<Contact />} />
+          <Route path="/demo" element={<VisualBookDemo />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
@@ -138,7 +79,7 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isDashboardPage && !isVisualBookViewer && (
+      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && (
         <AnimatedFooter
           brandName="Pixora"
           brandDescription="Create stunning interactive Visual Books from your photos. Perfect for photographers, designers, and content creators."

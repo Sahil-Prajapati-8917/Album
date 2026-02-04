@@ -17,8 +17,96 @@ import { FlipWords } from '@/components/ui/flip-words'
 import { TypewriterEffect } from '@/components/ui/typewriter-effect'
 import { InteractiveHoverButton } from '@/components/ui/interactive-hover-button'
 import IntroAnimation from '@/components/ui/scroll-morph-hero'
+import { ZoomParallax } from '@/components/ui/zoom-parallax'
+import { OrbitingCircles } from '@/components/ui/orbiting-circles'
+import { FeaturesSectionWithHoverEffects } from '@/components/blocks/feature-section-with-hover-effects'
+import { TextHoverEffect } from '@/components/ui/text-hover-effect'
+import { AnimatedTestimonials } from '@/components/ui/animated-testimonials'
+import { MagneticText } from '@/components/ui/morphing-cursor'
+import { Accordion } from '@radix-ui/react-accordion'
+import VisualBookViewer from '../components/VisualBookViewer'
+import { Accordion05 } from '@/components/ui/accordion-05'
+import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 // import FlowingMenu from '../components/FlowingMenu'
 
+const parallaxImages = [
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1706485734742-4a4153f34d2f?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Modern architecture building',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1698082671072-179b90cb845b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Urban cityscape at sunset',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1674581929981-a1b400089900?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Abstract geometric pattern',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1529636798458-92182e662485?q=80&w=869&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Mountain landscape',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1647541706970-8e530dedc02c?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Minimalist design elements',
+    },
+    {
+      src: 'https://plus.unsplash.com/premium_photo-1670430623154-24626c42fb33?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Ocean waves and beach',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1591700331354-f7eea65d1ce8?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      alt: 'Forest trees and sunlight',
+    },
+  ];
+
+
+  const faqs = [
+    {
+      question: "What is Pixora?",
+      answer: "Pixora is an online Visual Book creator that helps photographers and studios present their albums in a modern, interactive format. You can even add your own branding."
+    },
+    {
+      question: "How does Pixora work?",
+      answer: "You upload your album photos, and Pixora automatically converts them into a smooth, interactive Visual Book. You can share it with clients using a simple link."
+    },
+    {
+      question: "What are Pixora's monthly plans?",
+      answer: "Pixora offers simple and affordable plans:\n\nFree Plan → Create up to 3 Visual Books\n\nPremium Plan ₹99/month → Create unlimited Visual Books anytime"
+    },
+    {
+      question: "Can I add branding or social media links in Pixora?",
+      answer: "Yes. Pixora allows you to add:\n\n• Studio / Photographer Name\n• Website link\n• All social media profiles\n• Contact Number\n• Location\n\nYour Visual Books will display your identity professionally."
+    },
+    {
+      question: "Can I add or change music in Pixora?",
+      answer: "Yes. You can add or update background music to match the mood of your album. This improves the overall viewing experience."
+    },
+    {
+      question: "Kya Pixora me mera data surakshit rahega?",
+      answer: "Bilkul. Pixora advanced security use karta hai:\n\n• Encrypted storage\n• Secure servers\n• Automated backups\n• No data sharing with third parties\n\nAapke Visual Books hamesha safe rehte hain."
+    },
+    {
+      question: "Can I edit Visual Books after creation?",
+      answer: "Yes. You can make changes anytime unless the Visual Book is deleted."
+    },
+    {
+      question: "Does Pixora work offline?",
+      answer: "No. Pixora is a cloud-based platform and requires an internet connection to create or view Visual Books."
+    },
+    {
+      question: "Pixora albums kitne time tak store rahengi?",
+      answer: "Pixora albums long-term store hoti hain.\nAgar aapka plan expire ho jaye:\n\n• Your albums will continue to open\n• Only branding features may pause\n• The moment you reactivate a plan, branding restores\n\nYour albums never disappear unexpectedly."
+    },
+    {
+      question: "Kya Printing & Design Labs ke liye Pixora ka koi special version hai?",
+      answer: "Yes. Pixora offers a Lab Mode designed for high-volume album creation:\n\n• Faster processing for bulk Visual Books\n• Custom pricing models\n• Labs can create Visual Books for photographers\n• If photographer's personal plan is inactive, branding will not appear\n• Photographer needs personal login to enable their branding"
+    },
+    {
+      question: "Kya Pixora ka free trial available hai?",
+      answer: "Yes. Pixora offers a free trial for new users:\n\n• Create up to 3 free Visual Books\n• Explore all features\n• No payment needed"
+    }
+  ]
 
 const Home = () => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false)
@@ -135,6 +223,64 @@ const typewriterwords = [
       className: "text-blue-500 dark:text-blue-500",
     },
   ];
+  const demoSpreads = [
+  {
+    id: 1,
+    leftPage: { 
+      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=800&fit=crop", 
+      caption: "Mountain Sunrise" 
+    },
+    rightPage: { 
+      image: "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&h=800&fit=crop", 
+      caption: "Ocean Waves" 
+    }
+  },
+  {
+    id: 2,
+    leftPage: { 
+      image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=1200&h=800&fit=crop", 
+      caption: "Forest Path" 
+    },
+    rightPage: { 
+      image: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=1200&h=800&fit=crop", 
+      caption: "Desert Landscape" 
+    }
+  },
+  {
+    id: 3,
+    leftPage: { 
+      image: "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=1200&h=800&fit=crop", 
+      caption: "Northern Lights" 
+    },
+    rightPage: { 
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1200&h=800&fit=crop", 
+      caption: "Tropical Beach" 
+    }
+  },
+  {
+    id: 4,
+    leftPage: { 
+      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&h=800&fit=crop", 
+      caption: "Misty Mountains" 
+    },
+    rightPage: { 
+      image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&h=800&fit=crop", 
+      caption: "City Skyline" 
+    }
+  },
+  {
+    id: 5,
+    leftPage: { 
+      image: "https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=1200&h=800&fit=crop", 
+      caption: "Autumn Forest" 
+    },
+    rightPage: { 
+      image: "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=1200&h=800&fit=crop", 
+      caption: "Sunset Valley" 
+    }
+  }
+]
+
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -146,6 +292,12 @@ const typewriterwords = [
   <IntroAnimation/>
   </div>
 </section>
+{/* <section>
+   <VisualBookViewer 
+        spreads={demoSpreads} 
+        title="Pixora Demo Collection"
+      />
+</section> */}
 
       {/* Hero Section */}
       {/* <section className="bg-background min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -214,6 +366,20 @@ const typewriterwords = [
         </motion.div>
       </section> */}
 
+
+{/* Zoom Parallax Section */}
+      <section className="py-20 bg-white">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            {/* Scroll Down for Zoom Parallax */}
+          </h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            {/* Experience our interactive parallax effect with multiple images */}
+          </p>
+        </div>
+        <ZoomParallax images={parallaxImages} />
+      </section>
+       
       {/* ScrollReveal Section */}
       <section className="bg-white flex items-center justify-center min-h-screen">
         <ScrollReveal
@@ -227,17 +393,17 @@ const typewriterwords = [
           Pixora keeps every moment alive, exactly as it deserves to be remembered.
         </ScrollReveal>
       </section>
-            <section className='mb-100 mt-70'>
+            {/* <section className='mb-100 mt-70'>
                <GoogleGeminiEffect/>
-      </section>
-       <div className="h-[40rem] flex justify-center items-center px-4">
+      </section> */}
+       {/* <div className="h-[40rem] flex justify-center items-center px-4">
       <div className="text-4xl mx-auto font-normal text-neutral-600 dark:text-neutral-400">
         Build
         <FlipWords words={words} /> <br />
         VisualBooks With Pixora
       </div>
-    </div>
-     <section>
+    </div> */}
+     {/* <section>
   <ContainerScroll
     titleComponent={
       <div className="text-center">
@@ -252,18 +418,33 @@ const typewriterwords = [
     
   >
     {/* Your Image */}
-    <img
+    {/* <img
       src="https://images.unsplash.com/photo-1470338229081-eb5980be28c9?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
       alt="Pixora preview"
       className="mx-auto mt-10 w-full max-w-3xl rounded-xl shadow-lg"
     />
-  </ContainerScroll>
-</section>
-
+  </ContainerScroll> */}
+{/* </section> */} 
+    {/* <section className="py-20 bg-white">
+ 
+  <ScrollBasedVelocityDemo/>
+    </section> */}
 
       {/* <section>
         <ModalProvider/>
       </section> */}
+      <section>
+         <div className="h-[40rem] flex items-center justify-center">
+                  <TextHoverEffect text="Our Vision" />
+                </div>
+      </section>
+       <section>
+              {/* <div className="min-h-screen w-full">
+                  <div className="absolute top-0 left-0 w-full"> */}
+                      <FeaturesSectionWithHoverEffects />
+                  {/* </div> */}
+              {/* </div> */}
+            </section>
       {/* Features Section */}
       <section className="pb-20 bg-white pt-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -277,10 +458,35 @@ const typewriterwords = [
         {/* <CardStack/> */}
       </section>
 
+        <section className="bg-white">
 
+            <AnimatedTestimonials/>
+            </section>
+<section className="bg-white">
+  <main className="min-h-screen bg-white flex flex-col items-center justify-center gap-16 p-8 pt-[300px]">
+      <p className="text-muted-foreground text-xs tracking-[0.25em] uppercase">Hover to interact</p>
 
-            
-            {/* <Cover/> */}
+      <div className="flex flex-col items-center gap-8">
+        <MagneticText text="QUERY" hoverText="REPLY" />
+        <MagneticText text="GUIDE" hoverText="HELPS" />
+      </div>
+    </main>
+</section>
+      <section className="bg-white">
+  <Accordion type="single" collapsible
+      className="max-w-2xl mx-auto text-sm"
+      defaultValue="item-1">
+    {faqs.map((faq, index) => (
+      <AccordionItem key={index} value={`item-${index}`}>
+        <AccordionTrigger className="text-xl font-semibold">{faq.question}</AccordionTrigger>
+        <AccordionContent className="text-lg">
+          {faq.answer}
+        </AccordionContent>
+      </AccordionItem>
+    ))}
+  </Accordion>
+</section>
+      {/* <Cover/> */}
       <section >
        <div className="flex flex-col items-center justify-center h-[40rem] bg-accent;
  ">

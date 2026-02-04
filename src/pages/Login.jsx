@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Theme } from '@/components/ui/theme'
+import { loginUser } from '@/services/api'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -33,22 +34,13 @@ const Login = () => {
     setError('')
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-
-      // For demo purposes, accept any email/password
-      if (formData.email && formData.password) {
-        // Simulate successful login
-        localStorage.setItem('user', JSON.stringify({
-          email: formData.email,
-          name: 'John Doe'
-        }))
-        navigate('/dashboard')
-      } else {
-        setError('Please fill in all fields')
-      }
+      await loginUser({
+        email: formData.email,
+        password: formData.password
+      })
+      navigate('/dashboard')
     } catch (err) {
-      setError('Login failed. Please try again.')
+      setError(err.message || 'Login failed. Please try again.')
     } finally {
       setIsLoading(false)
     }

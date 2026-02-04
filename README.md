@@ -1,43 +1,105 @@
-# Pixora - Interactive Digital Flipbooks
+# Pixora - Interactive Digital Visual Books (Frontend)
 
-A modern, fully-functional React application for creating and viewing interactive digital flipbooks. Designed for photographers, designers, and content creators who want to showcase their work in an engaging, interactive format.
+A modern React application for creating and viewing interactive digital Visual Books. Designed for photographers, designers, and content creators who want to showcase their work in an engaging, interactive format with premium page-flipping animations and artistic effects.
 
 ## ✨ Features
 
 ### 🖥️ User Interface
 - **Fully Responsive**: Mobile-first design that works beautifully on all devices
-- **Modern Design**: Clean, professional interface built with Tailwind CSS
-- **Smooth Animations**: Powered by Framer Motion for delightful user experiences
+- **Modern Design**: Clean, professional interface built with Tailwind CSS v4
+- **Smooth Animations**: Powered by Framer Motion v12 and GSAP for delightful user experiences
 - **Dark/Light Theme**: Toggle between light and dark themes with persistent preferences
 - **Accessibility First**: WCAG compliant with proper ARIA labels and keyboard navigation
+- **Resizable Navigation**: Adaptive navbar with mobile menu support
 
 ### 📖 Visual Book Viewer
-- **Interactive Navigation**: Click, swipe, keyboard, or touch controls for page turning
-- **Click-to-Flip**: Click directly on left/right pages to navigate forward/backward
-- **Swipe Gestures**: Smooth drag gestures with visual page curl effects
-- **Image Optimization**: All images use object-fit: cover for perfect scaling without distortion
-- **Keyboard Shortcuts**: Full keyboard navigation support (arrow keys, spacebar, escape)
-- **Page Indicators**: Visual page numbering and spread navigation
+- **Interactive Page Flipping**: Realistic page-turning animations using react-pageflip
+- **Premium Album Design**: Natural album tilt with shadow effects and vignette
+- **Multiple Navigation Methods**: 
+  - Click-to-Flip: Click directly on left/right pages to navigate
+  - Keyboard Navigation: Arrow keys (←/→) for page navigation, Escape to exit
+  - Touch/Swipe Support: Mobile-friendly gesture controls
+- **Artistic Page Layouts**: 
+  - Full-bleed main images with subtle sepia filters
+  - Inset photo overlays on right pages
+  - Watercolor edge blending effects
+  - Page numbering with elegant styling
+- **Responsive Sizing**: Adaptive book dimensions for different screen sizes
+- **Reduced Motion Support**: Respects user accessibility preferences
+- **Demo Mode**: Standalone demo page for showcasing viewer capabilities
 
 ### 🔐 Authentication System
 - **User Registration**: Secure signup with form validation
 - **Login/Logout**: Persistent sessions with localStorage
-- **Demo Account**: Quick access for testing features
+- **Protected Routes**: Dashboard and viewer pages require authentication
 - **Form Validation**: Real-time validation with helpful error messages
 
-### 📊 Dashboard
+### 📊 Dashboard & Management
 - **Project Management**: View and manage all your flipbooks
 - **Album Gallery**: Browse created Visual Book albums
-- **Grid/List Views**: Flexible display options for your projects
-- **Quick Actions**: Create new albums and manage existing ones
+- **Create New Projects**: Build new visual books from scratch
+- **Profile Management**: User profile and settings
+- **Recharge System**: Credit/balance management
 - **Modern Sidebar**: Collapsible navigation with shadcn/ui components
-- **Responsive Design**: Optimized sidebar behavior for mobile and desktop
+- **Responsive Layout**: Optimized for both mobile and desktop
 
 ### 💼 Marketing Pages
-- **Landing Page**: Compelling hero section with feature highlights
-- **About Page**: Company story and information
+- **Landing Page**: Compelling hero section with feature highlights and interactive demos
 - **Pricing Page**: Transparent pricing with feature comparisons
-- **Contact Page**: Contact form with communication options
+- **Zoom Parallax Demo**: Advanced scrolling effects showcase
+- **Visual Book Demo**: Standalone demonstration of the visual book viewer
+- **Footer Demo**: Showcase of animated footer component
+- **Pulse Beam Demo**: Interactive pulse beam animation effects
+
+### 💬 FAQ & Support
+- **Comprehensive FAQ Section**: Detailed answers covering:
+  - Product features and functionality
+  - Pricing plans (Free: 3 Visual Books, Premium: ₹99/month unlimited)
+  - Branding customization options
+  - Music integration capabilities
+  - Data security and privacy
+  - Lab Mode for printing businesses
+  - Free trial availability
+- **Multilingual Support**: FAQ includes both English and Hindi content
+- **Interactive Accordion**: Smooth expandable FAQ items with Radix UI
+
+### 🎨 Advanced UI Components & Effects
+- **Scroll Morph Hero**: Interactive hero section with morphing image animations and scroll-based transformations
+- **Animated Modals**: Smooth modal transitions with backdrop effects
+- **Interactive Buttons**: Hover effects and micro-interactions
+- **Card Stacks**: Stacked card animations with 3D flip effects
+- **Infinite Moving Cards**: Continuous carousel effects
+- **Text Animations**: Typewriter, flip words, arc effects, and sparkles text
+- **Particle Systems**: TSParticles for dynamic backgrounds
+- **Smooth Scrolling**: Lenis for buttery-smooth scroll experiences
+- **Zoom Parallax**: Advanced parallax scrolling with zoom effects
+- **Magnetic Text**: Interactive text that responds to mouse movement
+- **Animated Testimonials**: Dynamic testimonial displays
+- **Feature Sections**: Hover effects and interactive feature showcases
+- **Orbiting Circles**: Animated orbital elements for visual interest
+- **Google Gemini Effect**: Advanced text animation effects
+- **Container Scroll Animations**: Scroll-triggered animations for content reveals
+
+## 🚀 Quick Start
+
+Get Pixora running in minutes with these simple steps:
+
+```bash
+# Clone the repository (if applicable)
+git clone <repository-url>
+cd photo
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Open your browser
+# Navigate to http://localhost:5173
+```
+
+That's it! You're ready to explore Pixora's interactive visual book capabilities.
 
 ## 🚀 Getting Started
 
@@ -64,53 +126,140 @@ npm run dev
 
 4. Open [http://localhost:5173](http://localhost:5173) (or the port shown in your terminal) in your browser
 
+### Development Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Create production build
+- `npm run preview` - Preview production build locally
+- `npm run lint` - Run ESLint for code quality
+
 ## 🏗️ Project Structure
 
 ```
-src/
-├── components/           # Reusable React components
-│   ├── ui/              # UI components (shadcn/ui)
-│   ├── Header.jsx       # Navigation header
-│   ├── Footer.jsx       # Site footer
-│   ├── VisualBookViewer.jsx # Main visual book viewer
-│   └── ...              # Additional components
-├── pages/               # Page components
-│   ├── Home.jsx         # Landing page
-│   ├── About.jsx        # About page
-│   ├── Pricing.jsx      # Pricing page
-│   ├── Contact.jsx      # Contact page
-│   ├── Login.jsx        # Login page
-│   ├── Signup.jsx       # Registration page
-│   ├── Dashboard.jsx    # User dashboard
-│   └── ...              # Additional pages
-├── hooks/               # Custom React hooks
-├── lib/                 # Utility libraries and configurations
-├── utils/               # Utility functions
-│   └── helpers.js       # Helper functions and utilities
-├── App.jsx              # Main app component with routing
-├── main.jsx             # App entry point
-├── App.css              # App-specific styles
-└── index.css            # Global styles
+photo/
+├── public/               # Static assets
+│   └── vite.svg         # Vite logo
+├── src/
+│   ├── assets/          # Static images and assets
+│   │   └── react.svg    # React logo
+│   ├── components/      # Reusable React components
+│   │   ├── ui/         # UI components (shadcn/ui)
+│   │   │   ├── accordion.jsx
+│   │   │   ├── animated-modal.jsx
+│   │   │   ├── button.jsx
+│   │   │   ├── card.jsx
+│   │   │   ├── dropdown-menu.jsx
+│   │   │   ├── resizable-navbar.jsx
+│   │   │   ├── sidebar.jsx
+│   │   │   └── ...     # Many more UI components
+│   │   ├── blocks/     # Feature block components
+│   │   │   └── feature-section-with-hover-effects.jsx
+│   │   ├── AppSidebar.jsx
+│   │   ├── Aurora.jsx
+│   │   ├── CreateAccount.jsx
+│   │   ├── DashboardLayout.jsx
+│   │   ├── DateSelector.jsx
+│   │   ├── FlowingMenu.jsx
+│   │   ├── Footer.jsx
+│   │   ├── Header.jsx
+│   │   ├── Lamp.jsx
+│   │   ├── Navigation.jsx
+│   │   ├── NavUser.jsx
+│   │   ├── PricingCard.jsx
+│   │   ├── PricingComponent.jsx
+│   │   ├── PricingSection.jsx
+│   │   ├── ScrollReveal.jsx
+│   │   ├── ScrollStackItem.jsx
+│   │   ├── Sparkles.jsx
+│   │   ├── SplitText.jsx
+│   │   ├── UploadDemoModal.jsx
+│   │   └── VisualBookViewer.jsx # Main visual book viewer
+│   ├── hooks/          # Custom React hooks
+│   │   └── use-mobile.js
+│   ├── lib/            # Utility libraries
+│   │   └── utils.js
+│   ├── pages/          # Page components
+│   │   ├── AllPixora.jsx
+│   │   ├── CreateNew.jsx
+│   │   ├── Dashboard.jsx
+│   │   ├── FooterDemo.jsx
+│   │   ├── Home.jsx
+│   │   ├── Login.jsx
+│   │   ├── NotFound.jsx
+│   │   ├── Pricing.jsx
+│   │   ├── Profile.jsx
+│   │   ├── PulseBeam.jsx
+│   │   ├── Recharge.jsx
+│   │   ├── Signup.jsx
+│   │   ├── VisualBookDemo.jsx
+│   │   └── ZoomParallaxDemo.jsx
+│   ├── services/       # API service layer
+│   │   └── api.js      # Frontend API integration
+│   ├── ui/             # Additional UI components
+│   │   └── sparkles.jsx
+│   ├── utils/          # Utility functions
+│   │   └── helpers.js
+│   ├── App.css         # App-specific styles
+│   ├── App.jsx         # Main app component with routing
+│   ├── index.css       # Global styles
+│   └── main.jsx        # App entry point
+├── lib/                # Root-level utilities
+│   ├── utils.js
+│   └── utils1.js
+├── components.json     # shadcn/ui configuration
+├── eslint.config.js    # ESLint configuration
+├── index.html          # HTML template
+├── jsconfig.json       # JavaScript project configuration
+├── package.json        # Frontend dependencies and scripts
+├── vite.config.js      # Vite build configuration
+├── README.md           # This file
+└── .gitignore          # Git ignore patterns
 ```
 
 ## 🛠️ Technologies Used
 
+### Core Framework
 - **React 19.2.0** - Modern React with hooks and concurrent features
-- **React Router DOM 7.10.1** - Client-side routing
-- **Tailwind CSS 4.1.17** - Utility-first CSS framework
+- **React Router DOM 7.10.1** - Client-side routing with nested routes
+- **Vite (with Rolldown 7.2.2)** - Fast build tool and development server
+
+### Styling & UI
+- **Tailwind CSS 4.1.17** - Utility-first CSS framework with Vite integration
 - **Framer Motion 12.23.26** - Animation library for smooth interactions
+- **GSAP 3.14.1** - High-performance animation library with React integration
 - **Lucide React 0.556.0** - Beautiful, consistent icon library
-- **Vite (with Rolldown)** - Fast build tool and development server
-- **GSAP 3.14.1** - High-performance animation library
+- **React Icons 5.5.0** - Additional icon library
+- **Tabler Icons React 3.36.0** - Extended icon collection
+
+### UI Components & Libraries
 - **Radix UI** - Unstyled, accessible UI primitives
+  - Accordion, Avatar, Checkbox, Dialog, Dropdown Menu
+  - Label, Radio Group, Separator, Tabs, Tooltip
 - **shadcn/ui** - Re-usable components built on Radix UI and Tailwind CSS
-- **TanStack Table** - Headless UI for building powerful tables
-- **TSParticles** - Lightweight TypeScript library for creating particles
-- **Lenis** - Smooth scroll library
-- **Next Themes** - Theme provider for Next.js (adapted for React)
-- **Class Variance Authority** - Utility for managing component variants
-- **Tailwind Merge** - Utility for merging Tailwind CSS classes
+- **Class Variance Authority 0.7.1** - Utility for managing component variants
+- **Tailwind Merge 3.4.0** - Utility for merging Tailwind CSS classes
+- **CLSX 2.1.1** - Utility for constructing className strings
+
+### Specialized Libraries
+- **react-pageflip 2.0.3** - Page flipping animation library for visual books
+- **TSParticles 3.9.1** - Lightweight TypeScript library for creating particles
+- **Lenis 1.3.15** - Smooth scroll library for buttery-smooth experiences
+- **Next Themes 0.4.6** - Theme provider adapted for React
+- **TanStack Table 8.21.3** - Headless UI for building powerful tables
+- **OGL 1.0.11** - WebGL graphics library for advanced visual effects
+
+### Development Tools & Performance
+- **ESLint 9.39.1** - Code quality and linting with React hooks plugin
+- **TypeScript Support** - Type checking with @types/react and @types/react-dom
+- **tw-animate-css 1.4.0** - Additional Tailwind animation utilities
+- **Rolldown Vite 7.2.2** - Next-generation bundler for faster builds and development
+- **Modern Build Pipeline**: Optimized for production with tree-shaking and code splitting
+
+
+
+### Language & Runtime
 - **JavaScript (ES6+)** - Modern JavaScript with JSX
+- **ES Modules** - Modern module system with type="module"
 
 ## 📱 Usage Guide
 
@@ -125,12 +274,48 @@ src/
 - **Swipe Gestures**: Drag horizontally to flip pages with visual curl effects
 - **Keyboard Navigation**: Use arrow keys (←/→) to navigate, Escape to exit
 - **Page Indicators**: View current page numbers in the bottom corners
+- **Artistic Effects**: Enjoy sepia filters, watercolor blending, and inset photo overlays
+- **Responsive Design**: The viewer adapts to different screen sizes automatically
 
 ### Managing Projects
 - Access your dashboard after logging in
 - View all your created Visual Book albums
 - Create new albums from the dashboard
 - Browse and manage your collection
+- Manage your profile and account settings
+- Handle recharge and billing information
+
+## 🛣️ Application Routes
+
+### Public Routes
+- `/` - Home/Landing page
+- `/pricing` - Pricing plans
+- `/login` - User login
+- `/signup` - User registration
+- `/zoom-parallax-demo` - Advanced scrolling effects showcase
+- `/demo` - Visual Book Viewer standalone demo
+- `/viewer/:id` - Visual book viewer for specific album (public access)
+
+### Protected Routes (Require Authentication)
+- `/dashboard` - Main dashboard with nested routes
+- `/dashboard/create` - Create new visual book
+- `/dashboard/pixora` - View all albums (AllPixora)
+- `/dashboard/recharge` - Account recharge and billing
+- `/dashboard/profile` - User profile management
+
+### Demo & Development Pages
+- `/zoom-parallax-demo` - Advanced parallax scrolling effects
+- `/demo` - Standalone Visual Book Viewer demonstration
+- `/footer-demo` - Footer component showcase (development)
+- `/pulse-beam` - Pulse beam animation demo (development)
+
+### Special Features
+- **Nested Routing**: Dashboard uses React Router's nested routes
+- **Route Protection**: Authentication guards for dashboard and viewer
+- **404 Handling**: Custom NotFound page for invalid routes
+- **Navigation State**: Mobile menu state management
+
+
 
 ## 🎨 Customization
 
