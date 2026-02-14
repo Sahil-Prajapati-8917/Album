@@ -22,9 +22,9 @@ const NotFound = ({
   heroImage = "/api/placeholder/800/600",
   suggestedLinks = [
     { name: "Home", path: "/" },
-    { name: "Portfolio", path: "/portfolio" },
-    { name: "Services", path: "/services" },
-    { name: "Contact", path: "/contact" }
+    { name: "Exquisite Demo", path: "/demo" },
+    { name: "Pricing & Plans", path: "/pricing" },
+    { name: "Join Community", path: "/signup" }
   ],
   thumbnails = [
     { id: 1, src: "/api/placeholder/300/300", alt: "Wedding Photography", title: "Elegant Wedding" },

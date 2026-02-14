@@ -91,7 +91,7 @@ const Home = () => {
                   Hand-bound in Italy with the finest leathers and silks. Our albums are designed to be passed down through generations—a tactile portal to your most cherished day.
                 </p>
               </div>
-              <Link to="/dashboard/pixfolio" className="border-b-2 border-gold text-gold pb-1 font-bold uppercase tracking-widest text-sm hover:text-gold/80 hover:border-gold/80 transition-all">
+              <Link to="/all-pixfolio" className="border-b-2 border-gold text-gold pb-1 font-bold uppercase tracking-widest text-sm hover:text-gold/80 hover:border-gold/80 transition-all">
                 Discover the Collection
               </Link>
             </div>

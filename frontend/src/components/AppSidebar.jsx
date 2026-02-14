@@ -19,6 +19,8 @@ import {
 } from '@/components/ui/sidebar'
 import { NavUser } from './NavUser'
 import Logo from './Logo'
+import { ThemeToggle } from './ThemeToggle'
+import { getUser } from '@/services/api'
 
 export function AppSidebar() {
   const [user, setUser] = useState(null)
@@ -26,12 +28,12 @@ export function AppSidebar() {
   const location = useLocation()
 
   useEffect(() => {
-    const userData = localStorage.getItem('user')
+    const userData = getUser()
     if (!userData) {
       navigate('/login')
       return
     }
-    const parsedUser = JSON.parse(userData)
+    const parsedUser = userData
     // Ensure user has avatar field
     if (!parsedUser.avatar) {
       parsedUser.avatar = '' // Default empty avatar
@@ -41,9 +43,9 @@ export function AppSidebar() {
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Create New', href: '/dashboard/create', icon: Plus },
-    { name: 'All Pixfolio', href: '/dashboard/pixfolio', icon: FolderOpen },
-    { name: 'Recharge', href: '/dashboard/recharge', icon: CreditCard },
+    { name: 'Create New', href: '/create', icon: Plus },
+    { name: 'All Pixfolio', href: '/all-pixfolio', icon: FolderOpen },
+    { name: 'Recharge', href: '/recharge', icon: CreditCard },
   ]
 
   if (!user) return null
@@ -57,6 +59,18 @@ export function AppSidebar() {
         </Link>
       </SidebarHeader>
       <SidebarContent className="bg-white dark:bg-ebony">
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <div className="px-2 py-2">
+              <div className="flex items-center justify-center group-data-[collapsible=icon]:hidden">
+                <ThemeToggle variant="button" size="sm" className="w-full" />
+              </div>
+              <div className="flex items-center justify-center hidden group-data-[collapsible=icon]:flex">
+                <ThemeToggle variant="switch" size="sm" />
+              </div>
+            </div>
+          </SidebarGroupContent>
+        </SidebarGroup>
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

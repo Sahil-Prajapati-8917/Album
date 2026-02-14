@@ -102,6 +102,72 @@ body {
   .gold-bg {
     background-color: #c6a65d;
   }
+
+  /* Theme transition utilities */
+  .theme-transition {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Prevent flash of incorrect theme */
+  .no-flash {
+    opacity: 0;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Premium shadow utilities */
+  .shadow-premium {
+    box-shadow: 0 4px 20px rgba(198, 166, 93, 0.1);
+  }
+
+  .dark .shadow-premium {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .shadow-premium-lg {
+    box-shadow: 0 10px 40px rgba(198, 166, 93, 0.15);
+  }
+
+  .dark .shadow-premium-lg {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Glass morphism effects */
+  .glass-premium {
+    backdrop-filter: blur(12px);
+    background: rgba(248, 247, 246, 0.8);
+    border: 1px solid rgba(198, 166, 93, 0.1);
+  }
+
+  .dark .glass-premium {
+    background: rgba(30, 27, 20, 0.8);
+    border: 1px solid rgba(198, 166, 93, 0.2);
+  }
+
+  /* Text utilities for better contrast */
+  .text-charcoal {
+    color: #181611;
+  }
+
+  .dark .text-charcoal {
+    color: #f8f7f6;
+  }
+
+  /* Card backgrounds */
+  .card-premium {
+    background: #ffffff;
+    border: 1px solid rgba(198, 166, 93, 0.1);
+  }
+
+  .dark .card-premium {
+    background: #2a261d;
+    border: 1px solid rgba(198, 166, 93, 0.2);
+  }
 }
 
 @keyframes accordion-down {
@@ -204,5 +270,65 @@ body {
 
   body {
     @apply bg-background text-foreground;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Smooth theme transitions */
+  * {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Prevent layout shifts during theme changes */
+  img,
+  video,
+  iframe,
+  svg {
+    transition: filter 0.3s ease;
+  }
+
+  /* Enhanced dark mode image handling */
+  .dark img,
+  .dark video,
+  .dark iframe {
+    filter: brightness(0.9) contrast(1.1);
+  }
+
+  /* Smooth scrollbar transitions */
+  ::-webkit-scrollbar {
+    width: 8px;
+    transition: background-color 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--muted);
+    transition: background-color 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--gold);
+    opacity: 0.8;
+  }
+
+  /* Custom selection colors for both themes */
+  ::selection {
+    background: var(--gold);
+    color: white;
+  }
+
+  ::-moz-selection {
+    background: var(--gold);
+    color: white;
+  }
+
+  /* Focus styles that work in both themes */
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
   }
 }

@@ -1,83 +1,89 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Logo from './Logo'
+import { ThemeToggle } from './ThemeToggle'
+import { Menu, X } from 'lucide-react'
+import { Button } from "@/components/ui/button"
+import { PrimaryButton } from "@/components/custom/PrimaryButton"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'Demo', path: '/demo' },
+    { name: 'Pricing', path: '/pricing' },
+    { name: 'Sign In', path: '/login' },
+  ]
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b border-gold/10 bg-pearl/80 backdrop-blur-md dark:bg-ebony/80 px-6 md:px-20 py-4 transition-all duration-300">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <header className="fixed top-0 z-50 w-full border-b border-gold/10 bg-pearl/80 backdrop-blur-md dark:bg-ebony/80 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 md:px-20 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3 group">
             <Logo className="h-10 w-auto group-hover:scale-110 transition-transform" />
-            <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</h2>
+            <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-foreground">Pixfolio</h2>
           </Link>
         </div>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10">
-          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/">Home</Link>
-          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/demo">Demo</Link>
-          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/pricing">Pricing</Link>
-          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/login">Sign In</Link>
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors ${location.pathname === link.path ? 'text-gold' : 'text-foreground'}`}
+            >
+              {link.name}
+            </Link>
+          ))}
         </nav>
 
         <div className="flex items-center gap-4">
-          <Link to="/signup" className="hidden sm:inline-block bg-gold text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gold/90 transition-all shadow-sm">
-            Join Now
+          <ThemeToggle variant="switch" size="md" className="hidden md:block" />
+
+          <Link to="/signup" className="hidden sm:inline-block">
+            <PrimaryButton className="h-9 px-6 text-xs uppercase tracking-widest">
+              Join Now
+            </PrimaryButton>
           </Link>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="md:hidden text-black dark:text-white p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <span className="material-symbols-outlined">{isMobileMenuOpen ? 'close' : 'menu'}</span>
-          </button>
+          {/* Mobile Menu */}
+          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[300px] sm:w-[400px] border-l border-gold/10 bg-pearl dark:bg-ebony pt-10">
+              <nav className="flex flex-col gap-6">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm font-semibold uppercase tracking-widest text-foreground">Theme</span>
+                  <ThemeToggle variant="switch" size="md" />
+                </div>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className="text-lg font-serif font-medium hover:text-gold transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+                <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                  <PrimaryButton className="w-full">
+                    Join Now
+                  </PrimaryButton>
+                </Link>
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-pearl dark:bg-ebony border-b border-gold/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
-          <Link
-            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
-            to="/"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
-            to="/demo"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Demo
-          </Link>
-          <Link
-            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
-            to="/pricing"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Pricing
-          </Link>
-          <Link
-            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
-            to="/login"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Sign In
-          </Link>
-          <Link
-            to="/signup"
-            className="bg-gold text-white px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-widest text-center"
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            Join Now
-          </Link>
-        </div>
-      )}
     </header>
   )
 }

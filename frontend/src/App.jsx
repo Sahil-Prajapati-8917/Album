@@ -1,10 +1,14 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, useLocation, Link } from 'react-router-dom'
-import Navigation from './components/Navigation'
-// import Header from './components/Header'
-import { Footer as AnimatedFooter } from './components/ui/modem-animated-footer'
-import { Camera, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { ThemeProvider } from './contexts/ThemeContext'
+import { TooltipProvider } from '@/components/ui/tooltip'
+
+// Layouts
+import MainLayout from './components/layouts/MainLayout'
 import DashboardLayout from './components/DashboardLayout'
+import AuthLayout from './components/layouts/AuthLayout'
+
+// Pages
 import Home from './pages/Home'
 import Pricing from './pages/Pricing'
 import Login from './pages/Login'
@@ -16,55 +20,55 @@ import Recharge from './pages/Recharge'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
 import ZoomParallaxDemo from './pages/ZoomParallaxDemo'
-import VisualBookViewer from './components/VisualBookViewer'
 import VisualBookDemo from './pages/VisualBookDemo'
 
-import Footer from './components/Footer'
+// Components
+import VisualBookViewer from './components/VisualBookViewer'
+
 
 function AppContent() {
-  const location = useLocation()
-  const isDashboardPage = location.pathname.startsWith('/dashboard')
-  const isVisualBookViewer = location.pathname.startsWith('/viewer')
-  const isDemoPage = location.pathname === '/demo'
-  const isPricingPage = location.pathname === '/pricing'
-  const isSignupPage = location.pathname === '/signup'
-  const isLoginPage = location.pathname === '/login'
-
   return (
-    <div className="min-h-screen bg-background">
-      {!isDashboardPage && !isVisualBookViewer && (
-        <Navigation />
-      )}
-      <main id="main-content" className={isDashboardPage ? "pt-0" : ""}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/pricing" element={<Pricing />} />
-          <Route path="/zoom-parallax-demo" element={<ZoomParallaxDemo />} />
-          <Route path="/demo" element={<VisualBookDemo />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<DashboardLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="create" element={<CreateNew />} />
-            <Route path="pixfolio" element={<AllPixfolio />} />
-            <Route path="recharge" element={<Recharge />} />
-            <Route path="profile" element={<Profile />} />
-          </Route>
-          <Route path="/viewer/:id" element={<VisualBookViewer />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && !isPricingPage && !isSignupPage && !isLoginPage && (
-        <Footer />
-      )}
-    </div>
+    <Routes>
+      {/* Public Routes with Main Layout */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/pricing" element={<Pricing />} />
+        <Route path="/zoom-parallax-demo" element={<ZoomParallaxDemo />} />
+        <Route path="/demo" element={<VisualBookDemo />} />
+      </Route>
+
+      {/* Auth Routes with Auth Layout */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Route>
+
+      {/* Protected/Dashboard Routes with Dashboard Layout */}
+      <Route element={<DashboardLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/create" element={<CreateNew />} />
+        <Route path="/all-pixfolio" element={<AllPixfolio />} />
+        <Route path="/recharge" element={<Recharge />} />
+        <Route path="/profile" element={<Profile />} />
+      </Route>
+
+      {/* Standalone Route (No Layout) */}
+      <Route path="/viewer/:id" element={<VisualBookViewer />} />
+
+      {/* 404 Route */}
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   )
 }
 
 function App() {
   return (
     <Router>
-      <AppContent />
+      <ThemeProvider>
+        <TooltipProvider>
+          <AppContent />
+        </TooltipProvider>
+      </ThemeProvider>
     </Router>
   )
 }
