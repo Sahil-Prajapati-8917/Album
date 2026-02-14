@@ -1,4 +1,4 @@
-# User Database System for Pixora
+# User Database System for Pixfolio
 
 ## Overview
 I have successfully implemented a complete user database system with the following features:
@@ -94,7 +94,7 @@ src/
 4. Get the connection string
 5. Update `Backend/.env`:
    ```
-   MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/pixora"
+   MONGO_URI="mongodb+srv://username:password@cluster.mongodb.net/pixfolio"
    ```
 
 **Option B: Local MongoDB (For Development)**
@@ -112,7 +112,7 @@ src/
    ```
 3. Update `Backend/.env`:
    ```
-   MONGO_URI="mongodb://localhost:27017/pixora"
+   MONGO_URI="mongodb://localhost:27017/pixfolio"
    ```
 
 ### 2. Backend Setup

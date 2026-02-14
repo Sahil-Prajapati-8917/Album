@@ -27,7 +27,7 @@ export function FeaturesSectionWithHoverEffects() {
   {
     title: "Passion for Creativity",
     description:
-      "Photography is emotion and storytelling. Pixora empowers creators to shape wedding moments, portraits, and cinematic albums into meaningful visual experiences.",
+      "Photography is emotion and storytelling. Pixfolio empowers creators to shape wedding moments, portraits, and cinematic albums into meaningful visual experiences.",
     icon: <Palette className="h-5 w-5" />,
   },
   {

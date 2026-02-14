@@ -48,7 +48,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 
-const AllPixora = () => {
+const AllPixfolio = () => {
   const [albums, setAlbums] = useState([])
   const [filteredAlbums, setFilteredAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
@@ -88,7 +88,7 @@ const AllPixora = () => {
           rating: 4.5,
           viewersCount: 156,
           qrCode: "qr-1",
-          link: "https://pixora.com/album/1",
+          link: "https://pixfolio.com/album/1",
           status: "published",
           createdDate: "2025-01-10"
         },
@@ -102,7 +102,7 @@ const AllPixora = () => {
           rating: 4.2,
           viewersCount: 89,
           qrCode: "qr-2",
-          link: "https://pixora.com/album/2",
+          link: "https://pixfolio.com/album/2",
           status: "published",
           createdDate: "2025-02-15"
         },
@@ -116,7 +116,7 @@ const AllPixora = () => {
           rating: 0,
           viewersCount: 0,
           qrCode: "qr-3",
-          link: "https://pixora.com/album/3",
+          link: "https://pixfolio.com/album/3",
           status: "draft",
           createdDate: "2025-03-05"
         },
@@ -130,7 +130,7 @@ const AllPixora = () => {
           rating: 4.8,
           viewersCount: 234,
           qrCode: "qr-4",
-          link: "https://pixora.com/album/4",
+          link: "https://pixfolio.com/album/4",
           status: "published",
           createdDate: "2025-03-28"
         }
@@ -374,7 +374,7 @@ const AllPixora = () => {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">All Pixora Albums</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">All Pixfolio Albums</h1>
         <p className="text-gray-600">Manage and track all your Visual Book albums</p>
       </div>
 
@@ -532,4 +532,4 @@ const AllPixora = () => {
   )
 }
 
-export default AllPixora
+export default AllPixfolio

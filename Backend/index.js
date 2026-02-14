@@ -16,7 +16,7 @@ app.use(express.json());
 app.use("/api/users", require("./routes/userRoutes"));
 
 app.get("/", (req, res) => {
-  res.send("Pixora backend running");
+  res.send("Pixfolio backend running");
 });
 
 // Error handling middleware

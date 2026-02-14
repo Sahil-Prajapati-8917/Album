@@ -7,7 +7,7 @@ const connectDB = async () => {
     
     // If Atlas connection fails, use local MongoDB
     if (!mongoUri || mongoUri.includes('<sahil123>')) {
-      mongoUri = 'mongodb://localhost:27017/pixora';
+      mongoUri = 'mongodb://localhost:27017/pixfolio';
       console.log('Using local MongoDB instance');
     }
 

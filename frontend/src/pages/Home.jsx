@@ -63,48 +63,48 @@ const parallaxImages = [
 
   const faqs = [
     {
-      question: "What is Pixora?",
-      answer: "Pixora is an online Visual Book creator that helps photographers and studios present their albums in a modern, interactive format. You can even add your own branding."
+      question: "What is Pixfolio?",
+      answer: "Pixfolio is an online Visual Book creator that helps photographers and studios present their albums in a modern, interactive format. You can even add your own branding."
     },
     {
-      question: "How does Pixora work?",
-      answer: "You upload your album photos, and Pixora automatically converts them into a smooth, interactive Visual Book. You can share it with clients using a simple link."
+      question: "How does Pixfolio work?",
+      answer: "You upload your album photos, and Pixfolio automatically converts them into a smooth, interactive Visual Book. You can share it with clients using a simple link."
     },
     {
-      question: "What are Pixora's monthly plans?",
-      answer: "Pixora offers simple and affordable plans:\n\nFree Plan → Create up to 3 Visual Books\n\nPremium Plan ₹99/month → Create unlimited Visual Books anytime"
+      question: "What are Pixfolio's monthly plans?",
+      answer: "Pixfolio offers simple and affordable plans:\n\nFree Plan → Create up to 3 Visual Books\n\nPremium Plan ₹99/month → Create unlimited Visual Books anytime"
     },
     {
-      question: "Can I add branding or social media links in Pixora?",
-      answer: "Yes. Pixora allows you to add:\n\n• Studio / Photographer Name\n• Website link\n• All social media profiles\n• Contact Number\n• Location\n\nYour Visual Books will display your identity professionally."
+      question: "Can I add branding or social media links in Pixfolio?",
+      answer: "Yes. Pixfolio allows you to add:\n\n• Studio / Photographer Name\n• Website link\n• All social media profiles\n• Contact Number\n• Location\n\nYour Visual Books will display your identity professionally."
     },
     {
-      question: "Can I add or change music in Pixora?",
+      question: "Can I add or change music in Pixfolio?",
       answer: "Yes. You can add or update background music to match the mood of your album. This improves the overall viewing experience."
     },
     {
-      question: "Kya Pixora me mera data surakshit rahega?",
-      answer: "Bilkul. Pixora advanced security use karta hai:\n\n• Encrypted storage\n• Secure servers\n• Automated backups\n• No data sharing with third parties\n\nAapke Visual Books hamesha safe rehte hain."
+      question: "Kya Pixfolio me mera data surakshit rahega?",
+      answer: "Bilkul. Pixfolio advanced security use karta hai:\n\n• Encrypted storage\n• Secure servers\n• Automated backups\n• No data sharing with third parties\n\nAapke Visual Books hamesha safe rehte hain."
     },
     {
       question: "Can I edit Visual Books after creation?",
       answer: "Yes. You can make changes anytime unless the Visual Book is deleted."
     },
     {
-      question: "Does Pixora work offline?",
-      answer: "No. Pixora is a cloud-based platform and requires an internet connection to create or view Visual Books."
+      question: "Does Pixfolio work offline?",
+      answer: "No. Pixfolio is a cloud-based platform and requires an internet connection to create or view Visual Books."
     },
     {
-      question: "Pixora albums kitne time tak store rahengi?",
-      answer: "Pixora albums long-term store hoti hain.\nAgar aapka plan expire ho jaye:\n\n• Your albums will continue to open\n• Only branding features may pause\n• The moment you reactivate a plan, branding restores\n\nYour albums never disappear unexpectedly."
+      question: "Pixfolio albums kitne time tak store rahengi?",
+      answer: "Pixfolio albums long-term store hoti hain.\nAgar aapka plan expire ho jaye:\n\n• Your albums will continue to open\n• Only branding features may pause\n• The moment you reactivate a plan, branding restores\n\nYour albums never disappear unexpectedly."
     },
     {
-      question: "Kya Printing & Design Labs ke liye Pixora ka koi special version hai?",
-      answer: "Yes. Pixora offers a Lab Mode designed for high-volume album creation:\n\n• Faster processing for bulk Visual Books\n• Custom pricing models\n• Labs can create Visual Books for photographers\n• If photographer's personal plan is inactive, branding will not appear\n• Photographer needs personal login to enable their branding"
+      question: "Kya Printing & Design Labs ke liye Pixfolio ka koi special version hai?",
+      answer: "Yes. Pixfolio offers a Lab Mode designed for high-volume album creation:\n\n• Faster processing for bulk Visual Books\n• Custom pricing models\n• Labs can create Visual Books for photographers\n• If photographer's personal plan is inactive, branding will not appear\n• Photographer needs personal login to enable their branding"
     },
     {
-      question: "Kya Pixora ka free trial available hai?",
-      answer: "Yes. Pixora offers a free trial for new users:\n\n• Create up to 3 free Visual Books\n• Explore all features\n• No payment needed"
+      question: "Kya Pixfolio ka free trial available hai?",
+      answer: "Yes. Pixfolio offers a free trial for new users:\n\n• Create up to 3 free Visual Books\n• Explore all features\n• No payment needed"
     }
   ]
 
@@ -219,7 +219,7 @@ const typewriterwords = [
       text: "With ",
     },
     {
-      text: "Pixora.",
+      text: "Pixfolio.",
       className: "text-blue-500 dark:text-blue-500",
     },
   ];
@@ -295,7 +295,7 @@ const typewriterwords = [
 {/* <section>
    <VisualBookViewer 
         spreads={demoSpreads} 
-        title="Pixora Demo Collection"
+        title="Pixfolio Demo Collection"
       />
 </section> */}
 
@@ -390,7 +390,7 @@ const typewriterwords = [
         >
           Memories don't fade because time passes.
           They fade when no one preserves them.
-          Pixora keeps every moment alive, exactly as it deserves to be remembered.
+          Pixfolio keeps every moment alive, exactly as it deserves to be remembered.
         </ScrollReveal>
       </section>
             {/* <section className='mb-100 mt-70'>
@@ -400,7 +400,7 @@ const typewriterwords = [
       <div className="text-4xl mx-auto font-normal text-neutral-600 dark:text-neutral-400">
         Build
         <FlipWords words={words} /> <br />
-        VisualBooks With Pixora
+        VisualBooks With Pixfolio
       </div>
     </div> */}
      {/* <section>
@@ -420,7 +420,7 @@ const typewriterwords = [
     {/* Your Image */}
     {/* <img
       src="https://images.unsplash.com/photo-1470338229081-eb5980be28c9?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-      alt="Pixora preview"
+      alt="Pixfolio preview"
       className="mx-auto mt-10 w-full max-w-3xl rounded-xl shadow-lg"
     />
   </ContainerScroll> */}

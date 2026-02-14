@@ -11,7 +11,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import CreateNew from './pages/CreateNew'
-import AllPixora from './pages/AllPixora'
+import AllPixfolio from './pages/AllPixfolio'
 import Recharge from './pages/Recharge'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
@@ -71,7 +71,7 @@ function AppContent() {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Dashboard />} />
             <Route path="create" element={<CreateNew />} />
-            <Route path="pixora" element={<AllPixora />} />
+            <Route path="pixfolio" element={<AllPixfolio />} />
             <Route path="recharge" element={<Recharge />} />
             <Route path="profile" element={<Profile />} />
           </Route>
@@ -81,7 +81,7 @@ function AppContent() {
       </main>
       {!isDashboardPage && !isVisualBookViewer && !isDemoPage && (
         <AnimatedFooter
-          brandName="Pixora"
+          brandName="Pixfolio"
           brandDescription="Create stunning interactive Visual Books from your photos. Perfect for photographers, designers, and content creators."
           socialLinks={socialLinks}
           navLinks={footerNavLinks}

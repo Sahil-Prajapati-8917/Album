@@ -14,7 +14,7 @@ export default function Navigation() {
               className="flex aspect-square size-8 items-center border justify-center rounded-lg">
               <Linklogo className="h-5 w-5  "/>
             </div>
-            <span className="text-xl text-black font-semibold">Pixora</span>
+            <span className="text-xl text-black font-semibold">Pixfolio</span>
           </Link>
         </div>
         <div className="hidden md:flex items-center gap-6 text-sm">

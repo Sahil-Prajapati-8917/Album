@@ -42,7 +42,7 @@ export function AppSidebar() {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Create New', href: '/dashboard/create', icon: Plus },
-    { name: 'All Pixora', href: '/dashboard/pixora', icon: FolderOpen },
+    { name: 'All Pixfolio', href: '/dashboard/pixfolio', icon: FolderOpen },
     { name: 'Recharge', href: '/dashboard/recharge', icon: CreditCard },
   ]
 
@@ -53,7 +53,7 @@ export function AppSidebar() {
       <SidebarHeader>
         <Link to="/" className="flex items-center space-x-2 px-2 py-2">
           <Camera className="h-8 w-8 text-blue-600" />
-          <span className="font-bold text-xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">Pixora</span>
+          <span className="font-bold text-xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">Pixfolio</span>
         </Link>
       </SidebarHeader>
       <SidebarContent>

@@ -64,7 +64,7 @@ const VisualBookDemo = () => {
   return (
     <VisualBookViewer 
       spreads={demoSpreads} 
-      title="Pixora Demo Collection"
+      title="Pixfolio Demo Collection"
     />
   )
 }

@@ -59,7 +59,7 @@ const Login = () => {
         >
           <Link to="/" className="flex items-center justify-center space-x-2 mb-8">
             <Camera className="h-8 w-8 text-blue-600" />
-            <span className="font-bold text-2xl text-gray-900">Pixora</span>
+            <span className="font-bold text-2xl text-gray-900">Pixfolio</span>
           </Link>
           <h2 className="text-3xl font-bold text-gray-900">
             Welcome back

@@ -7,36 +7,36 @@ import { useEffect, useState } from "react";
 const testimonials = [
   {
     quote:
-      "Pixora makes wedding moments feel timeless. The album layouts highlight every emotion with beautiful clarity.",
+      "Pixfolio makes wedding moments feel timeless. The album layouts highlight every emotion with beautiful clarity.",
     name: "Wedding Collection",
     designation: "Premium Visual Storytelling",
     src: "https://images.pexels.com/photos/1940583/pexels-photo-1940583.jpeg", // your wedding photo
   },
   {
     quote:
-      "A clean and modern way to showcase portraits and creative shoots. Pixora brings every frame to life.",
+      "A clean and modern way to showcase portraits and creative shoots. Pixfolio brings every frame to life.",
     name: "Photography Showcase",
     designation: "Professional Photo Presentation",
     src: "https://images.pexels.com/photos/18868268/pexels-photo-18868268.jpeg",
   },
   {
     quote:
-      "Your camera work stays sharp and detailed. Pixora preserves true color, focus, and image depth in every album.",
+      "Your camera work stays sharp and detailed. Pixfolio preserves true color, focus, and image depth in every album.",
     name: "Camera Work",
     designation: "Lens-Focused Quality",
     src: "https://images.unsplash.com/photo-1495121553079-4c61bcce1894?q=80&w=381&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     quote:
-      "Cinematic scenes look stunning with smooth, immersive layouts. Pixora is perfect for storytellers and filmmakers.",
+      "Cinematic scenes look stunning with smooth, immersive layouts. Pixfolio is perfect for storytellers and filmmakers.",
     name: "Cinematography",
     designation: "Cinematic Visual Flow",
     src: "https://plus.unsplash.com/premium_photo-1710961232986-36cead00da3c?q=80&w=484&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     quote:
-      "Pixora transforms your media into elegant visual books. Fast, modern, and built for creators who want professional results.",
-    name: "Pixora Studio",
+      "Pixfolio transforms your media into elegant visual books. Fast, modern, and built for creators who want professional results.",
+    name: "Pixfolio Studio",
     designation: "Visual Book Platform",
     src: "https://images.unsplash.com/photo-1520262494112-9fe481d36ec3?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },

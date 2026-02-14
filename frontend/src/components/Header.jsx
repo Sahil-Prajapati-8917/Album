@@ -56,7 +56,7 @@ const Header = () => {
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <Camera className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-              <span className="font-bold text-xl text-black">Pixora</span>
+              <span className="font-bold text-xl text-black">Pixfolio</span>
             </Link>
           </div>
 

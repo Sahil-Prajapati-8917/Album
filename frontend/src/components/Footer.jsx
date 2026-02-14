@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="space-y-4">
             <Link to="/" className="flex items-center space-x-2">
               <Camera className="h-8 w-8 text-blue-400" />
-              <span className="font-bold text-xl">Pixora</span>
+              <span className="font-bold text-xl">Pixfolio</span>
             </Link>
             <p className="text-gray-400 text-sm">
               Create stunning interactive Visual Books from your photos. Perfect for photographers, designers, and content creators.
@@ -70,7 +70,7 @@ const Footer = () => {
             <div className="flex items-center space-x-6 text-sm text-gray-400">
               <div className="flex items-center space-x-2">
                 <Mail className="h-4 w-4" />
-                <span>support@pixora.com</span>
+                <span>support@pixfolio.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <Phone className="h-4 w-4" />
@@ -82,7 +82,7 @@ const Footer = () => {
               </div>
             </div>
             <p className="text-gray-400 text-sm mt-4 md:mt-0">
-              © 2025 Pixora. All rights reserved.
+              © 2025 Pixfolio. All rights reserved.
             </p>
           </div>
         </div>

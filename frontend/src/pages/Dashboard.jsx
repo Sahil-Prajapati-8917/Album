@@ -171,7 +171,7 @@ const Dashboard = () => {
           </Link>
 
           <Link
-            to="/dashboard/pixora"
+            to="/dashboard/pixfolio"
             className="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
           >
             <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">

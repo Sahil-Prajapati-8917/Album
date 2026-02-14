@@ -187,7 +187,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
     // Back Cover
     pages.push(
       <Page key="back-cover" isCover={true} isLeft={true}>
-        <div className="opacity-20 text-[8px] tracking-[0.5em] scale-75 uppercase">Pixora Legacy Edition</div>
+        <div className="opacity-20 text-[8px] tracking-[0.5em] scale-75 uppercase">Pixfolio Legacy Edition</div>
       </Page>
     )
 

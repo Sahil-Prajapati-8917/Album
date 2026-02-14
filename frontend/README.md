@@ -1,4 +1,4 @@
-# Pixora - Interactive Digital Visual Books (Frontend)
+# Pixfolio - Interactive Digital Visual Books (Frontend)
 
 A modern React application for creating and viewing interactive digital Visual Books. Designed for photographers, designers, and content creators who want to showcase their work in an engaging, interactive format with premium page-flipping animations and artistic effects.
 
@@ -82,7 +82,7 @@ A modern React application for creating and viewing interactive digital Visual B
 
 ## 🚀 Quick Start
 
-Get Pixora running in minutes with these simple steps:
+Get Pixfolio running in minutes with these simple steps:
 
 ```bash
 # Clone the repository (if applicable)
@@ -99,7 +99,7 @@ npm run dev
 # Navigate to http://localhost:5173
 ```
 
-That's it! You're ready to explore Pixora's interactive visual book capabilities.
+That's it! You're ready to explore Pixfolio's interactive visual book capabilities.
 
 ## 🚀 Getting Started
 
@@ -179,7 +179,7 @@ photo/
 │   ├── lib/            # Utility libraries
 │   │   └── utils.js
 │   ├── pages/          # Page components
-│   │   ├── AllPixora.jsx
+│   │   ├── AllPixfolio.jsx
 │   │   ├── CreateNew.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── FooterDemo.jsx
@@ -299,7 +299,7 @@ photo/
 ### Protected Routes (Require Authentication)
 - `/dashboard` - Main dashboard with nested routes
 - `/dashboard/create` - Create new visual book
-- `/dashboard/pixora` - View all albums (AllPixora)
+- `/dashboard/pixfolio` - View all albums (AllPixfolio)
 - `/dashboard/recharge` - Account recharge and billing
 - `/dashboard/profile` - User profile management
 
@@ -378,7 +378,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## 📞 Support
 
-For support, email support@pixora.com or use the contact form on our website.
+For support, email support@pixfolio.com or use the contact form on our website.
 
 ## 🔄 Future Enhancements
 
