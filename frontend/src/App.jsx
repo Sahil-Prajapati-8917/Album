@@ -19,46 +19,20 @@ import ZoomParallaxDemo from './pages/ZoomParallaxDemo'
 import VisualBookViewer from './components/VisualBookViewer'
 import VisualBookDemo from './pages/VisualBookDemo'
 
+import Footer from './components/Footer'
+
 function AppContent() {
   const location = useLocation()
   const isDashboardPage = location.pathname.startsWith('/dashboard')
   const isVisualBookViewer = location.pathname.startsWith('/viewer')
   const isDemoPage = location.pathname === '/demo'
-
-  const socialLinks = [
-    {
-      icon: <Facebook className="w-6 h-6" />,
-      href: "#",
-      label: "Facebook",
-    },
-    {
-      icon: <Twitter className="w-6 h-6" />,
-      href: "#",
-      label: "Twitter",
-    },
-    {
-      icon: <Instagram className="w-6 h-6" />,
-      href: "#",
-      label: "Instagram",
-    },
-    {
-      icon: <Youtube className="w-6 h-6" />,
-      href: "#",
-      label: "Youtube",
-    },
-  ];
-
-  const footerNavLinks = [
-    { label: "Home", href: "/" },
-    { label: "Pricing", href: "/pricing" },
-  ];
+  const isPricingPage = location.pathname === '/pricing'
+  const isSignupPage = location.pathname === '/signup'
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && (
-        <div className="fixed inset-x-0 top-0 z-50 w-full bg-white/80 backdrop-blur-sm">
-          <Navigation />
-        </div>
+    <div className="min-h-screen bg-background">
+      {!isDashboardPage && !isVisualBookViewer && (
+        <Navigation />
       )}
       <main id="main-content" className={isDashboardPage ? "pt-0" : ""}>
         <Routes>
@@ -79,14 +53,8 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && (
-        <AnimatedFooter
-          brandName="Pixfolio"
-          brandDescription="Create stunning interactive Visual Books from your photos. Perfect for photographers, designers, and content creators."
-          socialLinks={socialLinks}
-          navLinks={footerNavLinks}
-          brandIcon={<Camera className="w-8 sm:w-10 md:w-14 h-8 sm:h-10 md:h-14 text-background drop-shadow-lg" />}
-        />
+      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && !isPricingPage && !isSignupPage && (
+        <Footer />
       )}
     </div>
   )

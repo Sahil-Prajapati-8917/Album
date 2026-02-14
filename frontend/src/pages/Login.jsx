@@ -49,7 +49,7 @@ const Login = () => {
 
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-white dark:bg-ebony flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -57,15 +57,17 @@ const Login = () => {
           transition={{ duration: 0.6 }}
           className="text-center"
         >
-          <Link to="/" className="flex items-center justify-center space-x-2 mb-8">
-            <Camera className="h-8 w-8 text-blue-600" />
-            <span className="font-bold text-2xl text-gray-900">Pixfolio</span>
+          <Link to="/" className="flex items-center justify-center space-x-3 mb-8 group">
+            <div className="text-gold group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined text-4xl">photo_camera</span>
+            </div>
+            <span className="text-2xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</span>
           </Link>
-          <h2 className="text-3xl font-bold text-gray-900">
-            Welcome back
+          <h2 className="text-4xl font-serif text-[#181611] dark:text-white italic">
+            Welcome Back
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            Sign in to your account to continue creating amazing flipbooks
+          <p className="mt-4 text-sm text-gray-500 font-light tracking-wide uppercase">
+            Sign in to your artistic portal
           </p>
         </motion.div>
 
@@ -73,7 +75,7 @@ const Login = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-white py-8 px-6 shadow-lg rounded-lg border border-gray-300"
+          className="bg-white dark:bg-[#2a261d] py-10 px-8 shadow-2xl rounded-2xl border border-gold/10 hover:border-gold/30 transition-all"
         >
           {error && (
             <div className="mb-4 bg-red-50 border border-red-200 rounded-lg p-4">
@@ -108,7 +110,7 @@ const Login = () => {
                 />
               </div>
             </div>
-            
+
             <div>
               <Label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -147,7 +149,7 @@ const Login = () => {
                 <Checkbox
                   id="remember-me"
                   checked={formData.rememberMe}
-                  onCheckedChange={(checked) => setFormData({...formData, rememberMe: checked})}
+                  onCheckedChange={(checked) => setFormData({ ...formData, rememberMe: checked })}
                 />
                 <Label htmlFor="remember-me" className="text-sm text-gray-700">
                   Remember me

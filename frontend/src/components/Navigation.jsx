@@ -1,83 +1,86 @@
-import { Link as Linklogo } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-export default function Navigation() {
+const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="w-full py-3 px-6 md:px-12 lg:px-24 ">
-      <div className="flex items-center justify-between">
-        <div style={{ filter: 'blur(0px)', opacity: 1, transform: 'none' }}>
-          <Link to="/" className="flex items-center gap-3">
-            <div
-              className="flex aspect-square size-8 items-center border justify-center rounded-lg">
-              <Linklogo className="h-5 w-5  "/>
+    <header className="fixed top-0 z-50 w-full border-b border-gold/10 bg-pearl/80 backdrop-blur-md dark:bg-ebony/80 px-6 md:px-20 py-4 transition-all duration-300">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3 group">
+            <div className="text-gold group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined text-3xl">photo_camera</span>
             </div>
-            <span className="text-xl text-black font-semibold">Pixfolio</span>
+            <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</h2>
           </Link>
         </div>
-        <div className="hidden md:flex items-center gap-6 text-sm">
-          <Link to="/" className="text-gray-600 hover:text-gray-900 transition-colors">Home</Link>
-          <Link to="/demo" className="text-gray-600 hover:text-gray-900  transition-colors">Demo</Link>
-          <Link to="/pricing" className="text-gray-600 hover:text-gray-900 transition-colors">Pricing</Link>
-          <Link to="/login" className="text-gray-900 hover:text-gray-700 font-medium transition-colors">Sign In</Link>
-          <Link to="/signup" className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors">Get Started</Link>
-        </div>
-        <div className="md:hidden">
-          <button 
-            className="text-gray-900 p-2"
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center gap-10">
+          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/">Home</Link>
+          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/demo">Demo</Link>
+          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/pricing">Pricing</Link>
+          <Link className="text-xs font-semibold uppercase tracking-widest hover:text-gold transition-colors" to="/login">Sign In</Link>
+        </nav>
+
+        <div className="flex items-center gap-4">
+          <Link to="/signup" className="hidden sm:inline-block bg-gold text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-widest hover:bg-gold/90 transition-all shadow-sm">
+            Join Now
+          </Link>
+
+          {/* Mobile Menu Button */}
+          <button
+            className="md:hidden text-black dark:text-white p-2"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
+            <span className="material-symbols-outlined">{isMobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
       </div>
-      
-      {/* Mobile Menu */}
+
+      {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
-        <div className="md:hidden mt-4 py-4">
-          <div className="flex flex-col gap-4 text-sm">
-            <Link 
-              to="/" 
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link 
-              to="/demo" 
-              className="text-purple-600 hover:text-purple-700 font-medium transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Demo
-            </Link>
-            <Link 
-              to="/pricing" 
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Pricing
-            </Link>
-            <Link 
-              to="/login" 
-              className="text-gray-900 hover:text-gray-700 font-medium transition-colors"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Sign In
-            </Link>
-            <Link 
-              to="/signup" 
-              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors text-center"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Get Started
-            </Link>
-          </div>
+        <div className="md:hidden absolute top-full left-0 w-full bg-pearl dark:bg-ebony border-b border-gold/10 p-6 flex flex-col gap-6 animate-in slide-in-from-top duration-300">
+          <Link
+            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
+            to="/"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Home
+          </Link>
+          <Link
+            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
+            to="/demo"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Demo
+          </Link>
+          <Link
+            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
+            to="/pricing"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Pricing
+          </Link>
+          <Link
+            className="text-sm font-semibold uppercase tracking-widest hover:text-gold transition-colors"
+            to="/login"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Sign In
+          </Link>
+          <Link
+            to="/signup"
+            className="bg-gold text-white px-6 py-3 rounded-lg text-sm font-bold uppercase tracking-widest text-center"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            Join Now
+          </Link>
         </div>
       )}
-    </nav>
-  );
+    </header>
+  )
 }
+
+export default Navigation

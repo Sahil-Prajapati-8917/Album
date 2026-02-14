@@ -1,89 +1,48 @@
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { Camera, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Youtube } from 'lucide-react'
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="space-y-4">
-            <Link to="/" className="flex items-center space-x-2">
-              <Camera className="h-8 w-8 text-blue-400" />
-              <span className="font-bold text-xl">Pixfolio</span>
-            </Link>
-            <p className="text-gray-400 text-sm">
-              Create stunning interactive Visual Books from your photos. Perfect for photographers, designers, and content creators.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <Facebook className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <Twitter className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <Instagram className="h-5 w-5" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-blue-400 transition-colors">
-                <Youtube className="h-5 w-5" />
-              </a>
+    <footer className="bg-white dark:bg-[#1a1813] pt-24 pb-12 px-6 md:px-20 border-t border-gold/10">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+          <div className="col-span-1 md:col-span-1">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="material-symbols-outlined text-gold">photo_camera</span>
+              <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</h2>
             </div>
+            <p className="text-gray-500 dark:text-gray-400 font-light leading-relaxed">
+              Fine art wedding photography for global celebrations of love. Available for travel worldwide.
+            </p>
           </div>
-
-          {/* Product */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Product</h3>
-            <ul className="space-y-2">
-              <li><Link to="/pricing" className="text-gray-400 hover:text-white transition-colors">Pricing</Link></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Features</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Templates</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">API</a></li>
+            <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-black dark:text-white">Navigation</h4>
+            <ul className="space-y-4 text-sm text-gray-500 dark:text-gray-400">
+              <li><Link className="hover:text-gold transition-colors" to="/">Home</Link></li>
+              <li><Link className="hover:text-gold transition-colors" to="/demo">Demo</Link></li>
+              <li><Link className="hover:text-gold transition-colors" to="/pricing">Pricing</Link></li>
+              <li><Link className="hover:text-gold transition-colors" to="/login">Sign In</Link></li>
             </ul>
           </div>
-
-          {/* Company */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li><Link to="/about" className="text-gray-400 hover:text-white transition-colors">About</Link></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Careers</a></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white transition-colors">Contact</Link></li>
+            <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-black dark:text-white">Connect</h4>
+            <ul className="space-y-4 text-sm text-gray-500 dark:text-gray-400">
+              <li><a className="hover:text-gold transition-colors" href="#">Instagram</a></li>
+              <li><a className="hover:text-gold transition-colors" href="#">Pinterest</a></li>
+              <li><a className="hover:text-gold transition-colors" href="#">Vimeo</a></li>
             </ul>
           </div>
-
-          {/* Support */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Support</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
-            </ul>
+            <h4 className="font-bold uppercase tracking-widest text-xs mb-6 text-black dark:text-white">Inquiries</h4>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">studio@pixfolio.com</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">+1 (555) 892-0123</p>
           </div>
         </div>
-
-        <div className="border-t border-gray-800 mt-8 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-6 text-sm text-gray-400">
-              <div className="flex items-center space-x-2">
-                <Mail className="h-4 w-4" />
-                <span>support@pixfolio.com</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <MapPin className="h-4 w-4" />
-                <span>San Francisco, CA</span>
-              </div>
-            </div>
-            <p className="text-gray-400 text-sm mt-4 md:mt-0">
-              © 2025 Pixfolio. All rights reserved.
-            </p>
+        <div className="border-t border-gold/10 pt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-xs text-gray-400 uppercase tracking-widest">© {new Date().getFullYear()} Pixfolio Studio. All Rights Reserved.</p>
+          <div className="flex gap-8 text-xs text-gray-400 uppercase tracking-widest">
+            <Link className="hover:text-gold transition-colors" to="/privacy">Privacy</Link>
+            <Link className="hover:text-gold transition-colors" to="/terms">Terms</Link>
           </div>
         </div>
       </div>

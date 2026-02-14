@@ -1,4 +1,5 @@
 import { Check } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 function FeatureItem({ text }) {
   return (
@@ -17,7 +18,7 @@ function PricingCard({ theme, name, description, price, period, features }) {
   return (
     <div
       className={`flex max-w-md flex-1 flex-col items-start justify-between gap-16 overflow-hidden rounded-2xl border border-slate-200 p-6 md:min-h-[520px] md:gap-12 ${theme === 'dark' ? 'bg-slate-950 text-white border-transparent' : 'bg-white border-slate-200'}`}
->
+    >
       <div className="inline-flex flex-col items-start justify-start gap-6">
         <div className="flex flex-col items-start justify-start gap-4">
           <p className="text-lg font-semibold">
@@ -50,64 +51,76 @@ function PricingCard({ theme, name, description, price, period, features }) {
 
 export default function PricingComponent() {
   return (
-    <section
-      className="flex flex-col items-center gap-12 py-12 2xl:py-16 max-w-screen-2xl m-auto w-full px-3 sm:px-8 lg:px-16 xl:px-32"
->
-      <div className="flex flex-col gap-3 text-center pt-[30px]">
-        <h2 className="text-4xl font-semibold text-slate-950">
-          Choose your plan
+    <section className="bg-pearl dark:bg-ebony py-24 px-6 md:px-20 font-display transition-colors duration-300">
+      <div className="max-w-7xl mx-auto text-center mb-20">
+        <h2 className="text-5xl md:text-6xl font-serif text-[#181611] dark:text-white mb-6">
+          Investment & <span className="italic">Plans</span>
         </h2>
-        <p className="text-sm text-slate-600">
-          Unlimited combinations for you to build better products faster.
+        <p className="text-sm uppercase tracking-[0.3em] text-gold font-semibold">
+          Tailored solutions for your digital legacy
         </p>
       </div>
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        <PricingCard
-          theme="light"
-          name="Free Plan (3 Credits)"
-          description="Includes 3 credits"
-          period="month"
-          price="₹0"
-          features={[
-            '3 credits per month',
-            '1 Visual Book = 1 credit',
-            'Create up to 3 Visual Books',
-            'Automatic QR code for each Visual Book',
-            'Cloud storage included',
-            'Standard support'
-          ]}
-        />
-        <PricingCard
-          theme="dark"
-          name="Monthly Plan"
-          description="Unlimited Visual Books"
-          period="month"
-          price="₹149"
-          features={[
-            'Unlimited Visual Books',
-            'QR code support (downloadable)',
-            'Cloud storage included',
-            'Faster processing',
-            'Access to new features',
-            'Priority support'
-          ]}
-        />
-        <PricingCard
-          theme="light"
-          name="Pay-per-Album"
-          description="Perfect for occasional use"
-          period="album"
-          price="₹19"
-          features={[
-            '₹19 for 1 Visual Book (Album)',
-            'No monthly commitment',
-            'Automatic QR code included',
-            'Cloud storage included',
-            'Standard processing'
-          ]}
-        />
-        
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        {/* Free Plan */}
+        <div className="bg-white dark:bg-[#2a261d] p-10 rounded-2xl border border-gold/10 hover:border-gold/30 transition-all group">
+          <h3 className="font-serif text-2xl mb-2 text-black dark:text-white">Trial Collection</h3>
+          <p className="text-gold text-xs uppercase tracking-widest font-bold mb-8">Complementary</p>
+          <div className="mb-10">
+            <span className="text-4xl font-serif text-black dark:text-white">₹0</span>
+            <span className="text-gray-400 text-sm ml-2 italic">/ entry</span>
+          </div>
+          <ul className="space-y-4 mb-10 text-sm text-gray-500 dark:text-gray-400 font-light">
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold text-lg">check</span> 3 Premium Credits</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold text-lg">check</span> standard Processing</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold text-lg">check</span> Cloud Archiving</li>
+          </ul>
+          <Link to="/signup" className="block w-full text-center border border-gold/30 py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold hover:text-white transition-all group-hover:border-gold">
+            Begin Journey
+          </Link>
+        </div>
+
+        {/* Pro Plan */}
+        <div className="bg-ebony dark:bg-gold p-10 rounded-2xl border border-gold shadow-2xl scale-105 relative z-10">
+          <div className="absolute top-0 right-10 -translate-y-1/2 bg-gold dark:bg-ebony text-white dark:text-gold px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
+            Recommended
+          </div>
+          <h3 className="font-serif text-2xl mb-2 text-white dark:text-ebony">Signature Elite</h3>
+          <p className="text-gold dark:text-ebony/60 text-xs uppercase tracking-widest font-bold mb-8">Unlimited Access</p>
+          <div className="mb-10">
+            <span className="text-4xl font-serif text-white dark:text-ebony">₹149</span>
+            <span className="text-gray-300 dark:text-ebony/60 text-sm ml-2 italic">/ month</span>
+          </div>
+          <ul className="space-y-4 mb-10 text-sm text-gray-300 dark:text-ebony/80 font-light">
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold dark:text-ebony text-lg">check</span> Unlimited Visual Books</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold dark:text-ebony text-lg">check</span> Priority Concierge</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold dark:text-ebony text-lg">check</span> High Fidelity Assets</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold dark:text-ebony text-lg">check</span> Custom Branding</li>
+          </ul>
+          <Link to="/signup" className="block w-full text-center bg-gold dark:bg-ebony text-white dark:text-gold py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:opacity-90 transition-all">
+            Elevate Now
+          </Link>
+        </div>
+
+        {/* Pay per use */}
+        <div className="bg-white dark:bg-[#2a261d] p-10 rounded-2xl border border-gold/10 hover:border-gold/30 transition-all group">
+          <h3 className="font-serif text-2xl mb-2 text-black dark:text-white">A La Carte</h3>
+          <p className="text-gold text-xs uppercase tracking-widest font-bold mb-8">Casual Creation</p>
+          <div className="mb-10">
+            <span className="text-4xl font-serif text-black dark:text-white">₹19</span>
+            <span className="text-gray-400 text-sm ml-2 italic">/ album</span>
+          </div>
+          <ul className="space-y-4 mb-10 text-sm text-gray-500 dark:text-gray-400 font-light">
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold text-lg">check</span> Pay-as-you-go</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold text-lg">check</span> No Commitment</li>
+            <li className="flex items-center gap-3"><span className="material-symbols-outlined text-gold text-lg">check</span> standard Features</li>
+          </ul>
+          <Link to="/signup" className="block w-full text-center border border-gold/30 py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold hover:text-white transition-all group-hover:border-gold">
+            Single Entry
+          </Link>
+        </div>
       </div>
     </section>
   );
-};
+}
+;

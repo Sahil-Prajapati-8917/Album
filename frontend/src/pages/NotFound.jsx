@@ -86,41 +86,20 @@ const NotFound = ({
   }, [lightboxOpen, filteredThumbnails.length])
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-100">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src={logo} alt="Logo" className="h-8 w-auto" />
-            </Link>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/"
-                className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Link>
-            </div>
-          </div>
-        </nav>
-      </header>
-
-      <main className="relative">
+    <div className="bg-pearl dark:bg-ebony font-display transition-colors duration-300">
+      <main className="relative pt-20">
         {/* Hero Section */}
-        <section className="relative overflow-hidden">
+        <section className="relative overflow-hidden min-h-[70vh] flex items-center">
           <motion.div
             style={{ y }}
-            className="relative h-96 md:h-[600px] flex items-center justify-center"
+            className="relative w-full flex items-center justify-center py-20"
           >
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white opacity-90" />
-            <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
+            <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-6xl md:text-8xl font-serif font-light text-gray-900 mb-6 tracking-tight"
+                className="text-[10rem] md:text-[15rem] font-serif font-bold text-gold/10 leading-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none select-none"
               >
                 404
               </motion.h1>
@@ -129,14 +108,14 @@ const NotFound = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="mb-8"
+                className="mb-12 relative z-10"
               >
-                <h2 className="text-2xl md:text-3xl font-serif font-light text-gray-800 mb-4">
-                  Page Not Found
+                <h2 className="text-4xl md:text-5xl font-serif text-[#181611] dark:text-white mb-6">
+                  Page Not <span className="italic">Found</span>
                 </h2>
-                <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                  The page you're looking for seems to have wandered off our digital gallery.
-                  Let's get you back to capturing beautiful moments.
+                <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
+                  The page you're searching for has vanished into the shadows.
+                  Let's guide you back to the light of our gallery.
                 </p>
               </motion.div>
 
@@ -144,21 +123,19 @@ const NotFound = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
+                className="flex flex-col sm:flex-row gap-6 justify-center relative z-10"
               >
                 <Link
                   to="/"
-                  className="inline-flex items-center px-8 py-3 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors"
+                  className="bg-gold text-white px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg"
                 >
-                  <Home className="h-5 w-5 mr-2" />
                   Return Home
                 </Link>
                 <Link
-                  to="/contact"
-                  className="inline-flex items-center px-8 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+                  to="/demo"
+                  className="border border-gold/30 text-gold px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold hover:text-white transition-all"
                 >
-                  <Mail className="h-5 w-5 mr-2" />
-                  Contact Us
+                  Explore Demo
                 </Link>
               </motion.div>
             </div>
