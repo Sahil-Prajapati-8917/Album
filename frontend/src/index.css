@@ -69,17 +69,17 @@ body {
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-  --font-sans: "Inter",
+  --font-sans: "Manrope",
   sans-serif;
   --font-mono: monospace;
-  --font-display: "Inter",
+  --font-display: "Manrope",
   sans-serif;
-  --font-serif: "Playfair Display",
+  --font-serif: "Times New Roman",
   serif;
 
   --color-gold: #c6a65d;
   --color-pearl: #f8f7f6;
-  --color-ebony: #1e1b14;
+  --color-ebony: #000000;
 }
 
 @layer utilities {
@@ -229,7 +229,7 @@ body {
 }
 
 .dark {
-  --background: #1e1b14;
+  --background: #000000;
   /* ebony */
   --foreground: #f8f7f6;
   --card: #2a261d;

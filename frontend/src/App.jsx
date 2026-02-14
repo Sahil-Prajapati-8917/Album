@@ -29,9 +29,12 @@ import VisualBookViewer from './components/VisualBookViewer'
 function AppContent() {
   return (
     <Routes>
+      {/* Standalone Route (No Layout) */}
+      <Route path="/" element={<Home />} />
+      <Route path="/viewer/:id" element={<VisualBookViewer />} />
+
       {/* Public Routes with Main Layout */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
         <Route path="/pricing" element={<Pricing />} />
         <Route path="/zoom-parallax-demo" element={<ZoomParallaxDemo />} />
         <Route path="/demo" element={<VisualBookDemo />} />
@@ -51,9 +54,6 @@ function AppContent() {
         <Route path="/recharge" element={<Recharge />} />
         <Route path="/profile" element={<Profile />} />
       </Route>
-
-      {/* Standalone Route (No Layout) */}
-      <Route path="/viewer/:id" element={<VisualBookViewer />} />
 
       {/* 404 Route */}
       <Route path="*" element={<NotFound />} />

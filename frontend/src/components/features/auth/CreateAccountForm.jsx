@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { User, Phone, Mail, Lock, Building, MapPin, Globe, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react'
 import { AuthCard } from '@/components/custom/AuthCard'
@@ -16,21 +16,8 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { registerUser } from '@/services/api'
-
-const LOCATION_DATA = {
-    "India": {
-        "Delhi": ["New Delhi", "North Delhi", "South Delhi", "West Delhi"],
-        "Maharashtra": ["Mumbai", "Pune", "Nagpur", "Nashik"],
-        "Karnataka": ["Bengaluru", "Mysuru", "Hubballi", "Mangaluru"],
-        "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Salem"],
-        "Uttar Pradesh": ["Lucknow", "Kanpur", "Agra", "Varanasi"]
-    },
-    "United States": {
-        "California": ["Los Angeles", "San Francisco", "San Diego"],
-        "New York": ["New York City", "Buffalo", "Rochester"],
-        "Texas": ["Houston", "Austin", "Dallas"]
-    }
-}
+import * as csc from 'country-state-city'
+const { Country, State, City } = csc
 
 const CreateAccountForm = () => {
     const navigate = useNavigate()
@@ -39,17 +26,25 @@ const CreateAccountForm = () => {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState('')
+
+    // Form data now stores Country/State objects or codes
     const [formData, setFormData] = useState({
         fullName: '',
         studioName: '',
         phoneNumber: '',
         email: '',
-        country: '',
-        state: '',
-        city: '',
+        country: '', // This will store ISO Code
+        state: '',   // This will store ISO Code
+        city: '',    // This will store city name
         pincode: '',
         password: '',
         confirmPassword: ''
+    })
+
+    // Separate derived state for names to display/submit
+    const [locationNames, setLocationNames] = useState({
+        countryName: '',
+        stateName: ''
     })
 
     const handleInputChange = (e) => {
@@ -68,8 +63,21 @@ const CreateAccountForm = () => {
             if (name === 'country') {
                 newData.state = ''
                 newData.city = ''
+                // Update country name for display/submit
+                const countryObj = Country.getCountryByCode(value)
+                setLocationNames(prevNames => ({
+                    ...prevNames,
+                    countryName: countryObj ? countryObj.name : '',
+                    stateName: ''
+                }))
             } else if (name === 'state') {
                 newData.city = ''
+                // Update state name for display/submit
+                const stateObj = State.getStateByCodeAndCountry(value, formData.country)
+                setLocationNames(prevNames => ({
+                    ...prevNames,
+                    stateName: stateObj ? stateObj.name : ''
+                }))
             }
 
             return newData
@@ -101,13 +109,16 @@ const CreateAccountForm = () => {
         setError('')
 
         try {
+            // Construct address using NAMES not codes
+            const addressString = `${formData.city}, ${locationNames.stateName || formData.state}, ${locationNames.countryName || formData.country} - ${formData.pincode}`.trim()
+
             const signupData = {
                 email: formData.email,
                 password: formData.password,
                 personalName: formData.fullName,
                 studioName: formData.studioName,
                 mobileNumber: formData.phoneNumber,
-                address: `${formData.city}, ${formData.state}, ${formData.country} - ${formData.pincode}`.trim()
+                address: addressString
             }
 
             const response = await registerUser(signupData)
@@ -124,10 +135,10 @@ const CreateAccountForm = () => {
         }
     }
 
-    // Get options for dropdowns
-    const countries = Object.keys(LOCATION_DATA)
-    const states = formData.country ? Object.keys(LOCATION_DATA[formData.country] || {}) : []
-    const cities = (formData.country && formData.state) ? (LOCATION_DATA[formData.country][formData.state] || []) : []
+    // Get options for dropdowns dynamically
+    const countries = Country.getAllCountries()
+    const states = formData.country ? State.getStatesOfCountry(formData.country) : []
+    const cities = (formData.country && formData.state) ? City.getCitiesOfState(formData.country, formData.state) : []
 
     const footerContent = (
         <div className="mt-6 text-center">
@@ -278,58 +289,79 @@ const CreateAccountForm = () => {
                             placeholder="Dreamscape Studio"
                         />
                     </div>
+
+                    {/* Country Selector */}
                     <div className="md:col-span-1 space-y-2">
                         <Label className="text-sm font-medium">Country</Label>
                         <Select onValueChange={(v) => handleSelectChange('country', v)} value={formData.country}>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select" />
+                                <SelectValue placeholder="Select Country" />
                             </SelectTrigger>
                             <SelectContent>
                                 {countries.map(c => (
-                                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                                    <SelectItem key={c.isoCode} value={c.isoCode}>
+                                        {c.name}
+                                    </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {/* State Selector */}
                     <div className="md:col-span-1 space-y-2">
-                        <Label className="text-sm font-medium">State</Label>
+                        <Label className="text-sm font-medium">State / Province</Label>
                         <Select
                             onValueChange={(v) => handleSelectChange('state', v)}
                             value={formData.state}
                             disabled={!formData.country}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select" />
+                                <SelectValue placeholder={!formData.country ? "Select Country First" : "Select State"} />
                             </SelectTrigger>
                             <SelectContent>
-                                {states.map(s => (
-                                    <SelectItem key={s} value={s}>{s}</SelectItem>
-                                ))}
+                                {states.length > 0 ? (
+                                    states.map(s => (
+                                        <SelectItem key={s.isoCode} value={s.isoCode}>
+                                            {s.name}
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    <div className="p-2 text-sm text-muted-foreground text-center">No states found</div>
+                                )}
                             </SelectContent>
                         </Select>
                     </div>
+
+                    {/* City Selector */}
                     <div className="md:col-span-1 space-y-2">
-                        <Label className="text-sm font-medium">City</Label>
+                        <Label className="text-sm font-medium">City / District</Label>
                         <Select
                             onValueChange={(v) => handleSelectChange('city', v)}
                             value={formData.city}
                             disabled={!formData.state}
                         >
                             <SelectTrigger>
-                                <SelectValue placeholder="Select" />
+                                <SelectValue placeholder={!formData.state ? "Select State First" : "Select City"} />
                             </SelectTrigger>
                             <SelectContent>
-                                {cities.map(ct => (
-                                    <SelectItem key={ct} value={ct}>{ct}</SelectItem>
-                                ))}
+                                {cities.length > 0 ? (
+                                    cities.map(ct => (
+                                        <SelectItem key={ct.name} value={ct.name}>
+                                            {ct.name}
+                                        </SelectItem>
+                                    ))
+                                ) : (
+                                    <div className="p-2 text-sm text-muted-foreground text-center">No cities found</div>
+                                )}
                             </SelectContent>
                         </Select>
                     </div>
+
                     <div className="md:col-span-1">
                         <FormInput
                             id="pincode"
                             name="pincode"
-                            label="Pincode"
+                            label="Pincode / Zip Code"
                             required
                             value={formData.pincode}
                             onChange={handleInputChange}
