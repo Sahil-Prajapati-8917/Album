@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Logo from './Logo'
 
 const Footer = () => {
   return (
@@ -8,7 +9,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <span className="material-symbols-outlined text-gold">photo_camera</span>
+              <Logo className="h-10 w-auto" />
               <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</h2>
             </div>
             <p className="text-gray-500 dark:text-gray-400 font-light leading-relaxed">

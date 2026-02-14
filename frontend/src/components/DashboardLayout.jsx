@@ -21,18 +21,16 @@ const DashboardLayout = ({ children }) => {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-          <SidebarTrigger className="-ml-1" />
+      <SidebarInset className="bg-pearl dark:bg-ebony/95 relative">
+        <header className="sticky top-0 z-20 flex h-16 shrink-0 items-center gap-2 border-b border-gold/10 px-6 bg-white/70 backdrop-blur-xl dark:bg-ebony/70 transition-all duration-300">
+          <SidebarTrigger className="-ml-1 text-gold hover:bg-gold/10" />
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="flex flex-1 flex-col gap-6 p-6 overflow-auto">
           <Outlet />
         </div>
       </SidebarInset>
     </SidebarProvider>
   )
 }
-
-
 
 export default DashboardLayout

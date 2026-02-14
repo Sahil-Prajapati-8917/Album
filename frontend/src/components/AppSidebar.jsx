@@ -5,7 +5,6 @@ import {
   Plus,
   FolderOpen,
   CreditCard,
-  Camera,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -19,6 +18,7 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { NavUser } from './NavUser'
+import Logo from './Logo'
 
 export function AppSidebar() {
   const [user, setUser] = useState(null)
@@ -49,14 +49,14 @@ export function AppSidebar() {
   if (!user) return null
 
   return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <Link to="/" className="flex items-center space-x-2 px-2 py-2">
-          <Camera className="h-8 w-8 text-blue-600" />
-          <span className="font-bold text-xl text-sidebar-foreground group-data-[collapsible=icon]:hidden">Pixfolio</span>
+    <Sidebar collapsible="icon" className="border-r border-gold/10">
+      <SidebarHeader className="border-b border-gold/10 py-4">
+        <Link to="/" className="flex items-center space-x-3 px-2 group">
+          <Logo className="h-10 w-auto group-hover:scale-110 transition-transform" />
+          <span className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white group-data-[collapsible=icon]:hidden">Pixfolio</span>
         </Link>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-white dark:bg-ebony">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -64,10 +64,14 @@ export function AppSidebar() {
                 const isActive = location.pathname === item.href
                 return (
                   <SidebarMenuItem key={item.name}>
-                    <SidebarMenuButton asChild isActive={isActive}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      className={isActive ? "bg-gold/10 text-gold hover:bg-gold/20" : "text-gray-500 hover:text-gold hover:bg-gold/5"}
+                    >
                       <Link to={item.href}>
-                        <item.icon />
-                        <span className="group-data-[collapsible=icon]:hidden">{item.name}</span>
+                        <item.icon className={isActive ? "text-gold" : ""} />
+                        <span className="group-data-[collapsible=icon]:hidden font-medium">{item.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -77,7 +81,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="border-t border-gold/10 bg-white dark:bg-ebony">
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>

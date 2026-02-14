@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Theme } from '@/components/ui/theme'
 import { loginUser } from '@/services/api'
+import Logo from '../components/Logo'
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,6 @@ const Login = () => {
   }
 
 
-
   return (
     <div className="min-h-screen bg-white dark:bg-ebony flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
@@ -58,9 +58,7 @@ const Login = () => {
           className="text-center"
         >
           <Link to="/" className="flex items-center justify-center space-x-3 mb-8 group">
-            <div className="text-gold group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-4xl">photo_camera</span>
-            </div>
+            <Logo className="h-12 w-auto group-hover:scale-110 transition-transform" />
             <span className="text-2xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</span>
           </Link>
           <h2 className="text-4xl font-serif text-[#181611] dark:text-white italic">

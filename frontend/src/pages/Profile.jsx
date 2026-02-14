@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 import {
   User,
   Camera,
@@ -12,6 +13,15 @@ import {
   Twitter,
   Save,
   CheckCircle,
+  Award,
+  ShieldCheck,
+  Mail,
+  Phone,
+  Building,
+  MapPin,
+  Lock,
+  Sparkles,
+  Globe
 } from 'lucide-react'
 import { getUserProfile, updateUserProfile, getUser } from '@/services/api'
 
@@ -24,6 +34,8 @@ const Profile = () => {
     mobileNumber: '',
     email: '',
     profilePicture: null,
+    bio: 'Capturing life\'s most precious moments through a premium lens. Specialized in high-end wedding and cinematic visual storytelling.',
+    specialization: 'Wedding & Cinematic Master',
     socialMedia: {
       instagram: '',
       facebook: '',
@@ -42,11 +54,10 @@ const Profile = () => {
         const userData = getUser()
         if (userData) {
           setUser(userData)
-          
-          // Get full profile data from API
           const response = await getUserProfile()
           if (response.success) {
-            setProfileData({
+            setProfileData(prev => ({
+              ...prev,
               personalName: response.data.personalName || '',
               studioName: response.data.studioName || '',
               address: response.data.address || '',
@@ -60,7 +71,7 @@ const Profile = () => {
                 whatsapp: '',
                 twitter: ''
               }
-            })
+            }))
           }
         }
       } catch (error) {
@@ -69,7 +80,6 @@ const Profile = () => {
         setIsLoading(false)
       }
     }
-
     loadProfileData()
   }, [])
 
@@ -113,7 +123,6 @@ const Profile = () => {
       setTimeout(() => setSaveSuccess(false), 3000)
     } catch (error) {
       console.error('Error saving profile:', error)
-      // You could show an error message here
     } finally {
       setIsSaving(false)
     }
@@ -130,195 +139,189 @@ const Profile = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
       </div>
     )
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Profile Settings</h1>
-        <p className="text-gray-600">Manage your account information and social media links</p>
+    <div className="max-w-5xl mx-auto space-y-12 pb-20">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-serif text-[#181611] dark:text-white italic">Curator Profile</h1>
+          <p className="mt-2 text-sm text-gray-500 font-light tracking-wide uppercase">Defining your artistic identity</p>
+        </div>
+        <div className="flex items-center text-gold bg-gold/5 px-4 py-2 rounded-full border border-gold/10">
+          <Award className="h-4 w-4 mr-2" />
+          <span className="text-[10px] font-bold uppercase tracking-widest">Verified Artist</span>
+        </div>
       </div>
 
-      <div className="space-y-6">
-        {/* Personal Information */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
-        >
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-            <User className="h-5 w-5 mr-2" />
-            Personal Information
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Profile Picture */}
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Profile Picture
-              </label>
-              <div className="flex items-center space-x-4">
-                <div className="relative">
-                  <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center overflow-hidden">
-                    {profileData.profilePicture ? (
-                      <img
-                        src={profileData.profilePicture}
-                        alt="Profile"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <User className="h-8 w-8 text-gray-400" />
-                    )}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        {/* Profile Sidebar */}
+        <div className="lg:col-span-1 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white dark:bg-[#2a261d] rounded-3xl border border-gold/10 p-8 text-center"
+          >
+            <div className="relative inline-block group">
+              <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gold/20 p-1 mb-4 shadow-xl">
+                {profileData.profilePicture ? (
+                  <img src={profileData.profilePicture} alt="Profile" className="w-full h-full object-cover rounded-full" />
+                ) : (
+                  <div className="w-full h-full bg-pearl dark:bg-ebony flex items-center justify-center rounded-full text-gold">
+                    <User className="h-12 w-12" />
                   </div>
-                  <label
-                    htmlFor="profile-picture"
-                    className="absolute -bottom-2 -right-2 bg-blue-600 text-white p-1 rounded-full cursor-pointer hover:bg-blue-700"
-                  >
-                    <Camera className="h-4 w-4" />
-                  </label>
-                  <input
-                    type="file"
-                    id="profile-picture"
-                    accept="image/*"
-                    onChange={handleFileUpload}
-                    className="hidden"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">
-                    Upload a profile picture. Recommended size: 400x400px
-                  </p>
-                </div>
+                )}
+              </div>
+              <label className="absolute bottom-4 right-0 w-10 h-10 bg-white dark:bg-[#181611] rounded-full border border-gold/20 shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
+                <Camera className="h-4 w-4 text-gold" />
+                <input type="file" id="profile-picture" accept="image/*" onChange={handleFileUpload} className="hidden" />
+              </label>
+            </div>
+
+            <h3 className="text-2xl font-serif text-[#181611] dark:text-white mt-4">{profileData.personalName || 'Visual Artist'}</h3>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-gold mt-1">{profileData.specialization}</p>
+
+            <div className="mt-8 flex justify-center space-x-3">
+              {socialMediaPlatforms.slice(0, 3).map(platform => (
+                <Button key={platform.key} variant="ghost" size="icon" className="h-10 w-10 rounded-xl text-gray-400 hover:text-gold hover:bg-gold/5 border border-gold/5">
+                  <platform.icon className="h-4 w-4" />
+                </Button>
+              ))}
+            </div>
+          </motion.div>
+
+          <div className="bg-gold/5 rounded-3xl p-8 border border-gold/10">
+            <div className="flex items-center mb-6">
+              <ShieldCheck className="h-4 w-4 text-gold mr-3" />
+              <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">Security Snapshot</h4>
+            </div>
+            <p className="text-xs text-gray-500 font-light italic mb-6">Your data is secured with industry-standard encryption protocols.</p>
+            <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/5 h-12 text-[10px] font-bold uppercase tracking-widest">
+              <Lock className="h-3.5 w-3.5 mr-2" />
+              Update Passkey
+            </Button>
+          </div>
+        </div>
+
+        {/* Form Content */}
+        <div className="lg:col-span-2 space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white dark:bg-[#2a261d] rounded-3xl border border-gold/10 p-10"
+          >
+            <div className="mb-10">
+              <h2 className="text-2xl font-serif italic text-gray-900 dark:text-white">Artistic Details</h2>
+              <div className="w-12 h-px bg-gold mt-2"></div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Personal Name</label>
+                <Input
+                  name="personalName"
+                  value={profileData.personalName}
+                  onChange={handleInputChange}
+                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Studio Name</label>
+                <Input
+                  name="studioName"
+                  value={profileData.studioName}
+                  onChange={handleInputChange}
+                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Email Address</label>
+                <Input
+                  name="email"
+                  value={profileData.email}
+                  onChange={handleInputChange}
+                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Mobile Number</label>
+                <Input
+                  name="mobileNumber"
+                  value={profileData.mobileNumber}
+                  onChange={handleInputChange}
+                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
+                />
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Studio Address</label>
+                <Textarea
+                  name="address"
+                  value={profileData.address}
+                  onChange={handleInputChange}
+                  className="min-h-[80px] border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
+                />
+              </div>
+              <div className="md:col-span-2 space-y-2">
+                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Bio / Vision</label>
+                <Textarea
+                  name="bio"
+                  value={profileData.bio}
+                  onChange={handleInputChange}
+                  className="min-h-[120px] border-gold/10 focus:border-gold bg-pearl/30 rounded-xl py-4"
+                />
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Personal Name
-              </label>
-              <Input
-                type="text"
-                name="personalName"
-                value={profileData.personalName}
-                onChange={handleInputChange}
-                placeholder="Enter your name"
-              />
+            <div className="mt-12 flex justify-end">
+              <Button
+                onClick={handleSave}
+                disabled={isSaving}
+                className="bg-gold hover:bg-gold/90 text-white h-14 px-12 rounded-xl font-serif italic text-lg shadow-xl shadow-gold/20"
+              >
+                {isSaving ? (
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                ) : saveSuccess ? (
+                  <CheckCircle className="h-5 w-5 mr-3" />
+                ) : (
+                  <Save className="h-5 w-5 mr-3" />
+                )}
+                {isSaving ? 'Preserving...' : saveSuccess ? 'Vision Saved' : 'Save Legacy Details'}
+              </Button>
+            </div>
+          </motion.div>
+
+          {/* Social Media Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-white dark:bg-[#2a261d] rounded-3xl border border-gold/10 p-10"
+          >
+            <div className="mb-10">
+              <h2 className="text-xl font-serif italic text-gray-900 dark:text-white">Social Connections</h2>
+              <div className="w-12 h-px bg-gold mt-2"></div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Studio Name
-              </label>
-              <Input
-                type="text"
-                name="studioName"
-                value={profileData.studioName}
-                onChange={handleInputChange}
-                placeholder="Enter studio name"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email
-              </label>
-              <Input
-                type="email"
-                name="email"
-                value={profileData.email}
-                onChange={handleInputChange}
-                placeholder="Enter email"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Mobile Number
-              </label>
-              <Input
-                type="tel"
-                name="mobileNumber"
-                value={profileData.mobileNumber}
-                onChange={handleInputChange}
-                placeholder="Enter mobile number"
-              />
-            </div>
-
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Address
-              </label>
-              <textarea
-                name="address"
-                value={profileData.address}
-                onChange={handleInputChange}
-                rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="Enter your address"
-              />
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Social Media Links */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
-        >
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Social Media Links</h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {socialMediaPlatforms.map((platform) => (
-              <div key={platform.key} className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <platform.icon className="h-4 w-4 text-gray-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {socialMediaPlatforms.map((platform) => (
+                <div key={platform.key} className="space-y-2">
+                  <label className="flex items-center text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">
+                    <platform.icon className="h-3.5 w-3.5 mr-2 text-gold/60" />
                     {platform.name}
                   </label>
                   <Input
-                    type="text"
                     value={profileData.socialMedia[platform.key]}
                     onChange={(e) => handleSocialMediaChange(platform.key, e.target.value)}
                     placeholder={platform.placeholder}
-                    className="text-sm"
+                    className="h-10 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl text-xs"
                   />
                 </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Save Button */}
-        <div className="flex justify-end">
-          <Button
-            onClick={handleSave}
-            disabled={isSaving}
-            className="inline-flex items-center"
-          >
-            {isSaving ? (
-              <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Saving...
-              </>
-            ) : saveSuccess ? (
-              <>
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Saved Successfully!
-              </>
-            ) : (
-              <>
-                <Save className="h-4 w-4 mr-2" />
-                Save Changes
-              </>
-            )}
-          </Button>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </div>
     </div>

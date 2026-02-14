@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Logo from './Logo'
 
 const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -9,9 +10,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="text-gold group-hover:scale-110 transition-transform">
-              <span className="material-symbols-outlined text-3xl">photo_camera</span>
-            </div>
+            <Logo className="h-10 w-auto group-hover:scale-110 transition-transform" />
             <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</h2>
           </Link>
         </div>

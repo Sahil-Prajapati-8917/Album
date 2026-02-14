@@ -8,14 +8,11 @@ import {
   Camera,
   Calendar,
   Clock,
-  Users,
   TrendingUp,
   Plus,
   FolderOpen,
   CreditCard,
   User,
-  BarChart3,
-  Settings
 } from 'lucide-react'
 
 const Dashboard = () => {
@@ -37,28 +34,24 @@ const Dashboard = () => {
         value: 12,
         icon: <FileImage className="h-6 w-6" />,
         change: "+2 this week",
-        color: "text-blue-600"
       },
       {
         label: "Total Views",
         value: 15420,
         icon: <Eye className="h-6 w-6" />,
         change: "+15% from last month",
-        color: "text-green-600"
       },
       {
         label: "Active Albums",
         value: 8,
         icon: <Share2 className="h-6 w-6" />,
         change: "3 pending approval",
-        color: "text-purple-600"
       },
       {
         label: "Storage Used",
         value: "2.4 GB",
         icon: <Camera className="h-6 w-6" />,
         change: "80% of limit",
-        color: "text-orange-600"
       }
     ]
 
@@ -110,42 +103,48 @@ const Dashboard = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
       </div>
     )
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto space-y-10">
       {/* Welcome Section */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          Welcome back, {user?.name?.split(' ')[0] || 'User'}! 👋
-        </h1>
-        <p className="text-gray-600">
-          Here's what's happening with your Visual Books today.
-        </p>
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-serif text-[#181611] dark:text-white italic">
+            Welcome back, {user?.name?.split(' ')[0] || 'User'}
+          </h1>
+          <p className="mt-2 text-sm text-gray-500 font-light tracking-wide uppercase">
+            Curating your digital legacy
+          </p>
+        </div>
+        <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-widest text-gold border-b-2 border-gold pb-1">
+          <Calendar className="h-4 w-4" />
+          <span>{new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
+        </div>
       </div>
 
       {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: index * 0.1 }}
-            className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+            className="bg-white dark:bg-[#2a261d] p-7 rounded-2xl shadow-sm border border-gold/10 hover:border-gold/30 hover:shadow-xl transition-all group"
           >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                <p className={`text-xs mt-1 ${stat.color}`}>{stat.change}</p>
-              </div>
-              <div className={`p-3 bg-gray-50 rounded-lg ${stat.color}`}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-gold/5 rounded-xl text-gold group-hover:scale-110 transition-transform">
                 {stat.icon}
               </div>
+              <span className="text-[10px] font-bold uppercase tracking-tighter text-gray-400">{stat.change}</span>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-gray-400 mb-1">{stat.label}</p>
+              <p className="text-3xl font-serif text-[#181611] dark:text-white">{stat.value}</p>
             </div>
           </motion.div>
         ))}
@@ -156,78 +155,82 @@ const Dashboard = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8"
+        className="bg-white dark:bg-[#2a261d] rounded-2xl shadow-sm border border-gold/10 p-8"
       >
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Quick Actions</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="mb-8">
+          <h2 className="text-xl font-serif italic text-gray-900 dark:text-white">Quick Actions</h2>
+          <div className="w-12 h-px bg-gold mt-2"></div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           <Link
             to="/dashboard/create"
-            className="flex flex-col items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors group"
+            className="flex flex-col items-center p-6 bg-pearl dark:bg-ebony/50 rounded-xl hover:bg-gold/5 transition-all group border border-transparent hover:border-gold/20"
           >
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-200 transition-colors">
-              <Plus className="h-6 w-6 text-blue-600" />
+            <div className="w-14 h-14 bg-white dark:bg-[#2a261d] rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:text-gold transition-all border border-gold/5">
+              <Plus className="h-6 w-6" />
             </div>
-            <span className="text-sm font-medium text-gray-900 text-center">Create New Album</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-gold transition-colors text-center">Create New</span>
           </Link>
 
           <Link
             to="/dashboard/pixfolio"
-            className="flex flex-col items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors group"
+            className="flex flex-col items-center p-6 bg-pearl dark:bg-ebony/50 rounded-xl hover:bg-gold/5 transition-all group border border-transparent hover:border-gold/20"
           >
-            <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-200 transition-colors">
-              <FolderOpen className="h-6 w-6 text-green-600" />
+            <div className="w-14 h-14 bg-white dark:bg-[#2a261d] rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:text-gold transition-all border border-gold/5">
+              <FolderOpen className="h-6 w-6" />
             </div>
-            <span className="text-sm font-medium text-gray-900 text-center">View All Albums</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-gold transition-colors text-center">All Pixfolios</span>
           </Link>
 
           <Link
             to="/dashboard/recharge"
-            className="flex flex-col items-center p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors group"
+            className="flex flex-col items-center p-6 bg-pearl dark:bg-ebony/50 rounded-xl hover:bg-gold/5 transition-all group border border-transparent hover:border-gold/20"
           >
-            <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-purple-200 transition-colors">
-              <CreditCard className="h-6 w-6 text-purple-600" />
+            <div className="w-14 h-14 bg-white dark:bg-[#2a261d] rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:text-gold transition-all border border-gold/5">
+              <CreditCard className="h-6 w-6" />
             </div>
-            <span className="text-sm font-medium text-gray-900 text-center">Recharge</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-gold transition-colors text-center">Recharge</span>
           </Link>
 
           <Link
             to="/dashboard/profile"
-            className="flex flex-col items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors group"
+            className="flex flex-col items-center p-6 bg-pearl dark:bg-ebony/50 rounded-xl hover:bg-gold/5 transition-all group border border-transparent hover:border-gold/20"
           >
-            <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mb-3 group-hover:bg-orange-200 transition-colors">
-              <User className="h-6 w-6 text-orange-600" />
+            <div className="w-14 h-14 bg-white dark:bg-[#2a261d] rounded-xl flex items-center justify-center mb-4 shadow-sm group-hover:scale-110 group-hover:text-gold transition-all border border-gold/5">
+              <User className="h-6 w-6" />
             </div>
-            <span className="text-sm font-medium text-gray-900 text-center">Profile Settings</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-gold transition-colors text-center">Profile</span>
           </Link>
         </div>
       </motion.div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">Recent Activity</h2>
-          <p className="text-sm text-gray-600">Latest updates from your Visual Books</p>
+      <div className="bg-white dark:bg-[#2a261d] rounded-2xl shadow-sm border border-gold/10 overflow-hidden">
+        <div className="px-8 py-6 border-b border-gold/10 flex justify-between items-center bg-pearl dark:bg-ebony/20">
+          <div>
+            <h2 className="text-xl font-serif italic text-gray-900 dark:text-white">Recent Activity</h2>
+            <p className="text-[10px] uppercase font-bold tracking-widest text-gray-400 mt-1">Timeline of your artistry</p>
+          </div>
+          <TrendingUp className="h-5 w-5 text-gold" />
         </div>
-        <div className="divide-y divide-gray-200">
+        <div className="divide-y divide-gold/5">
           {recentActivity.map((activity, index) => (
             <motion.div
               key={activity.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="px-6 py-4 hover:bg-gray-50 transition-colors"
+              className="px-8 py-5 hover:bg-gold/5 transition-all group"
             >
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <div className="text-blue-600">
-                      {activity.icon}
-                    </div>
+                  <div className="w-10 h-10 bg-gold/5 rounded-full flex items-center justify-center text-gold group-hover:scale-110 transition-transform">
+                    {activity.icon}
                   </div>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900">{activity.message}</p>
-                  <div className="flex items-center text-xs text-gray-500 mt-1">
+                  <p className="text-sm font-medium text-[#181611] dark:text-white leading-relaxed">{activity.message}</p>
+                  <div className="flex items-center text-[10px] font-bold uppercase tracking-widest text-gray-400 mt-1">
                     <Clock className="h-3 w-3 mr-1" />
                     {activity.timestamp}
                   </div>
@@ -237,9 +240,9 @@ const Dashboard = () => {
           ))}
         </div>
         {recentActivity.length === 0 && (
-          <div className="px-6 py-8 text-center">
-            <Calendar className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500">No recent activity to show</p>
+          <div className="px-8 py-16 text-center">
+            <Calendar className="h-12 w-12 text-gray-200 mx-auto mb-4" />
+            <p className="text-sm text-gray-400 font-light uppercase tracking-widest">Quiet in the studio today</p>
           </div>
         )}
       </div>

@@ -28,6 +28,7 @@ function AppContent() {
   const isDemoPage = location.pathname === '/demo'
   const isPricingPage = location.pathname === '/pricing'
   const isSignupPage = location.pathname === '/signup'
+  const isLoginPage = location.pathname === '/login'
 
   return (
     <div className="min-h-screen bg-background">
@@ -53,7 +54,7 @@ function AppContent() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && !isPricingPage && !isSignupPage && (
+      {!isDashboardPage && !isVisualBookViewer && !isDemoPage && !isPricingPage && !isSignupPage && !isLoginPage && (
         <Footer />
       )}
     </div>

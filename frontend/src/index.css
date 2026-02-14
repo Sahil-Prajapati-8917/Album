@@ -69,8 +69,9 @@ body {
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: "Inter",
+  sans-serif;
+  --font-mono: monospace;
   --font-display: "Inter",
   sans-serif;
   --font-serif: "Playfair Display",

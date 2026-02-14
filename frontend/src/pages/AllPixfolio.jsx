@@ -45,7 +45,9 @@ import {
   MoreVertical,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Sparkles,
+  Link as LinkIcon
 } from 'lucide-react'
 
 const AllPixfolio = () => {
@@ -72,11 +74,8 @@ const AllPixfolio = () => {
 
   const loadAlbums = () => {
     setIsLoading(true)
-    // Load from localStorage, with some mock data if empty
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
-
     if (storedAlbums.length === 0) {
-      // Add some mock albums
       const mockAlbums = [
         {
           id: 1,
@@ -119,20 +118,6 @@ const AllPixfolio = () => {
           link: "https://pixfolio.com/album/3",
           status: "draft",
           createdDate: "2025-03-05"
-        },
-        {
-          id: 4,
-          albumName: "Engagement Celebration",
-          totalSheets: 16,
-          clientName: "Emma Davis",
-          functionDate: "2025-04-05",
-          functionType: "engagement",
-          rating: 4.8,
-          viewersCount: 234,
-          qrCode: "qr-4",
-          link: "https://pixfolio.com/album/4",
-          status: "published",
-          createdDate: "2025-03-28"
         }
       ]
       localStorage.setItem('albums', JSON.stringify(mockAlbums))
@@ -145,7 +130,6 @@ const AllPixfolio = () => {
 
   const filterAlbums = () => {
     let filtered = albums
-
     if (searchTerm) {
       filtered = filtered.filter(album =>
         album.albumName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -153,11 +137,9 @@ const AllPixfolio = () => {
         album.functionType.toLowerCase().includes(searchTerm.toLowerCase())
       )
     }
-
     if (statusFilter !== 'all') {
       filtered = filtered.filter(album => album.status === statusFilter)
     }
-
     setFilteredAlbums(filtered)
   }
 
@@ -188,42 +170,32 @@ const AllPixfolio = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'published':
-        return <CheckCircle className="h-4 w-4 text-green-500" />
-      case 'draft':
-        return <Clock className="h-4 w-4 text-yellow-500" />
-      case 'pending':
-        return <AlertCircle className="h-4 w-4 text-orange-500" />
-      default:
-        return <Clock className="h-4 w-4 text-gray-500" />
+      case 'published': return <CheckCircle className="h-4 w-4" />
+      case 'draft': return <Clock className="h-4 w-4" />
+      case 'pending': return <AlertCircle className="h-4 w-4" />
+      default: return <Clock className="h-4 w-4" />
     }
   }
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'published':
-        return 'bg-green-100 text-green-800'
-      case 'draft':
-        return 'bg-yellow-100 text-yellow-800'
-      case 'pending':
-        return 'bg-orange-100 text-orange-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
+      case 'published': return 'bg-gold/10 text-gold'
+      case 'draft': return 'bg-pearl-dark/20 text-gray-500'
+      case 'pending': return 'bg-orange-100 text-orange-800'
+      default: return 'bg-gray-100 text-gray-800'
     }
   }
 
   const renderStars = (rating) => {
     return (
-      <div className="flex items-center">
+      <div className="flex items-center space-x-0.5">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
-            className={`h-4 w-4 ${
-              star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-            }`}
+            className={`h-3 w-3 ${star <= rating ? 'text-gold fill-current' : 'text-gray-200 dark:text-gray-700'}`}
           />
         ))}
-        <span className="ml-1 text-sm text-gray-600">{rating > 0 ? rating.toFixed(1) : 'N/A'}</span>
+        <span className="ml-1.5 text-[10px] font-bold text-gray-400">{rating > 0 ? rating.toFixed(1) : '—'}</span>
       </div>
     )
   }
@@ -231,116 +203,101 @@ const AllPixfolio = () => {
   const columns = [
     {
       accessorKey: "albumName",
-      header: "Album Name",
+      header: "Artistic Vision",
       cell: ({ row }) => (
-        <div className="text-sm font-medium text-gray-900">{row.getValue("albumName")}</div>
-      ),
-    },
-    {
-      accessorKey: "totalSheets",
-      header: "Total Sheets",
-      cell: ({ row }) => (
-        <div className="text-sm text-gray-900">{row.getValue("totalSheets")}</div>
-      ),
-    },
-    {
-      accessorKey: "clientName",
-      header: "Client Name",
-      cell: ({ row }) => (
-        <div className="text-sm text-gray-900">{row.getValue("clientName")}</div>
-      ),
-    },
-    {
-      accessorKey: "functionDate",
-      header: "Function Date",
-      cell: ({ row }) => (
-        <div className="text-sm text-gray-900">
-          {new Date(row.getValue("functionDate")).toLocaleDateString()}
+        <div className="flex flex-col">
+          <span className="text-sm font-serif italic text-[#181611] dark:text-white">{row.getValue("albumName")}</span>
+          <span className="text-[10px] font-bold uppercase tracking-widest text-gray-400 mt-0.5">{row.original.functionType}</span>
         </div>
       ),
     },
     {
-      accessorKey: "functionType",
-      header: "Type",
+      accessorKey: "clientName",
+      header: "Patron",
       cell: ({ row }) => (
-        <div className="text-sm text-gray-900 capitalize">{row.getValue("functionType")}</div>
+        <div className="text-sm text-gray-600 dark:text-gray-400 font-light">{row.getValue("clientName")}</div>
       ),
     },
     {
-      accessorKey: "rating",
-      header: "Rating",
-      cell: ({ row }) => renderStars(row.getValue("rating")),
+      accessorKey: "totalSheets",
+      header: "Pages",
+      cell: ({ row }) => (
+        <div className="text-xs font-bold text-gray-500">{row.getValue("totalSheets")}</div>
+      ),
+    },
+    {
+      accessorKey: "status",
+      header: "Curation",
+      cell: ({ row }) => (
+        <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest ${getStatusColor(row.getValue("status"))}`}>
+          {getStatusIcon(row.getValue("status"))}
+          <span className="ml-1.5">{row.getValue("status")}</span>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "functionDate",
+      header: "Exhibition Date",
+      cell: ({ row }) => (
+        <div className="text-xs text-gray-500">
+          {new Date(row.getValue("functionDate")).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+        </div>
+      ),
     },
     {
       accessorKey: "viewersCount",
-      header: "Viewers",
+      header: "Audience",
       cell: ({ row }) => (
-        <div className="flex items-center text-sm text-gray-900">
-          <Eye className="h-4 w-4 mr-1 text-gray-400" />
+        <div className="flex items-center text-xs text-gray-500">
+          <Eye className="h-3.5 w-3.5 mr-1.5 text-gold/60" />
           {row.getValue("viewersCount")}
         </div>
       ),
     },
     {
       id: "actions",
-      enableHiding: false,
+      header: "Legacy Tools",
       cell: ({ row }) => {
         const album = row.original
-
         return (
-          <div className="flex items-center space-x-2">
-            <button
+          <div className="flex items-center space-x-1">
+            <Button
               onClick={() => copyToClipboard(album.link, album.id)}
-              className="text-blue-600 hover:text-blue-900 p-1"
-              title="Copy Link"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-gold hover:bg-gold/10"
+              title="Copy Legacy Link"
             >
-              {copySuccess === album.id ? (
-                <CheckCircle className="h-4 w-4" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
-            </button>
-            <button
-              className="text-green-600 hover:text-green-900 p-1"
-              title="Download QR Code"
+              {copySuccess === album.id ? <CheckCircle className="h-4 w-4" /> : <LinkIcon className="h-4 w-4" />}
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-gold hover:bg-gold/10"
+              title="QR Code"
             >
               <QrCode className="h-4 w-4" />
-            </button>
-            <button
-              className="text-purple-600 hover:text-purple-900 p-1"
-              title="Edit"
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-gold hover:bg-gold/10"
+              title="Enhance"
             >
               <Edit className="h-4 w-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               onClick={() => handleDeleteAlbum(album)}
-              className="text-red-600 hover:text-red-900 p-1"
-              title="Delete"
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8 text-red-400 hover:bg-red-50"
+              title="Retire"
             >
               <Trash2 className="h-4 w-4" />
-            </button>
+            </Button>
           </div>
         )
       },
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ row }) => (
-        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(row.getValue("status"))}`}>
-          {getStatusIcon(row.getValue("status"))}
-          <span className="ml-1 capitalize">{row.getValue("status")}</span>
-        </span>
-      ),
-    },
-    {
-      accessorKey: "createdDate",
-      header: "Created",
-      cell: ({ row }) => (
-        <div className="text-sm text-gray-500">
-          {new Date(row.getValue("createdDate")).toLocaleDateString()}
-        </div>
-      ),
     },
   ]
 
@@ -366,81 +323,67 @@ const AllPixfolio = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
       </div>
     )
   }
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">All Pixfolio Albums</h1>
-        <p className="text-gray-600">Manage and track all your Visual Book albums</p>
+    <div className="max-w-7xl mx-auto space-y-10">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <h1 className="text-4xl md:text-5xl font-serif text-[#181611] dark:text-white italic">The Pixfolio Archive</h1>
+          <p className="mt-2 text-sm text-gray-500 font-light tracking-wide uppercase">Managing your digital gallery</p>
+        </div>
+        <Sparkles className="h-8 w-8 text-gold/20 hidden md:block" />
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-        <div className="flex flex-col sm:flex-row gap-4">
+      <div className="bg-white dark:bg-[#2a261d] rounded-2xl shadow-sm border border-gold/10 p-8">
+        <div className="flex flex-col lg:flex-row gap-6">
           <div className="flex-1">
-            <div className="relative">
-              <Search className="h-4 w-4 absolute left-3 top-3 text-gray-400" />
+            <div className="relative group">
+              <Search className="h-4 w-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-gold transition-colors" />
               <Input
                 type="text"
-                placeholder="Search albums..."
+                placeholder="Search the archive..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2"
+                className="pl-12 h-12 border-gold/10 focus:border-gold focus:ring-gold/5 bg-pearl/30 rounded-xl"
               />
             </div>
           </div>
-          <div className="sm:w-48">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full justify-between">
-                  {statusFilter === 'all' ? 'All Status' : statusFilter.charAt(0).toUpperCase() + statusFilter.slice(1)}
-                  <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-full">
-                <DropdownMenuLabel>Filter by Status</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => setStatusFilter('all')}>
-                  All Status
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('published')}>
-                  Published
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('draft')}>
-                  Draft
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setStatusFilter('pending')}>
-                  Pending
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <div className="flex gap-4">
+            <Select onValueChange={setStatusFilter} value={statusFilter}>
+              <SelectTrigger className="w-full lg:w-48 h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl font-bold text-[10px] uppercase tracking-widest text-gray-500">
+                <div className="flex items-center">
+                  <Filter className="h-3 w-3 mr-2 text-gold/60" />
+                  <SelectValue placeholder="Status" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Curation</SelectItem>
+                <SelectItem value="published">Published</SelectItem>
+                <SelectItem value="draft">Drafts</SelectItem>
+                <SelectItem value="pending">Pending</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>
 
       {/* Albums Table */}
-      <div className="w-full">
-        <div className="rounded-md border">
+      <div className="bg-white dark:bg-[#2a261d] rounded-2xl shadow-sm border border-gold/10 overflow-hidden">
+        <div className="w-full overflow-x-auto">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-pearl/50 dark:bg-ebony/20">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    )
-                  })}
+                <TableRow key={headerGroup.id} className="border-b border-gold/10 hover:bg-transparent">
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id} className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 py-6 px-6 h-auto">
+                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableHead>
+                  ))}
                 </TableRow>
               ))}
             </TableHeader>
@@ -449,52 +392,52 @@ const AllPixfolio = () => {
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
+                    className="border-b border-gold/5 hover:bg-gold/5 transition-colors group"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                      <TableCell key={cell.id} className="py-6 px-6">
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
+                  <TableCell colSpan={columns.length} className="h-64 text-center">
+                    <div className="flex flex-col items-center justify-center opacity-30">
+                      <FolderOpen className="h-12 w-12 mb-4" />
+                      <p className="text-xs font-bold uppercase tracking-widest">No entries found in the archive</p>
+                    </div>
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="text-muted-foreground flex-1 text-sm">
-            {table.getFilteredSelectedRowModel().rows.length} of{" "}
-            {table.getFilteredRowModel().rows.length} row(s) selected.
+
+        {/* Pagination */}
+        <div className="px-8 py-6 border-t border-gold/5 flex items-center justify-between bg-pearl/30 dark:bg-ebony/10">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount() || 1}
           </div>
-          <div className="space-x-2">
+          <div className="flex space-x-2">
             <Button
               variant="outline"
               size="sm"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
+              className="h-8 border-gold/10 text-gold hover:bg-gold/5 px-4 font-serif italic text-xs"
             >
-              Previous
+              Previous Act
             </Button>
             <Button
               variant="outline"
               size="sm"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
+              className="h-8 border-gold/10 text-gold hover:bg-gold/5 px-4 font-serif italic text-xs"
             >
-              Next
+              Next Act
             </Button>
           </div>
         </div>
@@ -502,30 +445,35 @@ const AllPixfolio = () => {
 
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-            <div className="mt-3 text-center">
-              <Trash2 className="h-12 w-12 text-red-500 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Delete Album</h3>
-              <p className="text-sm text-gray-500 mb-6">
-                Are you sure you want to delete "{albumToDelete?.albumName}"? This action cannot be undone.
-              </p>
-              <div className="flex justify-center space-x-4">
-                <button
-                  onClick={() => setShowDeleteModal(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={confirmDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
-                >
-                  Delete
-                </button>
-              </div>
+        <div className="fixed inset-0 bg-ebony/60 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="relative bg-white dark:bg-[#2a261d] p-10 border border-gold/20 w-full max-w-md shadow-2xl rounded-3xl text-center"
+          >
+            <div className="w-16 h-16 bg-red-50 dark:bg-red-900/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Trash2 className="h-8 w-8 text-red-500" />
             </div>
-          </div>
+            <h3 className="text-2xl font-serif italic text-gray-900 dark:text-white mb-2">Retire Legacy?</h3>
+            <p className="text-sm text-gray-500 mb-8 font-light italic">
+              Are you sure you want to retire "{albumToDelete?.albumName}"? This vision will be lost to time.
+            </p>
+            <div className="flex space-x-4">
+              <Button
+                onClick={() => setShowDeleteModal(false)}
+                variant="ghost"
+                className="flex-1 h-12 text-gray-400 hover:text-gray-600 hover:bg-gray-50 rounded-xl font-bold text-xs uppercase tracking-widest"
+              >
+                Keep Vision
+              </Button>
+              <Button
+                onClick={confirmDelete}
+                className="flex-1 h-12 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg shadow-red-600/20"
+              >
+                Retire Act
+              </Button>
+            </div>
+          </motion.div>
         </div>
       )}
     </div>
