@@ -103,11 +103,19 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto pb-10">
-      <WelcomeHeader userName={user?.personalName?.split(' ')[0]} />
+    <div className="flex-1 space-y-4">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+      </div>
       <DashboardStats stats={stats} />
-      <DashboardShortcuts />
-      <RecentActivity activities={recentActivity} />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="col-span-4">
+          <DashboardShortcuts />
+        </div>
+        <div className="col-span-3">
+          <RecentActivity activities={recentActivity} />
+        </div>
+      </div>
     </div>
   )
 }

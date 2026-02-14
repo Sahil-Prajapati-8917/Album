@@ -23,7 +23,7 @@ export const ThemeToggle = ({
       size={size}
       onClick={toggleTheme}
       className={cn(
-        "relative overflow-hidden transition-all duration-300 hover:text-gold hover:bg-gold/10",
+        "relative overflow-hidden transition-all duration-300",
         className
       )}
       title={`Switch to ${isDark ? 'light' : 'dark'} mode`}

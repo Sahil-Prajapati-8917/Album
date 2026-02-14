@@ -85,13 +85,8 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="border-t border-border bg-sidebar p-2">
-        {/* Theme Toggle within sidebar footer (desktop) */}
-        <div className="flex items-center justify-between px-2 mb-2 group-data-[collapsible=icon]:justify-center">
-          <span className="text-xs font-medium text-muted-foreground group-data-[collapsible=icon]:hidden">Theme</span>
-          <ThemeToggle />
-        </div>
-        <NavUser user={user} />
+      <SidebarFooter className="border-t border-border bg-sidebar p-2 hidden">
+        {/* Footer items moved to Header */}
       </SidebarFooter>
     </Sidebar>
   )
