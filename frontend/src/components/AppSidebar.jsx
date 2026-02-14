@@ -18,7 +18,6 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 import { NavUser } from './NavUser'
-import Logo from './Logo'
 import { ThemeToggle } from './ThemeToggle'
 import { getUser } from '@/services/api'
 
@@ -51,26 +50,16 @@ export function AppSidebar() {
   if (!user) return null
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-gold/10">
-      <SidebarHeader className="border-b border-gold/10 py-4">
+    <Sidebar collapsible="icon" className="border-r border-border bg-sidebar text-sidebar-foreground">
+      <SidebarHeader className="border-b border-border py-4 bg-sidebar">
         <Link to="/" className="flex items-center space-x-3 px-2 group">
-          <Logo className="h-10 w-auto group-hover:scale-110 transition-transform" />
-          <span className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white group-data-[collapsible=icon]:hidden">Pixfolio</span>
+          <div className="size-8 bg-primary text-primary-foreground flex items-center justify-center rounded-[4px]">
+            <span className="font-serif font-bold text-lg">P</span>
+          </div>
+          <span className="text-lg font-bold tracking-tight text-sidebar-foreground group-data-[collapsible=icon]:hidden">Pixfolio</span>
         </Link>
       </SidebarHeader>
-      <SidebarContent className="bg-white dark:bg-ebony">
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <div className="px-2 py-2">
-              <div className="flex items-center justify-center group-data-[collapsible=icon]:hidden">
-                <ThemeToggle variant="button" size="sm" className="w-full" />
-              </div>
-              <div className="flex items-center justify-center hidden group-data-[collapsible=icon]:flex">
-                <ThemeToggle variant="switch" size="sm" />
-              </div>
-            </div>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className="bg-sidebar">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -81,11 +70,12 @@ export function AppSidebar() {
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
-                      className={isActive ? "bg-gold/10 text-gold hover:bg-gold/20" : "text-gray-500 hover:text-gold hover:bg-gold/5"}
+                      tooltip={item.name}
+                      className={isActive ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium hover:bg-sidebar-accent/90" : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"}
                     >
                       <Link to={item.href}>
-                        <item.icon className={isActive ? "text-gold" : ""} />
-                        <span className="group-data-[collapsible=icon]:hidden font-medium">{item.name}</span>
+                        <item.icon className="size-4" />
+                        <span className="group-data-[collapsible=icon]:hidden">{item.name}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -95,7 +85,12 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="border-t border-gold/10 bg-white dark:bg-ebony">
+      <SidebarFooter className="border-t border-border bg-sidebar p-2">
+        {/* Theme Toggle within sidebar footer (desktop) */}
+        <div className="flex items-center justify-between px-2 mb-2 group-data-[collapsible=icon]:justify-center">
+          <span className="text-xs font-medium text-muted-foreground group-data-[collapsible=icon]:hidden">Theme</span>
+          <ThemeToggle />
+        </div>
         <NavUser user={user} />
       </SidebarFooter>
     </Sidebar>

@@ -1,240 +1,275 @@
-
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import Logo from '../components/Logo' // Ensuring we reuse the Logo component if compatible, otherwise use SVG from HTML
 import { ThemeToggle } from '../components/ThemeToggle'
 
 const Home = () => {
-  return (
-    <div className="font-['Manrope',sans-serif] bg-pearl dark:bg-black text-charcoal dark:text-white selection:bg-primary/30 min-h-screen transition-colors duration-500">
+  const [scrolled, setScrolled] = useState(false)
 
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 border-b border-black/5 dark:border-white/5 bg-white/80 dark:bg-black/80 backdrop-blur-md px-6 lg:px-20 py-6 transition-all duration-300">
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="size-5 text-primary">
-              <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
-              </svg>
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  return (
+    <div className="font-sans min-h-screen bg-background text-foreground selection:bg-primary/20 transition-colors duration-300">
+
+      {/* Navigation - Sticky, minimal */}
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${scrolled ? 'bg-background/80 backdrop-blur-md border-border' : 'bg-transparent border-transparent'}`}>
+        <div className="max-w-[1200px] mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="size-6 bg-foreground text-background flex items-center justify-center rounded-[4px]">
+              <span className="font-serif font-bold text-sm">P</span>
             </div>
-            <span className="text-lg font-bold tracking-widest uppercase">Pixfolio</span>
+            <span className="font-bold text-sm tracking-tight">Pixfolio</span>
           </div>
-          <div className="hidden md:flex items-center gap-12 text-[11px] uppercase tracking-[0.3em] font-medium text-black/60 dark:text-white/60">
-            <a className="hover:text-primary transition-colors" href="#gallery">Curated Gallery</a>
-            <a className="hover:text-primary transition-colors" href="#features">The Vault</a>
-            <Link className="hover:text-primary transition-colors" to="/pricing">Legacy</Link>
+
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-foreground/70">
+            <a href="#product" className="hover:text-foreground transition-colors">Product</a>
+            <a href="#showcase" className="hover:text-foreground transition-colors">Showcase</a>
+            <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </div>
+
           <div className="flex items-center gap-4">
             <ThemeToggle />
-            <Link to="/signup" className="px-6 py-2 border border-primary text-primary text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-primary hover:text-black transition-all duration-500">
-              Request an Invite
+            <div className="h-4 w-[1px] bg-border hidden sm:block"></div>
+            <Link to="/login" className="hidden sm:block text-sm font-medium hover:text-primary transition-colors">Log in</Link>
+            <Link to="/signup" className="bg-foreground text-background px-4 py-2 rounded-[4px] text-sm font-medium hover:opacity-90 transition-opacity">
+              Get Pixfolio free
             </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
-        <div className="absolute inset-0 z-0 opacity-40">
-          <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-black dark:via-transparent dark:to-black transition-colors duration-500"></div>
-          <div
-            className="w-full h-full bg-center bg-cover grayscale"
-            data-alt="Dark architectural shadows and high contrast light"
-            style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuBWUQGZMA-KVvcksyRHScpHIxvQq-cU6ZU77CpyQT7CaMy-YsjMiyzyigQyOxPMpPFOGq2IeXUMbl7oVs4bLgy58RVyKEUP_w7XJcTH06ybgCDxuB553mKQJRqimsIlyvjbA5kvdw7RPHJxmpGoBVyjREbnsANrsSv6hTzpMNCfyNGqev1au8mowSMnl37NnC6E-VZlTEJINsNQB9f5_72mFNhpnHCAVpXyOm1MvLKHhWRxso8moHA3OP3sGIIJNsigEzJOpjesxgTT")' }}
-          ></div>
-        </div>
-        <div className="relative z-10 text-center flex flex-col items-center max-w-4xl">
-          <span className="text-primary text-xs uppercase tracking-[0.5em] mb-8 font-medium">Established MMXXIV</span>
-          <h1 className="serif-hero text-6xl md:text-9xl font-light mb-8 text-black dark:text-white font-['Times_New_Roman',serif] tracking-tight">
-            The Private Vault
-          </h1>
-          <div className="w-24 h-[1px] bg-primary mb-12"></div>
-          <p className="text-black/50 dark:text-white/50 text-base md:text-lg max-w-xl font-light leading-relaxed tracking-wide uppercase text-[12px]">
-            Elite portfolio management for the discreet creator. Experience absolute security in an editorial digital sanctuary.
+      <main className="pt-32 pb-20">
+
+        {/* Hero Section - Notion Style: Left Aligned, Plain */}
+        <section className="max-w-[1200px] mx-auto px-6 mb-32 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="space-y-8">
+            {/* Product Statement */}
+            <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] text-foreground">
+              Your portfolio, <br />
+              <span className="text-primary">reimagined.</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-foreground/60 leading-relaxed max-w-lg font-medium">
+              The all-in-one workspace for your creative legacy. Curate, manage, and showcase your work with architectural precision.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <Link to="/signup" className="inline-flex items-center justify-center h-12 px-8 rounded-[4px] bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all">
+                Start your gallery
+              </Link>
+              <Link to="#showcase" className="inline-flex items-center justify-center h-12 px-8 rounded-[4px] bg-secondary text-secondary-foreground font-semibold text-lg hover:bg-secondary/80 transition-all">
+                View showcase
+              </Link>
+            </div>
+
+            <div className="pt-8 text-sm text-foreground/40 font-medium">
+              Trusted by visual artists from 140+ countries
+            </div>
+          </div>
+
+          {/* Right-side Product Visual */}
+          <div className="relative">
+            <div className="border border-border shadow-2xl rounded-lg overflow-hidden bg-card">
+              <img
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqguRwf9gP4L7wjPbX8CHz0c7R0DG0bjBW2eQvn8aTvlxyvvvADs4E0G3L6eZ6_9bYq93z2cpqwLnZ55akn7cXoQygYpfGkrkzqd0EzGDjGk5anDSMaSOHvkGcabIyZ6Y3IroK1s_d6dzla8C844yn8UrZxFQ6gpYz2TgUF3GwYRzmD_yUsGILGSsAdJp1jSeRAwzfsAuzQkXJP-sw0iMzj0qb0REeQQ8kZveNfxeK_m3V7qyiNqPKaGqyy6rfQTpmuSUHZHw2U4hW"
+                alt="Pixfolio Dashboard Interface"
+                className="w-full h-auto block dark:opacity-90"
+              />
+            </div>
+            {/* Decorative Elements - Subtle */}
+            <div className="absolute -z-10 top-12 -right-12 w-64 h-64 bg-primary/20 rounded-full blur-[100px]"></div>
+          </div>
+        </section>
+
+        {/* Product Explanation Section */}
+        <section className="max-w-[1000px] mx-auto px-6 mb-32 text-center" id="product">
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-6">Millions run on Pixfolio every day.</h2>
+          <p className="text-xl text-foreground/60 max-w-2xl mx-auto mb-16">
+            Powering everything from freelance portfolios to agency archives. A reliable, fast, and structured home for your creativity.
           </p>
-          <div className="mt-16 flex flex-col items-center gap-4">
-            <span className="material-symbols-outlined text-primary/40 animate-bounce">expand_more</span>
-          </div>
-        </div>
-      </section>
 
-      {/* Features: Cinematic Visual Storytelling */}
-      <section className="py-32 px-6 lg:px-20 bg-pearl dark:bg-black transition-colors duration-500" id="features">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col lg:flex-row items-end justify-between mb-24 gap-8">
-            <div className="max-w-2xl">
-              <h2 className="text-4xl md:text-6xl font-light mb-8 tracking-tight text-black dark:text-white">Cinematic Visual <br /><span className="text-primary italic font-serif">Storytelling</span></h2>
-              <p className="text-black/40 dark:text-white/40 text-lg leading-relaxed">Every pixel curated to perfection within a limitless canvas. Our architectural spacing ensures your work is not just seen, but felt.</p>
+          {/* Feature Grid - Strictly Grid, Icon + Text */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            <div className="p-6 bg-secondary/50 rounded-lg border border-transparent hover:border-primary/20 transition-colors">
+              <span className="material-symbols-outlined text-3xl mb-4 text-primary">grid_view</span>
+              <h3 className="text-lg font-bold mb-2">Wiki-like Organization</h3>
+              <p className="text-foreground/70 leading-relaxed">Everything is an album. Nest albums inside albums. Structure your archive exactly how you think.</p>
             </div>
-            <div className="text-right">
-              <p className="text-primary font-bold text-5xl mb-2">01</p>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-black/30 dark:text-white/30">Feature Series</p>
+            <div className="p-6 bg-secondary/50 rounded-lg border border-transparent hover:border-primary/20 transition-colors">
+              <span className="material-symbols-outlined text-3xl mb-4 text-primary">bolt</span>
+              <h3 className="text-lg font-bold mb-2">Lightning Fast</h3>
+              <p className="text-foreground/70 leading-relaxed">Built for speed. No lag, no loaders. Your high-res assets load instantly, global CDN included.</p>
+            </div>
+            <div className="p-6 bg-secondary/50 rounded-lg border border-transparent hover:border-primary/20 transition-colors">
+              <span className="material-symbols-outlined text-3xl mb-4 text-primary">lock_open</span>
+              <h3 className="text-lg font-bold mb-2">Private by Default</h3>
+              <p className="text-foreground/70 leading-relaxed">Share only what you want. Create password-protected links for clients or public galleries for fans.</p>
+            </div>
+            <div className="p-6 bg-secondary/50 rounded-lg border border-transparent hover:border-primary/20 transition-colors">
+              <span className="material-symbols-outlined text-3xl mb-4 text-primary">edit_note</span>
+              <h3 className="text-lg font-bold mb-2">Contextual Notes</h3>
+              <p className="text-foreground/70 leading-relaxed">Add stories, technical details, or license info right next to your images. Context matters.</p>
+            </div>
+            <div className="p-6 bg-secondary/50 rounded-lg border border-transparent hover:border-primary/20 transition-colors">
+              <span className="material-symbols-outlined text-3xl mb-4 text-primary">extension</span>
+              <h3 className="text-lg font-bold mb-2">Custom Domains</h3>
+              <p className="text-foreground/70 leading-relaxed">Map your own domain in seconds. SSL included. Your brand, front and center.</p>
+            </div>
+            <div className="p-6 bg-secondary/50 rounded-lg border border-transparent hover:border-primary/20 transition-colors">
+              <span className="material-symbols-outlined text-3xl mb-4 text-primary">analytics</span>
+              <h3 className="text-lg font-bold mb-2">Audience Analytics</h3>
+              <p className="text-foreground/70 leading-relaxed">Know who is viewing your work. Track engagement, location, and most popular pieces.</p>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div className="group cursor-pointer">
-              <div className="aspect-[4/5] overflow-hidden mb-6">
-                <img className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Minimalist modern architecture in black and white" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVahAToRHTIFtwmwGl8y3u9TMTsMDPDz3NwQVvGfEVxwaca2VytJgMtcnKkodc-htX449VsM7VPDAc52gY4_P-FYDf1OC5Lu2c-pmXHHxPSrJrZM35AczVfTkIhl7IqSdaZxf89WeDdCYRbqbpODB4H28qOBNrqp-ZTMNbh2ozY8ZZLxkwufFCXmSTOsFA3p-Ar5532p6Hx9A1PrSaBJ3cUtZNlQKWmADMAdsLe7866Hhz1sNYKvqMOoG5YhT3QLBfSbjQac2eUoai" />
-              </div>
-              <h3 class="text-xl font-light mb-2 text-black dark:text-white">Immersive Display</h3>
-              <p className="text-black/40 dark:text-white/40 text-sm font-light uppercase tracking-widest">Massive high-contrast photography that breathes.</p>
-            </div>
-            <div className="group pt-24 cursor-pointer">
-              <div className="aspect-[4/5] overflow-hidden mb-6">
-                <img className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" data-alt="Abstract dark smoke and light textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzmcPUKwgZ4IqiFTfrxbpP9CgLaqKq1GOsdNgJp_RGz848i9tZ1BMSQMlPOZR6cHy6MMLI7lDX0nsZ2_x8ps1XTot7uCqY3UKjPsijfRAx29snlL3P0vznda0jvJnshrQGTvlKRpHAjd27USBCCPDDYFiINDlfhqESgyrs7gtVA_hERP6K22CSWXyH-o-CHvgulumh3-uyWcrD24AmyA6bG4DD6BDe2MKDXvk0S1UFJ7hPrjGcpypfGaaavt5nbP8j1BtZJ3IMabnz" />
-              </div>
-              <h3 className="text-xl font-light mb-2 text-black dark:text-white">Vault Security</h3>
-              <p className="text-black/40 dark:text-white/40 text-sm font-light uppercase tracking-widest">Encrypted private galleries for your eyes only.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Signature Showcase Gallery */}
-      <section className="py-32 bg-white dark:bg-black overflow-hidden transition-colors duration-500" id="gallery">
-        <div className="px-6 lg:px-20 mb-20">
-          <h2 className="text-center text-xs uppercase tracking-[0.6em] text-primary mb-4 font-bold">The Signature Showcase</h2>
-          <p className="text-center text-black/30 dark:text-white/30 text-sm max-w-lg mx-auto uppercase tracking-widest">A curated grid of exceptional brilliance</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 px-1">
-          {/* Gallery Item 1 */}
-          <div className="relative aspect-square group overflow-hidden border border-primary/30">
-            <img className="w-full h-full object-cover opacity-80 dark:opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110" data-alt="Dark majestic mountain range at night" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATRHF3yFqD4lg3QckAdoAkpNUY0aL-G7uE5vu5b70LS3UEkwCkZSRzixiytmOyu0CeaV3xXbuHbcH4qwq13lm9gbp8LGJkspIto_5sGOGf2fuCmUIzEzVGF9CMulUewm2jULk-hQpqkv0Kg-4p9XN_8rJR5pDDBOzKmOSFyb2an8yhjVxJAbqhnB8uLYRH160KWUgaJcx9GElv4E3fb-QhCooAZP2STv6JsAgRZp7A3h6cr7C5ZQ6Ivtu5f3wKriD370RQs_GU3I5X" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40">
-              <span className="text-[10px] uppercase tracking-[0.4em] font-bold border-b border-primary pb-1 text-white">View Archive</span>
+        {/* Visual Showcase - Large Blocks */}
+        <section className="bg-foreground text-background py-32" id="showcase">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="mb-20">
+              {/* Notion-style divider */}
+              <div className="w-12 h-1 bg-primary mb-8"></div>
+              <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">Curated workflows.</h2>
+              <p className="text-xl text-background/70 max-w-2xl">
+                Don't just store images. Create a narrative. Pixfolio adapts to your specific needs.
+              </p>
             </div>
-          </div>
-          {/* Gallery Item 2 */}
-          <div className="relative aspect-square group overflow-hidden border border-primary/30">
-            <img className="w-full h-full object-cover opacity-80 dark:opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110" data-alt="Dramatic portrait in low light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-q_XOlG8nOi1uDenJCcN61Cvxw2EwBqvufhChLkQ1s3AvCxnKaZl5-Fyko5n-RlSkvIHI5snra-4kUcAyBxChQPQTJsWJumLZv9PqilgA2VQrfdAy5TrP10u6McPV03mah__uV0sOkNM7GVYiSqmk4kcfMa47i8kVnMmF9noTfYsH68aYGbY6jVVFv1KNny9WnYlVMA4N2vGZDjLhFfc_xhjos3XNXvbRR_FnBQw-Ev8e22yrZHpBpXzIyVsw38u2URbPIm_K7otG" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40">
-              <span className="text-[10px] uppercase tracking-[0.4em] font-bold border-b border-primary pb-1 text-white">View Archive</span>
-            </div>
-          </div>
-          {/* Gallery Item 3 */}
-          <div className="relative aspect-square group overflow-hidden border border-primary/30">
-            <img className="w-full h-full object-cover opacity-80 dark:opacity-60 group-hover:opacity-100 transition-all duration-700 group-hover:scale-110" data-alt="Aerial view of foggy pine forest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA4AYle8fSY0b5fC23tks7QcIevqbCqtSLi82-DPPHznh9e1vrk19UMnK9IVr2e9dJDrnSW-22VfVXO6ETKp8gwSWg2AMjcOc1_DfnZnw_B9OardXN7aun4_xscF1EFZ9to5vt_LkA8cLk23z4YxYOJMsesSnRq_1YR423dJpKgihUiCw-0PtxFXHayXR67AToha-MTq3I5daAGMdWQBuutz8GYiWlX6rxPz7EDVoO6dPSVGixewGjbnSmkINbrhFL-HJ20gskp3-A" />
-            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-black/40">
-              <span className="text-[10px] uppercase tracking-[0.4em] font-bold border-b border-primary pb-1 text-white">View Archive</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Pricing Section */}
-      <section className="py-32 px-6 lg:px-20 bg-pearl dark:bg-[#000000] transition-colors duration-500" id="pricing">
-        <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-24">
-            <h2 className="serif-hero text-5xl mb-6 text-black dark:text-white font-serif">Tiered Access</h2>
-            <div className="w-12 h-[1px] bg-primary mx-auto mb-6"></div>
-            <p className="text-black/40 dark:text-white/40 uppercase tracking-[0.2em] text-[11px]">Memberships tailored for the elite creative</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1 */}
-            <div className="bg-white dark:bg-[#0F0F0F] p-12 border border-black/5 dark:border-white/5 hover:border-primary/40 transition-all duration-500 group">
-              <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold mb-8 block">Archive</span>
-              <h3 className="text-3xl font-light mb-4 text-black dark:text-white">Essential</h3>
-              <div className="flex items-baseline gap-1 mb-8">
-                <span className="text-2xl font-light text-primary">$</span>
-                <span className="text-5xl font-light text-black dark:text-white">150</span>
-                <span className="text-black/30 dark:text-white/30 text-xs uppercase tracking-widest ml-2">/ month</span>
+            <div className="space-y-32">
+              {/* Block 1 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div className="order-2 md:order-1">
+                  <div className="aspect-[4/3] bg-background/10 rounded-lg overflow-hidden border border-background/20 relative group">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1bSHLUNou_gzHknhGVdyyfwySQoGW7DpIx1AkwjSGjpgr_MYxxVjGtZUgXywL8G8atq8HUcw1tIA_BIcYj2SgotvOItFllBFVV0h1nm4ceMz68O5g0Foa206pUAjMDlpgD90muPKgz11EOUIi45mlzphcWdR_HcttMhpg9YfC809ZogsOVNungFBAqLI30MyeFfTSAcQtRAFnPJLfQAO2OXBM5Tx1ti-KAc53mTllMtXPjQY3PGR8A4THLgUK64b6DWNrrUuLHTLc"
+                      alt="Project Management"
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                </div>
+                <div className="order-1 md:order-2">
+                  <span className="text-primary font-bold uppercase tracking-widest text-sm mb-4 block">For Freelancers</span>
+                  <h3 className="text-3xl font-bold mb-4">Client Proofing made simple.</h3>
+                  <p className="text-lg text-background/60 leading-relaxed mb-8">
+                    Create private collections for clients. Let them select favorites, leave comments, and approve edits directly on the image. No more email chains.
+                  </p>
+                  <Link to="/signup" className="text-primary font-medium hover:underline flex items-center gap-1">
+                    Try Client Proofing <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </Link>
+                </div>
               </div>
-              <ul className="space-y-4 mb-12 text-sm text-black/50 dark:text-white/50 font-light">
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> Private Vault Access</li>
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> 50GB Encrypted Storage</li>
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> Editorial Layouts</li>
-              </ul>
-              <button className="w-full py-4 text-[10px] uppercase tracking-[0.3em] font-bold bg-black/5 dark:bg-white/5 text-black dark:text-white group-hover:bg-primary group-hover:text-black transition-all">Select Tier</button>
-            </div>
-            {/* Card 2: Featured */}
-            <div className="bg-white dark:bg-[#0F0F0F] p-12 border border-primary scale-105 shadow-2xl relative z-10 transition-colors duration-500">
-              <div className="absolute top-0 right-0 bg-primary text-black text-[9px] font-black uppercase px-3 py-1 tracking-tighter">Most Exclusive</div>
-              <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold mb-8 block">Bespoke</span>
-              <h3 className="text-3xl font-light mb-4 text-black dark:text-white">Master</h3>
-              <div className="flex items-baseline gap-1 mb-8">
-                <span className="text-2xl font-light text-primary">$</span>
-                <span className="text-5xl font-light text-black dark:text-white">450</span>
-                <span className="text-black/30 dark:text-white/30 text-xs uppercase tracking-widest ml-2">/ month</span>
-              </div>
-              <ul className="space-y-4 mb-12 text-sm text-black/70 dark:text-white/70 font-light">
-                <li className="flex items-center gap-3 text-black dark:text-white"><span className="material-symbols-outlined text-[16px] text-primary">star</span> Unlimited Vault Storage</li>
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> Custom Domain Concierge</li>
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> Priority Archive Support</li>
-                <li className="flex items-center gap-3"><span class="material-symbols-outlined text-[16px] text-primary">check</span> Physical Print Integration</li>
-              </ul>
-              <button className="w-full py-4 text-[10px] uppercase tracking-[0.3em] font-bold bg-primary text-black hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">Request Entry</button>
-            </div>
-            {/* Card 3 */}
-            <div className="bg-white dark:bg-[#0F0F0F] p-12 border border-black/5 dark:border-white/5 hover:border-primary/40 transition-all duration-500 group">
-              <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold mb-8 block">Legacy</span>
-              <h3 className="text-3xl font-light mb-4 text-black dark:text-white">Enterprise</h3>
-              <div className="flex items-baseline gap-1 mb-8">
-                <span className="text-2xl font-light text-primary">$</span>
-                <span className="text-5xl font-light italic text-black dark:text-white">Quote</span>
-              </div>
-              <ul className="space-y-4 mb-12 text-sm text-black/50 dark:text-white/50 font-light">
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> Studio Wide Licensing</li>
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> White-glove Onboarding</li>
-                <li className="flex items-center gap-3"><span className="material-symbols-outlined text-[16px] text-primary">check</span> API & Webhook Access</li>
-              </ul>
-              <button className="w-full py-4 text-[10px] uppercase tracking-[0.3em] font-bold bg-black/5 dark:bg-white/5 text-black dark:text-white group-hover:bg-primary group-hover:text-black transition-all">Consultation</button>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Final CTA Section */}
-      <section className="py-40 px-6 text-center bg-white dark:bg-black relative transition-colors duration-500">
-        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none">
-          <div className="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary/30 via-transparent to-transparent"></div>
-        </div>
-        <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="serif-hero text-4xl md:text-7xl mb-12 leading-tight text-black dark:text-white font-serif">Elevate Your Presence <br />Beyond The Noise</h2>
-          <p className="text-black/40 dark:text-white/40 mb-12 uppercase tracking-[0.3em] text-[12px] font-light">Membership is strictly limited to maintain infrastructure integrity.</p>
-          <button className="px-12 py-5 bg-transparent border-2 border-primary text-primary text-xs uppercase tracking-[0.5em] font-black hover:bg-primary hover:text-black transition-all duration-700 hover:shadow-[0_0_30px_rgba(198,166,93,0.3)]">
-            Request an Invite
-          </button>
-        </div>
-      </section>
+              {/* Block 2 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                  <span className="text-primary font-bold uppercase tracking-widest text-sm mb-4 block">For Studios</span>
+                  <h3 className="text-3xl font-bold mb-4">Centralized Asset Library.</h3>
+                  <p className="text-lg text-background/60 leading-relaxed mb-8">
+                    Tag, filter, and search your entire history. Give your team access with granular permissions. Keep your brand assets consistent.
+                  </p>
+                  <Link to="/signup" className="text-primary font-medium hover:underline flex items-center gap-1">
+                    Explore Team Features <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                  </Link>
+                </div>
+                <div>
+                  <div className="aspect-[4/3] bg-background/10 rounded-lg overflow-hidden border border-background/20 relative group">
+                    <img
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7Ysx9q0HSaxg8C0Mxc2EtspjzZEeiIF36v2ngmpWRwEEdq3RSPevKeqGU6ROknl_IR-jz1_El-9GeqLo7vmefUWl6hNvNcJxr9zS1125gWRHEVDPmf9qaQ2T5luHesGPYpYQIcB8o36_mm6gC60q6qom6s5-q_kNqZvmJSt5k_t4nki-rNA-ct7P9Xz3DVXraKl5rUec8JIw8kCBTWfDEFnmyuDC61ysLJAAKWTgcWnGpytOhuzZnPt3t-z1_HZypLTnpKuERYzPL"
+                      alt="Asset Management"
+                      className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Quote / Testimonial */}
+        <section className="py-32 px-6 text-center border-b border-border">
+          <div className="max-w-4xl mx-auto">
+            <span className="text-6xl text-primary font-serif">"</span>
+            <h2 className="text-3xl md:text-5xl font-serif italic mb-8 leading-tight">
+              Pixfolio gave us the structure we needed to scale from a solo operation to a full-service agency. It's the brain of our visual operations.
+            </h2>
+            <div className="flex items-center justify-center gap-4">
+              <div className="size-12 rounded-full bg-secondary flex items-center justify-center font-bold text-lg">
+                AK
+              </div>
+              <div className="text-left">
+                <div className="font-bold">Amara Kalu</div>
+                <div className="text-sm text-foreground/60">Creative Director, Kalu Studios</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Footer CTA */}
+        <section className="py-32 px-6 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-8">Get started for free.</h2>
+          <p className="text-xl text-foreground/60 mb-12">Play with it first. Pay only when you need the power features.</p>
+          <div className="flex gap-4 justify-center">
+            <Link to="/signup" className="h-12 px-8 rounded-[4px] bg-primary text-white font-semibold text-lg hover:bg-primary/90 transition-all flex items-center">
+              Try Pixfolio free
+            </Link>
+            <Link to="/login" className="h-12 px-8 rounded-[4px] bg-transparent text-primary font-semibold text-lg hover:bg-secondary transition-all flex items-center">
+              Request a demo
+            </Link>
+          </div>
+        </section>
+
+      </main>
 
       {/* Footer */}
-      <footer className="py-20 px-6 lg:px-20 border-t border-black/5 dark:border-white/5 bg-white dark:bg-black transition-colors duration-500">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-3 mb-8">
-              <div className="size-4 text-primary">
-                <svg fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
-                </svg>
+      <footer className="py-12 px-6 border-t border-border bg-secondary/30 text-sm">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8">
+          <div className="col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="size-5 bg-foreground text-background flex items-center justify-center rounded-[3px]">
+                <span className="font-serif font-bold text-xs">P</span>
               </div>
-              <span className="text-lg font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</span>
+              <span className="font-bold tracking-tight">Pixfolio</span>
             </div>
-            <p className="text-black/30 dark:text-white/30 text-xs leading-loose max-w-sm uppercase tracking-widest">
-              The standard in editorial portfolio presentation. Designed for the few who value silence as much as beauty.
+            <p className="text-foreground/50 max-w-xs mb-4">
+              The digital sanctuary for modern creators.
             </p>
+            <div className="text-foreground/40">
+              © 2024 Pixfolio Inc.
+            </div>
           </div>
+
           <div>
-            <h4 className="text-black dark:text-white text-[10px] uppercase tracking-[0.4em] mb-8 font-bold">Inquiries</h4>
-            <ul className="text-black/40 dark:text-white/40 text-xs space-y-4 tracking-widest uppercase">
-              <li><a className="hover:text-primary transition-colors" href="#">Support</a></li>
-              <li><a className="hover:text-primary transition-colors" href="#">Press Kit</a></li>
-              <li><a class="hover:text-primary transition-colors" href="#">Partner</a></li>
+            <h4 className="font-bold mb-4">Product</h4>
+            <ul className="space-y-2 text-foreground/60">
+              <li><a href="#" className="hover:text-primary">Showcase</a></li>
+              <li><a href="#" className="hover:text-primary">Pricing</a></li>
+              <li><a href="#" className="hover:text-primary">Enterprise</a></li>
+              <li><a href="#" className="hover:text-primary">Affiliates</a></li>
             </ul>
           </div>
+
           <div>
-            <h4 className="text-black dark:text-white text-[10px] uppercase tracking-[0.4em] mb-8 font-bold">Connect</h4>
-            <ul className="text-black/40 dark:text-white/40 text-xs space-y-4 tracking-widest uppercase">
-              <li><a className="hover:text-primary transition-colors" href="#">Instagram</a></li>
-              <li><a className="hover:text-primary transition-colors" href="#">Behance</a></li>
-              <li><a className="hover:text-primary transition-colors" href="#">Journal</a></li>
+            <h4 className="font-bold mb-4">Company</h4>
+            <ul className="space-y-2 text-foreground/60">
+              <li><a href="#" className="hover:text-primary">About</a></li>
+              <li><a href="#" className="hover:text-primary">Careers</a></li>
+              <li><a href="#" className="hover:text-primary">Legal</a></li>
+              <li><a href="#" className="hover:text-primary">Contact</a></li>
             </ul>
           </div>
-        </div>
-        <div className="max-w-[1400px] mx-auto mt-20 pt-10 border-t border-black/5 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-[9px] text-black/20 dark:text-white/20 uppercase tracking-[0.4em]">© 2024 Pixfolio Digital Sanctuary. All rights reserved.</p>
-          <div className="flex gap-8 text-[9px] text-black/20 dark:text-white/20 uppercase tracking-[0.4em]">
-            <a className="hover:text-black dark:hover:text-white transition-colors" href="#">Privacy</a>
-            <a className="hover:text-black dark:hover:text-white transition-colors" href="#">Terms</a>
+
+          <div>
+            <h4 className="font-bold mb-4">Resources</h4>
+            <ul className="space-y-2 text-foreground/60">
+              <li><a href="#" className="hover:text-primary">Community</a></li>
+              <li><a href="#" className="hover:text-primary">Help Center</a></li>
+              <li><a href="#" className="hover:text-primary">API Docs</a></li>
+              <li><a href="#" className="hover:text-primary">Status</a></li>
+            </ul>
           </div>
         </div>
       </footer>
