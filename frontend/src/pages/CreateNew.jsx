@@ -1,44 +1,31 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Eye, Save } from 'lucide-react'
+import { Save, ChevronRight, ChevronLeft, Upload, Music } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import CreateSteps from '@/components/features/create/CreateSteps'
-import BasicInfoStep from '@/components/features/create/BasicInfoStep'
-import MusicSelectionStep from '@/components/features/create/MusicSelectionStep'
-import VisualsStep from '@/components/features/create/VisualsStep'
-import PreviewStep from '@/components/features/create/PreviewStep'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 
 const CreateNew = () => {
   const navigate = useNavigate()
+  const [activeTab, setActiveTab] = useState("basic")
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const toTitleCase = (str) => {
-    return str.split(' ').map(word =>
-      word.charAt(0).toUpperCase() + word.slice(1)
-    ).join(' ')
-  }
-
-  const steps = [
-    { id: 1, title: 'Basic Info', description: 'Client & Function' },
-    { id: 2, title: 'Soundtrack', description: 'Background Music' },
-    { id: 3, title: 'Visuals', description: 'Photos & Covers' }
-  ]
-
-  const [currentStep, setCurrentStep] = useState(1)
   const [formData, setFormData] = useState({
     clientName: '',
     functionType: '',
     functionDate: '',
-    musicTrack: 'wedding-bells.mp3', // default
+    musicTrack: 'wedding-bells.mp3',
     volume: 50,
     frontCover: null,
     backCover: null,
     innerSheets: []
   })
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [previewMode, setPreviewMode] = useState(false)
-  const [errors, setErrors] = useState({})
 
+  // Mock data preserved
   const functionTypes = [
     'wedding', 'pre-wedding', 'engagement', 'reception', 'birthday (kids)', 'maternity shoot', 'newborn shoot', 'family portrait', 'corporate event', 'other'
   ]
@@ -51,88 +38,26 @@ const CreateNew = () => {
     { name: 'Corporate Tune', file: 'corporate.mp3' }
   ]
 
+  const handleChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
   const handleFileUpload = (e, field) => {
     const file = e.target.files[0]
-    if (file) {
-      setFormData(prev => ({
-        ...prev,
-        [field]: file
-      }))
-    }
+    if (file) handleChange(field, file)
   }
 
   const handleMultipleFileUpload = (e) => {
     const files = Array.from(e.target.files)
-    setFormData(prev => ({
-      ...prev,
-      innerSheets: [...prev.innerSheets, ...files]
-    }))
-  }
-
-  const removeFile = (index) => {
-    setFormData(prev => ({
-      ...prev,
-      innerSheets: prev.innerSheets.filter((_, i) => i !== index)
-    }))
-  }
-
-  const toggleMusic = () => {
-    setIsPlaying(!isPlaying)
-  }
-
-  const validateStep = (step) => {
-    const newErrors = {}
-
-    if (step === 1) {
-      if (!formData.clientName.trim()) newErrors.clientName = 'Client name is required'
-      if (!formData.functionType) newErrors.functionType = 'Function type is required'
-      if (!formData.functionDate) newErrors.functionDate = 'Function date is required'
-    } else if (step === 2) {
-      // Music selection is optional, no validation needed
-    } else if (step === 3) {
-      if (!formData.frontCover) newErrors.frontCover = 'Front cover is required'
-      if (!formData.backCover) newErrors.backCover = 'Back cover is required'
-      if (formData.innerSheets.length === 0) newErrors.innerSheets = 'At least one inner sheet is required'
-    }
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const validateForm = () => {
-    const newErrors = {}
-    if (!formData.clientName.trim()) newErrors.clientName = 'Client name is required'
-    if (!formData.functionType) newErrors.functionType = 'Function type is required'
-    if (!formData.functionDate) newErrors.functionDate = 'Function date is required'
-    if (!formData.frontCover) newErrors.frontCover = 'Front cover is required'
-    if (!formData.backCover) newErrors.backCover = 'Back cover is required'
-    if (formData.innerSheets.length === 0) newErrors.innerSheets = 'At least one inner sheet is required'
-
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
-
-  const nextStep = () => {
-    if (validateStep(currentStep)) {
-      setCurrentStep(prev => Math.min(prev + 1, steps.length))
-    }
-  }
-
-  const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 1))
+    setFormData(prev => ({ ...prev, innerSheets: [...prev.innerSheets, ...files] }))
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!validateForm()) return
-
     setIsSubmitting(true)
-
     // Simulate API call
     setTimeout(() => {
       const albumId = Date.now()
-
-      // Create album data
       const newAlbum = {
         id: albumId,
         albumName: `${formData.clientName} - ${formData.functionType}`,
@@ -148,122 +73,213 @@ const CreateNew = () => {
         status: 'draft',
         createdDate: new Date().toISOString().split('T')[0]
       }
-
-      // Save to localStorage
       const existingAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
       localStorage.setItem('albums', JSON.stringify([...existingAlbums, newAlbum]))
-
       setIsSubmitting(false)
-      navigate(`/viewer/${albumId}`)
-    }, 2000)
-  }
-
-  const handlePreview = () => {
-    if (validateForm()) {
-      setPreviewMode(true)
-    }
-  }
-
-  if (previewMode) {
-    return (
-      <PreviewStep
-        formData={formData}
-        toTitleCase={toTitleCase}
-        handleSubmit={handleSubmit}
-        isSubmitting={isSubmitting}
-        setPreviewMode={setPreviewMode}
-      />
-    )
+      navigate('/dashboard') // Redirect to dashboard instead of viewer for admin flow
+    }, 1500)
   }
 
   return (
-    <div className="max-w-4xl mx-auto pb-20">
-      <div className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-serif text-foreground italic">Create Visual Book</h1>
-        <p className="mt-2 text-sm text-muted-foreground font-light tracking-wide uppercase">Transformation of moments into legacy</p>
+    <div className="flex-1 space-y-4">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Create Visual Book</h2>
+          <p className="text-muted-foreground">
+            Create a new digital album for your client.
+          </p>
+        </div>
       </div>
 
-      <CreateSteps steps={steps} currentStep={currentStep} />
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="basic">Basic Info</TabsTrigger>
+          <TabsTrigger value="media">Visuals & Audio</TabsTrigger>
+          <TabsTrigger value="review">Review</TabsTrigger>
+        </TabsList>
 
-      <form onSubmit={(e) => e.preventDefault()} className="space-y-12">
-        {currentStep === 1 && (
-          <BasicInfoStep
-            formData={formData}
-            setFormData={setFormData}
-            errors={errors}
-            setErrors={setErrors}
-            functionTypes={functionTypes}
-            toTitleCase={toTitleCase}
-          />
-        )}
-        {currentStep === 2 && (
-          <MusicSelectionStep
-            formData={formData}
-            setFormData={setFormData}
-            isPlaying={isPlaying}
-            toggleMusic={toggleMusic}
-            defaultMusicTracks={defaultMusicTracks}
-          />
-        )}
-        {currentStep === 3 && (
-          <VisualsStep
-            formData={formData}
-            handleFileUpload={handleFileUpload}
-            handleMultipleFileUpload={handleMultipleFileUpload}
-            removeFile={removeFile}
-            errors={errors}
-          />
-        )}
-
-        <div className="flex justify-between items-center py-6 border-t border-gold/10">
-          <Button
-            type="button"
-            onClick={prevStep}
-            disabled={currentStep === 1}
-            variant="ghost"
-            className="text-gold font-serif italic hover:bg-gold/5 disabled:opacity-30 h-12 px-8"
-          >
-            <ChevronLeft className="h-5 w-5 mr-2" />
-            Previous Act
-          </Button>
-
-          {currentStep < steps.length ? (
-            <Button
-              type="button"
-              onClick={nextStep}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 h-14 font-serif italic text-lg"
-            >
-              Proceed
-              <ChevronRight className="h-5 w-5 ml-2" />
-            </Button>
-          ) : (
-            <div className="flex space-x-6">
-              <Button
-                type="button"
-                onClick={handlePreview}
-                variant="outline"
-                className="border-gold/30 text-gold hover:bg-gold/5 h-14 px-10 font-serif italic text-lg"
-              >
-                <Eye className="h-5 w-5 mr-3" />
-                Preview Art
+        <TabsContent value="basic" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Client Details</CardTitle>
+              <CardDescription>Enter the event details and client information.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid gap-2">
+                <Label htmlFor="clientName">Client Name</Label>
+                <Input
+                  id="clientName"
+                  placeholder="e.g. Sarah & John"
+                  value={formData.clientName}
+                  onChange={(e) => handleChange('clientName', e.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="functionType">Event Type</Label>
+                  <Select
+                    value={formData.functionType}
+                    onValueChange={(val) => handleChange('functionType', val)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {functionTypes.map(type => (
+                        <SelectItem key={type} value={type}>
+                          {type.charAt(0).toUpperCase() + type.slice(1)}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="functionDate">Event Date</Label>
+                  <Input
+                    id="functionDate"
+                    type="date"
+                    value={formData.functionDate}
+                    onChange={(e) => handleChange('functionDate', e.target.value)}
+                  />
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button onClick={() => setActiveTab("media")}>
+                Next Step <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button
-                type="button"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="bg-gold hover:bg-gold/90 text-white h-14 px-10 font-serif italic text-lg shadow-xl shadow-gold/10"
-              >
-                {isSubmitting ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                ) : (
-                  <Save className="h-5 w-5 mr-3" />
-                )}
-                {isSubmitting ? 'Creating...' : 'Publish Legacy'}
+            </CardFooter>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="media" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Upload Media</CardTitle>
+              <CardDescription>Upload covers and background music.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="grid gap-2">
+                  <Label>Front Cover</Label>
+                  <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-muted/50 transition-colors">
+                    <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                    <span className="text-sm text-muted-foreground">
+                      {formData.frontCover ? formData.frontCover.name : "Click to upload front cover"}
+                    </span>
+                    <Input
+                      type="file"
+                      className="hidden"
+                      id="front-cover-upload"
+                      onChange={(e) => handleFileUpload(e, 'frontCover')}
+                      accept="image/*"
+                    />
+                    <Label htmlFor="front-cover-upload" className="absolute inset-0 cursor-pointer" />
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <Label>Back Cover</Label>
+                  <div className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-muted/50 transition-colors">
+                    <Upload className="h-8 w-8 text-muted-foreground mb-2" />
+                    <span className="text-sm text-muted-foreground">
+                      {formData.backCover ? formData.backCover.name : "Click to upload back cover"}
+                    </span>
+                    <Input
+                      type="file"
+                      className="hidden"
+                      id="back-cover-upload"
+                      onChange={(e) => handleFileUpload(e, 'backCover')}
+                      accept="image/*"
+                    />
+                    <Label htmlFor="back-cover-upload" className="absolute inset-0 cursor-pointer" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid gap-2">
+                <Label>Inner Sheets (Spreads)</Label>
+                <Input
+                  type="file"
+                  multiple
+                  onChange={handleMultipleFileUpload}
+                  accept="image/*"
+                />
+                <p className="text-xs text-muted-foreground">{formData.innerSheets.length} files selected</p>
+              </div>
+
+              <Separator />
+
+              <div className="grid gap-2">
+                <Label>Background Music</Label>
+                <Select
+                  value={formData.musicTrack}
+                  onValueChange={(val) => handleChange('musicTrack', val)}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select music" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {defaultMusicTracks.map(track => (
+                      <SelectItem key={track.file} value={track.file}>
+                        <div className="flex items-center">
+                          <Music className="mr-2 h-4 w-4" />
+                          {track.name}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="ghost" onClick={() => setActiveTab("basic")}>
+                <ChevronLeft className="mr-2 h-4 w-4" /> Back
               </Button>
-            </div>
-          )}
-        </div>
-      </form>
+              <Button onClick={() => setActiveTab("review")}>
+                Review & Publish <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="review" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle>Summary</CardTitle>
+              <CardDescription>Review details before publishing.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <dl className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <dt className="font-medium text-muted-foreground">Client Name</dt>
+                  <dd>{formData.clientName || "-"}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-muted-foreground">Type</dt>
+                  <dd className="capitalize">{formData.functionType || "-"}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-muted-foreground">Date</dt>
+                  <dd>{formData.functionDate || "-"}</dd>
+                </div>
+                <div>
+                  <dt className="font-medium text-muted-foreground">Photos Selected</dt>
+                  <dd>{formData.innerSheets.length}</dd>
+                </div>
+              </dl>
+            </CardContent>
+            <CardFooter className="flex justify-between">
+              <Button variant="ghost" onClick={() => setActiveTab("media")}>
+                <ChevronLeft className="mr-2 h-4 w-4" /> Back
+              </Button>
+              <Button onClick={handleSubmit} disabled={isSubmitting}>
+                {isSubmitting ? "Creating..." : "Create Album"}
+                {!isSubmitting && <Save className="ml-2 h-4 w-4" />}
+              </Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   )
 }

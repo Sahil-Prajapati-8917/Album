@@ -1,140 +1,160 @@
 import { useState, useEffect } from 'react'
-import { getUser } from '@/services/api'
-import ArchiveHeader from '@/components/features/dashboard/ArchiveHeader'
-import AlbumFilters from '@/components/features/dashboard/AlbumFilters'
-import AlbumTable from '@/components/features/dashboard/AlbumTable'
-import DeleteAlbumModal from '@/components/features/dashboard/DeleteAlbumModal'
-import { LoadingState } from '@/components/custom/LoadingState'
+import { MoreHorizontal, Search, Trash2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table"
+import { Badge } from '@/components/ui/badge'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 const AllPixfolio = () => {
-  const [user, setUser] = useState(null)
   const [albums, setAlbums] = useState([])
-  const [filteredAlbums, setFilteredAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [isLoading, setIsLoading] = useState(true)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
-  const [albumToDelete, setAlbumToDelete] = useState(null)
 
   useEffect(() => {
-    const userData = getUser()
-    if (userData) setUser(userData)
     loadAlbums()
   }, [])
 
-  useEffect(() => {
-    filterAlbums()
-  }, [albums, searchTerm, statusFilter])
-
   const loadAlbums = () => {
-    setIsLoading(true)
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
     if (storedAlbums.length === 0) {
+      // Mock data if empty
       const mockAlbums = [
         {
           id: 1,
           albumName: "Sarah & John's Wedding",
-          totalSheets: 24,
           clientName: "Sarah Johnson",
           functionDate: "2025-01-15",
           functionType: "wedding",
-          rating: 4.5,
-          viewersCount: 156,
-          qrCode: "qr-1",
-          link: `${window.location.origin}/viewer/1`,
           status: "published",
-          createdDate: "2025-01-10"
         },
         {
           id: 2,
           albumName: "Birthday Bash 2025",
-          totalSheets: 18,
           clientName: "Mike Chen",
           functionDate: "2025-02-20",
           functionType: "birthday",
-          rating: 4.2,
-          viewersCount: 89,
-          qrCode: "qr-2",
-          link: `${window.location.origin}/viewer/2`,
           status: "published",
-          createdDate: "2025-02-15"
-        },
-        {
-          id: 3,
-          albumName: "Corporate Event 2025",
-          totalSheets: 32,
-          clientName: "ABC Corp",
-          functionDate: "2025-03-10",
-          functionType: "corporate",
-          rating: 0,
-          viewersCount: 0,
-          qrCode: "qr-3",
-          link: `${window.location.origin}/viewer/3`,
-          status: "draft",
-          createdDate: "2025-03-05"
         }
       ]
-      localStorage.setItem('albums', JSON.stringify(mockAlbums))
       setAlbums(mockAlbums)
     } else {
       setAlbums(storedAlbums)
     }
-    setIsLoading(false)
   }
 
-  const filterAlbums = () => {
-    let filtered = albums
-    if (searchTerm) {
-      filtered = filtered.filter(album =>
-        album.albumName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        album.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        album.functionType.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    }
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(album => album.status === statusFilter)
-    }
-    setFilteredAlbums(filtered)
+  const handleDelete = (id) => {
+    const updated = albums.filter(a => a.id !== id)
+    setAlbums(updated)
+    localStorage.setItem('albums', JSON.stringify(updated))
   }
 
-  const handleDeleteAlbum = (album) => {
-    setAlbumToDelete(album)
-    setShowDeleteModal(true)
-  }
-
-  const confirmDelete = () => {
-    if (albumToDelete) {
-      const updatedAlbums = albums.filter(album => album.id !== albumToDelete.id)
-      localStorage.setItem('albums', JSON.stringify(updatedAlbums))
-      setAlbums(updatedAlbums)
-      setShowDeleteModal(false)
-      setAlbumToDelete(null)
-    }
-  }
-
-  if (isLoading) {
-    return <LoadingState message="Loading your archive..." className="h-[60vh]" />
-  }
+  const filteredAlbums = albums.filter(album =>
+    album.albumName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    album.clientName.toLowerCase().includes(searchTerm.toLowerCase())
+  )
 
   return (
-    <div className="max-w-7xl mx-auto space-y-10 pb-10">
-      <ArchiveHeader userName={user?.personalName?.split(' ')[0]} />
-      <AlbumFilters
-        searchTerm={searchTerm}
-        onSearchChange={setSearchTerm}
-        statusFilter={statusFilter}
-        onStatusChange={setStatusFilter}
-      />
-      <AlbumTable
-        data={filteredAlbums}
-        onDelete={handleDeleteAlbum}
-      />
-      <DeleteAlbumModal
-        isOpen={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        onConfirm={confirmDelete}
-        albumName={albumToDelete?.albumName}
-      />
+    <div className="flex-1 space-y-4">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">All Pixfolio</h2>
+          <p className="text-muted-foreground">
+            Manage your digital albums and archives.
+          </p>
+        </div>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Albums</CardTitle>
+          <CardDescription>
+            A list of all your created albums and their current status.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center py-4">
+            <div className="relative w-full max-w-sm">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Filter albums..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9"
+              />
+            </div>
+          </div>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Album Name</TableHead>
+                  <TableHead>Client</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredAlbums.length > 0 ? (
+                  filteredAlbums.map((album) => (
+                    <TableRow key={album.id}>
+                      <TableCell className="font-medium">{album.albumName}</TableCell>
+                      <TableCell>{album.clientName}</TableCell>
+                      <TableCell>{album.functionDate}</TableCell>
+                      <TableCell className="capitalize">{album.functionType}</TableCell>
+                      <TableCell>
+                        <Badge variant={album.status === 'published' ? 'default' : 'secondary'}>
+                          {album.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(album.id.toString())}>
+                              Copy ID
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(album.id)}>
+                              <Trash2 className="mr-2 h-4 w-4" /> Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="h-24 text-center">
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
