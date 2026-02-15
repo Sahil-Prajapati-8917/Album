@@ -13,6 +13,7 @@ import {
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { UserNav } from "@/components/UserNav"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { Search, Bell, HelpCircle } from "lucide-react"
 
 export function AdminHeader({ user }) {
@@ -48,11 +49,11 @@ export function AdminHeader({ user }) {
 
             <div className="flex-1 max-w-md hidden md:block">
                 <div className="relative group">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <input
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+                    <Input
                         type="search"
                         placeholder="Search..."
-                        className="h-9 w-full rounded-full border border-input bg-muted/30 px-9 text-sm transition-all focus:bg-background focus:ring-1 focus:ring-ring outline-none"
+                        className="pl-9 h-9 w-full rounded-full bg-muted/30 border-input focus:bg-background transition-all outline-none"
                     />
                 </div>
             </div>

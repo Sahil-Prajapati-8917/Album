@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { User, Phone, Mail, Lock, Building, MapPin, Globe, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react'
-import { FormInput } from '@/components/custom/FormInput'
-import { PrimaryButton } from '@/components/custom/PrimaryButton'
-import { SecondaryButton } from '@/components/custom/SecondaryButton'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import {
@@ -168,78 +166,78 @@ const CreateAccountForm = () => {
             </div>
 
             {currentStep === 1 && (
-                <div className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                            <Label htmlFor="fullName" className="font-semibold text-zinc-900">Full Name</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <Label htmlFor="fullName" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Full Name</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <User className="h-4 w-4" />
                                 </div>
-                                <FormInput
+                                <Input
                                     id="fullName"
                                     name="fullName"
                                     required
                                     value={formData.fullName}
                                     onChange={handleInputChange}
-                                    className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
                                     placeholder="John Doe"
                                 />
                             </div>
                         </div>
-                        <div className="space-y-1.5">
-                            <Label htmlFor="phoneNumber" className="font-semibold text-zinc-900">Phone</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                        <div className="space-y-2">
+                            <Label htmlFor="phoneNumber" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Phone</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <Phone className="h-4 w-4" />
                                 </div>
-                                <FormInput
+                                <Input
                                     id="phoneNumber"
                                     name="phoneNumber"
                                     required
                                     value={formData.phoneNumber}
                                     onChange={handleInputChange}
-                                    className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
                                     placeholder="+1 (555) 000"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="space-y-1.5">
-                        <Label htmlFor="email" className="font-semibold text-zinc-900">Email Address</Label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                    <div className="space-y-2">
+                        <Label htmlFor="email" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Email Address</Label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                 <Mail className="h-4 w-4" />
                             </div>
-                            <FormInput
+                            <Input
                                 id="email"
                                 name="email"
                                 type="email"
                                 required
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
                                 placeholder="artist@pixfolio.com"
                             />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-1.5">
-                            <Label htmlFor="password" className="font-semibold text-zinc-900">Password</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                            <Label htmlFor="password" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Password</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <Lock className="h-4 w-4" />
                                 </div>
-                                <FormInput
+                                <Input
                                     id="password"
                                     name="password"
                                     type={showPassword ? 'text' : 'password'}
                                     required
                                     value={formData.password}
                                     onChange={handleInputChange}
-                                    className="pl-10 pr-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    className="pl-10 pr-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm tracking-widest placeholder:tracking-normal group-hover:border-zinc-300 text-base"
                                     placeholder="••••••••"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
@@ -248,27 +246,27 @@ const CreateAccountForm = () => {
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="h-9 w-9 p-0 mr-1 hover:bg-transparent text-zinc-400 hover:text-zinc-600"
+                                        className="h-10 w-10 p-0 mr-1 hover:bg-transparent text-zinc-400 hover:text-zinc-600 transition-colors"
                                     >
                                         {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </Button>
                                 </div>
                             </div>
                         </div>
-                        <div className="space-y-1.5">
-                            <Label htmlFor="confirmPassword" className="font-semibold text-zinc-900">Confirm</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Confirm Password</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <Lock className="h-4 w-4" />
                                 </div>
-                                <FormInput
+                                <Input
                                     id="confirmPassword"
                                     name="confirmPassword"
                                     type={showConfirmPassword ? 'text' : 'password'}
                                     required
                                     value={formData.confirmPassword}
                                     onChange={handleInputChange}
-                                    className="pl-10 pr-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    className="pl-10 pr-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm tracking-widest placeholder:tracking-normal group-hover:border-zinc-300 text-base"
                                     placeholder="••••••••"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
@@ -277,7 +275,7 @@ const CreateAccountForm = () => {
                                         variant="ghost"
                                         size="sm"
                                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="h-9 w-9 p-0 mr-1 hover:bg-transparent text-zinc-400 hover:text-zinc-600"
+                                        className="h-10 w-10 p-0 mr-1 hover:bg-transparent text-zinc-400 hover:text-zinc-600 transition-colors"
                                     >
                                         {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </Button>
@@ -287,48 +285,48 @@ const CreateAccountForm = () => {
                     </div>
 
                     <div className="pt-4">
-                        <PrimaryButton onClick={nextStep} className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-lg shadow-lg shadow-zinc-900/20 transition-all flex items-center justify-center gap-2">
-                            Next Step <ArrowRight className="h-4 w-4" />
-                        </PrimaryButton>
+                        <Button onClick={nextStep} className="w-full h-12 bg-zinc-900 hover:bg-black text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-zinc-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest">
+                            Continue to Business Details <ArrowRight className="h-4 w-4" />
+                        </Button>
                     </div>
                 </div>
             )}
 
             {currentStep === 2 && (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="space-y-1.5">
-                        <Label htmlFor="studioName" className="font-semibold text-zinc-900">Studio Name</Label>
-                        <div className="relative">
-                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                <form onSubmit={handleSubmit} className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+                    <div className="space-y-2">
+                        <Label htmlFor="studioName" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Studio Name</Label>
+                        <div className="relative group">
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                 <Building className="h-4 w-4" />
                             </div>
-                            <FormInput
+                            <Input
                                 id="studioName"
                                 name="studioName"
                                 required
                                 value={formData.studioName}
                                 onChange={handleInputChange}
-                                className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
                                 placeholder="Dreamscape Studio"
                             />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Country Selector */}
-                        <div className="space-y-1.5">
-                            <Label className="font-semibold text-zinc-900">Country</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                        <div className="space-y-2">
+                            <Label className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Country</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <Globe className="h-4 w-4" />
                                 </div>
                                 <Select onValueChange={(v) => handleSelectChange('country', v)} value={formData.country}>
-                                    <SelectTrigger className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg">
+                                    <SelectTrigger className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300">
                                         <SelectValue placeholder="Select" />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="rounded-xl border-zinc-200 shadow-xl max-h-[300px]">
                                         {countries.map(c => (
-                                            <SelectItem key={c.isoCode} value={c.isoCode}>
+                                            <SelectItem key={c.isoCode} value={c.isoCode} className="focus:bg-zinc-100 rounded-lg mx-1 my-0.5">
                                                 {c.name}
                                             </SelectItem>
                                         ))}
@@ -338,10 +336,10 @@ const CreateAccountForm = () => {
                         </div>
 
                         {/* State Selector */}
-                        <div className="space-y-1.5">
-                            <Label className="font-semibold text-zinc-900">State / Province</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                        <div className="space-y-2">
+                            <Label className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">State / Province</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <MapPin className="h-4 w-4" />
                                 </div>
                                 <Select
@@ -349,18 +347,18 @@ const CreateAccountForm = () => {
                                     value={formData.state}
                                     disabled={!formData.country}
                                 >
-                                    <SelectTrigger className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg disabled:opacity-50">
+                                    <SelectTrigger className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 disabled:opacity-50">
                                         <SelectValue placeholder={!formData.country ? "Select Country" : "Select State"} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="rounded-xl border-zinc-200 shadow-xl max-h-[300px]">
                                         {states.length > 0 ? (
                                             states.map(s => (
-                                                <SelectItem key={s.isoCode} value={s.isoCode}>
+                                                <SelectItem key={s.isoCode} value={s.isoCode} className="focus:bg-zinc-100 rounded-lg mx-1 my-0.5">
                                                     {s.name}
                                                 </SelectItem>
                                             ))
                                         ) : (
-                                            <div className="p-2 text-sm text-muted-foreground text-center">No states found</div>
+                                            <div className="p-4 text-xs font-bold uppercase tracking-widest text-zinc-400 text-center">No states found</div>
                                         )}
                                     </SelectContent>
                                 </Select>
@@ -368,12 +366,12 @@ const CreateAccountForm = () => {
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* City Selector */}
-                        <div className="space-y-1.5">
-                            <Label className="font-semibold text-zinc-900">City / District</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                        <div className="space-y-2">
+                            <Label className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">City / District</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <MapPin className="h-4 w-4" />
                                 </div>
                                 <Select
@@ -381,57 +379,59 @@ const CreateAccountForm = () => {
                                     value={formData.city}
                                     disabled={!formData.state}
                                 >
-                                    <SelectTrigger className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg disabled:opacity-50">
+                                    <SelectTrigger className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 disabled:opacity-50">
                                         <SelectValue placeholder={!formData.state ? "Select State" : "Select City"} />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className="rounded-xl border-zinc-200 shadow-xl max-h-[300px]">
                                         {cities.length > 0 ? (
                                             cities.map(ct => (
-                                                <SelectItem key={ct.name} value={ct.name}>
+                                                <SelectItem key={ct.name} value={ct.name} className="focus:bg-zinc-100 rounded-lg mx-1 my-0.5">
                                                     {ct.name}
                                                 </SelectItem>
                                             ))
                                         ) : (
-                                            <div className="p-2 text-sm text-muted-foreground text-center">No cities found</div>
+                                            <div className="p-4 text-xs font-bold uppercase tracking-widest text-zinc-400 text-center">No cities found</div>
                                         )}
                                     </SelectContent>
                                 </Select>
                             </div>
                         </div>
 
-                        <div className="space-y-1.5">
-                            <Label htmlFor="pincode" className="font-semibold text-zinc-900">Pincode</Label>
-                            <div className="relative">
-                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                        <div className="space-y-2">
+                            <Label htmlFor="pincode" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">Pincode</Label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400 group-focus-within:text-zinc-900 transition-colors">
                                     <MapPin className="h-4 w-4" />
                                 </div>
-                                <FormInput
+                                <Input
                                     id="pincode"
                                     name="pincode"
                                     required
                                     value={formData.pincode}
                                     onChange={handleInputChange}
-                                    className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
                                     placeholder="110001"
                                 />
                             </div>
                         </div>
                     </div>
 
-                    <div className="pt-4 flex gap-4">
-                        <SecondaryButton type="button" onClick={prevStep} className="flex-1 h-11 border-zinc-200 hover:bg-zinc-50 text-zinc-900 gap-2">
-                            <ArrowLeft className="h-4 w-4" /> Previous
-                        </SecondaryButton>
-                        <PrimaryButton type="submit" disabled={isLoading} className="flex-1 h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-lg shadow-lg shadow-zinc-900/20 transition-all">
+                    <div className="pt-6 flex gap-4">
+                        <Button type="button" variant="outline" onClick={prevStep} className="flex-1 h-12 border-zinc-200 hover:bg-zinc-50 text-zinc-900 font-bold rounded-xl transition-all uppercase tracking-widest text-xs gap-2">
+                            <ArrowLeft className="h-4 w-4" /> Back
+                        </Button>
+                        <Button type="submit" disabled={isLoading} className="flex-1 h-12 bg-zinc-900 hover:bg-black text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-zinc-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 uppercase tracking-widest text-xs">
                             {isLoading ? (
                                 <div className="flex items-center justify-center gap-2">
                                     <Loader2 className="h-4 w-4 animate-spin" />
-                                    Creating...
+                                    Finalizing...
                                 </div>
                             ) : (
-                                'Complete Registration'
+                                <>
+                                    Complete Setup <ArrowRight className="h-4 w-4 ml-1" />
+                                </>
                             )}
-                        </PrimaryButton>
+                        </Button>
                     </div>
                 </form>
             )}

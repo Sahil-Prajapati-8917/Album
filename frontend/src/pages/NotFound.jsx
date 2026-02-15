@@ -21,25 +21,25 @@ const NotFound = ({
   logo = "/api/placeholder/120/40",
   heroImage = "/api/placeholder/800/600",
   suggestedLinks = [
-    { name: "Home", path: "/" },
-    { name: "Exquisite Demo", path: "/demo" },
-    { name: "Pricing & Plans", path: "/pricing" },
-    { name: "Join Community", path: "/signup" }
+    { name: "Global Hub", path: "/" },
+    { name: "Visual Showcase", path: "/demo" },
+    { name: "Artistic Tiers", path: "/pricing" },
+    { name: "Join Sanctuary", path: "/signup" }
   ],
   thumbnails = [
-    { id: 1, src: "/api/placeholder/300/300", alt: "Wedding Photography", title: "Elegant Wedding" },
-    { id: 2, src: "/api/placeholder/300/300", alt: "Portrait Session", title: "Studio Portrait" },
-    { id: 3, src: "/api/placeholder/300/300", alt: "Nature Landscape", title: "Golden Hour" },
-    { id: 4, src: "/api/placeholder/300/300", alt: "Event Photography", title: "Corporate Event" },
-    { id: 5, src: "/api/placeholder/300/300", alt: "Family Session", title: "Family Portrait" },
-    { id: 6, src: "/api/placeholder/300/300", alt: "Fashion Shoot", title: "Fashion Editorial" }
+    { id: 1, src: "/api/placeholder/400/400", alt: "Wedding Photography", title: "Eternal Union" },
+    { id: 2, src: "/api/placeholder/400/400", alt: "Portrait Session", title: "Soul Mirror" },
+    { id: 3, src: "/api/placeholder/400/400", alt: "Nature Landscape", title: "Celestial Hour" },
+    { id: 4, src: "/api/placeholder/400/400", alt: "Event Photography", title: "Legacy Gala" },
+    { id: 5, src: "/api/placeholder/400/400", alt: "Family Session", title: "Kinship Portrait" },
+    { id: 6, src: "/api/placeholder/400/400", alt: "Fashion Shoot", title: "Editorial Muse" }
   ]
 }) => {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
   const [searchTerm, setSearchTerm] = useState('')
   const { scrollY } = useScroll()
-  const y = useTransform(scrollY, [0, 300], [0, -50])
+  const y = useTransform(scrollY, [0, 500], [0, -100])
 
   const filteredThumbnails = thumbnails.filter(thumb =>
     thumb.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -86,180 +86,144 @@ const NotFound = ({
   }, [lightboxOpen, filteredThumbnails.length])
 
   return (
-    <div className="bg-pearl dark:bg-ebony font-display transition-colors duration-300">
-      <main className="relative pt-20">
+    <div className="bg-white dark:bg-zinc-950 font-sans transition-colors duration-700 overflow-x-hidden">
+      <main className="relative pt-32">
         {/* Hero Section */}
-        <section className="relative overflow-hidden min-h-[70vh] flex items-center">
+        <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
           <motion.div
             style={{ y }}
-            className="relative w-full flex items-center justify-center py-20"
+            className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none opacity-[0.03] dark:opacity-[0.05]"
           >
-            <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-                className="text-[10rem] md:text-[15rem] font-serif font-bold text-gold/10 leading-none absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none select-none"
-              >
-                404
-              </motion.h1>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="mb-12 relative z-10"
-              >
-                <h2 className="text-4xl md:text-5xl font-serif text-[#181611] dark:text-white mb-6">
-                  Page Not <span className="italic">Found</span>
-                </h2>
-                <p className="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
-                  The page you're searching for has vanished into the shadows.
-                  Let's guide you back to the light of our gallery.
-                </p>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-6 justify-center relative z-10"
-              >
-                <Link
-                  to="/"
-                  className="bg-gold text-white px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold/90 transition-all shadow-lg"
-                >
-                  Return Home
-                </Link>
-                <Link
-                  to="/demo"
-                  className="border border-gold/30 text-gold px-10 py-4 rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-gold hover:text-white transition-all"
-                >
-                  Explore Demo
-                </Link>
-              </motion.div>
-            </div>
+            <h1 className="text-[20vw] font-black uppercase tracking-tighter select-none">
+              Lost
+            </h1>
           </motion.div>
-        </section>
 
-        {/* Featured Image */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-6xl mx-auto">
+          <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="relative"
+              transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-8"
             >
-              <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden shadow-2xl">
-                <img
-                  src={heroImage}
-                  alt="Photography showcase"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-lg" />
+              <Badge className="bg-zinc-900 dark:bg-zinc-50 text-white dark:text-black hover:bg-zinc-900 px-6 py-1 text-[11px] font-black uppercase tracking-[0.3em] rounded-full shadow-2xl mb-12">
+                Discovery Mode
+              </Badge>
+              <h2 className="text-6xl md:text-8xl font-bold text-zinc-900 dark:text-zinc-50 leading-[0.9] tracking-tighter mb-8">
+                The path has <br /><span className="text-zinc-300 dark:text-zinc-700 italic">vanished.</span>
+              </h2>
+              <p className="text-xl text-zinc-500 font-medium max-w-2xl mx-auto leading-relaxed">
+                The coordinates you seek are currently outside our charted visual territory. Let us return you to the sanctuary.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-col sm:flex-row gap-8 justify-center mt-16"
+            >
+              <Link
+                to="/"
+                className="bg-zinc-900 dark:bg-zinc-50 text-white dark:text-black px-12 h-16 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-all shadow-2xl flex items-center justify-center group"
+              >
+                <Home className="mr-3 h-4 w-4" /> Return to Base
+              </Link>
+              <Link
+                to="/all-pixfolio"
+                className="border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-50 px-12 h-16 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-all flex items-center justify-center"
+              >
+                Browse Archives
+              </Link>
             </motion.div>
           </div>
         </section>
 
         {/* Gallery Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-6xl mx-auto">
+        <section className="py-32 px-6 lg:px-20 bg-zinc-50/50 dark:bg-zinc-900/50 border-y border-zinc-100 dark:border-zinc-800/50">
+          <div className="max-w-7xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 1 }}
               viewport={{ once: true }}
-              className="text-center mb-12"
+              className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-10"
             >
-              <h3 className="text-3xl font-serif font-light text-gray-900 mb-4">
-                Explore Our Work
-              </h3>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                While you're here, take a moment to browse our curated collection of memorable captures.
-              </p>
-            </motion.div>
+              <div className="space-y-4">
+                <h3 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                  Visual Contingency
+                </h3>
+                <p className="text-zinc-500 font-medium max-w-xl">
+                  While we bridge the gap to your destination, explore high-performance narratives from our global repository.
+                </p>
+              </div>
 
-            {/* Search */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="max-w-md mx-auto mb-12"
-            >
-              <div className="relative">
-                <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+              <div className="relative w-full max-w-md group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-zinc-900 dark:group-focus-within:text-zinc-50 transition-colors" />
                 <Input
                   type="text"
-                  placeholder="Search gallery..."
+                  placeholder="Recovery search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-3"
+                  className="pl-12 h-14 border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 rounded-2xl focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-50 transition-all font-medium"
                 />
               </div>
             </motion.div>
 
             {/* Gallery Grid */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-            >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
               {filteredThumbnails.map((thumbnail, index) => (
                 <motion.div
                   key={thumbnail.id}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="group cursor-pointer"
+                  className="group cursor-pointer relative"
                   onClick={() => openLightbox(index)}
                 >
-                  <div className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow duration-300">
+                  <div className="relative aspect-[4/5] bg-zinc-200 dark:bg-zinc-800 rounded-3xl overflow-hidden shadow-sm group-hover:shadow-2xl group-hover:-translate-y-2 transition-all duration-500 ease-[0.16, 1, 0.3, 1]">
                     <img
                       src={thumbnail.src}
                       alt={thumbnail.alt}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
-                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
-                      <h4 className="text-white font-medium text-sm">{thumbnail.title}</h4>
+                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="absolute bottom-8 left-8 right-8">
+                      <p className="text-[10px] font-black text-white/50 uppercase tracking-[0.2em] mb-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Resource Classification</p>
+                      <h4 className="text-xl font-bold text-white tracking-tight transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 delay-[50ms]">{thumbnail.title}</h4>
                     </div>
                   </div>
                 </motion.div>
               ))}
-            </motion.div>
+            </div>
           </div>
         </section>
 
         {/* Suggested Links */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+        <section className="py-32 px-6">
+          <div className="max-w-4xl mx-auto text-center space-y-12">
             <motion.h3
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1 }}
               viewport={{ once: true }}
-              className="text-2xl font-serif font-light text-gray-900 mb-8"
+              className="text-[11px] font-black uppercase tracking-[0.4em] text-zinc-400"
             >
-              You Might Also Like
+              Tactical Navigation
             </motion.h3>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 1, delay: 0.2 }}
               viewport={{ once: true }}
-              className="flex flex-wrap justify-center gap-4"
+              className="flex flex-wrap justify-center gap-6"
             >
-              {suggestedLinks.map((link, index) => (
+              {suggestedLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="px-6 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors"
+                  className="px-10 py-5 bg-white dark:bg-zinc-900 border border-zinc-100 dark:border-zinc-800 text-zinc-900 dark:text-zinc-50 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:border-zinc-900 dark:hover:border-zinc-50 transition-all shadow-sm active:scale-95"
                 >
                   {link.name}
                 </Link>
@@ -269,92 +233,57 @@ const NotFound = ({
         </section>
       </main>
 
-      {/* Footer */}
-      {/*
-      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-6 md:mb-0">
-              <Camera className="h-6 w-6" />
-              <span className="font-serif text-lg">Photography Studio</span>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8">
-              <div className="flex space-x-4">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
-                  <Instagram className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Facebook">
-                  <Facebook className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="YouTube">
-                  <Youtube className="h-5 w-5" />
-                </a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
-                  <Twitter className="h-5 w-5" />
-                </a>
-              </div>
-
-              <a
-                href="mailto:hello@photostudio.com"
-                className="text-gray-400 hover:text-white transition-colors flex items-center"
-              >
-                <Mail className="h-4 w-4 mr-2" />
-                hello@photostudio.com
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-      */}
-
       {/* Lightbox */}
       {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-white/95 dark:bg-zinc-950/98 backdrop-blur-2xl"
           onClick={closeLightbox}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="lightbox-title"
         >
-          <div className="relative max-w-4xl max-h-full p-4" onClick={(e) => e.stopPropagation()}>
-            <button
+          <div className="relative w-full h-full flex items-center justify-center p-4 md:p-20" onClick={(e) => e.stopPropagation()}>
+            <Button
               onClick={closeLightbox}
-              className="absolute top-2 right-2 z-10 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors"
-              aria-label="Close lightbox"
+              variant="ghost"
+              className="absolute top-10 right-10 h-14 w-14 rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-all"
             >
               <X className="h-6 w-6" />
-            </button>
+            </Button>
 
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors"
-              aria-label="Previous image"
+              className="absolute left-6 md:left-20 top-1/2 -translate-y-1/2 h-16 w-16 flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-all"
             >
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-10 w-10" />
             </button>
 
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-black/50 text-white rounded-full hover:bg-black/70 transition-colors"
-              aria-label="Next image"
+              className="absolute right-6 md:right-20 top-1/2 -translate-y-1/2 h-16 w-16 flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-all"
             >
-              <ChevronRight className="h-6 w-6" />
+              <ChevronRight className="h-10 w-10" />
             </button>
 
-            <img
-              src={filteredThumbnails[currentImage]?.src}
-              alt={filteredThumbnails[currentImage]?.alt}
-              className="max-w-full max-h-full object-contain rounded-lg"
-            />
-
-            <div className="absolute bottom-4 left-4 right-4 text-white text-center">
-              <h4 id="lightbox-title" className="text-lg font-medium bg-black/50 rounded px-3 py-1 inline-block">
-                {filteredThumbnails[currentImage]?.title}
-              </h4>
-            </div>
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="relative max-w-full max-h-full aspect-[4/5] md:aspect-auto"
+            >
+              <img
+                src={filteredThumbnails[currentImage]?.src}
+                alt={filteredThumbnails[currentImage]?.alt}
+                className="max-w-full max-h-[80vh] object-contain rounded-3xl shadow-2xl"
+              />
+              <div className="mt-8 text-center space-y-2">
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">Archived Work</p>
+                <h4 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 tracking-tight">
+                  {filteredThumbnails[currentImage]?.title}
+                </h4>
+              </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   )

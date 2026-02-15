@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { Button } from './ui/button'
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+} from "@/components/ui/sheet"
 import { ThemeToggle } from './ThemeToggle'
 import { LayoutGrid, Menu, X } from 'lucide-react'
 
@@ -34,36 +42,42 @@ const LandingHeader = () => {
                     <Link className="hover:text-primary transition-colors text-foreground" to="/pricing">Pricing</Link>
                     <Link className="hover:text-primary transition-colors text-foreground" to="/login">Login</Link>
                     <ThemeToggle />
-                    <Link to="/signup" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider hover:bg-foreground hover:text-background transition-all shadow-lg shadow-primary/10">
-                        Join Now
-                    </Link>
+                    <Button asChild className="bg-primary text-primary-foreground px-6 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider hover:bg-foreground hover:text-background transition-all shadow-lg shadow-primary/10 h-auto">
+                        <Link to="/signup">Join Now</Link>
+                    </Button>
                 </div>
 
                 {/* Mobile Menu Toggle */}
                 <div className="flex items-center gap-4 md:hidden">
                     <ThemeToggle />
-                    <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-foreground">
-                        {mobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
-                    </button>
+                    <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                        <SheetTrigger asChild>
+                            <Button variant="ghost" size="icon" className="text-foreground">
+                                <Menu className="size-6" />
+                            </Button>
+                        </SheetTrigger>
+                        <SheetContent side="top" className="p-6 pt-12">
+                            <SheetHeader className="mb-8">
+                                <SheetTitle className="text-left flex items-center gap-2">
+                                    <div className="size-6 flex items-center justify-center bg-foreground text-background rounded-sm">
+                                        <LayoutGrid className="size-4" />
+                                    </div>
+                                    Pixfolio
+                                </SheetTitle>
+                            </SheetHeader>
+                            <nav className="flex flex-col gap-6 text-sm font-medium tracking-widest uppercase items-center">
+                                <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/">Home</Link>
+                                <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/demo">Demo</Link>
+                                <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/pricing">Pricing</Link>
+                                <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/login">Login</Link>
+                                <Button asChild onClick={() => setMobileMenuOpen(false)} className="w-full text-center bg-primary text-primary-foreground px-6 py-3 rounded-sm text-sm font-bold uppercase tracking-wider hover:bg-foreground hover:text-background transition-all h-auto mt-4">
+                                    <Link to="/signup">Join Now</Link>
+                                </Button>
+                            </nav>
+                        </SheetContent>
+                    </Sheet>
                 </div>
             </div>
-
-            {/* Mobile Menu Overlay */}
-            {mobileMenuOpen && (
-                <div className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-border/10 p-6 flex flex-col gap-6 shadow-xl animate-in slide-in-from-top-5">
-                    <nav className="flex flex-col gap-6 text-sm font-medium tracking-widest uppercase text-center">
-                        <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/">Home</Link>
-                        <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/demo">Demo</Link>
-                        <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/pricing">Pricing</Link>
-                        <Link onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2 text-foreground" to="/login">Login</Link>
-                    </nav>
-                    <div className="flex flex-col gap-4 items-center border-t border-border/10 pt-6">
-                        <Link onClick={() => setMobileMenuOpen(false)} to="/signup" className="w-full text-center bg-primary text-primary-foreground px-6 py-3 rounded-sm text-sm font-bold uppercase tracking-wider hover:bg-foreground hover:text-background transition-all">
-                            Join Now
-                        </Link>
-                    </div>
-                </div>
-            )}
         </header>
     )
 }
