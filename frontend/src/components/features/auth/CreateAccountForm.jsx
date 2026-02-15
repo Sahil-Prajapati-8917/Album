@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { User, Phone, Mail, Lock, Building, MapPin, Globe, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft } from 'lucide-react'
-import { AuthCard } from '@/components/custom/AuthCard'
+import { User, Phone, Mail, Lock, Building, MapPin, Globe, Eye, EyeOff, Loader2, AlertCircle, ArrowLeft, ArrowRight } from 'lucide-react'
 import { FormInput } from '@/components/custom/FormInput'
 import { PrimaryButton } from '@/components/custom/PrimaryButton'
 import { SecondaryButton } from '@/components/custom/SecondaryButton'
@@ -140,24 +139,8 @@ const CreateAccountForm = () => {
     const states = formData.country ? State.getStatesOfCountry(formData.country) : []
     const cities = (formData.country && formData.state) ? City.getCitiesOfState(formData.country, formData.state) : []
 
-    const footerContent = (
-        <div className="mt-6 text-center">
-            <p className="text-sm text-muted-foreground">
-                Already a member?{' '}
-                <Link to="/login" className="font-medium text-gold hover:text-gold/80 transition-colors">
-                    Sign In
-                </Link>
-            </p>
-        </div>
-    )
-
     return (
-        <AuthCard
-            title="Create Account"
-            description="Join our exclusive community of artists"
-            footer={footerContent}
-            className="max-w-2xl" // Wider card for signup
-        >
+        <div className="w-full">
             {error && (
                 <Alert variant="destructive" className="mb-6">
                     <AlertCircle className="h-4 w-4" />
@@ -167,214 +150,281 @@ const CreateAccountForm = () => {
 
             {/* Progress Indicator */}
             <div className="flex justify-center mb-8">
-                <div className="flex items-center space-x-4">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${currentStep >= 1 ? 'bg-gold text-white' : 'bg-muted text-muted-foreground'}`}>
+                <div className="flex items-center space-x-3">
+                    <div className={`size-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${currentStep >= 1 ? 'bg-zinc-900 text-white shadow-lg shadow-zinc-900/20' : 'bg-zinc-200 text-zinc-500'}`}>
                         1
                     </div>
-                    <div className={`w-16 h-0.5 transition-all duration-500 ${currentStep >= 2 ? 'bg-gold' : 'bg-muted'}`}></div>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${currentStep >= 2 ? 'bg-gold text-white' : 'bg-muted text-muted-foreground'}`}>
+                    <div className={`w-12 h-1 rounded-full transition-all duration-500 ${currentStep >= 2 ? 'bg-zinc-900' : 'bg-zinc-200'}`}></div>
+                    <div className={`size-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 ${currentStep >= 2 ? 'bg-zinc-900 text-white shadow-lg shadow-zinc-900/20' : 'bg-zinc-200 text-zinc-500'}`}>
                         2
                     </div>
                 </div>
             </div>
 
-            <div className="mb-6 text-center">
-                <h3 className="text-xs uppercase tracking-widest text-gold font-bold">
+            <div className="mb-8 text-center">
+                <h3 className="text-xs uppercase tracking-widest text-zinc-500 font-semibold">
                     {currentStep === 1 ? 'Personal Details' : 'Business Details'}
                 </h3>
             </div>
 
             {currentStep === 1 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-1">
-                        <FormInput
-                            id="fullName"
-                            name="fullName"
-                            label="Full Name"
-                            required
-                            value={formData.fullName}
-                            onChange={handleInputChange}
-                            placeholder="John Doe"
-                        />
-                    </div>
-                    <div className="md:col-span-1">
-                        <FormInput
-                            id="phoneNumber"
-                            name="phoneNumber"
-                            label="Phone"
-                            required
-                            value={formData.phoneNumber}
-                            onChange={handleInputChange}
-                            placeholder="+1 (555) 000"
-                        />
-                    </div>
-                    <div className="md:col-span-2">
-                        <FormInput
-                            id="email"
-                            name="email"
-                            type="email"
-                            label="Email Address"
-                            required
-                            value={formData.email}
-                            onChange={handleInputChange}
-                            placeholder="artist@pixfolio.com"
-                        />
-                    </div>
-                    <div className="md:col-span-1 relative">
-                        <FormInput
-                            id="password"
-                            name="password"
-                            type={showPassword ? 'text' : 'password'}
-                            label="Password"
-                            required
-                            value={formData.password}
-                            onChange={handleInputChange}
-                            placeholder="••••••••"
-                            className="pr-10"
-                        />
-                        <div className="absolute top-[2.1rem] right-0 pr-0 flex items-center">
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="h-9 w-9 p-0 hover:bg-transparent"
-                            >
-                                {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
-                            </Button>
+                <div className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="fullName" className="font-semibold text-zinc-900">Full Name</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <User className="h-4 w-4" />
+                                </div>
+                                <FormInput
+                                    id="fullName"
+                                    name="fullName"
+                                    required
+                                    value={formData.fullName}
+                                    onChange={handleInputChange}
+                                    className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    placeholder="John Doe"
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-1.5">
+                            <Label htmlFor="phoneNumber" className="font-semibold text-zinc-900">Phone</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <Phone className="h-4 w-4" />
+                                </div>
+                                <FormInput
+                                    id="phoneNumber"
+                                    name="phoneNumber"
+                                    required
+                                    value={formData.phoneNumber}
+                                    onChange={handleInputChange}
+                                    className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    placeholder="+1 (555) 000"
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className="md:col-span-1 relative">
-                        <FormInput
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            label="Confirm"
-                            required
-                            value={formData.confirmPassword}
-                            onChange={handleInputChange}
-                            placeholder="••••••••"
-                            className="pr-10"
-                        />
-                        <div className="absolute top-[2.1rem] right-0 pr-0 flex items-center">
-                            <Button
-                                type="button"
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                className="h-9 w-9 p-0 hover:bg-transparent"
-                            >
-                                {showConfirmPassword ? <EyeOff className="h-4 w-4 text-muted-foreground" /> : <Eye className="h-4 w-4 text-muted-foreground" />}
-                            </Button>
+
+                    <div className="space-y-1.5">
+                        <Label htmlFor="email" className="font-semibold text-zinc-900">Email Address</Label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                <Mail className="h-4 w-4" />
+                            </div>
+                            <FormInput
+                                id="email"
+                                name="email"
+                                type="email"
+                                required
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                placeholder="artist@pixfolio.com"
+                            />
                         </div>
                     </div>
-                    <div className="md:col-span-2 pt-4">
-                        <PrimaryButton onClick={nextStep} className="w-full">
-                            Next Step
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                            <Label htmlFor="password" className="font-semibold text-zinc-900">Password</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <Lock className="h-4 w-4" />
+                                </div>
+                                <FormInput
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    required
+                                    value={formData.password}
+                                    onChange={handleInputChange}
+                                    className="pl-10 pr-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    placeholder="••••••••"
+                                />
+                                <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="h-9 w-9 p-0 mr-1 hover:bg-transparent text-zinc-400 hover:text-zinc-600"
+                                    >
+                                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="space-y-1.5">
+                            <Label htmlFor="confirmPassword" className="font-semibold text-zinc-900">Confirm</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <Lock className="h-4 w-4" />
+                                </div>
+                                <FormInput
+                                    id="confirmPassword"
+                                    name="confirmPassword"
+                                    type={showConfirmPassword ? 'text' : 'password'}
+                                    required
+                                    value={formData.confirmPassword}
+                                    onChange={handleInputChange}
+                                    className="pl-10 pr-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    placeholder="••••••••"
+                                />
+                                <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="h-9 w-9 p-0 mr-1 hover:bg-transparent text-zinc-400 hover:text-zinc-600"
+                                    >
+                                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </Button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="pt-4">
+                        <PrimaryButton onClick={nextStep} className="w-full h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-lg shadow-lg shadow-zinc-900/20 transition-all flex items-center justify-center gap-2">
+                            Next Step <ArrowRight className="h-4 w-4" />
                         </PrimaryButton>
                     </div>
                 </div>
             )}
 
             {currentStep === 2 && (
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="md:col-span-2">
-                        <FormInput
-                            id="studioName"
-                            name="studioName"
-                            label="Studio Name"
-                            required
-                            value={formData.studioName}
-                            onChange={handleInputChange}
-                            placeholder="Dreamscape Studio"
-                        />
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-1.5">
+                        <Label htmlFor="studioName" className="font-semibold text-zinc-900">Studio Name</Label>
+                        <div className="relative">
+                            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                <Building className="h-4 w-4" />
+                            </div>
+                            <FormInput
+                                id="studioName"
+                                name="studioName"
+                                required
+                                value={formData.studioName}
+                                onChange={handleInputChange}
+                                className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                placeholder="Dreamscape Studio"
+                            />
+                        </div>
                     </div>
 
-                    {/* Country Selector */}
-                    <div className="md:col-span-1 space-y-2">
-                        <Label className="text-sm font-medium">Country</Label>
-                        <Select onValueChange={(v) => handleSelectChange('country', v)} value={formData.country}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select Country" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {countries.map(c => (
-                                    <SelectItem key={c.isoCode} value={c.isoCode}>
-                                        {c.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Country Selector */}
+                        <div className="space-y-1.5">
+                            <Label className="font-semibold text-zinc-900">Country</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <Globe className="h-4 w-4" />
+                                </div>
+                                <Select onValueChange={(v) => handleSelectChange('country', v)} value={formData.country}>
+                                    <SelectTrigger className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg">
+                                        <SelectValue placeholder="Select" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {countries.map(c => (
+                                            <SelectItem key={c.isoCode} value={c.isoCode}>
+                                                {c.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        {/* State Selector */}
+                        <div className="space-y-1.5">
+                            <Label className="font-semibold text-zinc-900">State / Province</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <MapPin className="h-4 w-4" />
+                                </div>
+                                <Select
+                                    onValueChange={(v) => handleSelectChange('state', v)}
+                                    value={formData.state}
+                                    disabled={!formData.country}
+                                >
+                                    <SelectTrigger className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg disabled:opacity-50">
+                                        <SelectValue placeholder={!formData.country ? "Select Country" : "Select State"} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {states.length > 0 ? (
+                                            states.map(s => (
+                                                <SelectItem key={s.isoCode} value={s.isoCode}>
+                                                    {s.name}
+                                                </SelectItem>
+                                            ))
+                                        ) : (
+                                            <div className="p-2 text-sm text-muted-foreground text-center">No states found</div>
+                                        )}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* State Selector */}
-                    <div className="md:col-span-1 space-y-2">
-                        <Label className="text-sm font-medium">State / Province</Label>
-                        <Select
-                            onValueChange={(v) => handleSelectChange('state', v)}
-                            value={formData.state}
-                            disabled={!formData.country}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder={!formData.country ? "Select Country First" : "Select State"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {states.length > 0 ? (
-                                    states.map(s => (
-                                        <SelectItem key={s.isoCode} value={s.isoCode}>
-                                            {s.name}
-                                        </SelectItem>
-                                    ))
-                                ) : (
-                                    <div className="p-2 text-sm text-muted-foreground text-center">No states found</div>
-                                )}
-                            </SelectContent>
-                        </Select>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* City Selector */}
+                        <div className="space-y-1.5">
+                            <Label className="font-semibold text-zinc-900">City / District</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <MapPin className="h-4 w-4" />
+                                </div>
+                                <Select
+                                    onValueChange={(v) => handleSelectChange('city', v)}
+                                    value={formData.city}
+                                    disabled={!formData.state}
+                                >
+                                    <SelectTrigger className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg disabled:opacity-50">
+                                        <SelectValue placeholder={!formData.state ? "Select State" : "Select City"} />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {cities.length > 0 ? (
+                                            cities.map(ct => (
+                                                <SelectItem key={ct.name} value={ct.name}>
+                                                    {ct.name}
+                                                </SelectItem>
+                                            ))
+                                        ) : (
+                                            <div className="p-2 text-sm text-muted-foreground text-center">No cities found</div>
+                                        )}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="space-y-1.5">
+                            <Label htmlFor="pincode" className="font-semibold text-zinc-900">Pincode</Label>
+                            <div className="relative">
+                                <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none z-10 text-zinc-400">
+                                    <MapPin className="h-4 w-4" />
+                                </div>
+                                <FormInput
+                                    id="pincode"
+                                    name="pincode"
+                                    required
+                                    value={formData.pincode}
+                                    onChange={handleInputChange}
+                                    className="pl-10 h-11 bg-zinc-50 border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/20 rounded-lg"
+                                    placeholder="110001"
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    {/* City Selector */}
-                    <div className="md:col-span-1 space-y-2">
-                        <Label className="text-sm font-medium">City / District</Label>
-                        <Select
-                            onValueChange={(v) => handleSelectChange('city', v)}
-                            value={formData.city}
-                            disabled={!formData.state}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder={!formData.state ? "Select State First" : "Select City"} />
-                            </SelectTrigger>
-                            <SelectContent>
-                                {cities.length > 0 ? (
-                                    cities.map(ct => (
-                                        <SelectItem key={ct.name} value={ct.name}>
-                                            {ct.name}
-                                        </SelectItem>
-                                    ))
-                                ) : (
-                                    <div className="p-2 text-sm text-muted-foreground text-center">No cities found</div>
-                                )}
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div className="md:col-span-1">
-                        <FormInput
-                            id="pincode"
-                            name="pincode"
-                            label="Pincode / Zip Code"
-                            required
-                            value={formData.pincode}
-                            onChange={handleInputChange}
-                            placeholder="110001"
-                        />
-                    </div>
-                    <div className="md:col-span-2 flex gap-4 pt-4">
-                        <SecondaryButton type="button" onClick={prevStep} className="flex-1">
-                            Previous
+                    <div className="pt-4 flex gap-4">
+                        <SecondaryButton type="button" onClick={prevStep} className="flex-1 h-11 border-zinc-200 hover:bg-zinc-50 text-zinc-900 gap-2">
+                            <ArrowLeft className="h-4 w-4" /> Previous
                         </SecondaryButton>
-                        <PrimaryButton type="submit" disabled={isLoading} className="flex-1">
+                        <PrimaryButton type="submit" disabled={isLoading} className="flex-1 h-11 bg-zinc-900 hover:bg-zinc-800 text-white font-semibold rounded-lg shadow-lg shadow-zinc-900/20 transition-all">
                             {isLoading ? (
-                                <div className="flex items-center gap-2">
+                                <div className="flex items-center justify-center gap-2">
                                     <Loader2 className="h-4 w-4 animate-spin" />
                                     Creating...
                                 </div>
@@ -385,7 +435,7 @@ const CreateAccountForm = () => {
                     </div>
                 </form>
             )}
-        </AuthCard>
+        </div>
     )
 }
 

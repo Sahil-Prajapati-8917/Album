@@ -41,10 +41,9 @@ function AppContent() {
       </Route>
 
       {/* Auth Routes with Auth Layout */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Route>
+      {/* Auth Routes (Standalone) */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
 
       {/* Protected/Dashboard Routes with Dashboard Layout */}
       <Route element={<DashboardLayout />}>
