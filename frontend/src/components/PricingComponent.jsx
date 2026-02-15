@@ -52,11 +52,11 @@ function PricingCard({ theme, name, description, price, period, features }) {
 export default function PricingComponent() {
   return (
     <section className="bg-pearl dark:bg-ebony py-24 px-6 md:px-20 font-display transition-colors duration-300">
-      <div className="max-w-7xl mx-auto text-center mb-20">
-        <h2 className="text-5xl md:text-6xl font-serif text-[#181611] dark:text-white mb-6">
+      <div className="max-w-7xl mx-auto text-center mb-12 md:mb-20">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-[#181611] dark:text-white mb-6 leading-tight">
           Investment & <span className="italic">Plans</span>
         </h2>
-        <p className="text-sm uppercase tracking-[0.3em] text-gold font-semibold">
+        <p className="text-[10px] sm:text-sm uppercase tracking-[0.2em] sm:tracking-[0.3em] text-gold font-semibold">
           Tailored solutions for your digital legacy
         </p>
       </div>
@@ -81,7 +81,7 @@ export default function PricingComponent() {
         </div>
 
         {/* Pro Plan */}
-        <div className="bg-ebony dark:bg-gold p-10 rounded-2xl border border-gold shadow-2xl scale-105 relative z-10">
+        <div className="bg-ebony dark:bg-gold p-10 rounded-2xl border border-gold shadow-2xl md:scale-105 relative z-10">
           <div className="absolute top-0 right-10 -translate-y-1/2 bg-gold dark:bg-ebony text-white dark:text-gold px-4 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest">
             Recommended
           </div>
