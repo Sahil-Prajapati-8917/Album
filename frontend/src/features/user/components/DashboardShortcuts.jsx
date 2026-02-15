@@ -29,23 +29,25 @@ const shortcuts = [
 
 const DashboardShortcuts = () => {
     return (
-        <Card className="mb-4">
-            <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-                <CardDescription>Manage your workspace efficiently</CardDescription>
+        <Card className="shadow-sm border-muted rounded-xl h-full flex flex-col bg-card overflow-hidden">
+            <CardHeader className="pb-4">
+                <CardTitle className="text-xl font-semibold text-foreground">Quick Actions</CardTitle>
+                <CardDescription className="text-sm text-muted-foreground">Manage your workspace efficiently</CardDescription>
             </CardHeader>
-            <CardContent>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <CardContent className="flex-1 overflow-y-auto">
+                <div className="grid grid-cols-2 gap-4">
                     {shortcuts.map((shortcut, index) => (
                         <Button
                             key={index}
                             variant="outline"
-                            className="h-auto py-4 flex flex-col gap-2"
+                            className="h-auto py-5 flex flex-col gap-3 rounded-xl border-muted bg-background hover:bg-muted/50 hover:text-foreground transition-colors group"
                             asChild
                         >
                             <Link to={shortcut.href}>
-                                <shortcut.icon className="h-5 w-5" />
-                                <span>{shortcut.title}</span>
+                                <div className="p-2 bg-muted rounded-lg group-hover:bg-background group-hover:shadow-sm transition-all text-muted-foreground group-hover:text-primary">
+                                    <shortcut.icon className="h-5 w-5" />
+                                </div>
+                                <span className="text-xs font-semibold tracking-tight">{shortcut.title}</span>
                             </Link>
                         </Button>
                     ))}

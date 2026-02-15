@@ -9,23 +9,26 @@ export default function DashboardLayout() {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    const userData = getUser()
-    if (userData) {
-      setUser(userData)
+    const fetchUser = () => {
+      const userData = getUser()
+      if (userData) {
+        setUser(userData)
+      } else {
+        setUser({ name: 'Demo User', email: 'demo@pixfolio.com' })
+      }
     }
+    fetchUser()
   }, [])
 
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="bg-background">
         <AdminHeader user={user} />
-        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-          <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" >
-            <div className="p-4 md:p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
-              <Outlet />
-            </div>
-          </div>
+        <div className="flex-1 w-full overflow-y-auto">
+          <main className="max-w-7xl mx-auto p-6 space-y-6">
+            <Outlet />
+          </main>
         </div>
       </SidebarInset>
     </SidebarProvider>

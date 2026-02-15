@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Camera, Diamond, Users, Sparkles } from 'lucide-react';
-import { servicesConfig } from '../../../main.jsx';
+import { servicesConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

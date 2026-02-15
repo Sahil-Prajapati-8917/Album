@@ -9,7 +9,7 @@ import { Testimonials } from './sections/Testimonials';
 import { Pricing } from './sections/Pricing';
 import { FAQ } from './sections/FAQ';
 import { Footer } from './sections/Footer';
-import { siteConfig } from '../../main.jsx';
+import { siteConfig } from './config.js';
 import './landing.css';
 
 function Landing() {

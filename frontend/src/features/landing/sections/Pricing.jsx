@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Check } from 'lucide-react';
-import { pricingConfig } from '../../../main.jsx';
+import { pricingConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

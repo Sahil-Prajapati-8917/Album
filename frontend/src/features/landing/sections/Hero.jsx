@@ -1,9 +1,9 @@
-// ... keep imports ...
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { heroConfig } from '../../../main.jsx';
+import { heroConfig } from '../config.js';
 import { ArrowRight, Play, Menu, X } from 'lucide-react'; // Added Menu, X icons
 
 gsap.registerPlugin(ScrollTrigger);

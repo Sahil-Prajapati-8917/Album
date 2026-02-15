@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { whyChooseMeConfig } from '../../../main.jsx';
+import { whyChooseMeConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

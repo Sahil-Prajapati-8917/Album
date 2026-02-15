@@ -7,7 +7,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '../../../components/landing-ui/accordion';
-import { faqConfig } from '../../../main.jsx';
+import { faqConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

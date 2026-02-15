@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { introGridConfig } from '../../../main.jsx';
+import { introGridConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

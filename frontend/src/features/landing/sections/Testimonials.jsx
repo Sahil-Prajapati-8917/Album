@@ -6,7 +6,7 @@ import { Autoplay, FreeMode } from 'swiper/modules';
 import { Quote } from 'lucide-react';
 import 'swiper/css';
 import 'swiper/css/free-mode';
-import { testimonialsConfig } from '../../../main.jsx';
+import { testimonialsConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

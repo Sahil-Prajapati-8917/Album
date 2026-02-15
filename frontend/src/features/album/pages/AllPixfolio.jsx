@@ -24,10 +24,6 @@ const AllPixfolio = () => {
   const [albums, setAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
 
-  useEffect(() => {
-    loadAlbums()
-  }, [])
-
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
     if (storedAlbums.length === 0) {
@@ -50,11 +46,15 @@ const AllPixfolio = () => {
           status: "published",
         }
       ]
-      setAlbums(mockAlbums)
+      setTimeout(() => setAlbums(mockAlbums), 0)
     } else {
-      setAlbums(storedAlbums)
+      setTimeout(() => setAlbums(storedAlbums), 0)
     }
   }
+
+  useEffect(() => {
+    loadAlbums()
+  }, [])
 
   const handleDelete = (id) => {
     const updated = albums.filter(a => a.id !== id)
@@ -68,75 +68,86 @@ const AllPixfolio = () => {
   )
 
   return (
-    <div className="flex-1 space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">All Pixfolio</h2>
-          <p className="text-muted-foreground">
-            Manage your digital albums and archives.
-          </p>
-        </div>
+    <div className="flex-1 space-y-8 animate-in fade-in duration-500">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">All Pixfolios</h1>
+        <p className="text-muted-foreground font-medium">
+          Manage your digital albums, view analytics, and organize your archives.
+        </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Albums</CardTitle>
-          <CardDescription>
-            A list of all your created albums and their current status.
+      <Card className="shadow-sm border-muted rounded-xl overflow-hidden bg-card">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl font-semibold text-foreground">Albums Repository</CardTitle>
+          <CardDescription className="text-sm text-muted-foreground">
+            A comprehensive list of all your created visual books and their status.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex items-center py-4">
-            <div className="relative w-full max-w-sm">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <div className="flex items-center pb-6">
+            <div className="relative w-full max-w-sm group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-foreground transition-colors" />
               <Input
-                placeholder="Filter albums..."
+                placeholder="Filter by name or client..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9"
+                className="pl-10 h-10 border-input bg-muted/30 focus:bg-background focus:ring-1 focus:ring-ring rounded-lg transition-all"
               />
             </div>
           </div>
-          <div className="rounded-md border overflow-x-auto">
+          <div className="rounded-xl border border-muted overflow-hidden">
             <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Album Name</TableHead>
-                  <TableHead>Client</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+              <TableHeader className="bg-muted/50">
+                <TableRow className="hover:bg-transparent border-border">
+                  <TableHead className="font-semibold text-muted-foreground h-11 text-xs uppercase tracking-wider">Album Name</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground h-11 text-xs uppercase tracking-wider">Client</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground h-11 text-xs uppercase tracking-wider">Date</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground h-11 text-xs uppercase tracking-wider">Type</TableHead>
+                  <TableHead className="font-semibold text-muted-foreground h-11 text-xs uppercase tracking-wider">Status</TableHead>
+                  <TableHead className="text-right font-semibold text-muted-foreground h-11 text-xs uppercase tracking-wider">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredAlbums.length > 0 ? (
                   filteredAlbums.map((album) => (
-                    <TableRow key={album.id}>
-                      <TableCell className="font-medium">{album.albumName}</TableCell>
-                      <TableCell>{album.clientName}</TableCell>
-                      <TableCell>{album.functionDate}</TableCell>
-                      <TableCell className="capitalize">{album.functionType}</TableCell>
+                    <TableRow key={album.id} className="hover:bg-white transition-colors border-border">
+                      <TableCell className="font-bold text-zinc-900">{album.albumName}</TableCell>
+                      <TableCell className="font-medium text-zinc-600">{album.clientName}</TableCell>
+                      <TableCell className="text-zinc-500 font-medium">{album.functionDate}</TableCell>
+                      <TableCell className="capitalize font-medium text-zinc-600">
+                        <Badge variant="outline" className="bg-white border-zinc-200 text-zinc-600 rounded-md px-2 py-0">
+                          {album.functionType}
+                        </Badge>
+                      </TableCell>
                       <TableCell>
-                        <Badge variant={album.status === 'published' ? 'default' : 'secondary'}>
+                        <Badge
+                          variant={album.status === 'published' ? 'default' : 'secondary'}
+                          className={`rounded-full px-3 py-0.5 font-bold uppercase text-[10px] tracking-widest ${album.status === 'published'
+                            ? 'bg-emerald-100 text-emerald-700 hover:bg-emerald-100'
+                            : 'bg-zinc-100 text-zinc-600 hover:bg-zinc-100'
+                            }`}
+                        >
                           {album.status}
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
+                            <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-zinc-100 rounded-md">
                               <span className="sr-only">Open menu</span>
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(album.id.toString())}>
-                              Copy ID
+                          <DropdownMenuContent align="end" className="rounded-xl border-border bg-white shadow-xl">
+                            <DropdownMenuLabel className="text-zinc-900 font-bold px-3 py-2">Quick Actions</DropdownMenuLabel>
+                            <DropdownMenuItem
+                              className="focus:bg-zinc-50 focus:text-zinc-900 cursor-pointer rounded-lg mx-1"
+                              onClick={() => navigator.clipboard.writeText(album.id.toString())}
+                            >
+                              Copy Album ID
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive" onClick={() => handleDelete(album.id)}>
-                              <Trash2 className="mr-2 h-4 w-4" /> Delete
+                            <DropdownMenuItem className="focus:bg-rose-50 focus:text-rose-600 cursor-pointer text-rose-600 rounded-lg mx-1" onClick={() => handleDelete(album.id)}>
+                              <Trash2 className="mr-2 h-4 w-4" /> Delete Permanently
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -145,8 +156,8 @@ const AllPixfolio = () => {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={6} className="h-24 text-center">
-                      No results.
+                    <TableCell colSpan={6} className="h-32 text-center text-muted-foreground font-medium bg-white">
+                      No albums found matching your search.
                     </TableCell>
                   </TableRow>
                 )}
