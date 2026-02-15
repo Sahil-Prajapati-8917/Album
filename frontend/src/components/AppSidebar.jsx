@@ -8,12 +8,15 @@ import {
   User,
   Settings,
   HelpCircle,
-  Search,
   ChevronRight,
   ChevronsUpDown,
-  Zap,
+
   LogOut,
   Bell,
+  Code2,
+  AlertTriangle,
+  Lock,
+  Users,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -41,6 +44,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible"
 
 export function AppSidebar() {
   const [user, setUser] = useState(null)
@@ -50,7 +58,6 @@ export function AppSidebar() {
   useEffect(() => {
     const userData = getUser()
     if (!userData) {
-      // navigate('/login') // Keep for now but don't force redirect during dev if not needed
       setUser({ name: 'Demo User', email: 'demo@pixfolio.com', avatar: '' })
       return
     }
@@ -59,176 +66,212 @@ export function AppSidebar() {
 
   if (!user) return null
 
+  const isActive = (href) => location.pathname === href
+
   const navigation = {
     general: [
-      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+      {
+        name: 'Dashboard',
+        icon: LayoutDashboard,
+        children: [
+          { name: 'Overview', href: '/dashboard' },
+        ],
+      },
       { name: 'All Pixfolio', href: '/all-pixfolio', icon: FolderOpen },
       { name: 'Create New', href: '/create', icon: Plus },
     ],
-    account: [
-      { name: 'Profile', href: '/profile', icon: User },
-      { name: 'Recharge', href: '/recharge', icon: CreditCard },
-      { name: 'Notifications', href: '#', icon: Bell },
+    pages: [
+      {
+        name: 'Account',
+        icon: User,
+        children: [
+          { name: 'Profile', href: '/profile' },
+          { name: 'Recharge', href: '/recharge' },
+        ],
+      },
     ],
-    support: [
-      { name: 'Settings', href: '#', icon: Settings },
+    other: [
+      {
+        name: 'Settings',
+        icon: Settings,
+        children: [
+          { name: 'General', href: '#' },
+          { name: 'Notifications', href: '#' },
+        ],
+      },
       { name: 'Help Center', href: '#', icon: HelpCircle },
-    ]
+    ],
+  }
+
+  const renderNavItem = (item) => {
+    if (item.children) {
+      const isChildActive = item.children.some(c => isActive(c.href))
+      return (
+        <Collapsible key={item.name} defaultOpen={isChildActive} className="group/collapsible">
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton
+                tooltip={item.name}
+                className={`hover:bg-sidebar-accent transition-colors ${isChildActive ? 'font-semibold' : ''}`}
+              >
+                <item.icon className="size-4" />
+                <span>{item.name}</span>
+                <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                {item.children.map((child) => (
+                  <SidebarMenuSubItem key={child.name}>
+                    <SidebarMenuSubButton
+                      asChild
+                      isActive={isActive(child.href)}
+                    >
+                      <Link to={child.href}>
+                        <span>{child.name}</span>
+                      </Link>
+                    </SidebarMenuSubButton>
+                  </SidebarMenuSubItem>
+                ))}
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
+      )
+    }
+
+    return (
+      <SidebarMenuItem key={item.name}>
+        <SidebarMenuButton
+          tooltip={item.name}
+          isActive={isActive(item.href)}
+          asChild
+        >
+          <Link to={item.href}>
+            <item.icon className="size-4" />
+            <span>{item.name}</span>
+          </Link>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    )
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border/50 bg-muted/40">
-      <SidebarHeader className="h-[60px] flex items-center px-4 border-b border-border/50 bg-transparent">
+    <Sidebar collapsible="icon" className="border-r">
+      <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" className="hover:bg-accent focus:bg-accent group">
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-zinc-900 text-white group-hover:scale-105 transition-transform">
-                <Zap className="size-5 fill-white" />
+            <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden">
+                <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="size-8 object-contain" />
               </div>
-              <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                <span className="truncate font-bold text-zinc-900">Pixfolio</span>
-                <span className="truncate text-xs text-zinc-500 font-medium">Visual Admin</span>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">Pixfolio</span>
+                <span className="truncate text-xs">Visual Admin</span>
               </div>
+              <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent className="px-2 py-6 gap-6">
+      <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-zinc-500 font-bold px-2 mb-2 text-[11px] uppercase tracking-wider">General</SidebarGroupLabel>
+          <SidebarGroupLabel>General</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigation.general.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton
-                    tooltip={item.name}
-                    isActive={location.pathname === item.href}
-                    asChild
-                    className={`
-                        hover:bg-muted/50 transition-all duration-200 px-3 h-9 rounded-md
-                        ${location.pathname === item.href ? 'bg-primary/10 text-primary font-semibold' : 'text-muted-foreground'}
-                    `}
-                  >
-                    <Link to={item.href} className="flex items-center gap-3">
-                      <item.icon className={`size-4 ${location.pathname === item.href ? 'text-zinc-900' : 'text-zinc-500'}`} />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navigation.general.map(renderNavItem)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-zinc-500 font-bold px-2 mb-2 text-[11px] uppercase tracking-wider">Account & Billing</SidebarGroupLabel>
+          <SidebarGroupLabel>Pages</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigation.account.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton
-                    tooltip={item.name}
-                    isActive={location.pathname === item.href}
-                    asChild
-                    className={`
-                        hover:bg-muted/50 transition-all duration-200 px-3 h-9 rounded-md
-                        ${location.pathname === item.href ? 'bg-primary/10 text-primary font-semibold' : 'text-muted-foreground'}
-                    `}
-                  >
-                    <Link to={item.href} className="flex items-center gap-3">
-                      <item.icon className={`size-4 ${location.pathname === item.href ? 'text-zinc-900' : 'text-zinc-500'}`} />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navigation.pages.map(renderNavItem)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-zinc-500 font-bold px-2 mb-2 text-[11px] uppercase tracking-wider">Support</SidebarGroupLabel>
+          <SidebarGroupLabel>Other</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navigation.support.map((item) => (
-                <SidebarMenuItem key={item.name}>
-                  <SidebarMenuButton
-                    tooltip={item.name}
-                    asChild
-                    className="hover:bg-accent hover:text-accent-foreground text-zinc-600 transition-all duration-200 px-3 h-10 rounded-lg"
-                  >
-                    <Link to={item.href} className="flex items-center gap-3">
-                      <item.icon className="size-4 text-zinc-500" />
-                      <span>{item.name}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {navigation.other.map(renderNavItem)}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-border p-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton size="lg" className="hover:bg-accent text-zinc-950 rounded-xl transition-colors">
-              <Avatar className="h-8 w-8 rounded-lg border border-zinc-200">
-                <AvatarImage src={user.avatar} />
-                <AvatarFallback className="bg-zinc-100 text-zinc-600 rounded-lg">
-                  {user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'JD'}
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight ml-2">
-                <span className="truncate font-semibold text-zinc-900">{user.name || 'John Doe'}</span>
-                <span className="truncate text-xs text-zinc-500">{user.email || 'john@example.com'}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4 text-zinc-400" />
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-xl bg-white border-zinc-200 shadow-xl" side="top" align="end" sideOffset={4}>
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} />
-                  <AvatarFallback className="bg-zinc-100 text-zinc-600 rounded-lg">JD</AvatarFallback>
-                </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold text-zinc-900">{user.name}</span>
-                  <span className="truncate text-xs text-zinc-500">{user.email}</span>
-                </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator className="bg-zinc-100" />
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="focus:bg-zinc-50 focus:text-zinc-900 cursor-pointer rounded-lg mx-1">
-                <Zap className="mr-2 h-4 w-4" />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator className="bg-zinc-100" />
-            <DropdownMenuGroup>
-              <DropdownMenuItem className="focus:bg-zinc-50 focus:text-zinc-900 cursor-pointer rounded-lg mx-1">
-                <User className="mr-2 h-4 w-4" />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem className="focus:bg-zinc-50 focus:text-zinc-900 cursor-pointer rounded-lg mx-1">
-                <CreditCard className="mr-2 h-4 w-4" />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem className="focus:bg-zinc-50 focus:text-zinc-900 cursor-pointer rounded-lg mx-1">
-                <Bell className="mr-2 h-4 w-4" />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator className="bg-zinc-100" />
-            <DropdownMenuItem className="focus:bg-rose-50 focus:text-rose-600 cursor-pointer text-rose-600 rounded-lg mx-1">
-              <LogOut className="mr-2 h-4 w-4" />
-              Log out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarImage src={user.avatar} />
+                    <AvatarFallback className="rounded-lg">
+                      {user.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) : 'DU'}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-semibold">{user.name || 'Demo User'}</span>
+                    <span className="truncate text-xs">{user.email || 'demo@pixfolio.com'}</span>
+                  </div>
+                  <ChevronsUpDown className="ml-auto size-4" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+                side="bottom"
+                align="end"
+                sideOffset={4}
+              >
+                <DropdownMenuLabel className="p-0 font-normal">
+                  <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                    <Avatar className="h-8 w-8 rounded-lg">
+                      <AvatarImage src={user.avatar} />
+                      <AvatarFallback className="rounded-lg">DU</AvatarFallback>
+                    </Avatar>
+                    <div className="grid flex-1 text-left text-sm leading-tight">
+                      <span className="truncate font-semibold">{user.name}</span>
+                      <span className="truncate text-xs">{user.email}</span>
+                    </div>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Upgrade to Pro
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem onClick={() => navigate('/profile')}>
+                    <User className="mr-2 h-4 w-4" />
+                    Account
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/recharge')}>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Billing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Bell className="mr-2 h-4 w-4" />
+                    Notifications
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Log out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarFooter>
     </Sidebar>
   )

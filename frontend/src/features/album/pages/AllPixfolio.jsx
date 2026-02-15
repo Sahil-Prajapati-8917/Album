@@ -1,12 +1,29 @@
 import { useState, useEffect } from 'react'
-import { MoreHorizontal, Search, Trash2 } from 'lucide-react'
+import {
+  MoreHorizontal,
+  Search,
+  Trash2,
+  ArrowUpDown,
+  ChevronDown,
+  CirclePlus,
+  Circle,
+  CheckCircle2,
+  XCircle,
+  Timer,
+  CircleHelp,
+  ArrowUp,
+  ArrowDown,
+  ArrowRight,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -18,37 +35,59 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+
+const statusOptions = ['Backlog', 'Todo', 'In Progress', 'Done', 'Cancelled']
+const priorityOptions = ['Low', 'Medium', 'High']
+const labelOptions = ['Documentation', 'Bug', 'Feature']
+
+const getStatusIcon = (status) => {
+  switch (status) {
+    case 'Backlog': return <CircleHelp className="h-4 w-4 text-muted-foreground" />
+    case 'Todo': return <Circle className="h-4 w-4 text-muted-foreground" />
+    case 'In Progress': return <Timer className="h-4 w-4 text-blue-500" />
+    case 'Done': return <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+    case 'Cancelled': return <XCircle className="h-4 w-4 text-red-500" />
+    default: return <Circle className="h-4 w-4 text-muted-foreground" />
+  }
+}
+
+const getPriorityIcon = (priority) => {
+  switch (priority) {
+    case 'High': return <ArrowUp className="h-4 w-4 text-red-500" />
+    case 'Medium': return <ArrowRight className="h-4 w-4 text-yellow-500" />
+    case 'Low': return <ArrowDown className="h-4 w-4 text-blue-500" />
+    default: return <ArrowRight className="h-4 w-4" />
+  }
+}
 
 const AllPixfolio = () => {
   const [albums, setAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
+  const [selectedRows, setSelectedRows] = useState(new Set())
 
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
     if (storedAlbums.length === 0) {
-      // Mock data if empty
       const mockAlbums = [
-        {
-          id: 1,
-          albumName: "Sarah & John's Wedding",
-          clientName: "Sarah Johnson",
-          functionDate: "2025-01-15",
-          functionType: "wedding",
-          status: "published",
-        },
-        {
-          id: 2,
-          albumName: "Birthday Bash 2025",
-          clientName: "Mike Chen",
-          functionDate: "2025-02-20",
-          functionType: "birthday",
-          status: "published",
-        }
+        { id: 'TASK-8782', albumName: "Sarah & John's Wedding", clientName: "Sarah Johnson", functionDate: "2025-01-15", functionType: "wedding", status: "Done", priority: "Medium", label: "Documentation" },
+        { id: 'TASK-7878', albumName: "Birthday Bash 2025", clientName: "Mike Chen", functionDate: "2025-02-20", functionType: "birthday", status: "In Progress", priority: "High", label: "Feature" },
+        { id: 'TASK-7839', albumName: "Corporate Gala Night", clientName: "TechCorp Inc", functionDate: "2025-03-10", functionType: "corporate", status: "Todo", priority: "Low", label: "Bug" },
+        { id: 'TASK-5562', albumName: "Engagement Shoot", clientName: "Alex Rivera", functionDate: "2025-04-05", functionType: "engagement", status: "In Progress", priority: "Medium", label: "Feature" },
+        { id: 'TASK-8686', albumName: "Family Reunion", clientName: "The Garcias", functionDate: "2025-05-12", functionType: "family", status: "Backlog", priority: "Low", label: "Documentation" },
+        { id: 'TASK-1280', albumName: "Product Launch", clientName: "StartupXYZ", functionDate: "2025-06-01", functionType: "corporate", status: "Cancelled", priority: "High", label: "Bug" },
+        { id: 'TASK-7262', albumName: "Graduation Ceremony", clientName: "University Hall", functionDate: "2025-07-20", functionType: "graduation", status: "Done", priority: "Medium", label: "Feature" },
+        { id: 'TASK-1138', albumName: "Anniversary Dinner", clientName: "The Patels", functionDate: "2025-08-14", functionType: "anniversary", status: "Todo", priority: "High", label: "Documentation" },
       ]
       setTimeout(() => setAlbums(mockAlbums), 0)
     } else {
-      setTimeout(() => setAlbums(storedAlbums), 0)
+      const enhanced = storedAlbums.map((a, i) => ({
+        ...a,
+        id: a.id || `TASK-${1000 + i}`,
+        status: a.status || 'Todo',
+        priority: a.priority || 'Medium',
+        label: a.label || 'Feature',
+      }))
+      setTimeout(() => setAlbums(enhanced), 0)
     }
   }
 
@@ -62,112 +101,202 @@ const AllPixfolio = () => {
     localStorage.setItem('albums', JSON.stringify(updated))
   }
 
+  const toggleRow = (id) => {
+    const newSelected = new Set(selectedRows)
+    if (newSelected.has(id)) {
+      newSelected.delete(id)
+    } else {
+      newSelected.add(id)
+    }
+    setSelectedRows(newSelected)
+  }
+
+  const toggleAll = () => {
+    if (selectedRows.size === filteredAlbums.length) {
+      setSelectedRows(new Set())
+    } else {
+      setSelectedRows(new Set(filteredAlbums.map(a => a.id)))
+    }
+  }
+
   const filteredAlbums = albums.filter(album =>
     album.albumName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    album.clientName.toLowerCase().includes(searchTerm.toLowerCase())
+    album.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    album.id.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   return (
-    <div className="flex-1 space-y-10 animate-in fade-in duration-700">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">Global Repository</h1>
-        <p className="text-zinc-500 font-medium">
-          Manage your digital narratives and oversee the expansion of your visual archive.
+    <div className="flex-1 space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">All Pixfolios</h1>
+        <p className="text-muted-foreground">
+          Here's a list of your pixfolios and their current status.
         </p>
       </div>
 
-      <Card className="shadow-sm border-zinc-100 dark:border-zinc-800/50 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900">
-        <CardHeader className="pb-6 border-b border-zinc-100 dark:border-zinc-800/50 bg-zinc-50/30 dark:bg-zinc-800/10 px-8 pt-8">
-          <CardTitle className="text-xl font-bold text-zinc-900 dark:text-zinc-50">Archives Manager</CardTitle>
-          <CardDescription className="text-sm text-zinc-500 font-medium mt-1">
-            A secure high-performance interface for all your created Pixfolio Visual Books.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="flex items-center p-8">
-            <div className="relative w-full max-w-sm group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 group-focus-within:text-zinc-900 dark:group-focus-within:text-zinc-50 transition-colors" />
-              <Input
-                placeholder="Search archives or clients..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 h-12 border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/20 focus:bg-white dark:focus:bg-zinc-900 focus:ring-1 focus:ring-zinc-900 dark:focus:ring-zinc-50 rounded-xl transition-all font-medium"
-              />
-            </div>
+      {/* Toolbar */}
+      <div className="flex items-center justify-between">
+        <div className="flex flex-1 items-center space-x-2">
+          <div className="relative w-full max-w-sm">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Filter albums..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8 h-9 w-[250px] lg:w-[300px]"
+            />
           </div>
-          <div className="overflow-hidden border-t border-zinc-100 dark:border-zinc-800/50">
-            <Table>
-              <TableHeader className="bg-zinc-50/50 dark:bg-zinc-800/20">
-                <TableRow className="hover:bg-transparent border-b border-zinc-100 dark:border-zinc-800/50">
-                  <TableHead className="text-[10px] font-black uppercase tracking-[0.2em] h-12 text-zinc-400 pl-8">Archive Identity</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-[0.2em] h-12 text-zinc-400">Collaborator</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-[0.2em] h-12 text-zinc-400">Captured On</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-[0.2em] h-12 text-zinc-400">Classification</TableHead>
-                  <TableHead className="text-[10px] font-black uppercase tracking-[0.2em] h-12 text-zinc-400">Presence</TableHead>
-                  <TableHead className="text-right text-[10px] font-black uppercase tracking-[0.2em] h-12 text-zinc-400 pr-8">Operations</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredAlbums.length > 0 ? (
-                  filteredAlbums.map((album) => (
-                    <TableRow key={album.id} className="group hover:bg-zinc-50/50 dark:hover:bg-zinc-800/10 transition-colors border-b border-zinc-100 dark:border-zinc-800/50 last:border-0">
-                      <TableCell className="py-6 pl-8">
-                        <p className="font-bold text-zinc-900 dark:text-zinc-50 leading-tight">{album.albumName}</p>
-                        <p className="text-[10px] text-zinc-400 font-bold uppercase mt-1.5 tracking-tighter">ID: PX-{album.id}</p>
-                      </TableCell>
-                      <TableCell className="font-bold text-zinc-600 dark:text-zinc-400">{album.clientName}</TableCell>
-                      <TableCell className="text-zinc-500 font-bold text-xs">{album.functionDate}</TableCell>
-                      <TableCell className="capitalize">
-                        <Badge variant="outline" className="bg-white dark:bg-zinc-800 border-zinc-100 dark:border-zinc-800 text-zinc-500 dark:text-zinc-400 rounded-full px-3 py-0.5 text-[9px] font-black uppercase tracking-widest">
-                          {album.functionType}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          className={`rounded-full px-3 py-1 font-black uppercase text-[9px] tracking-[0.1em] border-none shadow-sm ${album.status === 'published'
-                            ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                            : 'bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400'
-                            }`}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9">
+                Status <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {statusOptions.map(s => (
+                <DropdownMenuItem key={s}>{getStatusIcon(s)} <span className="ml-2">{s}</span></DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9">
+                Priority <ChevronDown className="ml-2 h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start">
+              {priorityOptions.map(p => (
+                <DropdownMenuItem key={p}>{getPriorityIcon(p)} <span className="ml-2">{p}</span></DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-9 ml-auto">
+              View <ChevronDown className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Task ID</DropdownMenuItem>
+            <DropdownMenuItem>Title</DropdownMenuItem>
+            <DropdownMenuItem>Status</DropdownMenuItem>
+            <DropdownMenuItem>Priority</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+
+      {/* Data Table */}
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[40px]">
+                <Checkbox
+                  checked={selectedRows.size === filteredAlbums.length && filteredAlbums.length > 0}
+                  onCheckedChange={toggleAll}
+                  aria-label="Select all"
+                />
+              </TableHead>
+              <TableHead className="w-[100px]">Task</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead className="w-[120px]">
+                <Button variant="ghost" size="sm" className="-ml-3 h-8">
+                  Status <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              <TableHead className="w-[100px]">
+                <Button variant="ghost" size="sm" className="-ml-3 h-8">
+                  Priority <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+              </TableHead>
+              <TableHead className="w-[40px]"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredAlbums.length > 0 ? (
+              filteredAlbums.map((album) => (
+                <TableRow key={album.id} data-state={selectedRows.has(album.id) ? "selected" : undefined}>
+                  <TableCell>
+                    <Checkbox
+                      checked={selectedRows.has(album.id)}
+                      onCheckedChange={() => toggleRow(album.id)}
+                      aria-label={`Select ${album.albumName}`}
+                    />
+                  </TableCell>
+                  <TableCell className="font-medium">{album.id}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="text-xs">
+                        {album.label}
+                      </Badge>
+                      <span className="max-w-[300px] truncate font-medium">
+                        {album.albumName}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {getStatusIcon(album.status)}
+                      <span className="text-sm">{album.status}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      {getPriorityIcon(album.priority)}
+                      <span className="text-sm">{album.priority}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem
+                          onClick={() => navigator.clipboard.writeText(album.id)}
                         >
-                          {album.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right pr-8">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-10 w-10 p-0 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-all">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-5 w-5 text-zinc-400" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="rounded-2xl border-zinc-100 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl p-2 min-w-[180px]">
-                            <DropdownMenuLabel className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 px-3 py-2 mb-1">Resource Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                              className="focus:bg-zinc-900 dark:focus:bg-zinc-50 focus:text-white dark:focus:text-black cursor-pointer rounded-xl font-bold text-xs py-3 px-3 transition-colors mb-1"
-                              onClick={() => navigator.clipboard.writeText(album.id.toString())}
-                            >
-                              Copy Access Link
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="focus:bg-rose-50 dark:focus:bg-rose-500/10 focus:text-rose-600 dark:focus:text-rose-400 cursor-pointer text-rose-600 dark:text-rose-400 rounded-xl font-bold text-xs py-3 px-3 transition-colors" onClick={() => handleDelete(album.id)}>
-                              <Trash2 className="mr-2 h-4 w-4" /> Terminate Archive
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={6} className="h-48 text-center text-zinc-400 font-bold bg-white dark:bg-zinc-900 italic">
-                      No archives recovered from storage matching your criteria.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
+                          Copy task ID
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Edit</DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-red-600"
+                          onClick={() => handleDelete(album.id)}
+                        >
+                          <Trash2 className="mr-2 h-4 w-4" /> Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center">
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Pagination Info */}
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div>
+          {selectedRows.size} of {filteredAlbums.length} row(s) selected.
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" disabled>Previous</Button>
+          <Button variant="outline" size="sm" disabled>Next</Button>
+        </div>
+      </div>
     </div>
   )
 }

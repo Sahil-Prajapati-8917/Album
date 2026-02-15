@@ -74,6 +74,7 @@
 
   body {
     @apply bg-background text-foreground min-h-screen relative;
+    font-family: 'Inter', sans-serif;
   }
 }
 

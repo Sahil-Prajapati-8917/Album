@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import Logo from './Logo'
+
 import { ThemeToggle } from './ThemeToggle'
 import { Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
@@ -23,8 +23,7 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-20 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3 group">
-            <Logo className="h-10 w-auto group-hover:scale-110 transition-transform" />
-            <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-foreground">Pixfolio</h2>
+            <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="h-10 w-auto group-hover:scale-110 transition-transform" />
           </Link>
         </div>
 

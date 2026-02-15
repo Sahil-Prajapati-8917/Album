@@ -9,7 +9,7 @@ import {
     SheetTrigger,
 } from "@/components/ui/sheet"
 import { ThemeToggle } from './ThemeToggle'
-import { LayoutGrid, Menu, X } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 const LandingHeader = () => {
     const [scrolled, setScrolled] = useState(false)
@@ -30,10 +30,7 @@ const LandingHeader = () => {
         <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-border/5 ${scrolled || !isHome ? 'bg-background/80 backdrop-blur-md border-border/10 shadow-sm' : 'bg-transparent'}`}>
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-2">
-                    <div className="size-8 flex items-center justify-center bg-foreground text-background rounded-sm">
-                        <LayoutGrid className="size-5" />
-                    </div>
-                    <h1 className="text-xl font-bold tracking-tighter uppercase text-foreground">Pixfolio</h1>
+                    <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="h-8 w-auto" />
                 </Link>
 
                 <div className="hidden md:flex items-center gap-8 text-sm font-medium tracking-widest uppercase">
@@ -59,10 +56,7 @@ const LandingHeader = () => {
                         <SheetContent side="top" className="p-6 pt-12">
                             <SheetHeader className="mb-8">
                                 <SheetTitle className="text-left flex items-center gap-2">
-                                    <div className="size-6 flex items-center justify-center bg-foreground text-background rounded-sm">
-                                        <LayoutGrid className="size-4" />
-                                    </div>
-                                    Pixfolio
+                                    <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="h-6 w-auto" />
                                 </SheetTitle>
                             </SheetHeader>
                             <nav className="flex flex-col gap-6 text-sm font-medium tracking-widest uppercase items-center">

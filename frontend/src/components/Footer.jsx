@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import Logo from './Logo'
+
 import { Separator } from '@/components/ui/separator'
 
 const Footer = () => {
@@ -10,8 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-16 mb-20">
           <div className="col-span-1 md:col-span-1 space-y-6">
             <div className="flex items-center gap-3">
-              <Logo className="h-10 w-auto" />
-              <h2 className="text-xl font-serif font-bold tracking-widest uppercase text-black dark:text-white">Pixfolio</h2>
+              <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="h-10 w-auto" />
             </div>
             <p className="text-zinc-500 dark:text-zinc-400 font-medium leading-relaxed max-w-xs text-sm">
               Crafting premium visual narratives for global celebrations. A sanctuary for artistic wedding photography.
