@@ -12,12 +12,11 @@ import {
 } from "@/components/ui/breadcrumb"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { UserNav } from "@/components/UserNav"
-import { Command, CommandInput } from "cmdk"
 import { Search } from "lucide-react"
 
 export function AdminHeader({ user, breadcrumbs = [] }) {
     return (
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="bg-background z-50 flex h-16 shrink-0 items-center gap-2 border-b px-4 sticky top-0">
             <div className="flex items-center gap-2">
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 h-4" />
@@ -36,19 +35,24 @@ export function AdminHeader({ user, breadcrumbs = [] }) {
                 </Breadcrumb>
             </div>
 
-            <div className="ml-auto flex items-center gap-4">
+            <div className="flex w-full justify-between">
                 {/* Search Input - Visual only for now, matching reference style */}
                 <div className="relative hidden md:flex items-center">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-1.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <input
                         type="search"
                         placeholder="Search..."
-                        className="h-9 w-64 rounded-md border border-input bg-background pl-9 pr-4 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        className="h-8 w-full justify-start rounded-md border border-input bg-muted/25 text-muted-foreground px-9 text-sm font-normal shadow-none transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:w-40 lg:w-56 xl:w-64 sm:pr-12 relative"
                     />
+                    <kbd className="bg-muted pointer-events-none absolute top-[0.3rem] right-[0.3rem] hidden h-5 items-center gap-1 rounded border px-1.5 font-mono text-[10px] font-medium opacity-100 select-none sm:flex">
+                        <span className="text-xs">⌘</span>K
+                    </kbd>
                 </div>
 
-                <ThemeToggle />
-                <UserNav user={user} />
+                <div className="flex items-center gap-2">
+                    <ThemeToggle />
+                    <UserNav user={user} />
+                </div>
             </div>
         </header>
     )

@@ -1,329 +1,255 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
 import {
   User,
+  Mail,
+  Phone,
+  MapPin,
   Camera,
+  Save,
+  Loader2,
+  Globe,
   Instagram,
   Facebook,
   Youtube,
-  MessageCircle,
-  Twitter,
-  Save,
-  CheckCircle,
-  Award,
-  ShieldCheck,
-  Mail,
-  Phone,
-  Building,
-  MapPin,
-  Lock,
-  Sparkles,
-  Globe
+  Twitter
 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Textarea } from '@/components/ui/textarea'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Separator } from "@/components/ui/separator"
 import { getUserProfile, updateUserProfile, getUser } from '@/services/api'
+import { useToast } from "@/components/ui/use-toast"
 
 const Profile = () => {
+  const { toast } = useToast()
   const [user, setUser] = useState(null)
-  const [profileData, setProfileData] = useState({
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+
+  const [formData, setFormData] = useState({
     personalName: '',
     studioName: '',
-    address: '',
-    mobileNumber: '',
     email: '',
-    profilePicture: null,
-    bio: 'Capturing life\'s most precious moments through a premium lens. Specialized in high-end wedding and cinematic visual storytelling.',
-    specialization: 'Wedding & Cinematic Master',
+    mobileNumber: '',
+    address: '',
+    bio: '',
+    specialization: '',
+    website: '',
     socialMedia: {
       instagram: '',
       facebook: '',
       youtube: '',
-      whatsapp: '',
       twitter: ''
     }
   })
-  const [isLoading, setIsLoading] = useState(true)
-  const [isSaving, setIsSaving] = useState(false)
-  const [saveSuccess, setSaveSuccess] = useState(false)
 
   useEffect(() => {
-    const loadProfileData = async () => {
-      try {
-        const userData = getUser()
-        if (userData) {
-          setUser(userData)
-          const response = await getUserProfile()
-          if (response.success) {
-            setProfileData(prev => ({
-              ...prev,
-              personalName: response.data.personalName || '',
-              studioName: response.data.studioName || '',
-              address: response.data.address || '',
-              mobileNumber: response.data.mobileNumber || '',
-              email: response.data.email || '',
-              profilePicture: response.data.profilePicture || null,
-              socialMedia: response.data.socialMedia || {
-                instagram: '',
-                facebook: '',
-                youtube: '',
-                whatsapp: '',
-                twitter: ''
-              }
-            }))
-          }
-        }
-      } catch (error) {
-        console.error('Error loading profile:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    loadProfileData()
+    loadData()
   }, [])
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setProfileData(prev => ({
-      ...prev,
-      [name]: value
-    }))
-  }
-
-  const handleSocialMediaChange = (platform, value) => {
-    setProfileData(prev => ({
-      ...prev,
-      socialMedia: {
-        ...prev.socialMedia,
-        [platform]: value
-      }
-    }))
-  }
-
-  const handleFileUpload = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        setProfileData(prev => ({
-          ...prev,
-          profilePicture: e.target.result
-        }))
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const handleSave = async () => {
-    setIsSaving(true)
+  const loadData = async () => {
     try {
-      await updateUserProfile(profileData)
-      setSaveSuccess(true)
-      setTimeout(() => setSaveSuccess(false), 3000)
+      const userData = getUser()
+      if (userData) setUser(userData)
+
+      const profile = await getUserProfile()
+      if (profile.success) {
+        setFormData({
+          personalName: profile.data.personalName || '',
+          studioName: profile.data.studioName || '',
+          email: profile.data.email || '',
+          mobileNumber: profile.data.mobileNumber || '',
+          address: profile.data.address || '',
+          bio: profile.data.bio || '',
+          specialization: profile.data.specialization || '',
+          website: profile.data.website || '',
+          socialMedia: profile.data.socialMedia || {
+            instagram: '',
+            facebook: '',
+            youtube: '',
+            twitter: ''
+          }
+        })
+      }
     } catch (error) {
-      console.error('Error saving profile:', error)
+      console.error("Failed to load profile", error)
     } finally {
-      setIsSaving(false)
+      setLoading(false)
     }
   }
 
-  const socialMediaPlatforms = [
-    { key: 'instagram', name: 'Instagram', icon: Instagram, placeholder: '@username' },
-    { key: 'facebook', name: 'Facebook', icon: Facebook, placeholder: 'facebook.com/username' },
-    { key: 'youtube', name: 'YouTube', icon: Youtube, placeholder: 'youtube.com/channel/...' },
-    { key: 'whatsapp', name: 'WhatsApp Channel', icon: MessageCircle, placeholder: 'wa.me/123...' },
-    { key: 'twitter', name: 'Twitter', icon: Twitter, placeholder: '@username' }
-  ]
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    if (name.startsWith('social_')) {
+      const socialKey = name.replace('social_', '')
+      setFormData(prev => ({
+        ...prev,
+        socialMedia: {
+          ...prev.socialMedia,
+          [socialKey]: value
+        }
+      }))
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }))
+    }
+  }
 
-  if (isLoading) {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setSaving(true)
+    try {
+      await updateUserProfile(formData)
+      toast({
+        title: "Profile updated",
+        description: "Your profile details have been saved successfully.",
+      })
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update profile. Please try again.",
+        variant: "destructive"
+      })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  if (loading) {
     return (
-      <div className="flex justify-center items-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold"></div>
+      <div className="flex items-center justify-center h-[50vh]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
       </div>
     )
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-12 pb-20">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div className="flex-1 space-y-4">
+      <div className="flex items-center justify-between space-y-2">
         <div>
-          <h1 className="text-4xl md:text-5xl font-serif text-[#181611] dark:text-white italic">Curator Profile</h1>
-          <p className="mt-2 text-sm text-gray-500 font-light tracking-wide uppercase">Defining your artistic identity</p>
+          <h2 className="text-3xl font-bold tracking-tight">Profile & Settings</h2>
+          <p className="text-muted-foreground">
+            Manage your personal information and studio details.
+          </p>
         </div>
-        <div className="flex items-center text-gold bg-gold/5 px-4 py-2 rounded-full border border-gold/10">
-          <Award className="h-4 w-4 mr-2" />
-          <span className="text-[10px] font-bold uppercase tracking-widest">Verified Artist</span>
+        <div className="flex items-center space-x-2">
+          <Button onClick={handleSubmit} disabled={saving}>
+            {saving ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Save Changes
+              </>
+            )}
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Profile Sidebar */}
-        <div className="lg:col-span-1 space-y-8">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-white dark:bg-[#2a261d] rounded-3xl border border-gold/10 p-8 text-center"
-          >
-            <div className="relative inline-block group">
-              <div className="w-32 h-32 rounded-full overflow-hidden border-2 border-gold/20 p-1 mb-4 shadow-xl">
-                {profileData.profilePicture ? (
-                  <img src={profileData.profilePicture} alt="Profile" className="w-full h-full object-cover rounded-full" />
-                ) : (
-                  <div className="w-full h-full bg-pearl dark:bg-ebony flex items-center justify-center rounded-full text-gold">
-                    <User className="h-12 w-12" />
-                  </div>
-                )}
-              </div>
-              <label className="absolute bottom-4 right-0 w-10 h-10 bg-white dark:bg-[#181611] rounded-full border border-gold/20 shadow-lg flex items-center justify-center cursor-pointer hover:scale-110 transition-transform">
-                <Camera className="h-4 w-4 text-gold" />
-                <input type="file" id="profile-picture" accept="image/*" onChange={handleFileUpload} className="hidden" />
-              </label>
-            </div>
-
-            <h3 className="text-2xl font-serif text-[#181611] dark:text-white mt-4">{profileData.personalName || 'Visual Artist'}</h3>
-            <p className="text-[10px] font-bold uppercase tracking-widest text-gold mt-1">{profileData.specialization}</p>
-
-            <div className="mt-8 flex justify-center space-x-3">
-              {socialMediaPlatforms.slice(0, 3).map(platform => (
-                <Button key={platform.key} variant="ghost" size="icon" className="h-10 w-10 rounded-xl text-gray-400 hover:text-gold hover:bg-gold/5 border border-gold/5">
-                  <platform.icon className="h-4 w-4" />
-                </Button>
-              ))}
-            </div>
-          </motion.div>
-
-          <div className="bg-gold/5 rounded-3xl p-8 border border-gold/10">
-            <div className="flex items-center mb-6">
-              <ShieldCheck className="h-4 w-4 text-gold mr-3" />
-              <h4 className="text-[10px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">Security Snapshot</h4>
-            </div>
-            <p className="text-xs text-gray-500 font-light italic mb-6">Your data is secured with industry-standard encryption protocols.</p>
-            <Button variant="outline" className="w-full border-gold/20 text-gold hover:bg-gold/5 h-12 text-[10px] font-bold uppercase tracking-widest">
-              <Lock className="h-3.5 w-3.5 mr-2" />
-              Update Passkey
-            </Button>
-          </div>
-        </div>
-
-        {/* Form Content */}
-        <div className="lg:col-span-2 space-y-8">
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-white dark:bg-[#2a261d] rounded-3xl border border-gold/10 p-10"
-          >
-            <div className="mb-10">
-              <h2 className="text-2xl font-serif italic text-gray-900 dark:text-white">Artistic Details</h2>
-              <div className="w-12 h-px bg-gold mt-2"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Personal Name</label>
-                <Input
-                  name="personalName"
-                  value={profileData.personalName}
-                  onChange={handleInputChange}
-                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Studio Name</label>
-                <Input
-                  name="studioName"
-                  value={profileData.studioName}
-                  onChange={handleInputChange}
-                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Email Address</label>
-                <Input
-                  name="email"
-                  value={profileData.email}
-                  onChange={handleInputChange}
-                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Mobile Number</label>
-                <Input
-                  name="mobileNumber"
-                  value={profileData.mobileNumber}
-                  onChange={handleInputChange}
-                  className="h-12 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
-                />
-              </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Studio Address</label>
-                <Textarea
-                  name="address"
-                  value={profileData.address}
-                  onChange={handleInputChange}
-                  className="min-h-[80px] border-gold/10 focus:border-gold bg-pearl/30 rounded-xl"
-                />
-              </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">Bio / Vision</label>
-                <Textarea
-                  name="bio"
-                  value={profileData.bio}
-                  onChange={handleInputChange}
-                  className="min-h-[120px] border-gold/10 focus:border-gold bg-pearl/30 rounded-xl py-4"
-                />
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Card className="col-span-2">
+          <CardHeader>
+            <CardTitle>Profile Picture</CardTitle>
+            <CardDescription>Click to upload a new avatar.</CardDescription>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center space-y-4 py-4">
+            <div className="relative group cursor-pointer">
+              <Avatar className="h-32 w-32 border-4 border-muted">
+                <AvatarImage src={user?.avatar} />
+                <AvatarFallback className="text-4xl">{user?.name?.charAt(0) || 'U'}</AvatarFallback>
+              </Avatar>
+              <div className="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Camera className="h-8 w-8 text-white" />
               </div>
             </div>
-
-            <div className="mt-12 flex justify-end">
-              <Button
-                onClick={handleSave}
-                disabled={isSaving}
-                className="bg-gold hover:bg-gold/90 text-white h-14 px-12 rounded-xl font-serif italic text-lg shadow-xl shadow-gold/20"
-              >
-                {isSaving ? (
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                ) : saveSuccess ? (
-                  <CheckCircle className="h-5 w-5 mr-3" />
-                ) : (
-                  <Save className="h-5 w-5 mr-3" />
-                )}
-                {isSaving ? 'Preserving...' : saveSuccess ? 'Vision Saved' : 'Save Legacy Details'}
-              </Button>
+            <div className="text-center">
+              <h3 className="font-medium text-lg">{user?.name}</h3>
+              <p className="text-sm text-muted-foreground">{user?.email}</p>
             </div>
-          </motion.div>
+          </CardContent>
+        </Card>
 
-          {/* Social Media Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-white dark:bg-[#2a261d] rounded-3xl border border-gold/10 p-10"
-          >
-            <div className="mb-10">
-              <h2 className="text-xl font-serif italic text-gray-900 dark:text-white">Social Connections</h2>
-              <div className="w-12 h-px bg-gold mt-2"></div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {socialMediaPlatforms.map((platform) => (
-                <div key={platform.key} className="space-y-2">
-                  <label className="flex items-center text-[10px] font-bold uppercase tracking-widest text-gray-400 ml-1">
-                    <platform.icon className="h-3.5 w-3.5 mr-2 text-gold/60" />
-                    {platform.name}
-                  </label>
-                  <Input
-                    value={profileData.socialMedia[platform.key]}
-                    onChange={(e) => handleSocialMediaChange(platform.key, e.target.value)}
-                    placeholder={platform.placeholder}
-                    className="h-10 border-gold/10 focus:border-gold bg-pearl/30 rounded-xl text-xs"
-                  />
+        <Card className="col-span-5">
+          <CardHeader>
+            <CardTitle>Studio Information</CardTitle>
+            <CardDescription>Details about your photography business.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="studioName">Studio Name</Label>
+                  <Input id="studioName" name="studioName" value={formData.studioName} onChange={handleChange} placeholder="e.g. Pixel Perfect Studios" />
                 </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
+                <div className="space-y-2">
+                  <Label htmlFor="personalName">Contact Person</Label>
+                  <Input id="personalName" name="personalName" value={formData.personalName} onChange={handleChange} placeholder="Your Full Name" />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" name="email" value={formData.email} onChange={handleChange} disabled className="bg-muted" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="mobileNumber">Phone Number</Label>
+                  <Input id="mobileNumber" name="mobileNumber" value={formData.mobileNumber} onChange={handleChange} placeholder="+91 98765 43210" />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="address">Studio Address</Label>
+                <Textarea id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Full address of your studio..." />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="bio">Bio / Vision</Label>
+                <Textarea id="bio" name="bio" value={formData.bio} onChange={handleChange} placeholder="Tell us about your photography style..." className="min-h-[100px]" />
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Social & Web</CardTitle>
+          <CardDescription>Connect your social media profiles.</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2"><Globe className="h-3.5 w-3.5" /> Website</Label>
+              <Input name="website" value={formData.website} onChange={handleChange} placeholder="https://www.yourstudio.com" />
+            </div>
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2"><Instagram className="h-3.5 w-3.5" /> Instagram</Label>
+              <Input name="social_instagram" value={formData.socialMedia.instagram} onChange={handleChange} placeholder="@username" />
+            </div>
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2"><Facebook className="h-3.5 w-3.5" /> Facebook</Label>
+              <Input name="social_facebook" value={formData.socialMedia.facebook} onChange={handleChange} placeholder="facebook.com/page" />
+            </div>
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2"><Youtube className="h-3.5 w-3.5" /> YouTube</Label>
+              <Input name="social_youtube" value={formData.socialMedia.youtube} onChange={handleChange} placeholder="Channel URL" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

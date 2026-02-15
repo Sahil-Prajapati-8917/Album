@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import { ThemeToggle } from '../components/ThemeToggle'
+import LandingHeader from '../components/LandingHeader'
 import {
-  LayoutGrid,
   Sparkles,
   DraftingCompass,
   BadgeCheck,
@@ -12,77 +11,14 @@ import {
   CheckCircle2,
   Quote,
   Highlighter,
-  Menu,
-  X
+  LayoutGrid
 } from 'lucide-react'
 
 const Home = () => {
-  const [scrolled, setScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
     <div className="font-sans min-h-screen bg-background text-foreground selection:bg-primary/30 transition-colors duration-300 overflow-x-hidden">
-      {/* Minimalist Header */}
-      <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-border/5 ${scrolled ? 'bg-background/80 backdrop-blur-md border-border/10 shadow-sm' : 'bg-transparent'}`}>
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="size-8 flex items-center justify-center bg-foreground text-background rounded-sm">
-              <LayoutGrid className="size-5" />
-            </div>
-            <h1 className="text-xl font-bold tracking-tighter uppercase">Pixfolio</h1>
-          </div>
-
-          {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-12 text-sm font-medium tracking-widest uppercase">
-            <a className="hover:text-primary transition-colors" href="#gallery">Gallery</a>
-            <a className="hover:text-primary transition-colors" href="#features">Curate</a>
-            <a className="hover:text-primary transition-colors" href="#process">Process</a>
-            <a className="hover:text-primary transition-colors" href="#pricing">Pricing</a>
-          </nav>
-
-          <div className="hidden md:flex items-center gap-6">
-            <ThemeToggle />
-            <Link to="/login" className="text-sm font-semibold border-b border-foreground hover:border-primary transition-all">Log In</Link>
-            <Link to="/signup" className="bg-primary text-primary-foreground px-6 py-2.5 rounded-sm text-sm font-bold uppercase tracking-wider hover:bg-foreground hover:text-background transition-all shadow-lg shadow-primary/10">
-              Request Access
-            </Link>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <div className="flex items-center gap-4 md:hidden">
-            <ThemeToggle />
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="p-2 text-foreground">
-              {mobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu Overlay */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-border/10 p-6 flex flex-col gap-6 shadow-xl animate-in slide-in-from-top-5">
-            <nav className="flex flex-col gap-6 text-sm font-medium tracking-widest uppercase text-center">
-              <a onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2" href="#gallery">Gallery</a>
-              <a onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2" href="#features">Curate</a>
-              <a onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2" href="#process">Process</a>
-              <a onClick={() => setMobileMenuOpen(false)} className="hover:text-primary transition-colors py-2" href="#pricing">Pricing</a>
-            </nav>
-            <div className="flex flex-col gap-4 items-center border-t border-border/10 pt-6">
-              <Link onClick={() => setMobileMenuOpen(false)} to="/login" className="text-sm font-semibold border-b border-foreground hover:border-primary transition-all">Log In</Link>
-              <Link onClick={() => setMobileMenuOpen(false)} to="/signup" className="w-full text-center bg-primary text-primary-foreground px-6 py-3 rounded-sm text-sm font-bold uppercase tracking-wider hover:bg-foreground hover:text-background transition-all">
-                Request Access
-              </Link>
-            </div>
-          </div>
-        )}
-      </header>
+      {/* Shared Header */}
+      <LandingHeader />
 
       <main className="pt-20">
         {/* Hero Section */}

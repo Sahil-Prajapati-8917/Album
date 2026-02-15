@@ -1,13 +1,12 @@
-import React from 'react'
 import { Outlet } from 'react-router-dom'
-import Navigation from '@/components/Navigation'
+import LandingHeader from '@/components/LandingHeader'
 import Footer from '@/components/Footer'
 
 const MainLayout = () => {
     return (
         <div className="flex flex-col min-h-screen">
-            <Navigation />
-            <main className="flex-grow pt-[73px]"> {/* Offset for fixed header */}
+            <LandingHeader />
+            <main className="flex-grow pt-20"> {/* Offset for fixed header h-20 */}
                 <Outlet />
             </main>
             <Footer />
