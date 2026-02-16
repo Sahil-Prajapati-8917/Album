@@ -95,11 +95,11 @@ export function AppSidebar() {
         name: 'Settings',
         icon: Settings,
         children: [
-          { name: 'General', href: '#' },
-          { name: 'Notifications', href: '#' },
+          { name: 'General', href: '/settings' },
+          { name: 'Notifications', href: '/settings' },
         ],
       },
-      { name: 'Help Center', href: '#', icon: HelpCircle },
+      { name: 'Help Center', href: '/help', icon: HelpCircle },
     ],
   }
 

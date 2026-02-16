@@ -135,8 +135,7 @@ const Login = () => {
           </motion.div>
         </div>
 
-        {/* Right Column: Auth Form */}
-        <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-16 bg-white relative overflow-y-auto">
+        <div className="flex-1 flex flex-col items-center justify-center p-8 md:p-16 bg-white relative">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}

@@ -25,11 +25,12 @@ Pixfolio is a comprehensive platform that combines a React frontend with a Node.
 - **Password Security**: bcrypt hashing with 12 salt rounds
 
 ### 📊 Dashboard & Project Management
+- **Admin Kit Integration**: Modern dashboard built with shadcn/ui and admin blocks
 - **Project Gallery**: View and manage all created Visual Book albums
-- **Create New Projects**: Build new visual books from scratch
-- **Profile Management**: User settings and account information
+- **Create New Projects**: Intuitive wizard for building new visual books
+- **Settings & Help Center**: Advanced account configuration and support hub
 - **Recharge System**: Credit/balance management for premium features
-- **Modern Sidebar**: Collapsible navigation with shadcn/ui components
+- **Modern Sidebar**: Collapsible navigation with active state tracking
 
 ### 🎪 Advanced UI Components & Effects
 - **Scroll Morph Hero**: Interactive hero with morphing animations
@@ -80,6 +81,7 @@ photo/
 ├── .gitignore                   # Git ignore patterns
 │
 ├── Backend/                     # Backend API server
+│   ├── README.md               # Backend documentation
 │   ├── index.js                 # Main server entry point
 │   ├── package.json             # Backend dependencies
 │   ├── .gitignore               # Backend git ignore
@@ -414,6 +416,8 @@ Error Response:
   - `/dashboard/pixfolio` - View all albums (AllPixfolio)
   - `/dashboard/recharge` - Account recharge and billing
   - `/dashboard/profile` - User profile management
+  - `/dashboard/settings` - Advanced account settings
+  - `/dashboard/help` - Help Center and support
 
 ### Demo & Development Pages
 - `/demo` - Standalone Visual Book Viewer demonstration

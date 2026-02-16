@@ -15,6 +15,8 @@ import CreateNew from '../features/album/pages/CreateNew';
 import AllPixfolio from '../features/album/pages/AllPixfolio';
 import Recharge from '../features/user/pages/Recharge';
 import Profile from '../features/user/pages/Profile';
+import Settings from '../features/user/pages/Settings';
+import HelpCenter from '../features/user/pages/HelpCenter';
 import NotFound from '../pages/NotFound';
 import ZoomParallaxDemo from '../pages/ZoomParallaxDemo';
 import VisualBookDemo from '../pages/VisualBookDemo';
@@ -54,6 +56,8 @@ export function AppRoutes() {
                 <Route path="/all-pixfolio" element={<AllPixfolio />} />
                 <Route path="/recharge" element={<Recharge />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/help" element={<HelpCenter />} />
             </Route>
 
             {/* 404 Route */}

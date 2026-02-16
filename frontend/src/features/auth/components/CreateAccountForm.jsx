@@ -86,6 +86,20 @@ const CreateAccountForm = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
+
+        // Enforce numeric only and max length for specific fields
+        if (name === 'phoneNumber') {
+            const numericValue = value.replace(/\D/g, '').slice(0, 10)
+            setFormData(prev => ({ ...prev, [name]: numericValue }))
+            return
+        }
+
+        if (name === 'pincode') {
+            const numericValue = value.replace(/\D/g, '').slice(0, 6)
+            setFormData(prev => ({ ...prev, [name]: numericValue }))
+            return
+        }
+
         setFormData(prev => ({
             ...prev,
             [name]: value
@@ -320,8 +334,9 @@ const CreateAccountForm = () => {
                                     required
                                     value={formData.phoneNumber}
                                     onChange={handleInputChange}
+                                    maxLength={10}
                                     className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                    placeholder="+1 (555) 000"
+                                    placeholder="10-digit number"
                                 />
                             </div>
                         </div>
@@ -433,7 +448,7 @@ const CreateAccountForm = () => {
                             <TooltipTrigger asChild>
                                 <Button
                                     onClick={nextStep}
-                                    className="w-full h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest"
+                                    className="w-full h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-black font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest"
                                 >
                                     Continue to Business Details <ArrowRight className="h-4 w-4" />
                                 </Button>
@@ -520,8 +535,9 @@ const CreateAccountForm = () => {
                                     required
                                     value={formData.pincode}
                                     onChange={handleInputChange}
+                                    maxLength={6}
                                     className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                    placeholder="110001"
+                                    placeholder="6-digit PIN"
                                 />
                             </div>
                         </div>
@@ -530,7 +546,7 @@ const CreateAccountForm = () => {
                     <div className="pt-6 flex gap-4">
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button type="button" variant="outline" onClick={prevStep} className="flex-1 h-12 border-zinc-200 hover:bg-zinc-50 text-zinc-900 font-bold rounded-xl transition-all uppercase tracking-widest text-xs gap-2">
+                                <Button type="button" variant="outline" onClick={prevStep} className="flex-1 h-12 border-zinc-200 hover:bg-zinc-50 text-black font-bold rounded-xl transition-all uppercase tracking-widest text-xs gap-2">
                                     <ArrowLeft className="h-4 w-4" /> Back
                                 </Button>
                             </TooltipTrigger>
@@ -543,7 +559,7 @@ const CreateAccountForm = () => {
                                 <Button
                                     type="submit"
                                     disabled={isLoading}
-                                    className="flex-1 h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
+                                    className="flex-1 h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-black font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 uppercase tracking-widest text-xs"
                                 >
                                     {isLoading ? (
                                         <div className="flex items-center justify-center gap-2">

@@ -124,7 +124,7 @@ const LoginForm = () => {
                             <Button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest"
+                                className="w-full h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-black font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest"
                             >
                                 {isLoading ? (
                                     <>
@@ -153,7 +153,7 @@ const LoginForm = () => {
                     <div className="mt-4 flex justify-center">
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Button variant="ghost" className="text-zinc-500 hover:text-zinc-900 gap-2 text-[11px] font-bold uppercase tracking-widest transition-all hover:bg-zinc-100">
+                                <Button variant="ghost" className="text-black hover:text-zinc-900 gap-2 text-[11px] font-bold uppercase tracking-widest transition-all hover:bg-zinc-100">
                                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                     </svg>

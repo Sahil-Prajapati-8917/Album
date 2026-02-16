@@ -35,13 +35,14 @@ A modern React application for creating and viewing interactive digital Visual B
 - **Form Validation**: Real-time validation with helpful error messages
 
 ### 📊 Dashboard & Management
-- **Project Management**: View and manage all your flipbooks
-- **Album Gallery**: Browse created Visual Book albums
-- **Create New Projects**: Build new visual books from scratch
-- **Profile Management**: User profile and settings
-- **Recharge System**: Credit/balance management
-- **Modern Sidebar**: Collapsible navigation with shadcn/ui components
-- **Responsive Layout**: Optimized for both mobile and desktop
+- **Admin Kit Integration**: Modern dashboard interface with shadcn/ui and admin blocks
+- **Project Management**: View and manage all your flipbooks (All Pixfolio)
+- **Create New Projects**: Intuitive wizard for building new visual books
+- **Profile Management**: Comprehensive user settings and profile customization
+- **Settings**: Advanced account and application configuration
+- **Help Center**: Integrated support and documentation hub
+- **Recharge System**: Credit/balance management for premium features
+- **Modern Sidebar**: Collapsible navigation with active state tracking
 
 ### 💼 Marketing Pages
 - **Landing Page**: Compelling hero section with feature highlights and interactive demos
@@ -52,14 +53,10 @@ A modern React application for creating and viewing interactive digital Visual B
 - **Pulse Beam Demo**: Interactive pulse beam animation effects
 
 ### 💬 FAQ & Support
-- **Comprehensive FAQ Section**: Detailed answers covering:
-  - Product features and functionality
-  - Pricing plans (Free: 3 Visual Books, Premium: ₹99/month unlimited)
-  - Branding customization options
-  - Music integration capabilities
-  - Data security and privacy
-  - Lab Mode for printing businesses
-  - Free trial availability
+### 💰 Pricing Plans
+- **Pay Per Album**: Flexible option for occasional creators
+- **Monthly Plan**: Unlimited access with a recurring monthly fee
+- **Yearly Plan**: Best value for long-term users with annual billing
 - **Multilingual Support**: FAQ includes both English and Hindi content
 - **Interactive Accordion**: Smooth expandable FAQ items with Radix UI
 
@@ -302,6 +299,8 @@ photo/
 - `/dashboard/pixfolio` - View all albums (AllPixfolio)
 - `/dashboard/recharge` - Account recharge and billing
 - `/dashboard/profile` - User profile management
+- `/dashboard/settings` - Advanced account settings
+- `/dashboard/help` - Help Center and support
 
 ### Demo & Development Pages
 - `/zoom-parallax-demo` - Advanced parallax scrolling effects

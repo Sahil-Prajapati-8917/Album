@@ -30,28 +30,28 @@ const Recharge = () => {
 
   const plans = [
     {
-      name: "Basics Archiver",
-      price: "₹1,499",
-      period: "/year",
-      description: "Essential tools for hobbyists.",
-      features: ["10 Albums", "Standard Analytics", "Email Support", "100GB Storage"],
+      name: "Pay Per Album",
+      price: "₹19",
+      period: "/album",
+      description: "For occasional users who need flexibility.",
+      features: ["One high-quality album", "All essential features", "Secure sharing links", "Standard support"],
       icon: ShieldCheck,
     },
     {
-      name: "Pro Visionary",
-      price: "₹2,999",
-      period: "/year",
-      description: "Advanced tools for pros.",
-      features: ["Unlimited Albums", "Advanced Analytics", "Priority Support", "500GB Storage", "Custom Branding"],
-      popular: true,
+      name: "Monthly Plan",
+      price: "₹149",
+      period: "/month",
+      description: "Perfect for active photographers with regular clients.",
+      features: ["10–20 albums per month", "Basic analytics", "Priority support", "Watermark protection", "Standard templates"],
       icon: Zap,
     },
     {
-      name: "Elite Legacy",
-      price: "₹4,999",
+      name: "Yearly Plan",
+      price: "₹1,499",
       period: "/year",
-      description: "For agencies and studios.",
-      features: ["Everything in Pro", "1TB Storage", "Dedicated Manager", "API Access", "White Label"],
+      description: "Best for professional studios and high-volume work.",
+      features: ["150–200 albums per year", "Advanced analytics", "Custom branding", "Priority support", "All premium templates"],
+      popular: true,
       icon: Crown,
     }
   ]
