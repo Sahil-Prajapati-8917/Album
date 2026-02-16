@@ -143,7 +143,7 @@ export function IntroGrid() {
     return (
         <section
             ref={sectionRef}
-            id="work"
+            id="how-it-works"
             className="relative w-full py-24 md:py-32 bg-white"
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12">

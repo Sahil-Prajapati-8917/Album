@@ -77,6 +77,7 @@ export function FAQ() {
     return (
         <section
             ref={sectionRef}
+            id="faq"
             className="relative w-full py-24 md:py-32 bg-[#111111]"
         >
             <div className="max-w-4xl mx-auto px-6 md:px-12">
