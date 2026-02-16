@@ -127,5 +127,3 @@ export function Services() {
         </div>
     );
 }
-    );
-}
