@@ -16,62 +16,58 @@ const PaperTexture = () => (
   </svg>
 )
 
-// Premium Luxury Flowing Animation Background
-const LuxuryFlowBackground = () => (
-  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-[0.2] lg:opacity-[0.3]">
-    <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none" preserveAspectRatio="xMidYMid slice">
-      {/* Elegantly flowing wave paths */}
-      {[...Array(3)].map((_, i) => (
-        <motion.path
-          key={i}
-          d={`M -200 ${300 + i * 100} Q 300 ${100 + i * 50} 600 ${400 + i * 50} T 1400 ${300 + i * 100}`}
-          stroke="url(#luxury-gradient)"
-          strokeWidth="0.8"
-          animate={{
-            d: [
-              `M -200 ${300 + i * 100} Q 300 ${150 + i * 40} 600 ${450 + i * 30} T 1400 ${300 + i * 100}`,
-              `M -200 ${350 + i * 90} Q 300 ${500 - i * 50} 600 ${350 + i * 60} T 1400 ${350 + i * 90}`,
-              `M -200 ${300 + i * 100} Q 300 ${150 + i * 40} 600 ${450 + i * 30} T 1400 ${300 + i * 100}`
-            ]
-          }}
-          transition={{
-            duration: 25 + i * 5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-      {/* Suble Floating Particles */}
-      {[...Array(12)].map((_, i) => (
+// Premium Full-Screen Cinematic Background
+const CinematicBackground = () => (
+  <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#f8f9fa]">
+    {/* Cinematic Gradient Waves - Breathing Depth */}
+    <div className="absolute inset-0">
+      <motion.div
+        animate={{
+          scale: [1, 1.1, 1],
+          rotate: [0, 45, 0],
+          x: ['-5%', '5%', '-5%'],
+        }}
+        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.07)_0%,transparent_50%)] blur-[120px]"
+      />
+      <motion.div
+        animate={{
+          scale: [1.1, 1, 1.1],
+          rotate: [0, -45, 0],
+          x: ['5%', '-5%', '5%'],
+        }}
+        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute bottom-[-20%] right-[-20%] w-[140%] h-[140%] bg-[radial-gradient(circle_at_70%_70%,rgba(245,158,11,0.05)_0%,transparent_50%)] blur-[120px]"
+      />
+    </div>
+
+    {/* Elegant Floating Light Particles - Full Screen Depth */}
+    <svg className="absolute inset-0 w-full h-full opacity-40">
+      {[...Array(24)].map((_, i) => (
         <motion.circle
-          key={`particle-${i}`}
-          cx={100 + (i * 100) % 1000}
-          cy={200 + (i * 50) % 500}
-          r={0.8 + Math.random() * 1.5}
+          key={i}
+          cx={`${(i * 137.5) % 100}%`}
+          cy={`${(i * 123.4) % 100}%`}
+          r={Math.random() * 1.5 + 0.5}
           fill="#64748b"
           initial={{ opacity: 0.05 }}
           animate={{
-            y: [0, -30, 0],
-            x: [0, 15, 0],
-            opacity: [0.05, 0.15, 0.05]
+            y: [0, -60, 0],
+            x: [0, 20, 0],
+            opacity: [0.05, 0.2, 0.05]
           }}
           transition={{
-            duration: 15 + (i % 5) * 4,
+            duration: 20 + (i % 8) * 5,
             repeat: Infinity,
             ease: "easeInOut"
           }}
         />
       ))}
-      <defs>
-        <linearGradient id="luxury-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#94a3b8" stopOpacity="0" />
-          <stop offset="30%" stopColor="#94a3b8" stopOpacity="0.3" />
-          <stop offset="50%" stopColor="#64748b" stopOpacity="0.6" />
-          <stop offset="70%" stopColor="#94a3b8" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#94a3b8" stopOpacity="0" />
-        </linearGradient>
-      </defs>
     </svg>
+
+    {/* Artistic Vignette and Polish */}
+    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.015)_100%)] pointer-events-none"></div>
+    <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-white/60 pointer-events-none"></div>
   </div>
 )
 
@@ -256,7 +252,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center relative overflow-hidden font-sans">
-      <LuxuryFlowBackground />
+      <CinematicBackground />
 
       {/* Soft Studio Lighting - Light Theme */}
       <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-100/20 blur-[200px] pointer-events-none"></div>
