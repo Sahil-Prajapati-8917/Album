@@ -141,81 +141,87 @@ export function IntroGrid() {
     }, []);
 
     return (
-        <div ref={sectionRef} className="w-full">
-            {/* ── Title with split-line mask reveal ── */}
-            <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
-                <div className="mb-6">
-                    <div className="overflow-hidden">
-                        <div
-                            ref={titleLine1Ref}
-                            className="translate-y-[110%]"
-                        >
-                            <span className="block text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tracking-tight">
-                                {introGridConfig.titleLine1}
-                            </span>
+        <section
+            ref={sectionRef}
+            id="work"
+            className="relative w-full py-24 md:py-32 bg-white"
+        >
+            <div className="max-w-7xl mx-auto px-6 md:px-12">
+                {/* ── Title with split-line mask reveal ── */}
+                <div className="max-w-3xl mx-auto text-center mb-16 md:mb-24">
+                    <div className="mb-6">
+                        <div className="overflow-hidden">
+                            <div
+                                ref={titleLine1Ref}
+                                className="translate-y-[110%]"
+                            >
+                                <span className="block text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tracking-tight">
+                                    {introGridConfig.titleLine1}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="overflow-hidden">
+                            <div
+                                ref={titleLine2Ref}
+                                className="translate-y-[110%]"
+                            >
+                                <span className="block text-3xl md:text-4xl lg:text-5xl font-serif italic font-normal text-[#C6A75E]">
+                                    {introGridConfig.titleLine2}
+                                </span>
+                            </div>
                         </div>
                     </div>
-                    <div className="overflow-hidden">
-                        <div
-                            ref={titleLine2Ref}
-                            className="translate-y-[110%]"
-                        >
-                            <span className="block text-3xl md:text-4xl lg:text-5xl font-serif italic font-normal text-[#C6A75E]">
-                                {introGridConfig.titleLine2}
-                            </span>
-                        </div>
-                    </div>
-                </div>
 
-                <p
-                    ref={textRef}
-                    className="text-base md:text-lg text-[#111111]/60 font-body leading-relaxed opacity-0"
-                >
-                    {introGridConfig.description}
-                </p>
-            </div>
-
-            {/* ── Masonry Grid ── */}
-            <div
-                ref={gridRef}
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] sm:auto-rows-[200px] md:auto-rows-[280px]"
-            >
-                {introGridConfig.portfolioImages.map((image, index) => (
-                    <div
-                        key={index}
-                        className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer 
-                            ${index === 0 ? 'sm:col-span-2 md:col-span-1 md:row-span-2' : ''} 
-                            ${index === 3 ? 'md:row-span-2' : ''}
-                            ${index === 4 ? 'sm:col-span-2 md:col-span-1' : ''}
-                        `}
+                    <p
+                        ref={textRef}
+                        className="text-base md:text-lg text-[#111111]/60 font-body leading-relaxed opacity-0"
                     >
-                        <img
-                            src={image.src}
-                            alt={image.alt}
-                            className="w-full h-full object-cover will-change-transform"
-                            loading="lazy"
-                        />
-
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
-
-                        {/* Viewfinder corners on hover */}
-                        <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
-                        <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
-                        <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
-                        <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
-                    </div>
-                ))}
-            </div>
-
-            {/* Floating accent text */}
-            {introGridConfig.accentText && (
-                <div className="mt-12 md:mt-16 flex justify-end">
-                    <p className="text-sm text-[#C6A75E] font-body tracking-wider uppercase">
-                        {introGridConfig.accentText}
+                        {introGridConfig.description}
                     </p>
                 </div>
-            )}
-        </div>
+
+                {/* ── Masonry Grid ── */}
+                <div
+                    ref={gridRef}
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[250px] sm:auto-rows-[200px] md:auto-rows-[280px]"
+                >
+                    {introGridConfig.portfolioImages.map((image, index) => (
+                        <div
+                            key={index}
+                            className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer 
+                                ${index === 0 ? 'sm:col-span-2 md:col-span-1 md:row-span-2' : ''} 
+                                ${index === 3 ? 'md:row-span-2' : ''}
+                                ${index === 4 ? 'sm:col-span-2 md:col-span-1' : ''}
+                            `}
+                        >
+                            <img
+                                src={image.src}
+                                alt={image.alt}
+                                className="w-full h-full object-cover will-change-transform"
+                                loading="lazy"
+                            />
+
+                            {/* Hover overlay */}
+                            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-500" />
+
+                            {/* Viewfinder corners on hover */}
+                            <div className="absolute top-4 left-4 w-8 h-8 border-t-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+                            <div className="absolute top-4 right-4 w-8 h-8 border-t-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+                            <div className="absolute bottom-4 left-4 w-8 h-8 border-b-2 border-l-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+                            <div className="absolute bottom-4 right-4 w-8 h-8 border-b-2 border-r-2 border-white/0 group-hover:border-white/80 transition-all duration-500" />
+                        </div>
+                    ))}
+                </div>
+
+                {/* Floating accent text */}
+                {introGridConfig.accentText && (
+                    <div className="mt-12 md:mt-16 flex justify-end">
+                        <p className="text-sm text-[#C6A75E] font-body tracking-wider uppercase">
+                            {introGridConfig.accentText}
+                        </p>
+                    </div>
+                )}
+            </div>
+        </section>
     );
 }
