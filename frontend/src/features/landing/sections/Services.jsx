@@ -61,78 +61,71 @@ export function Services() {
     }, []);
 
     return (
-        <section
-            ref={sectionRef}
-            id="services"
-            className="relative w-full py-24 md:py-32 bg-[#111111]"
-        >
-            <div className="max-w-7xl mx-auto px-6 md:px-12">
-                <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-                    {/* Left Column - Heading */}
-                    <div ref={headingRef}>
-                        {servicesConfig.subtitle && (
-                            <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
-                                {servicesConfig.subtitle}
-                            </p>
-                        )}
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight leading-tight">
-                            {servicesConfig.titleLine1}
-                            <br />
-                            <span className="font-serif italic font-normal text-white/80">
-                                {servicesConfig.titleLine2Italic}
-                            </span>
-                        </h2>
-                        {servicesConfig.description && (
-                            <p className="mt-6 text-white/60 font-body text-base md:text-lg max-w-md leading-relaxed">
-                                {servicesConfig.description}
-                            </p>
-                        )}
-                    </div>
+        <div ref={sectionRef} className="w-full">
+            <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+                {/* Left Column - Heading */}
+                <div ref={headingRef}>
+                    {servicesConfig.subtitle && (
+                        <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                            {servicesConfig.subtitle}
+                        </p>
+                    )}
+                    <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight leading-tight">
+                        {servicesConfig.titleLine1}
+                        <br />
+                        <span className="font-serif italic font-normal text-white/80">
+                            {servicesConfig.titleLine2Italic}
+                        </span>
+                    </h2>
+                    {servicesConfig.description && (
+                        <p className="mt-6 text-white/60 font-body text-base md:text-lg max-w-md leading-relaxed">
+                            {servicesConfig.description}
+                        </p>
+                    )}
+                </div>
 
-                    {/* Right Column - Services Grid */}
-                    <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-px bg-white/10">
-                        {servicesConfig.services.map((service, index) => {
-                            const Icon = iconMap[service.iconName] || Camera;
-                            return (
-                                <div
-                                    key={index}
-                                    className="service-card group bg-forest-dark p-6 md:p-8 transition-all duration-500 hover:bg-forest-mid cursor-pointer"
-                                >
-                                    <div className="mb-4">
-                                        <Icon className="w-8 h-8 text-[#C6A75E] group-hover:text-[#E8D8B3] transition-colors duration-300" strokeWidth={1.5} />
-                                    </div>
-                                    <h3 className="text-lg md:text-xl font-sans font-semibold text-white mb-3 group-hover:text-[#C6A75E] transition-all duration-300">
-                                        {service.title}
-                                    </h3>
-                                    <p className="text-sm text-white/50 font-body leading-relaxed group-hover:text-white/70 transition-colors duration-300">
-                                        {service.description}
-                                    </p>
-
-                                    {/* Arrow indicator */}
-                                    <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                        <svg
-                                            className="w-5 h-5 text-white/60"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            viewBox="0 0 24 24"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                strokeWidth={1.5}
-                                                d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                            />
-                                        </svg>
-                                    </div>
+                {/* Right Column - Services Grid */}
+                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-px bg-white/10">
+                    {servicesConfig.services.map((service, index) => {
+                        const Icon = iconMap[service.iconName] || Camera;
+                        return (
+                            <div
+                                key={index}
+                                className="service-card group bg-forest-dark p-6 md:p-8 transition-all duration-500 hover:bg-forest-mid cursor-pointer"
+                            >
+                                <div className="mb-4">
+                                    <Icon className="w-8 h-8 text-[#C6A75E] group-hover:text-[#E8D8B3] transition-colors duration-300" strokeWidth={1.5} />
                                 </div>
-                            );
-                        })}
-                    </div>
+                                <h3 className="text-lg md:text-xl font-sans font-semibold text-white mb-3 group-hover:text-[#C6A75E] transition-all duration-300">
+                                    {service.title}
+                                </h3>
+                                <p className="text-sm text-white/50 font-body leading-relaxed group-hover:text-white/70 transition-colors duration-300">
+                                    {service.description}
+                                </p>
+
+                                {/* Arrow indicator */}
+                                <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    <svg
+                                        className="w-5 h-5 text-white/60"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={1.5}
+                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                        />
+                                    </svg>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             </div>
-
-            {/* Decorative element */}
-            <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-        </section>
+        </div>
+    );
+}
     );
 }
