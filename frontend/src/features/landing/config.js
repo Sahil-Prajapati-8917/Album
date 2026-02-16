@@ -30,8 +30,8 @@ export const introGridConfig = {
     accentText: "Designed for Photographers Who See Beyond the Frame",
     description: "Pixfolio transforms wedding photography into immersive digital experiences. From the first captured glance to the final dance, every moment becomes a beautifully curated visual narrative your clients will treasure for generations.",
     portfolioImages: [
-        { src: "/images/feature-mobile.jpg", alt: "Romantic wedding couple at sunset" },
-        { src: "/images/portfolio-2.jpg", alt: "Elegant wedding reception table" },
+        { src: "/images/product-album-1.jpg", alt: "Premium digital album presentation" },
+        { src: "https://images.unsplash.com/photo-1769427470211-413623a9333b?q=80&w=689&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", alt: "Elegant wedding reception table" },
         { src: "/images/portfolio-3.jpg", alt: "Beautiful bridal bouquet detail" },
         { src: "/images/portfolio-4.jpg", alt: "Wedding ceremony aisle" },
         { src: "/images/portfolio-5.jpg", alt: "Couple first dance" },
@@ -53,7 +53,7 @@ export const featuredProjectsConfig = {
             title: "Visual Book Viewer",
             category: "Core Experience",
             year: "2024",
-            image: "/images/product-album-1.jpg",
+            image: "/images/product-album-2.jpg",
             description: "Experience immersive page-flip animation with complete layout control. Deliver cinematic albums that feel like holding a handcrafted masterpiece.",
         },
         {

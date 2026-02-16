@@ -33,14 +33,14 @@ export function AppRoutes() {
             {/* Admin Redirect */}
             <Route path="/admin/*" element={<Navigate to="/dashboard" replace />} />
 
-            {/* Standalone Route (No Layout) */}
+            {/* Standalone Routes (No Layout) */}
             <Route path="/viewer/:id" element={<VisualBookViewer />} />
+            <Route path="/demo" element={<VisualBookDemo />} />
 
             {/* Public Routes with Main Layout */}
             <Route element={<MainLayout />}>
                 <Route path="/pricing" element={<Pricing />} />
                 <Route path="/zoom-parallax-demo" element={<ZoomParallaxDemo />} />
-                <Route path="/demo" element={<VisualBookDemo />} />
             </Route>
 
             {/* Auth Routes (Standalone) */}

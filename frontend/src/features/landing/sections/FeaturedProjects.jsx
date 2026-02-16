@@ -20,11 +20,12 @@ export function FeaturedProjects() {
                 trigger: headerRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        headerRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-                    );
+                    gsap.from(headerRef.current, {
+                        y: 60,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -49,7 +50,7 @@ export function FeaturedProjects() {
                             trigger: card,
                             start: 'top 80%',
                             onEnter: () => {
-                                gsap.set(imageWrap, { opacity: 1 });
+                                // Animate clip-path
                                 gsap.fromTo(
                                     imageWrap,
                                     { clipPath: fromClip },
@@ -71,7 +72,7 @@ export function FeaturedProjects() {
                             once: true,
                         });
 
-                        // Parallax on image
+                        // Parallax on image (unchanged)
                         if (img) {
                             gsap.fromTo(
                                 img,
@@ -96,20 +97,15 @@ export function FeaturedProjects() {
                             trigger: card,
                             start: 'top 75%',
                             onEnter: () => {
-                                gsap.set(content, { opacity: 1 });
                                 if (textEls && textEls.length) {
-                                    gsap.fromTo(
-                                        textEls,
-                                        { y: 50, opacity: 0 },
-                                        {
-                                            y: 0,
-                                            opacity: 1,
-                                            duration: 0.9,
-                                            ease: 'power3.out',
-                                            stagger: 0.1,
-                                            delay: 0.4,
-                                        }
-                                    );
+                                    gsap.from(textEls, {
+                                        y: 50,
+                                        opacity: 0,
+                                        duration: 0.9,
+                                        ease: 'power3.out',
+                                        stagger: 0.1,
+                                        delay: 0.4,
+                                    });
                                 }
                             },
                             once: true,
@@ -129,7 +125,7 @@ export function FeaturedProjects() {
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
-                <div ref={headerRef} className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-20 opacity-0">
+                <div ref={headerRef} className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-20">
                     <div>
                         {featuredProjectsConfig.subtitle && (
                             <p className="text-white/50 text-sm font-body uppercase tracking-widest mb-4">
@@ -161,7 +157,7 @@ export function FeaturedProjects() {
                         >
                             {/* Image with Viewfinder - Always first in DOM, order changed via CSS grid/flex if needed, but Grid handles it best by default order unless specified */}
                             <div
-                                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer opacity-0 
+                                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer 
                                     ${index % 2 === 1 ? 'md:order-2' : 'order-1'} 
                                     order-1`} // Force order 1 on mobile
                             >
@@ -192,7 +188,7 @@ export function FeaturedProjects() {
                             </div>
 
                             {/* Content - Order 2 on mobile */}
-                            <div className={`project-content opacity-0 
+                            <div className={`project-content 
                                 ${index % 2 === 1 ? 'md:order-1 md:text-right' : 'order-2'} 
                                 order-2`}>
                                 <div className={`project-text-item flex items-center gap-3 mb-4 

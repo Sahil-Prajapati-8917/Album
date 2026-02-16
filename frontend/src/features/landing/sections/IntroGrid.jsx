@@ -78,9 +78,6 @@ export function IntroGrid() {
                         trigger: item,
                         start: 'top 90%',
                         onEnter: () => {
-                            // Unhide (Tailwind opacity-0 used as pre-GSAP fallback)
-                            gsap.set(item, { opacity: 1 });
-
                             // Clip-path directional reveal
                             gsap.fromTo(
                                 item,
@@ -92,6 +89,14 @@ export function IntroGrid() {
                                     delay: cfg.delay,
                                 }
                             );
+
+                            // Opacity fade-in (ensure it's visible if JS fails)
+                            gsap.from(item, {
+                                opacity: 0,
+                                duration: 1,
+                                ease: 'power2.out',
+                                delay: cfg.delay
+                            });
 
                             if (img) {
                                 // Scale zoom-out (Ken Burns)
@@ -183,7 +188,7 @@ export function IntroGrid() {
                     {introGridConfig.portfolioImages.map((image, index) => (
                         <div
                             key={index}
-                            className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer opacity-0 
+                            className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer 
                                 ${index === 0 ? 'sm:col-span-2 md:col-span-1 md:row-span-2' : ''} 
                                 ${index === 3 ? 'md:row-span-2' : ''}
                                 ${index === 4 ? 'sm:col-span-2 md:col-span-1' : ''}

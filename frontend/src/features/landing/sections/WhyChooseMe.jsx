@@ -61,11 +61,12 @@ export function WhyChooseMe() {
                 trigger: headerRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        headerRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-                    );
+                    gsap.from(headerRef.current, {
+                        y: 60,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -80,7 +81,6 @@ export function WhyChooseMe() {
                         trigger: card,
                         start: 'top 85%',
                         onEnter: () => {
-                            gsap.set(card, { opacity: 1 });
                             gsap.fromTo(
                                 card,
                                 { clipPath: 'inset(100% 0 0 0)' },
@@ -102,7 +102,7 @@ export function WhyChooseMe() {
                         once: true,
                     });
 
-                    // Parallax on card images
+                    // Parallax on card images (unchanged)
                     if (img) {
                         gsap.fromTo(
                             img,
@@ -129,11 +129,13 @@ export function WhyChooseMe() {
                     trigger: statsCard,
                     start: 'top 85%',
                     onEnter: () => {
-                        gsap.fromTo(
-                            statsCard,
-                            { y: 80, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.3 }
-                        );
+                        gsap.from(statsCard, {
+                            y: 80,
+                            opacity: 0,
+                            duration: 1,
+                            ease: 'power3.out',
+                            delay: 0.3
+                        });
                     },
                     once: true,
                 });
@@ -157,7 +159,6 @@ export function WhyChooseMe() {
                     trigger: wideWrap,
                     start: 'top 82%',
                     onEnter: () => {
-                        gsap.set(wideWrap, { opacity: 1 });
                         gsap.fromTo(
                             wideWrap,
                             { clipPath: 'inset(15% 5% 15% 5%)' },
@@ -178,7 +179,7 @@ export function WhyChooseMe() {
                     once: true,
                 });
 
-                // Wide image parallax
+                // Wide image parallax (unchanged)
                 if (wideImg) {
                     gsap.fromTo(
                         wideImg,
@@ -204,11 +205,13 @@ export function WhyChooseMe() {
                     trigger: wideWrap,
                     start: 'top 70%',
                     onEnter: () => {
-                        gsap.fromTo(
-                            wideText,
-                            { y: 30, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out', delay: 0.6 }
-                        );
+                        gsap.from(wideText, {
+                            y: 30,
+                            opacity: 0,
+                            duration: 0.9,
+                            ease: 'power3.out',
+                            delay: 0.6
+                        });
                     },
                     once: true,
                 });
@@ -226,7 +229,7 @@ export function WhyChooseMe() {
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
-                <div ref={headerRef} className="text-center mb-16 md:mb-20 opacity-0">
+                <div ref={headerRef} className="text-center mb-16 md:mb-20">
                     {whyChooseMeConfig.subtitle && (
                         <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
                             {whyChooseMeConfig.subtitle}
@@ -241,7 +244,7 @@ export function WhyChooseMe() {
                 <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                     {/* Feature Cards with Images */}
                     {whyChooseMeConfig.featureCards.map((card, index) => (
-                        <div key={index} className="feature-card-image opacity-0 group">
+                        <div key={index} className="feature-card-image group">
                             <div className="relative aspect-[3/4] md:aspect-[3/4] rounded-lg overflow-hidden bg-[#111111]">
                                 <img
                                     src={card.image}
@@ -266,7 +269,7 @@ export function WhyChooseMe() {
                     {whyChooseMeConfig.stats.length > 0 && (
                         <div
                             ref={statsRef}
-                            className="feature-card-stats opacity-0 bg-[#F8F8F6] rounded-lg p-8 md:p-10 flex flex-col justify-between border border-[#C6A75E]/20 min-h-[300px]"
+                            className="feature-card-stats bg-[#F8F8F6] rounded-lg p-8 md:p-10 flex flex-col justify-between border border-[#C6A75E]/20 min-h-[300px]"
                         >
                             <div>
                                 {whyChooseMeConfig.statsLabel && (
@@ -297,7 +300,7 @@ export function WhyChooseMe() {
 
                 {/* Wide Landscape Image */}
                 {whyChooseMeConfig.wideImage && (
-                    <div ref={wideRef} className="mt-16 md:mt-24 relative rounded-lg overflow-hidden group opacity-0">
+                    <div ref={wideRef} className="mt-16 md:mt-24 relative rounded-lg overflow-hidden group">
                         <div className="aspect-[4/3] md:aspect-[3/1] overflow-hidden">
                             <img
                                 src={whyChooseMeConfig.wideImage}
@@ -308,7 +311,7 @@ export function WhyChooseMe() {
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/60 via-transparent to-transparent" />
                         {(whyChooseMeConfig.wideTitle || whyChooseMeConfig.wideDescription) && (
-                            <div className="wide-text-overlay absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-md opacity-0">
+                            <div className="wide-text-overlay absolute bottom-8 left-8 md:bottom-12 md:left-12 max-w-md">
                                 {whyChooseMeConfig.wideTitle && (
                                     <p className="text-white/90 font-sans font-bold text-2xl md:text-3xl mb-3">
                                         {whyChooseMeConfig.wideTitle}

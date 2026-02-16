@@ -24,11 +24,12 @@ export function Testimonials() {
                 trigger: headerRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        headerRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-                    );
+                    gsap.from(headerRef.current, {
+                        y: 60,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -38,11 +39,13 @@ export function Testimonials() {
                 trigger: carouselRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        carouselRef.current,
-                        { y: 40, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.2 }
-                    );
+                    gsap.from(carouselRef.current, {
+                        y: 40,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        delay: 0.2
+                    });
                 },
                 once: true,
             });
@@ -58,7 +61,7 @@ export function Testimonials() {
         >
             {/* Section Header */}
             <div className="max-w-7xl mx-auto px-6 md:px-12 mb-16 md:mb-20">
-                <div ref={headerRef} className="text-center opacity-0">
+                <div ref={headerRef} className="text-center">
                     {testimonialsConfig.subtitle && (
                         <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
                             {testimonialsConfig.subtitle}
@@ -71,7 +74,7 @@ export function Testimonials() {
             </div>
 
             {/* Testimonials Carousel */}
-            <div ref={carouselRef} className="relative opacity-0">
+            <div ref={carouselRef} className="relative">
                 <Swiper
                     modules={[Autoplay, FreeMode]}
                     spaceBetween={24}

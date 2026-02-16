@@ -26,11 +26,12 @@ export function FAQ() {
                 trigger: headerRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        headerRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-                    );
+                    gsap.from(headerRef.current, {
+                        y: 60,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -42,17 +43,13 @@ export function FAQ() {
                 onEnter: () => {
                     const items = accordionRef.current?.querySelectorAll('[data-faq-item]');
                     if (items) {
-                        gsap.fromTo(
-                            items,
-                            { y: 40, opacity: 0 },
-                            {
-                                y: 0,
-                                opacity: 1,
-                                duration: 0.7,
-                                ease: 'power3.out',
-                                stagger: 0.08,
-                            }
-                        );
+                        gsap.from(items, {
+                            y: 40,
+                            opacity: 0,
+                            duration: 0.7,
+                            ease: 'power3.out',
+                            stagger: 0.08
+                        });
                     }
                 },
                 once: true,
@@ -63,11 +60,12 @@ export function FAQ() {
                 trigger: ctaRef.current,
                 start: 'top 90%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        ctaRef.current,
-                        { y: 30, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }
-                    );
+                    gsap.from(ctaRef.current, {
+                        y: 30,
+                        opacity: 0,
+                        duration: 0.8,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -83,7 +81,7 @@ export function FAQ() {
         >
             <div className="max-w-4xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
-                <div ref={headerRef} className="text-center mb-16 md:mb-20 opacity-0">
+                <div ref={headerRef} className="text-center mb-16 md:mb-20">
                     {faqConfig.subtitle && (
                         <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
                             {faqConfig.subtitle}
@@ -102,7 +100,7 @@ export function FAQ() {
                                 key={faq.id}
                                 value={faq.id}
                                 data-faq-item
-                                className="opacity-0 border-0 bg-[#1a1a1a]/50 rounded-lg overflow-hidden"
+                                className="border-0 bg-[#1a1a1a]/50 rounded-lg overflow-hidden"
                             >
                                 <AccordionTrigger className="px-6 py-5 hover:no-underline hover:bg-[#1a1a1a]/80 transition-colors duration-300 group text-left">
                                     <span className="font-sans font-medium text-white text-base md:text-lg pr-4 group-hover:text-[#C6A75E] leading-snug">
@@ -121,7 +119,7 @@ export function FAQ() {
 
                 {/* CTA */}
                 {(faqConfig.ctaText || faqConfig.ctaButtonText) && (
-                    <div ref={ctaRef} className="mt-16 text-center opacity-0">
+                    <div ref={ctaRef} className="mt-16 text-center">
                         {faqConfig.ctaText && (
                             <p className="text-white/60 font-body text-sm mb-4">
                                 {faqConfig.ctaText}

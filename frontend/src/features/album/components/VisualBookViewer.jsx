@@ -2,17 +2,77 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import HTMLFlipBook from 'react-pageflip'
-import { ChevronLeft, ChevronRight, X, Maximize2, Minimize2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Minimize2 } from 'lucide-react'
 
 // Realistic Paper Texture Component
 const PaperTexture = () => (
   <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-[0.03] mix-blend-multiply">
     <filter id="paper-grain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" />
-      <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.5 0" />
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
+      <feColorMatrix type="matrix" values="1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.3 0" />
     </filter>
     <rect width="100%" height="100%" filter="url(#paper-grain)" />
   </svg>
+)
+
+// Premium Luxury Flowing Animation Background
+const LuxuryFlowBackground = () => (
+  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-[0.2] lg:opacity-[0.3]">
+    <svg className="w-full h-full" viewBox="0 0 1200 800" fill="none" preserveAspectRatio="xMidYMid slice">
+      {/* Elegantly flowing wave paths */}
+      {[...Array(3)].map((_, i) => (
+        <motion.path
+          key={i}
+          d={`M -200 ${300 + i * 100} Q 300 ${100 + i * 50} 600 ${400 + i * 50} T 1400 ${300 + i * 100}`}
+          stroke="url(#luxury-gradient)"
+          strokeWidth="0.8"
+          animate={{
+            d: [
+              `M -200 ${300 + i * 100} Q 300 ${150 + i * 40} 600 ${450 + i * 30} T 1400 ${300 + i * 100}`,
+              `M -200 ${350 + i * 90} Q 300 ${500 - i * 50} 600 ${350 + i * 60} T 1400 ${350 + i * 90}`,
+              `M -200 ${300 + i * 100} Q 300 ${150 + i * 40} 600 ${450 + i * 30} T 1400 ${300 + i * 100}`
+            ]
+          }}
+          transition={{
+            duration: 25 + i * 5,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      ))}
+      {/* Suble Floating Particles */}
+      {[...Array(12)].map((_, i) => (
+        <motion.circle
+          key={`particle-${i}`}
+          cx={100 + (i * 100) % 1000}
+          cy={200 + (i * 50) % 500}
+          r={0.8 + Math.random() * 1.5}
+          fill="#64748b"
+          initial={{ opacity: 0.05 }}
+          animate={{
+            y: [0, -30, 0],
+            x: [0, 15, 0],
+            opacity: [0.05, 0.15, 0.05]
+          }}
+          transition={{
+            duration: 15 + (i % 5) * 4,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      ))}
+      <defs>
+        <linearGradient id="luxury-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#94a3b8" stopOpacity="0" />
+          <stop offset="30%" stopColor="#94a3b8" stopOpacity="0.3" />
+          <stop offset="50%" stopColor="#64748b" stopOpacity="0.6" />
+          <stop offset="70%" stopColor="#94a3b8" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#94a3b8" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
 )
 
 // Page component with forwardRef for react-pageflip
@@ -89,7 +149,7 @@ const Page = React.forwardRef((props, ref) => {
       </div>
 
       {/* Page Number - Minimalist placement */}
-      <div className={`absolute bottom-4 ${isLeft ? 'left-8' : 'right-8'} font-serif text-slate-300 text-[10px] tracking-widest uppercase pointer-events-none opacity-50`}>
+      <div className={`absolute bottom-4 ${isLeft ? 'left-8' : 'right-8'} font-serif text-slate-400 text-[10px] tracking-widest uppercase pointer-events-none opacity-50`}>
         {pageNumber}
       </div>
     </div>
@@ -195,25 +255,38 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center relative overflow-hidden font-sans">
-      {/* Cinematic Studio Lighting */}
-      <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-900/10 blur-[200px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-amber-900/5 blur-[200px] pointer-events-none"></div>
+    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center relative overflow-hidden font-sans">
+      <LuxuryFlowBackground />
 
-      {/* Minimalist Control Bar */}
-      <div className="absolute top-0 inset-x-0 h-16 flex items-center justify-between px-6 md:px-12 bg-black/40 backdrop-blur-xl z-50 border-b border-white/5">
-        <h2 className="text-white/40 font-serif font-light text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.3em] uppercase truncate max-w-[200px] sm:max-w-none">{bookData.title}</h2>
-        <div className="flex items-center gap-4 sm:gap-8">
-          <button onClick={toggleFullscreen} className="text-white/30 hover:text-white transition-all duration-300">
-            {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
-          </button>
-          <button onClick={() => navigate(-1)} className="text-white/30 hover:text-white transition-all duration-300">
-            <X size={18} />
-          </button>
-        </div>
+      {/* Soft Studio Lighting - Light Theme */}
+      <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-100/20 blur-[200px] pointer-events-none"></div>
+      <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-amber-100/10 blur-[200px] pointer-events-none"></div>
+      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white pointer-events-none opacity-80"></div>
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.02)_100%)] pointer-events-none"></div>
+
+      {/* Floating Premium Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="fixed top-8 left-8 sm:top-12 sm:left-12 group flex items-center gap-3 px-6 py-2.5 rounded-full border border-slate-200/50 bg-white/40 backdrop-blur-md hover:bg-white hover:border-slate-300 transition-all duration-700 shadow-sm z-[100]"
+      >
+        <ArrowLeft size={16} className="text-slate-500 transition-transform group-hover:-translate-x-1" />
+        <span className="text-[11px] tracking-[0.25em] uppercase text-slate-500 font-medium font-serif">Back</span>
+      </button>
+
+      {/* Floating Fullscreen Control */}
+      <button
+        onClick={toggleFullscreen}
+        className="fixed top-8 right-8 sm:top-12 sm:right-12 p-3 rounded-full border border-slate-200/50 bg-white/40 backdrop-blur-md hover:bg-white hover:border-slate-300 text-slate-400 hover:text-slate-900 transition-all duration-500 shadow-sm z-[100]"
+      >
+        {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+      </button>
+
+      {/* Album Title - Floating minimal */}
+      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 sm:static sm:absolute sm:top-12 sm:left-1/2 sm:-translate-x-1/2 flex flex-col items-center gap-1 z-50 pointer-events-none">
+        <h2 className="text-slate-400/60 font-serif font-light text-[9px] tracking-[0.5em] uppercase">{bookData.title}</h2>
       </div>
 
-      <div className="relative book-perspective scale-[0.35] min-[400px]:scale-[0.45] sm:scale-75 md:scale-90 lg:scale-[1.15]">
+      <div className="relative book-perspective scale-[0.2] min-[400px]:scale-[0.25] sm:scale-[0.4] md:scale-[0.5] lg:scale-[0.65]">
         {/* The Fine Spine and Depth Effect */}
         <div
           className="absolute inset-y-0 left-1/2 -translate-x-1/2 z-20 w-[1px] opacity-30"
@@ -258,18 +331,18 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
       <div className="absolute bottom-8 sm:bottom-12 flex items-center gap-8 sm:gap-16 z-50">
         <button
           onClick={() => flipBookRef.current.getPageFlip().flipPrev()}
-          className="text-white/20 hover:text-white/60 transition-all duration-500"
+          className="text-slate-300 hover:text-slate-900 transition-all duration-500"
         >
           <ChevronLeft className="size-6 sm:size-8" strokeWidth={1} />
         </button>
 
-        <div className="text-white/10 font-serif text-[9px] tracking-[0.8em] uppercase select-none">
+        <div className="text-slate-300 font-serif text-[9px] tracking-[0.8em] uppercase select-none">
           Spread {Math.floor(currentPage / 2) + 1}
         </div>
 
         <button
           onClick={() => flipBookRef.current.getPageFlip().flipNext()}
-          className="text-white/20 hover:text-white/60 transition-all duration-500"
+          className="text-slate-300 hover:text-slate-900 transition-all duration-500"
         >
           <ChevronRight className="size-6 sm:size-8" strokeWidth={1} />
         </button>

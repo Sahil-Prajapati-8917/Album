@@ -27,11 +27,12 @@ export function Services() {
                 trigger: headingRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        headingRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-                    );
+                    gsap.from(headingRef.current, {
+                        y: 60,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -43,17 +44,13 @@ export function Services() {
                     trigger: gridRef.current,
                     start: 'top 78%',
                     onEnter: () => {
-                        gsap.fromTo(
-                            cards,
-                            { y: 60, opacity: 0 },
-                            {
-                                y: 0,
-                                opacity: 1,
-                                duration: 0.9,
-                                ease: 'power3.out',
-                                stagger: 0.12,
-                            }
-                        );
+                        gsap.from(cards, {
+                            y: 60,
+                            opacity: 0,
+                            duration: 0.9,
+                            ease: 'power3.out',
+                            stagger: 0.12
+                        });
                     },
                     once: true,
                 });
@@ -72,7 +69,7 @@ export function Services() {
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
                     {/* Left Column - Heading */}
-                    <div ref={headingRef} className="opacity-0">
+                    <div ref={headingRef}>
                         {servicesConfig.subtitle && (
                             <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
                                 {servicesConfig.subtitle}
@@ -99,7 +96,7 @@ export function Services() {
                             return (
                                 <div
                                     key={index}
-                                    className="service-card group bg-forest-dark p-6 md:p-8 opacity-0 transition-all duration-500 hover:bg-forest-mid cursor-pointer"
+                                    className="service-card group bg-forest-dark p-6 md:p-8 transition-all duration-500 hover:bg-forest-mid cursor-pointer"
                                 >
                                     <div className="mb-4">
                                         <Icon className="w-8 h-8 text-[#C6A75E] group-hover:text-[#E8D8B3] transition-colors duration-300" strokeWidth={1.5} />

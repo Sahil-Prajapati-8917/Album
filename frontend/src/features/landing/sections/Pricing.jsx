@@ -19,11 +19,12 @@ export function Pricing() {
                 trigger: headerRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        headerRef.current,
-                        { y: 60, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out' }
-                    );
+                    gsap.from(headerRef.current, {
+                        y: 60,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -35,17 +36,13 @@ export function Pricing() {
                     trigger: cardsRef.current,
                     start: 'top 80%',
                     onEnter: () => {
-                        gsap.fromTo(
-                            cards,
-                            { y: 60, opacity: 0 },
-                            {
-                                y: 0,
-                                opacity: 1,
-                                duration: 0.9,
-                                ease: 'power3.out',
-                                stagger: 0.15,
-                            }
-                        );
+                        gsap.from(cards, {
+                            y: 60,
+                            opacity: 0,
+                            duration: 0.9,
+                            ease: 'power3.out',
+                            stagger: 0.15
+                        });
                     },
                     once: true,
                 });
@@ -63,7 +60,7 @@ export function Pricing() {
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
-                <div ref={headerRef} className="text-center mb-16 md:mb-20 opacity-0">
+                <div ref={headerRef} className="text-center mb-16 md:mb-20">
                     <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
                         {pricingConfig.subtitle}
                     </p>
@@ -80,7 +77,7 @@ export function Pricing() {
                     {pricingConfig.plans.map((plan, index) => (
                         <div
                             key={index}
-                            className={`pricing-card opacity-0 rounded-lg p-8 md:p-10 transition-all duration-500 ${plan.highlighted
+                            className={`pricing-card rounded-lg p-8 md:p-10 transition-all duration-500 ${plan.highlighted
                                 ? 'bg-[#111111] text-white shadow-2xl scale-100 md:scale-110 border-2 border-[#C6A75E] z-10'
                                 : 'bg-white text-[#111111] border border-[#111111]/10 hover:shadow-xl hover:border-[#C6A75E]/30 z-0'
                                 }`}

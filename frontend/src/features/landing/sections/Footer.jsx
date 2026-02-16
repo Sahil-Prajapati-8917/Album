@@ -27,11 +27,13 @@ export function Footer() {
                 trigger: logoRef.current,
                 start: 'top 88%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        logoRef.current,
-                        { y: 80, opacity: 0, scale: 0.9 },
-                        { y: 0, opacity: 1, scale: 1, duration: 1.2, ease: 'power3.out' }
-                    );
+                    gsap.from(logoRef.current, {
+                        y: 80,
+                        opacity: 0,
+                        scale: 0.9,
+                        duration: 1.2,
+                        ease: 'power3.out'
+                    });
                 },
                 once: true,
             });
@@ -41,11 +43,13 @@ export function Footer() {
                 trigger: contentRef.current,
                 start: 'top 88%',
                 onEnter: () => {
-                    gsap.fromTo(
-                        contentRef.current,
-                        { y: 40, opacity: 0 },
-                        { y: 0, opacity: 1, duration: 1, ease: 'power3.out', delay: 0.3 }
-                    );
+                    gsap.from(contentRef.current, {
+                        y: 40,
+                        opacity: 0,
+                        duration: 1,
+                        ease: 'power3.out',
+                        delay: 0.3
+                    });
                 },
                 once: true,
             });
@@ -63,7 +67,7 @@ export function Footer() {
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Massive Logo */}
                 {footerConfig.logoText && (
-                    <div ref={logoRef} className="opacity-0 mb-16 md:mb-24">
+                    <div ref={logoRef} className="mb-16 md:mb-24">
                         <svg
                             viewBox="0 0 600 100"
                             className="w-full h-auto max-h-[15vh] sm:max-h-[20vh] md:max-h-[25vh]"
@@ -87,7 +91,7 @@ export function Footer() {
                 )}
 
                 {/* Footer Content */}
-                <div ref={contentRef} className="opacity-0">
+                <div ref={contentRef}>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-16">
                         {/* Contact Info */}
                         <div>
