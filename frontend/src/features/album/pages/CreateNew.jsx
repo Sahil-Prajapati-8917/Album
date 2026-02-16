@@ -1,33 +1,32 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
-  Save, ChevronRight, ChevronLeft, Upload, Music,
-  Image as ImageIcon, CheckCircle2, X,
+  ChevronRight, ChevronLeft, Sparkles, Wand2
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle,
-} from "@/components/ui/card"
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from '@/components/ui/badge'
+import { motion, AnimatePresence } from 'framer-motion'
+
+// Modular Components
+import CreateSteps from '../components/CreateSteps'
+import BasicInfoStep from '../components/BasicInfoStep'
+import MusicSelectionStep from '../components/MusicSelectionStep'
+import VisualsStep from '../components/VisualsStep'
+import VisualBookViewer from '../components/VisualBookViewer'
 
 const CreateNew = () => {
   const navigate = useNavigate()
-  const [activeTab, setActiveTab] = useState("basic")
+  const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isPreviewMode, setIsPreviewMode] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [errors, setErrors] = useState({})
 
   const [formData, setFormData] = useState({
     clientName: '',
     functionType: '',
     functionDate: '',
-    musicTrack: 'wedding-bells.mp3',
-    volume: 50,
+    musicTrack: 'romantic-wedding.mp3',
+    volume: 60,
     frontCover: null,
     backCover: null,
     innerSheets: []
@@ -40,316 +39,248 @@ const CreateNew = () => {
   ]
 
   const defaultMusicTracks = [
-    { name: 'Wedding Bells', file: 'wedding-bells.mp3' },
-    { name: 'Celebration Theme', file: 'celebration.mp3' },
-    { name: 'Romantic Melody', file: 'romantic.mp3' },
-    { name: 'Party Beats', file: 'party-beats.mp3' },
-    { name: 'Corporate Tune', file: 'corporate.mp3' }
+    { name: 'Romantic Wedding', file: 'romantic-wedding.mp3' },
+    { name: 'Celebration Joy', file: 'celebration-joy.mp3' },
+    { name: 'Classic Elegance', file: 'classic-elegance.mp3' },
+    { name: 'Modern Love', file: 'modern-love.mp3' },
+    { name: 'Ambient Soft', file: 'ambient-soft.mp3' }
   ]
 
-  const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+  const steps = [
+    { id: 1, title: 'Details', description: 'Event Information' },
+    { id: 2, title: 'Music', description: 'Background Score' },
+    { id: 3, title: 'Visuals', description: 'Photos & Covers' },
+  ]
+
+  const toTitleCase = (str) => {
+    if (!str) return ''
+    return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
   }
 
   const handleFileUpload = (e, field) => {
     const file = e.target.files[0]
-    if (file) handleChange(field, file)
+    if (file) {
+      setFormData(prev => ({ ...prev, [field]: file }))
+      if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }))
+    }
   }
 
   const handleMultipleFileUpload = (e) => {
     const files = Array.from(e.target.files)
     setFormData(prev => ({ ...prev, innerSheets: [...prev.innerSheets, ...files] }))
+    if (errors.innerSheets) setErrors(prev => ({ ...prev, innerSheets: '' }))
   }
 
-  const removeSheet = (index) => {
+  const removeFile = (index) => {
     setFormData(prev => ({
       ...prev,
       innerSheets: prev.innerSheets.filter((_, i) => i !== index)
     }))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const toggleMusic = () => setIsPlaying(!isPlaying)
+
+  const validateStep = () => {
+    const newErrors = {}
+    if (currentStep === 1) {
+      if (!formData.clientName) newErrors.clientName = 'Client name is required'
+      if (!formData.functionType) newErrors.functionType = 'Event type is required'
+      if (!formData.functionDate) newErrors.functionDate = 'Event date is required'
+    } else if (currentStep === 3) {
+      if (!formData.frontCover) newErrors.frontCover = 'First page (front cover) is required'
+      if (!formData.backCover) newErrors.backCover = 'Last page (back cover) is required'
+      if (formData.innerSheets.length === 0) newErrors.innerSheets = 'At least one inner sheet is required'
+    }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const nextStep = () => {
+    if (validateStep()) {
+      setCurrentStep(prev => prev + 1)
+    }
+  }
+
+  const prevStep = () => {
+    setCurrentStep(prev => prev - 1)
+  }
+
+  const generateSpreads = () => {
+    const spreads = []
+    const allPhotos = [
+      formData.frontCover,
+      ...formData.innerSheets,
+      formData.backCover
+    ].filter(Boolean)
+
+    // Convert File objects to URLs for the viewer
+    const photoUrls = allPhotos.map(file => {
+      if (file instanceof File) {
+        return URL.createObjectURL(file)
+      }
+      return file
+    })
+
+    // Create spreads (2 photos per spread)
+    for (let i = 0; i < photoUrls.length; i += 2) {
+      spreads.push({
+        id: Math.floor(i / 2) + 1,
+        leftPage: { image: photoUrls[i], caption: "" },
+        rightPage: { image: photoUrls[i + 1] || photoUrls[i], caption: "" }
+      })
+    }
+    return spreads
+  }
+
+  const handleSubmit = async () => {
+    if (!validateStep()) return
+
     setIsSubmitting(true)
+    // Simulate API call
     setTimeout(() => {
       const albumId = Date.now()
       const newAlbum = {
-        id: `TASK-${albumId.toString().slice(-4)}`,
-        albumName: `${formData.clientName} - ${formData.functionType}`,
-        totalSheets: formData.innerSheets.length + 2,
+        id: `ALBUM-${albumId.toString().slice(-4)}`,
+        albumName: formData.clientName,
         clientName: formData.clientName,
-        date: formData.functionDate,
-        type: formData.functionType.charAt(0).toUpperCase() + formData.functionType.slice(1),
-        status: 'Todo',
-        priority: 'Medium',
+        functionDate: formData.functionDate,
+        functionType: formData.functionType,
+        songName: defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard',
+        totalSheets: formData.innerSheets.length + 2,
+        status: 'Done',
+        priority: 'High',
         label: 'Feature',
         views: '0',
+        spreads: generateSpreads()
       }
+
       const existingAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
       localStorage.setItem('albums', JSON.stringify([...existingAlbums, newAlbum]))
+
       setIsSubmitting(false)
-      navigate('/all-pixfolio')
-    }, 1500)
+      setIsPreviewMode(true)
+    }, 2000)
   }
 
-  const steps = [
-    { id: 'basic', label: 'Details', step: 1 },
-    { id: 'media', label: 'Media', step: 2 },
-    { id: 'review', label: 'Review', step: 3 },
-  ]
-
-  const currentStep = steps.findIndex(s => s.id === activeTab) + 1
+  if (isPreviewMode) {
+    return (
+      <div className="fixed inset-0 z-[100] bg-background">
+        <VisualBookViewer
+          spreads={generateSpreads()}
+          title={formData.clientName}
+        />
+        <div className="fixed bottom-8 right-8 z-[110] flex gap-4">
+          <Button
+            variant="outline"
+            onClick={() => setIsPreviewMode(false)}
+            className="border-gold/30 text-gold hover:bg-gold/5"
+          >
+            Back to Edit
+          </Button>
+          <Button
+            onClick={() => navigate('/all-pixfolio')}
+            className="bg-gold hover:bg-gold/90 text-white shadow-xl"
+          >
+            Go to All Pixfolios
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="flex-1 space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Create Visual Book</h1>
-        <p className="text-muted-foreground">
-          Build a premium digital album for your client.
+    <div className="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+      <div className="text-center mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="inline-flex items-center justify-center p-2 bg-gold/5 rounded-full mb-4"
+        >
+          <Sparkles className="h-5 w-5 text-gold mr-2" />
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-gold">Premium Creation Suite</span>
+        </motion.div>
+        <h1 className="text-4xl sm:text-5xl font-serif text-foreground mb-4 italic">Create Your Pixfolio</h1>
+        <p className="text-muted-foreground font-light max-w-2xl mx-auto">
+          Transform your captured moments into a cinematic digital experience. Follow our refined process to build a masterpiece.
         </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          {steps.map(s => (
-            <TabsTrigger key={s.id} value={s.id}>
-              {s.label}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+      <CreateSteps steps={steps} currentStep={currentStep} />
 
-        {/* Step 1: Basic Details */}
-        <TabsContent value="basic">
-          <Card className="max-w-2xl">
-            <CardHeader>
-              <CardTitle>Event Details</CardTitle>
-              <CardDescription>Basic information about the event.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="clientName">Client Name / Event Title</Label>
-                <Input
-                  id="clientName"
-                  placeholder="e.g. Sarah & John's Wedding"
-                  value={formData.clientName}
-                  onChange={(e) => handleChange('clientName', e.target.value)}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Event Category</Label>
-                  <Select
-                    value={formData.functionType}
-                    onValueChange={(val) => handleChange('functionType', val)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {functionTypes.map(type => (
-                        <SelectItem key={type} value={type}>
-                          {type.charAt(0).toUpperCase() + type.slice(1)}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="functionDate">Event Date</Label>
-                  <Input
-                    id="functionDate"
-                    type="date"
-                    value={formData.functionDate}
-                    onChange={(e) => handleChange('functionDate', e.target.value)}
-                  />
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="border-t pt-6 flex justify-end">
-              <Button onClick={() => setActiveTab("media")}>
-                Next <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
+      <div className="mt-12 bg-background relative">
+        <AnimatePresence mode="wait">
+          {currentStep === 1 && (
+            <BasicInfoStep
+              key="step1"
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              functionTypes={functionTypes}
+              toTitleCase={toTitleCase}
+            />
+          )}
 
-        {/* Step 2: Media Upload */}
-        <TabsContent value="media">
-          <Card className="max-w-3xl">
-            <CardHeader>
-              <CardTitle>Visuals & Audio</CardTitle>
-              <CardDescription>Upload covers, inner sheets, and select a soundtrack.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Covers */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Front Cover</Label>
-                  <label htmlFor="front-cover-upload" className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors aspect-video">
-                    {formData.frontCover ? (
-                      <div className="flex flex-col items-center gap-2">
-                        <ImageIcon className="h-8 w-8 text-emerald-500" />
-                        <span className="text-sm font-medium truncate max-w-[150px]">{formData.frontCover.name}</span>
-                        <Badge variant="outline" className="text-emerald-600">Uploaded</Badge>
-                      </div>
-                    ) : (
-                      <>
-                        <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                        <p className="text-sm font-medium">Upload front cover</p>
-                        <p className="text-xs text-muted-foreground">JPG, PNG up to 20MB</p>
-                      </>
-                    )}
-                    <Input type="file" className="hidden" id="front-cover-upload" onChange={(e) => handleFileUpload(e, 'frontCover')} accept="image/*" />
-                  </label>
-                </div>
-                <div className="space-y-2">
-                  <Label>Back Cover</Label>
-                  <label htmlFor="back-cover-upload" className="border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors aspect-video">
-                    {formData.backCover ? (
-                      <div className="flex flex-col items-center gap-2">
-                        <ImageIcon className="h-8 w-8 text-emerald-500" />
-                        <span className="text-sm font-medium truncate max-w-[150px]">{formData.backCover.name}</span>
-                        <Badge variant="outline" className="text-emerald-600">Uploaded</Badge>
-                      </div>
-                    ) : (
-                      <>
-                        <Upload className="h-8 w-8 text-muted-foreground mb-2" />
-                        <p className="text-sm font-medium">Upload back cover</p>
-                        <p className="text-xs text-muted-foreground">JPG, PNG up to 20MB</p>
-                      </>
-                    )}
-                    <Input type="file" className="hidden" id="back-cover-upload" onChange={(e) => handleFileUpload(e, 'backCover')} accept="image/*" />
-                  </label>
-                </div>
-              </div>
+          {currentStep === 2 && (
+            <MusicSelectionStep
+              key="step2"
+              formData={formData}
+              setFormData={setFormData}
+              isPlaying={isPlaying}
+              toggleMusic={toggleMusic}
+              defaultMusicTracks={defaultMusicTracks}
+            />
+          )}
 
-              <Separator />
+          {currentStep === 3 && (
+            <VisualsStep
+              key="step3"
+              formData={formData}
+              handleFileUpload={handleFileUpload}
+              handleMultipleFileUpload={handleMultipleFileUpload}
+              removeFile={removeFile}
+              errors={errors}
+            />
+          )}
+        </AnimatePresence>
 
-              {/* Inner Sheets */}
-              <div className="space-y-2">
-                <Label>Inner Sheets</Label>
-                <label htmlFor="inner-sheets-upload" className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-muted/50 transition-colors">
-                  <Upload className="h-10 w-10 text-muted-foreground mb-3" />
-                  <p className="text-sm font-medium">
-                    {formData.innerSheets.length > 0
-                      ? `${formData.innerSheets.length} sheets uploaded`
-                      : 'Upload inner sheets'}
-                  </p>
-                  <p className="text-xs text-muted-foreground">Select multiple files</p>
-                  <Input type="file" multiple className="hidden" id="inner-sheets-upload" onChange={handleMultipleFileUpload} accept="image/*" />
-                </label>
-                {formData.innerSheets.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-3">
-                    {formData.innerSheets.map((file, i) => (
-                      <Badge key={i} variant="secondary" className="pl-3 pr-1 py-1 gap-1">
-                        {file.name}
-                        <Button variant="ghost" size="icon" className="h-5 w-5 hover:bg-destructive/20" onClick={() => removeSheet(i)}>
-                          <X className="h-3 w-3" />
-                        </Button>
-                      </Badge>
-                    ))}
-                  </div>
-                )}
-              </div>
+        <div className="mt-12 flex items-center justify-between border-t border-gold/10 pt-8">
+          <Button
+            variant="ghost"
+            onClick={prevStep}
+            disabled={currentStep === 1 || isSubmitting}
+            className="text-muted-foreground hover:text-gold transition-colors"
+          >
+            <ChevronLeft className="mr-2 h-4 w-4" /> Previous Phase
+          </Button>
 
-              <Separator />
-
-              {/* Music */}
-              <div className="space-y-2">
-                <Label>Background Music</Label>
-                <Select
-                  value={formData.musicTrack}
-                  onValueChange={(val) => handleChange('musicTrack', val)}
-                >
-                  <SelectTrigger className="w-[300px]">
-                    <SelectValue placeholder="Select soundtrack" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {defaultMusicTracks.map(track => (
-                      <SelectItem key={track.file} value={track.file}>
-                        <div className="flex items-center gap-2">
-                          <Music className="h-4 w-4" />
-                          {track.name}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </CardContent>
-            <CardFooter className="border-t pt-6 flex justify-between">
-              <Button variant="ghost" onClick={() => setActiveTab("basic")}>
-                <ChevronLeft className="mr-2 h-4 w-4" /> Back
-              </Button>
-              <Button onClick={() => setActiveTab("review")}>
-                Next <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-
-        {/* Step 3: Review */}
-        <TabsContent value="review">
-          <Card className="max-w-2xl">
-            <CardHeader>
-              <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-                  <CheckCircle2 className="h-5 w-5 text-emerald-500" />
-                </div>
-                <div>
-                  <CardTitle>Review & Publish</CardTitle>
-                  <CardDescription>Confirm your details before publishing.</CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-lg border divide-y">
-                <div className="flex justify-between items-center p-4">
-                  <span className="text-sm text-muted-foreground">Client / Event</span>
-                  <span className="text-sm font-medium">{formData.clientName || 'Not set'}</span>
-                </div>
-                <div className="flex justify-between items-center p-4">
-                  <span className="text-sm text-muted-foreground">Category</span>
-                  <Badge variant="outline" className="capitalize">{formData.functionType || 'Not set'}</Badge>
-                </div>
-                <div className="flex justify-between items-center p-4">
-                  <span className="text-sm text-muted-foreground">Date</span>
-                  <span className="text-sm font-medium">{formData.functionDate || 'Not set'}</span>
-                </div>
-                <div className="flex justify-between items-center p-4">
-                  <span className="text-sm text-muted-foreground">Total Sheets</span>
-                  <span className="text-sm font-medium">{formData.innerSheets.length + (formData.frontCover ? 1 : 0) + (formData.backCover ? 1 : 0)}</span>
-                </div>
-                <div className="flex justify-between items-center p-4">
-                  <span className="text-sm text-muted-foreground">Music</span>
-                  <span className="text-sm font-medium flex items-center gap-2">
-                    <Music className="h-4 w-4" />
-                    {defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'None'}
-                  </span>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter className="border-t pt-6 flex justify-between">
-              <Button variant="ghost" onClick={() => setActiveTab("media")}>
-                <ChevronLeft className="mr-2 h-4 w-4" /> Back
-              </Button>
-              <Button onClick={handleSubmit} disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <span className="flex items-center gap-2">
-                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
-                    Publishing...
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-2">
-                    <Save className="h-4 w-4" />
-                    Publish Pixfolio
-                  </span>
-                )}
-              </Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          {currentStep < 3 ? (
+            <Button
+              onClick={nextStep}
+              className="bg-gold hover:bg-gold/90 text-white px-8 py-6 rounded-full shadow-lg shadow-gold/20 group"
+            >
+              Continue to {steps[currentStep].title}
+              <ChevronRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
+          ) : (
+            <Button
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              className="bg-foreground hover:bg-foreground/90 text-background px-10 py-6 rounded-full shadow-xl group"
+            >
+              {isSubmitting ? (
+                <span className="flex items-center">
+                  <Wand2 className="mr-2 h-5 w-5 animate-pulse" /> Creating...
+                </span>
+              ) : (
+                <span className="flex items-center">
+                  Create Pixfolio <Sparkles className="ml-2 h-4 w-4 text-gold" />
+                </span>
+              )}
+            </Button>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
