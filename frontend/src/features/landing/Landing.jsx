@@ -12,6 +12,8 @@ import { Footer } from './sections/Footer';
 import { siteConfig } from './config.js';
 import './landing.css';
 
+import { SectionWrapper } from './components/SectionWrapper';
+
 function Landing() {
   // Initialize Lenis smooth scroll
   useLenis();
@@ -30,32 +32,46 @@ function Landing() {
   }, []);
 
   return (
-    <main className="landing-root relative w-full overflow-x-hidden">
-      {/* Hero Section - Parallax Layering */}
+    <main className="landing-root bg-white text-charcoal">
+      {/* Hero Section - The immersive entrance */}
       <Hero />
 
-      {/* Intro & Masonry Grid - White Section */}
-      <IntroGrid />
+      {/* Intro & Showcase - Highlighting the core value */}
+      <SectionWrapper id="about">
+        <IntroGrid />
+      </SectionWrapper>
 
-      {/* Services - Dark Section */}
-      <Services />
+      {/* Services & Offerings - The premium studio experience */}
+      <SectionWrapper id="services" isDark={true}>
+        <Services />
+      </SectionWrapper>
 
-      {/* Why Choose Me & Stats - White Section */}
-      <WhyChooseMe />
+      {/* Social Proof & Trust - Why clients select Pixfolio */}
+      <SectionWrapper id="features">
+        <WhyChooseMe />
+      </SectionWrapper>
 
-      {/* Featured Projects - Dark Section */}
-      <FeaturedProjects />
+      {/* Portfolio Showcase - Visual excellence in action */}
+      <SectionWrapper id="projects" isDark={true}>
+        <FeaturedProjects />
+      </SectionWrapper>
 
-      {/* Testimonials Carousel - White Section */}
-      <Testimonials />
+      {/* Client Voice - Real experiences from top photographers */}
+      <SectionWrapper id="testimonials">
+        <Testimonials />
+      </SectionWrapper>
 
-      {/* Pricing Section - Light Section */}
-      <Pricing />
+      {/* Simple Transparent Pricing - The value proposition */}
+      <SectionWrapper id="pricing" className="bg-soft-white">
+        <Pricing />
+      </SectionWrapper>
 
-      {/* FAQ Accordion - Dark Section */}
-      <FAQ />
+      {/* Deep Dive & Clarity - Addressing common questions */}
+      <SectionWrapper id="faq" isDark={true}>
+        <FAQ />
+      </SectionWrapper>
 
-      {/* Footer - White Section with Massive Typography */}
+      {/* Footer - The lasting impression */}
       <Footer />
     </main>
   );
