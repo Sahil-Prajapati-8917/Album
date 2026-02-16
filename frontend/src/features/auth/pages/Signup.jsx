@@ -1,92 +1,174 @@
 import React from 'react'
 import CreateAccountForm from '../components/CreateAccountForm'
-import { LayoutGrid, ShieldCheck, Lock } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { LayoutGrid, ShieldCheck, Lock, ArrowLeft } from 'lucide-react'
+import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
+// Shared Cinematic Background for Auth Pages
+const AuthBackground = () => (
+  <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-zinc-50">
+    <motion.div
+      animate={{
+        scale: [1, 1.1, 1],
+        rotate: [0, 5, 0],
+        x: ['-2%', '2%', '-2%'],
+      }}
+      transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.1)_0%,transparent_50%)] blur-[120px]"
+    />
+    <motion.div
+      animate={{
+        scale: [1.1, 1, 1.1],
+        rotate: [0, -5, 0],
+        x: ['2%', '-2%', '2%'],
+      }}
+      transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
+      className="absolute bottom-[-10%] right-[-10%] w-[120%] h-[120%] bg-[radial-gradient(circle_at_70%_70%,rgba(245,158,11,0.08)_0%,transparent_50%)] blur-[120px]"
+    />
+    <div className="absolute inset-0 bg-white/40 backdrop-blur-[2px]"></div>
+  </div>
+)
 
 const Signup = () => {
+  const navigate = useNavigate()
+
   return (
-    <div className="min-h-screen w-full lg:grid lg:grid-cols-2">
-      {/* Left Column: Brand & Social Proof (Dark) */}
-      <div className="hidden lg:flex flex-col justify-between relative h-full w-full bg-zinc-900 p-12 text-white overflow-hidden">
-        {/* Abstract Grid Pattern Overlay */}
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
+    <div className="min-h-screen w-full relative overflow-hidden flex items-center justify-center p-4 lg:p-0">
+      <AuthBackground />
 
-        {/* Header */}
-        <div className="relative z-10 flex items-center gap-3">
-          <div className="size-10 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-white/10">
-            <LayoutGrid className="size-6 text-zinc-900" />
-          </div>
-          <div>
-            <span className="text-xl font-bold tracking-tight block leading-none">Pixfolio</span>
-            <span className="text-[10px] font-medium tracking-[0.2em] text-zinc-400 uppercase">Enterprise Suite</span>
-          </div>
-        </div>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <motion.button
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            onClick={() => navigate('/')}
+            className="fixed top-4 left-4 lg:top-8 lg:left-8 group flex items-center gap-2.5 lg:gap-3 px-4 py-2 lg:px-5 lg:py-2.5 rounded-full border border-zinc-200 bg-white/60 backdrop-blur-md hover:bg-zinc-900 hover:text-white hover:border-zinc-900 transition-all duration-500 shadow-sm z-[100]"
+          >
+            <ArrowLeft size={16} className="transition-transform group-hover:-translate-x-1" />
+            <span className="text-[11px] tracking-[0.2em] uppercase font-bold">Back to Home</span>
+          </motion.button>
+        </TooltipTrigger>
+        <TooltipContent side="right" className="bg-zinc-900 text-white border-zinc-800 rounded-lg px-3 py-1.5 shadow-xl font-bold uppercase tracking-widest text-[10px]">
+          Return to Landing Page
+        </TooltipContent>
+      </Tooltip>
 
-        {/* Stats Row - customized for Sign Up context */}
-        <div className="relative z-10 grid grid-cols-3 gap-8 py-12">
-          <div>
-            <p className="text-3xl font-bold tracking-tight">14d</p>
-            <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Free Trial</p>
+      <div className="w-full max-w-6xl min-h-[min(850px,95vh)] lg:h-[min(850px,95vh)] bg-white rounded-[40px] shadow-2xl shadow-zinc-200/50 flex flex-col lg:flex-row overflow-hidden relative z-10 border border-zinc-100">
+        {/* Left Column: Brand & Visuals */}
+        <div className="hidden lg:flex w-[45%] flex-col justify-between relative h-full bg-zinc-900 p-12 text-white overflow-hidden">
+          {/* Animated Background for Dark Column */}
+          <div className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)',
+              backgroundSize: '40px 40px'
+            }}>
           </div>
-          <div>
-            <p className="text-3xl font-bold tracking-tight">No</p>
-            <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Credit Card</p>
-          </div>
-          <div>
-            <p className="text-3xl font-bold tracking-tight">24/7</p>
-            <p className="text-xs text-zinc-500 font-medium uppercase tracking-wider mt-1">Support</p>
-          </div>
-        </div>
 
-        {/* Testimonial Card */}
-        <div className="relative z-10 bg-zinc-800/50 backdrop-blur-sm border border-zinc-700/50 p-8 rounded-2xl">
-          <p className="text-lg text-zinc-200 leading-relaxed font-medium mb-6">
-            "Joining Pixfolio was the best investment I made for my photography business. The client proofing workflow is unmatched."
-          </p>
-          <div className="flex items-center gap-4">
-            <div className="size-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400 font-bold text-lg">
-              JS
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative z-10 flex items-center gap-4"
+          >
+            <div className="size-12 bg-white rounded-2xl flex items-center justify-center shadow-2xl shadow-white/20">
+              <LayoutGrid className="size-7 text-zinc-900" />
             </div>
             <div>
-              <p className="font-bold text-white">James Smith</p>
-              <p className="text-sm text-zinc-400">Owner, LensCraft Studios</p>
+              <span className="text-2xl font-black tracking-tight block leading-none">Pixfolio</span>
+              <span className="text-[11px] font-bold tracking-[0.3em] text-zinc-500 uppercase mt-1 block">Enterprise Room</span>
             </div>
+          </motion.div>
+
+          <div className="relative z-10 space-y-12">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h2 className="text-4xl font-bold leading-[1.1] mb-6">
+                Start your <span className="text-zinc-500 italic font-serif">Legacy</span> Today.
+              </h2>
+              <p className="text-zinc-400 text-lg leading-relaxed max-w-sm">
+                Join thousands of professional photographers who trust Pixfolio for their high-end client proofing.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="grid grid-cols-2 gap-8"
+            >
+              <div className="space-y-1">
+                <p className="text-3xl font-black">14d</p>
+                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Free Experience</p>
+              </div>
+              <div className="space-y-1">
+                <p className="text-3xl font-black">No</p>
+                <p className="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">Credit Card Needed</p>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
 
-      {/* Right Column: Auth Form (Light) */}
-      <div className="flex flex-col items-center justify-center p-6 bg-zinc-50/50 min-h-screen">
-        <div className="w-full max-w-[550px] bg-white rounded-3xl shadow-xl shadow-zinc-200/50 p-8 md:p-12">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 mb-2">Create Account</h1>
-            <p className="text-zinc-500">Join thousands of professional photographers.</p>
-          </div>
-
-          <CreateAccountForm />
-
-          <div className="mt-8 pt-6 border-t border-zinc-100 text-center">
-            <p className="text-sm text-zinc-500">
-              Already have an account?{" "}
-              <Link to="/login" className="font-semibold text-zinc-900 hover:text-zinc-700 inline-flex items-center group">
-                Sign In
-                <svg className="w-4 h-4 ml-1 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.6 }}
+            className="relative z-10 bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[32px]"
+          >
+            <p className="text-zinc-300 leading-relaxed font-medium mb-6 italic">
+              "Joining Pixfolio was the best investment I made for my photography business. The client proofing workflow is unmatched."
             </p>
-          </div>
+            <div className="flex items-center gap-4">
+              <div className="size-10 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-zinc-400 font-bold text-sm">
+                JS
+              </div>
+              <div>
+                <p className="font-bold text-sm">James Smith</p>
+                <p className="text-xs text-zinc-500">Owner, LensCraft Studios</p>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
-        {/* Security Footer */}
-        <div className="mt-8 flex items-center gap-6 text-xs text-zinc-400 font-medium">
-          <div className="flex items-center gap-1.5 hover:text-zinc-600 transition-colors cursor-help">
-            <ShieldCheck className="size-4" />
-            <span>256-bit encryption</span>
-          </div>
-          <div className="flex items-center gap-1.5 hover:text-zinc-600 transition-colors cursor-help">
-            <Lock className="size-3.5" />
-            <span>SOC 2 Type II</span>
+        {/* Right Column: Auth Form */}
+        <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-12 bg-white relative overflow-y-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="w-full max-w-xl py-8"
+          >
+            <div className="mb-10 text-center lg:text-left">
+              <h1 className="text-4xl font-black tracking-tight text-zinc-900 mb-3">Create Account</h1>
+              <p className="text-zinc-500 font-medium">Join our exclusive community of visual artists.</p>
+            </div>
+
+            <CreateAccountForm />
+
+            <div className="mt-10 pt-8 border-t border-zinc-100 text-center">
+              <p className="text-sm text-zinc-500 font-medium">
+                Already have an account?{" "}
+                <Link to="/login" className="text-zinc-900 font-bold hover:underline underline-offset-4 ml-1">
+                  Sign In
+                </Link>
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Security Footer */}
+          <div className="mt-8 flex justify-center gap-8 text-[10px] text-zinc-400 font-bold uppercase tracking-widest pb-4 lg:pb-0">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="size-3.5" />
+              <span>AES-256 Security</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Lock className="size-3.5" />
+              <span>SOC2 Type II</span>
+            </div>
           </div>
         </div>
       </div>
@@ -95,3 +177,4 @@ const Signup = () => {
 }
 
 export default Signup
+

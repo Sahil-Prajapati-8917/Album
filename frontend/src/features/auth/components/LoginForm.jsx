@@ -5,6 +5,12 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { loginUser } from '@/services/api'
 
 const LoginForm = () => {
@@ -113,23 +119,30 @@ const LoginForm = () => {
                 </div>
 
                 <div className="pt-2">
-                    <Button
-                        type="submit"
-                        disabled={isLoading}
-                        className="w-full h-12 bg-zinc-900 hover:bg-black text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-zinc-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest"
-                    >
-                        {isLoading ? (
-                            <>
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                Processing...
-                            </>
-                        ) : (
-                            <>
-                                Sign In to Pixfolio
-                                <ChevronRight className="w-5 h-5 ml-1" />
-                            </>
-                        )}
-                    </Button>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                type="submit"
+                                disabled={isLoading}
+                                className="w-full h-12 bg-gradient-to-r from-zinc-900 to-zinc-800 hover:from-indigo-600 hover:to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-zinc-900/10 hover:shadow-indigo-500/20 active:scale-[0.98] transition-all duration-500 flex items-center justify-center gap-2 text-[15px] uppercase tracking-widest"
+                            >
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        Processing...
+                                    </>
+                                ) : (
+                                    <>
+                                        Sign In to Pixfolio
+                                        <ChevronRight className="w-5 h-5 ml-1" />
+                                    </>
+                                )}
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent side="top" className="bg-zinc-900 text-white border-zinc-800 rounded-lg px-3 py-1.5 shadow-xl font-bold uppercase tracking-widest text-[10px] mb-2">
+                            Securely access your account
+                        </TooltipContent>
+                    </Tooltip>
 
                     <div className="mt-8 text-center pt-4 border-t border-zinc-100">
                         <p className="text-[10px] text-zinc-400 uppercase tracking-widest font-medium">
@@ -138,12 +151,19 @@ const LoginForm = () => {
                     </div>
 
                     <div className="mt-4 flex justify-center">
-                        <Button variant="ghost" className="text-zinc-500 hover:text-zinc-900 gap-2 text-[11px] font-bold uppercase tracking-widest transition-all hover:bg-zinc-100">
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                            </svg>
-                            Explore as Guest
-                        </Button>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button variant="ghost" className="text-zinc-500 hover:text-zinc-900 gap-2 text-[11px] font-bold uppercase tracking-widest transition-all hover:bg-zinc-100">
+                                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                    Explore as Guest
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="bg-zinc-900 text-white border-zinc-800 rounded-lg px-3 py-1.5 shadow-xl font-bold uppercase tracking-widest text-[10px] mt-2">
+                                Browse without an account
+                            </TooltipContent>
+                        </Tooltip>
                     </div>
                 </div>
             </form>
