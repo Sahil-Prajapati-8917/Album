@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Play, Pause, Music2, Volume2 } from 'lucide-react'
+import { Play, Pause, Music, Volume2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import {
@@ -10,56 +10,60 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 
 const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, defaultMusicTracks }) => {
     return (
         <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="bg-card rounded-2xl shadow-sm border border-gold/10 p-8"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
         >
-            <div className="mb-8">
-                <h2 className="text-2xl font-serif italic text-foreground">Music Selection</h2>
-                <div className="w-12 h-px bg-gold mt-2"></div>
-            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Music Selection</CardTitle>
+                    <CardDescription>Choose a background track for the digital album.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-8">
+                    <div className="space-y-2">
+                        <Label>Background Soundtrack</Label>
+                        <Select
+                            onValueChange={(value) => setFormData(prev => ({ ...prev, musicTrack: value }))}
+                            value={formData.musicTrack}
+                        >
+                            <SelectTrigger className="w-full max-w-sm">
+                                <SelectValue placeholder="Choose a track" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {defaultMusicTracks.map(track => (
+                                    <SelectItem key={track.file} value={track.file}>{track.name}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-            <div className="space-y-8">
-                <div className="space-y-2">
-                    <Label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground ml-1">
-                        Background Soundtrack
-                    </Label>
-                    <Select
-                        onValueChange={(value) => setFormData(prev => ({ ...prev, musicTrack: value }))}
-                        value={formData.musicTrack}
-                    >
-                        <SelectTrigger className="h-12 border-gold/10 focus:ring-gold/20 bg-muted/30">
-                            <SelectValue placeholder="Choose a track" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {defaultMusicTracks.map(track => (
-                                <SelectItem key={track.file} value={track.file}>{track.name}</SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
+                    <div className="flex flex-col md:flex-row items-center gap-6 bg-muted/40 p-4 rounded-lg border">
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            size="icon"
+                            onClick={toggleMusic}
+                            className="rounded-full w-12 h-12 shadow-sm"
+                        >
+                            {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />}
+                        </Button>
 
-                <div className="flex flex-col md:flex-row items-center gap-8 bg-muted/20 p-6 rounded-xl border border-gold/5">
-                    <Button
-                        type="button"
-                        onClick={toggleMusic}
-                        className={`${isPlaying ? 'bg-gold/20 text-gold border-gold/50' : 'bg-gold text-white'} rounded-full w-14 h-14 p-0 shadow-lg group transition-all`}
-                    >
-                        {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-1" />}
-                    </Button>
-
-                    <div className="flex-1 w-full space-y-4">
-                        <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                            <span className="flex items-center"><Music2 className="h-3 w-3 mr-2 text-gold" /> {formData.musicTrack}</span>
-                            <span>Volume: {formData.volume}%</span>
-                        </div>
-                        <div className="flex items-center space-x-3">
-                            <Volume2 className="h-4 w-4 text-gold" />
-                            <div className="relative w-full h-1 bg-muted rounded-full">
+                        <div className="flex-1 w-full space-y-3">
+                            <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
+                                <span className="flex items-center gap-1.5"><Music className="h-3.5 w-3.5" /> {formData.musicTrack}</span>
+                                <span>Volume: {formData.volume}%</span>
+                            </div>
+                            <div className="relative w-full h-1.5 bg-secondary rounded-full">
                                 <input
                                     type="range"
                                     min="0"
@@ -69,18 +73,14 @@ const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, def
                                     className="absolute w-full h-full opacity-0 cursor-pointer z-10"
                                 />
                                 <div
-                                    className="absolute h-full bg-gold rounded-full"
+                                    className="absolute h-full bg-primary rounded-full"
                                     style={{ width: `${formData.volume}%` }}
-                                />
-                                <div
-                                    className="absolute h-3 w-3 bg-gold rounded-full top-1/2 -translate-y-1/2 -ml-1.5 pointer-events-none"
-                                    style={{ left: `${formData.volume}%` }}
                                 />
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </CardContent>
+            </Card>
         </motion.div>
     )
 }

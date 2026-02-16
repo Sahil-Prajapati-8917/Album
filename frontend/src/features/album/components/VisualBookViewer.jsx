@@ -73,7 +73,7 @@ const CinematicBackground = () => (
 
 // Page component with forwardRef for react-pageflip
 const Page = React.forwardRef((props, ref) => {
-  const { spread, pageNumber, isLeft, isCover, children } = props
+  const { spread, pageNumber, isLeft, isCover, children, image } = props
 
   if (isCover) {
     return (
@@ -100,9 +100,15 @@ const Page = React.forwardRef((props, ref) => {
       >
         {/* Leather grain texture for cover */}
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/black-leather.png")' }}></div>
-        {children}
+
+        {image ? (
+          <img src={image} className="absolute inset-0 w-full h-full object-cover" alt="Cover" />
+        ) : (
+          <div className="relative z-10">{children}</div>
+        )}
+
         {/* Gold foil effect for border */}
-        <div className="absolute inset-4 border border-[#d4af37]/30 pointer-events-none"></div>
+        {!image && <div className="absolute inset-4 border border-[#d4af37]/30 pointer-events-none"></div>}
       </div>
     )
   }
@@ -154,7 +160,7 @@ const Page = React.forwardRef((props, ref) => {
 
 Page.displayName = 'Page'
 
-const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
+const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover = null, backCover = null }) => {
   const { id } = useParams()
   const navigate = useNavigate()
   const flipBookRef = useRef(null)
@@ -164,20 +170,9 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
   // Mock data for initial view if none provided
   const [bookData, setBookData] = useState({
     title: title,
-    spreads: spreads.length > 0 ? spreads : [
-      {
-        id: 1, leftPage: { image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200", caption: "" },
-        rightPage: { image: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200", caption: "" }
-      },
-      {
-        id: 2, leftPage: { image: "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?w=1200", caption: "" },
-        rightPage: { image: "https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=1200", caption: "" }
-      },
-      {
-        id: 3, leftPage: { image: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1200", caption: "" },
-        rightPage: { image: "https://images.unsplash.com/photo-1519741497674-611481863552?w=1200", caption: "" }
-      }
-    ]
+    frontCover: frontCover,
+    backCover: backCover,
+    spreads: spreads.length > 0 ? spreads : []
   })
 
   useEffect(() => {
@@ -185,18 +180,28 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
     if (id) {
       try {
         const albums = JSON.parse(localStorage.getItem('albums') || '[]')
-        const album = albums.find(a => a.id === parseInt(id))
-        if (album && album.spreads) {
+        const album = albums.find(a => a.id === id)
+        if (album) {
           setBookData({
             title: album.albumName || title,
-            spreads: album.spreads
+            spreads: album.spreads || [],
+            frontCover: album.frontCover || null,
+            backCover: album.backCover || null
           })
         }
       } catch (e) {
         console.error("Error loading album:", e)
       }
+    } else {
+      // Update state if props change when NO id is in URL (preview mode)
+      setBookData({
+        title: title,
+        spreads: spreads,
+        frontCover: frontCover,
+        backCover: backCover
+      })
     }
-  }, [id, title])
+  }, [id, title, spreads, frontCover, backCover])
 
   const onFlip = useCallback((e) => {
     setCurrentPage(e.data)
@@ -220,12 +225,14 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
 
     // Front Cover
     pages.push(
-      <Page key="front-cover" isCover={true} isLeft={false}>
-        <div className="text-center p-12">
-          <h1 className="text-4xl font-serif text-[#d4af37] mb-4 tracking-tight">{bookData.title}</h1>
-          <div className="w-24 h-px bg-[#d4af37]/30 mx-auto my-6"></div>
-          <p className="text-[10px] tracking-[0.4em] uppercase text-[#d4af37]/60">Fine Art Panoramic Volume</p>
-        </div>
+      <Page key="front-cover" isCover={true} isLeft={false} image={bookData.frontCover}>
+        {!bookData.frontCover && (
+          <div className="text-center p-12">
+            <h1 className="text-4xl font-serif text-[#d4af37] mb-4 tracking-tight">{bookData.title}</h1>
+            <div className="w-24 h-px bg-[#d4af37]/30 mx-auto my-6"></div>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-[#d4af37]/60">Fine Art Panoramic Volume</p>
+          </div>
+        )}
       </Page>
     )
 
@@ -242,8 +249,10 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal" }) => {
 
     // Back Cover
     pages.push(
-      <Page key="back-cover" isCover={true} isLeft={true}>
-        <div className="opacity-20 text-[8px] tracking-[0.5em] scale-75 uppercase">Pixfolio Legacy Edition</div>
+      <Page key="back-cover" isCover={true} isLeft={true} image={bookData.backCover}>
+        {!bookData.backCover && (
+          <div className="opacity-20 text-[8px] tracking-[0.5em] scale-75 uppercase">Pixfolio Legacy Edition</div>
+        )}
       </Page>
     )
 

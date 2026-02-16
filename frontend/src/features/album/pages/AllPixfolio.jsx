@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Search,
   Trash2,
@@ -70,9 +71,12 @@ import {
 } from "@/components/ui/card"
 
 const AllPixfolio = () => {
+  const navigate = useNavigate()
   const [albums, setAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedRows, setSelectedRows] = useState(new Set())
+  const [statusFilter, setStatusFilter] = useState('All')
+  const [priorityFilter, setPriorityFilter] = useState('All')
 
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
@@ -108,9 +112,12 @@ const AllPixfolio = () => {
   }, [])
 
   const handleDelete = (id) => {
-    const updated = albums.filter(a => a.id !== id)
-    setAlbums(updated)
-    localStorage.setItem('albums', JSON.stringify(updated))
+    if (window.confirm('Are you sure you want to delete this album?')) {
+      const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
+      const updated = storedAlbums.filter(a => a.id !== id)
+      localStorage.setItem('albums', JSON.stringify(updated))
+      setAlbums(prev => prev.filter(a => a.id !== id))
+    }
   }
 
   const toggleRow = (id) => {
@@ -131,11 +138,17 @@ const AllPixfolio = () => {
     }
   }
 
-  const filteredAlbums = albums.filter(album =>
-    album.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    album.songName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    album.id.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredAlbums = albums.filter(album => {
+    const matchesSearch =
+      album.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      album.songName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      album.id.toLowerCase().includes(searchTerm.toLowerCase())
+
+    const matchesStatus = statusFilter === 'All' || album.status === statusFilter
+    const matchesPriority = priorityFilter === 'All' || album.priority === priorityFilter
+
+    return matchesSearch && matchesStatus && matchesPriority
+  })
 
   return (
     <div className="flex-1 space-y-6">
@@ -167,8 +180,11 @@ const AllPixfolio = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => setStatusFilter('All')}>All Statuses</DropdownMenuItem>
                   {statusOptions.map(s => (
-                    <DropdownMenuItem key={s}>{getStatusIcon(s)} <span className="ml-2">{s}</span></DropdownMenuItem>
+                    <DropdownMenuItem key={s} onClick={() => setStatusFilter(s)}>
+                      {getStatusIcon(s)} <span className="ml-2">{s}</span>
+                    </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -179,8 +195,11 @@ const AllPixfolio = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => setPriorityFilter('All')}>All Priorities</DropdownMenuItem>
                   {priorityOptions.map(p => (
-                    <DropdownMenuItem key={p}>{getPriorityIcon(p)} <span className="ml-2">{p}</span></DropdownMenuItem>
+                    <DropdownMenuItem key={p} onClick={() => setPriorityFilter(p)}>
+                      {getPriorityIcon(p)} <span className="ml-2">{p}</span>
+                    </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -308,10 +327,20 @@ const AllPixfolio = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500 hover:text-blue-600">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-blue-500 hover:text-blue-600"
+                            onClick={() => navigate(`/viewer/${album.id}`)}
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-yellow-600 hover:text-yellow-700">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-yellow-600 hover:text-yellow-700"
+                            onClick={() => navigate(`/create?edit=${album.id}`)}
+                          >
                             <Pencil className="h-4 w-4" />
                           </Button>
                           <Button

@@ -1,6 +1,6 @@
 # Pixfolio Backend
 
-The server-side component of the Pixfolio platform, providing a RESTful API for user authentication, profile management, and project storage.
+The server-side component of the Pixfolio platform, providing a RESTful API for user authentication, profile management, and Visual Book project storage.
 
 ## 🛠️ Technology Stack
 

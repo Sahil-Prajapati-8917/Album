@@ -1,4 +1,3 @@
-end
 # Pixfolio - Interactive Digital Visual Books Platform
 
 A modern full-stack web application for creating and viewing interactive digital Visual Books. Designed for photographers, designers, and content creators who want to showcase their work in an engaging, interactive format with premium page-flipping animations and artistic effects.
@@ -84,117 +83,25 @@ photo/
 │   ├── README.md               # Backend documentation
 │   ├── index.js                 # Main server entry point
 │   ├── package.json             # Backend dependencies
-│   ├── .gitignore               # Backend git ignore
-│   ├── .env                     # Environment variables (create this)
-│   │
-│   ├── config/
-│   │   └── database.js          # MongoDB connection configuration
-│   │
-│   ├── models/
-│   │   └── User.js              # User model with schema
-│   │
-│   ├── controllers/
-│   │   └── userController.js    # User logic and handlers
-│   │
-│   ├── middleware/
-│   │   ├── auth.js              # JWT authentication middleware
-│   │   └── validation.js        # Input validation & rate limiting
-│   │
-│   └── routes/
-│       └── userRoutes.js        # User API endpoints
+│   ├── models/                  # Database models
+│   ├── controllers/             # Request handlers
+│   ├── routes/                  # API endpoints
+│   └── middleware/              # Auth & validation
 │
 └── frontend/                    # React frontend application
-    ├── index.html               # HTML template
-    ├── package.json             # Frontend dependencies
-    ├── vite.config.js           # Vite configuration
-    ├── components.json           # shadcn/ui configuration
-    ├── eslint.config.js         # ESLint configuration
-    ├── jsconfig.json            # JavaScript project config
-    │
-    ├── public/
-    │   └── vite.svg             # Vite logo
-    │
     ├── src/
-    │   ├── main.jsx             # App entry point
-    │   ├── App.jsx              # Main app component with routing
-    │   ├── App.css              # App-specific styles
-    │   ├── index.css            # Global styles
-    │   │
-    │   ├── assets/              # Static images and assets
-    │   │   └── react.svg        # React logo
-    │   │
-    │   ├── components/          # Reusable React components
-    │   │   ├── ui/             # UI components (shadcn/ui)
-    │   │   │   ├── accordion.jsx
-    │   │   │   ├── animated-modal.jsx
-    │   │   │   ├── button.jsx
-    │   │   │   ├── card.jsx
-    │   │   │   ├── dropdown-menu.jsx
-    │   │   │   ├── resizable-navbar.jsx
-    │   │   │   ├── sidebar.jsx
-    │   │   │   └── [40+ more UI components]
-    │   │   │
-    │   │   ├── blocks/          # Feature block components
-    │   │   │   └── feature-section-with-hover-effects.jsx
-    │   │   │
-    │   │   ├── AppSidebar.jsx
-    │   │   ├── Aurora.jsx
-    │   │   ├── CreateAccount.jsx
-    │   │   ├── DashboardLayout.jsx
-    │   │   ├── DateSelector.jsx
-    │   │   ├── FlowingMenu.jsx
-    │   │   ├── Footer.jsx
-    │   │   ├── Header.jsx
-    │   │   ├── Lamp.jsx
-    │   │   ├── Navigation.jsx
-    │   │   ├── NavUser.jsx
-    │   │   ├── PricingCard.jsx
-    │   │   ├── PricingComponent.jsx
-    │   │   ├── PricingSection.jsx
-    │   │   ├── ScrollReveal.jsx
-    │   │   ├── ScrollStackItem.jsx
-    │   │   ├── Sparkles.jsx
-    │   │   ├── SplitText.jsx
-    │   │   ├── UploadDemoModal.jsx
-    │   │   └── VisualBookViewer.jsx  # Main visual book viewer
-    │   │
-    │   ├── pages/               # Page components
-    │   │   ├── AllPixfolio.jsx
-    │   │   ├── CreateNew.jsx
-    │   │   ├── Dashboard.jsx
-    │   │   ├── FooterDemo.jsx
-    │   │   ├── Home.jsx
-    │   │   ├── Login.jsx
-    │   │   ├── NotFound.jsx
-    │   │   ├── Pricing.jsx
-    │   │   ├── Profile.jsx
-    │   │   ├── PulseBeam.jsx
-    │   │   ├── Recharge.jsx
-    │   │   ├── Signup.jsx
-    │   │   ├── VisualBookDemo.jsx
-    │   │   └── ZoomParallaxDemo.jsx
-    │   │
-    │   ├── hooks/               # Custom React hooks
-    │   │   └── use-mobile.js
-    │   │
-    │   ├── lib/                 # Utility libraries
-    │   │   └── utils.js
-    │   │
-    │   ├── services/            # API service layer
-    │   │   └── api.js           # Frontend API integration
-    │   │
-    │   ├── ui/                  # Additional UI components
-    │   │   └── sparkles.jsx
-    │   │
-    │   └── utils/               # Utility functions
-    │       └── helpers.js
-    │
-    ├── lib/                     # Root-level utilities
-    │   ├── utils.js
-    │   └── utils1.js
-    │
-    ├── NOTFOUND_README.md       # Additional documentation
-    └── USER_DATABASE_SYSTEM.md  # Database system documentation
+    │   ├── app/                 # App core (Routes, Providers)
+    │   ├── features/            # Feature-based logic and components
+    │   │   ├── album/           # Visual Book creation & viewing
+    │   │   ├── auth/            # Authentication (Login, Signup)
+    │   │   ├── landing/         # Landing page implementation
+    │   │   └── user/            # Dashboard, Profile, Settings
+    │   ├── components/          # Shared components (ui, layout)
+    │   ├── pages/               # Top-level standalone pages
+    │   ├── services/            # API integration
+    │   └── utils/               # Shared utilities
+    ├── public/                  # Static assets
+    └── package.json             # Frontend dependencies
 ```
 
 ## 🚀 Quick Start
@@ -408,21 +315,20 @@ Error Response:
 - `/signup` - User registration page
 - `/demo` - Visual Book Viewer standalone demo
 - `/zoom-parallax-demo` - Advanced scrolling effects showcase
-- `/viewer/:id` - Public visual book viewer (if accessible)
+- `/viewer/:id` - Public visual book viewer (direct access)
 
 ### Protected Routes (Require Authentication)
-- `/dashboard` - Main dashboard with nested routes
-  - `/dashboard/create` - Create new visual book
-  - `/dashboard/pixfolio` - View all albums (AllPixfolio)
-  - `/dashboard/recharge` - Account recharge and billing
-  - `/dashboard/profile` - User profile management
-  - `/dashboard/settings` - Advanced account settings
-  - `/dashboard/help` - Help Center and support
+- `/dashboard` - Main user dashboard
+- `/create` - Create new visual book
+- `/all-pixfolio` - View and manage all albums
+- `/recharge` - Account recharge and billing
+- `/profile` - User profile management
+- `/settings` - Advanced account settings
+- `/help` - Help Center and support
 
 ### Demo & Development Pages
 - `/demo` - Standalone Visual Book Viewer demonstration
-- `/footer-demo` - Footer component showcase
-- `/pulse-beam` - Pulse beam animation demo
+- `/test-loader` - Luma Spin animation demo
 - `/zoom-parallax-demo` - Advanced parallax scrolling effects
 
 ## 🎨 Features Deep Dive
