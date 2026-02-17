@@ -70,35 +70,16 @@ export function AppSidebar() {
 
   const navigation = {
     general: [
-      {
-        name: 'Dashboard',
-        icon: LayoutDashboard,
-        children: [
-          { name: 'Overview', href: '/dashboard' },
-        ],
-      },
+      { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
       { name: 'All Pixfolio', href: '/all-pixfolio', icon: FolderOpen },
       { name: 'Create New', href: '/create', icon: Plus },
     ],
     pages: [
-      {
-        name: 'Account',
-        icon: User,
-        children: [
-          { name: 'Profile', href: '/profile' },
-          { name: 'Recharge', href: '/recharge' },
-        ],
-      },
+      { name: 'Profile', href: '/profile', icon: User },
+      { name: 'Billing history', href: '/recharge', icon: CreditCard },
     ],
     other: [
-      {
-        name: 'Settings',
-        icon: Settings,
-        children: [
-          { name: 'General', href: '/settings' },
-          { name: 'Notifications', href: '/settings' },
-        ],
-      },
+      { name: 'Settings', href: '/settings', icon: Settings },
       { name: 'Help Center', href: '/help', icon: HelpCircle },
     ],
   }
@@ -243,24 +224,9 @@ export function AppSidebar() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <CreditCard className="mr-2 h-4 w-4" />
-                    Upgrade to Pro
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate('/profile')}>
-                    <User className="mr-2 h-4 w-4" />
-                    Account
-                  </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => navigate('/recharge')}>
                     <CreditCard className="mr-2 h-4 w-4" />
-                    Billing
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Bell className="mr-2 h-4 w-4" />
-                    Notifications
+                    Billing history
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

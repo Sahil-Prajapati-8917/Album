@@ -76,7 +76,7 @@ const LoginForm = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 className="pl-11 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                placeholder="name@company.com"
+                                placeholder="Enter your email address"
                             />
                         </div>
                     </div>
@@ -101,7 +101,7 @@ const LoginForm = () => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 className="pl-11 pr-11 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm tracking-widest placeholder:tracking-normal group-hover:border-zinc-300 text-base"
-                                placeholder="••••••••"
+                                placeholder="Enter your password"
                             />
                             <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
                                 <Button

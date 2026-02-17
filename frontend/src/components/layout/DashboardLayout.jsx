@@ -39,38 +39,7 @@ export default function DashboardLayout() {
         <AdminHeader user={user} />
         <div className="flex-1 w-full overflow-y-auto">
           <main className="max-w-7xl mx-auto p-6 space-y-6">
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink asChild>
-                    <Link to="/dashboard">Home</Link>
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                {pathnames.map((value, index) => {
-                  const last = index === pathnames.length - 1
-                  const to = `/${pathnames.slice(0, index + 1).join('/')}`
-
-                  return (
-                    <React.Fragment key={to}>
-                      <BreadcrumbSeparator />
-                      <BreadcrumbItem>
-                        {last ? (
-                          <BreadcrumbPage className="capitalize">
-                            {value.replace(/-/g, ' ')}
-                          </BreadcrumbPage>
-                        ) : (
-                          <BreadcrumbLink asChild>
-                            <Link to={to} className="capitalize">
-                              {value.replace(/-/g, ' ')}
-                            </Link>
-                          </BreadcrumbLink>
-                        )}
-                      </BreadcrumbItem>
-                    </React.Fragment>
-                  )
-                })}
-              </BreadcrumbList>
-            </Breadcrumb>
+            {/* Breadcrumb removed as per request */}
             <Outlet />
           </main>
         </div>

@@ -318,7 +318,7 @@ const CreateAccountForm = () => {
                                     value={formData.fullName}
                                     onChange={handleInputChange}
                                     className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                    placeholder="John Doe"
+                                    placeholder="Enter your full name"
                                 />
                             </div>
                         </div>
@@ -336,7 +336,7 @@ const CreateAccountForm = () => {
                                     onChange={handleInputChange}
                                     maxLength={10}
                                     className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                    placeholder="10-digit number"
+                                    placeholder="Enter 10-digit phone number"
                                 />
                             </div>
                         </div>
@@ -356,7 +356,7 @@ const CreateAccountForm = () => {
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                placeholder="artist@pixfolio.com"
+                                placeholder="Enter your email address"
                             />
                         </div>
                     </div>
@@ -368,7 +368,7 @@ const CreateAccountForm = () => {
                             </div>
                             <Select onValueChange={(v) => handleSelectChange('specialty', v)} value={formData.specialty}>
                                 <SelectTrigger className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300">
-                                    <SelectValue placeholder="Select Specialty" />
+                                    <SelectValue placeholder="Choose your specialty" />
                                 </SelectTrigger>
                                 <SelectContent className="rounded-xl border-zinc-200 shadow-xl max-h-[300px]">
                                     <SelectItem value="wedding" className="focus:bg-zinc-100 rounded-lg mx-1 my-0.5">Wedding Photography</SelectItem>
@@ -397,7 +397,7 @@ const CreateAccountForm = () => {
                                     value={formData.password}
                                     onChange={handleInputChange}
                                     className="pl-10 pr-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm tracking-widest placeholder:tracking-normal group-hover:border-zinc-300 text-base"
-                                    placeholder="••••••••"
+                                    placeholder="Create a password"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
                                     <Button
@@ -426,7 +426,7 @@ const CreateAccountForm = () => {
                                     value={formData.confirmPassword}
                                     onChange={handleInputChange}
                                     className="pl-10 pr-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm tracking-widest placeholder:tracking-normal group-hover:border-zinc-300 text-base"
-                                    placeholder="••••••••"
+                                    placeholder="Confirm your password"
                                 />
                                 <div className="absolute inset-y-0 right-0 pr-0 flex items-center">
                                     <Button
@@ -476,7 +476,7 @@ const CreateAccountForm = () => {
                                 value={formData.studioName}
                                 onChange={handleInputChange}
                                 className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                placeholder="Dreamscape Studio"
+                                placeholder="Enter your studio name"
                             />
                         </div>
                     </div>
@@ -496,12 +496,12 @@ const CreateAccountForm = () => {
 
                         {/* State Selector */}
                         <div className="space-y-2">
-                            <Label className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">State / Province</Label>
+                            <Label className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500">State</Label>
                             <SearchableSelect
                                 options={states}
                                 value={formData.state}
                                 onValueChange={(v) => handleSelectChange('state', v)}
-                                placeholder={!formData.country ? "Select Country First" : "Select State"}
+                                placeholder={!formData.country ? "Select country first" : "Select state"}
                                 disabled={!formData.country}
                                 icon={MapPin}
                             />
@@ -516,7 +516,7 @@ const CreateAccountForm = () => {
                                 options={cities}
                                 value={formData.city}
                                 onValueChange={(v) => handleSelectChange('city', v)}
-                                placeholder={!formData.state ? "Select State First" : "Select District"}
+                                placeholder={!formData.state ? "Select state first" : "Select district"}
                                 disabled={!formData.state}
                                 icon={MapPin}
                                 valueKey="name" // For cities, we use name as value
@@ -537,7 +537,7 @@ const CreateAccountForm = () => {
                                     onChange={handleInputChange}
                                     maxLength={6}
                                     className="pl-10 h-12 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-1 focus:ring-zinc-900 rounded-xl transition-all shadow-sm group-hover:border-zinc-300 text-base"
-                                    placeholder="6-digit PIN"
+                                    placeholder="Enter 6-digit PIN"
                                 />
                             </div>
                         </div>
