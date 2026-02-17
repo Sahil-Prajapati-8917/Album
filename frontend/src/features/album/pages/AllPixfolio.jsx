@@ -16,6 +16,7 @@ import {
   ArrowRight,
   Eye,
   Pencil,
+  BookOpen,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -37,6 +38,17 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Badge } from '@/components/ui/badge'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
+import VisualBookViewer from '../components/VisualBookViewer'
 
 const statusOptions = ['Backlog', 'Todo', 'In Progress', 'Done', 'Cancelled']
 const priorityOptions = ['Low', 'Medium', 'High']
@@ -77,6 +89,9 @@ const AllPixfolio = () => {
   const [selectedRows, setSelectedRows] = useState(new Set())
   const [statusFilter, setStatusFilter] = useState('All')
   const [priorityFilter, setPriorityFilter] = useState('All')
+  const [deleteId, setDeleteId] = useState(null)
+  const [viewId, setViewId] = useState(null)
+  const [viewData, setViewData] = useState(null)
 
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
@@ -111,12 +126,22 @@ const AllPixfolio = () => {
     loadAlbums()
   }, [])
 
+  const handleShow = (album) => {
+    setViewId(album.id)
+    setViewData(album)
+  }
+
   const handleDelete = (id) => {
-    if (window.confirm('Are you sure you want to delete this album?')) {
+    setDeleteId(id)
+  }
+
+  const confirmDelete = () => {
+    if (deleteId) {
       const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
-      const updated = storedAlbums.filter(a => a.id !== id)
+      const updated = storedAlbums.filter(a => a.id !== deleteId)
       localStorage.setItem('albums', JSON.stringify(updated))
-      setAlbums(prev => prev.filter(a => a.id !== id))
+      setAlbums(prev => prev.filter(a => a.id !== deleteId))
+      setDeleteId(null)
     }
   }
 
@@ -330,8 +355,18 @@ const AllPixfolio = () => {
                           <Button
                             variant="ghost"
                             size="icon"
+                            className="h-8 w-8 text-indigo-500 hover:text-indigo-600"
+                            onClick={() => handleShow(album)}
+                            title="Show Visual Book"
+                          >
+                            <BookOpen className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
                             className="h-8 w-8 text-blue-500 hover:text-blue-600"
                             onClick={() => navigate(`/viewer/${album.id}`)}
+                            title="Open in Viewer"
                           >
                             <Eye className="h-4 w-4" />
                           </Button>
@@ -378,6 +413,51 @@ const AllPixfolio = () => {
           </div>
         </CardContent>
       </Card>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete a Pixfolio</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the
+              Pixfolio and remove its data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-red-500 hover:bg-red-600 focus:ring-red-500"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Visual Book Viewer Modal */}
+      {viewId && (
+        <div className="fixed inset-0 z-[100] bg-background">
+          <VisualBookViewer
+            spreads={viewData?.spreads || []}
+            title={viewData?.clientName || "Pixfolio"}
+            frontCover={viewData?.frontCover}
+            backCover={viewData?.backCover}
+          />
+          <div className="fixed bottom-8 right-8 z-[110]">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setViewId(null)
+                setViewData(null)
+              }}
+              className="bg-white/40 backdrop-blur-md border-slate-200/50 hover:bg-white transition-all duration-300 shadow-sm"
+            >
+              Close Preview
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

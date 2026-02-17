@@ -153,14 +153,12 @@ export function FeaturedProjects() {
                     {featuredProjectsConfig.projects.map((project, index) => (
                         <div
                             key={project.id}
-                            className={`project-card grid md:grid-cols-2 gap-8 md:gap-12 items-center 
-                                ${index % 2 === 1 ? 'md:flex-row-reverse' : ''}`} // Removed incorrect class logic, relying on grid
+                            className="project-card grid md:grid-cols-2 gap-8 md:gap-12 items-center"
                         >
-                            {/* Image with Viewfinder - Always first in DOM, order changed via CSS grid/flex if needed, but Grid handles it best by default order unless specified */}
+                            {/* Image with Viewfinder */}
                             <div
-                                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer 
-                                    ${index % 2 === 1 ? 'md:order-2' : 'order-1'} 
-                                    order-1`} // Force order 1 on mobile
+                                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer order-1
+                                    ${index % 2 === 1 ? 'md:order-2' : 'md:order-1'}`}
                             >
                                 <div className="aspect-[4/3] overflow-hidden">
                                     <img
@@ -189,9 +187,8 @@ export function FeaturedProjects() {
                             </div>
 
                             {/* Content - Order 2 on mobile */}
-                            <div className={`project-content 
-                                ${index % 2 === 1 ? 'md:order-1 md:text-right' : 'order-2'} 
-                                order-2`}>
+                            <div className={`project-content order-2
+                                ${index % 2 === 1 ? 'md:order-1 md:text-right' : 'md:order-2'}`}>
                                 <div className={`project-text-item flex items-center gap-3 mb-4 
                                     ${index % 2 === 1 ? 'md:justify-end' : ''}`}>
                                     <span className="text-[#C6A75E] font-body text-sm">{project.category}</span>

@@ -291,7 +291,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
         <h2 className="text-slate-400/60 font-serif font-light text-[9px] tracking-[0.5em] uppercase">{bookData.title}</h2>
       </div>
 
-      <div className="relative book-perspective scale-[0.2] min-[400px]:scale-[0.25] sm:scale-[0.4] md:scale-[0.5] lg:scale-[0.65]">
+      <div className="relative book-perspective scale-[0.35] min-[400px]:scale-[0.45] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-[1.0]">
         {/* The Fine Spine and Depth Effect */}
         <div
           className="absolute inset-y-0 left-1/2 -translate-x-1/2 z-20 w-[1px] opacity-30"
