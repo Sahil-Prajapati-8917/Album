@@ -47,11 +47,16 @@ The server-side component of the Pixfolio platform, providing a RESTful API for 
 ### Authentication
 - `POST /api/users/register` - Register a new user
 - `POST /api/users/login` - Authenticate and get token
-- `GET /api/users/me` - Get current authenticated user details
 
-### Profile
-- `GET /api/users/profile` - Retrieve user profile information
-- `PUT /api/users/profile` - Update user profile and social media links
+### User Management
+- `GET /api/users/me` - Get current authenticated user details (Protected)
+- `GET /api/users/profile` - Retrieve user profile information (Protected)
+- `PUT /api/users/profile` - Update user profile and social media links (Protected)
+
+## 🗺️ Roadmap
+- [ ] Album Management API
+- [ ] Photo Upload Endpoints
+- [ ] Admin Management API
 
 ## 📁 Directory Structure
 

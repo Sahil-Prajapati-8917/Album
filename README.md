@@ -31,6 +31,16 @@ Pixfolio is a comprehensive platform that combines a React frontend with a Node.
 - **Recharge System**: Credit/balance management for premium features
 - **Modern Sidebar**: Collapsible navigation with active state tracking
 
+### 🛡️ Admin Panel (New)
+- **Secure Access**: Protected via a hidden search query ("admin panel") and password (`admin123`).
+- **Master Dashboard**: Comprehensive overview of system statistics.
+- **User Management**: View, track, and manage all registered users.
+- **Album Oversight**: Monitor all created albums and projects.
+- **Analytics**: Visual data representation of platform usage.
+- **Role Management**: Control user roles and permissions.
+- **Moderation Tools**: Content moderation capabilities.
+
+
 ### 🎪 Advanced UI Components & Effects
 - **Scroll Morph Hero**: Interactive hero with morphing animations
 - **Animated Modals**: Smooth transitions with backdrop effects
@@ -325,6 +335,16 @@ Error Response:
 - `/profile` - User profile management
 - `/settings` - Advanced account settings
 - `/help` - Help Center and support
+
+### Admin Routes (Frontend Application)
+- `/admin` - Admin login/entry portal
+- `/admin/dashboard/overview` - Master dashboard overview
+- `/admin/dashboard/analytics` - System analytics
+- `/admin/dashboard/albums` - All albums management
+- `/admin/dashboard/users` - User management
+- `/admin/dashboard/moderation` - Content moderation
+- `/admin/dashboard/roles` - Role management
+- `/admin/dashboard/settings` - Admin settings
 
 ### Demo & Development Pages
 - `/demo` - Standalone Visual Book Viewer demonstration

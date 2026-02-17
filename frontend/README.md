@@ -44,6 +44,13 @@ A modern React application for creating and viewing interactive digital Visual B
 - **Recharge System**: Credit/balance management for premium features
 - **Modern Sidebar**: Collapsible navigation with active state tracking
 
+### 🛡️ Admin Panel (New)
+- **Hidden Access**: Accessible via search query "admin panel" in the header or direct link `/admin`
+- **Secure Entry**: Password-protected gateway (Default: `admin123`)
+- **Master Dashboard**: Complete system overview and analytics
+- **User Management**: Tools to manage registered users
+- **Content Moderation**: Administrative control over platform content
+
 ### 💼 Marketing Pages
 - **Landing Page**: Compelling hero section with feature highlights and interactive demos
 - **Pricing Page**: Transparent pricing with feature comparisons

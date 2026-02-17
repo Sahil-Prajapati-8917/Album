@@ -20,6 +20,18 @@ import HelpCenter from '../features/user/pages/HelpCenter';
 import NotFound from '../pages/NotFound';
 import ZoomParallaxDemo from '../pages/ZoomParallaxDemo';
 import VisualBookDemo from '../pages/VisualBookDemo';
+import AdminPasswordPage from '../features/admin/pages/AdminPasswordPage';
+import MasterAdminDashboard from '../features/admin/pages/MasterAdminDashboard';
+import ProtectedAdminRoute from '../features/admin/components/ProtectedAdminRoute';
+
+import AdminOverview from '../features/admin/components/dashboard/AdminOverview';
+import AdminAnalytics from '../features/admin/components/dashboard/AdminAnalytics';
+import AdminAlbums from '../features/admin/components/dashboard/AdminAlbums';
+import AdminUsers from '../features/admin/components/dashboard/AdminUsers';
+import AdminModeration from '../features/admin/components/dashboard/AdminModeration';
+import AdminRoles from '../features/admin/components/dashboard/AdminRoles';
+import AdminSettings from '../features/admin/components/dashboard/AdminSettings';
+import AdminHelp from '../features/admin/components/dashboard/AdminHelp';
 
 // Components
 import VisualBookViewer from '../features/album/components/VisualBookViewer';
@@ -32,8 +44,21 @@ export function AppRoutes() {
             {/* Landing Page */}
             <Route path="/" element={<Landing />} />
 
-            {/* Admin Redirect */}
-            <Route path="/admin/*" element={<Navigate to="/dashboard" replace />} />
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminPasswordPage />} />
+            <Route element={<ProtectedAdminRoute />}>
+                <Route path="/admin/dashboard" element={<MasterAdminDashboard />}>
+                    <Route index element={<Navigate to="overview" replace />} />
+                    <Route path="overview" element={<AdminOverview />} />
+                    <Route path="analytics" element={<AdminAnalytics />} />
+                    <Route path="albums" element={<AdminAlbums />} />
+                    <Route path="users" element={<AdminUsers />} />
+                    <Route path="moderation" element={<AdminModeration />} />
+                    <Route path="roles" element={<AdminRoles />} />
+                    <Route path="settings" element={<AdminSettings />} />
+                    <Route path="help" element={<AdminHelp />} />
+                </Route>
+            </Route>
 
             {/* Standalone Routes (No Layout) */}
             <Route path="/viewer/:id" element={<VisualBookViewer />} />
