@@ -155,10 +155,6 @@ const Dashboard = () => {
           <p className="text-muted-foreground mt-1">Overview of your albums and performance.</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <CalendarDays className="mr-2 h-4 w-4" />
-            Last 30 Days
-          </Button>
           <Button onClick={() => navigate('/create')} className="bg-primary text-primary-foreground hover:bg-primary/90">
             <Plus className="mr-2 h-4 w-4" /> New Album
           </Button>

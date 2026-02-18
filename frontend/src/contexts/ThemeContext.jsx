@@ -12,18 +12,8 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage first
     const saved = localStorage.getItem('pixfolio-theme')
-    if (saved) {
-      return saved
-    }
-    
-    // Check system preference
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark'
-    }
-    
-    return 'light'
+    return saved || 'system'
   })
 
   const [isMounted, setIsMounted] = useState(false)
@@ -34,46 +24,54 @@ export const ThemeProvider = ({ children }) => {
 
   useEffect(() => {
     const root = window.document.documentElement
-    
-    // Remove previous theme class
-    root.classList.remove('light', 'dark')
-    
-    // Add new theme class
-    root.classList.add(theme)
-    
-    // Save to localStorage
-    localStorage.setItem('pixfolio-theme', theme)
-    
-    // Update meta theme-color for mobile browsers
-    const themeColor = theme === 'dark' ? '#1e1b14' : '#f8f7f6'
-    const metaThemeColor = document.querySelector('meta[name="theme-color"]')
-    if (metaThemeColor) {
-      metaThemeColor.content = themeColor
-    } else {
-      const meta = document.createElement('meta')
-      meta.name = 'theme-color'
-      meta.content = themeColor
-      document.head.appendChild(meta)
+
+    const applyTheme = (t) => {
+      let resolvedTheme = t
+      if (t === 'system') {
+        resolvedTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      }
+
+      root.classList.remove('light', 'dark')
+      root.classList.add(resolvedTheme)
+
+      const themeColor = resolvedTheme === 'dark' ? '#1e1b14' : '#f8f7f6'
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      if (metaThemeColor) {
+        metaThemeColor.content = themeColor
+      }
     }
+
+    applyTheme(theme)
+    localStorage.setItem('pixfolio-theme', theme)
   }, [theme])
 
   // Listen for system theme changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
-    
-    const handleChange = (e) => {
-      // Only auto-change if user hasn't manually set a preference
-      if (!localStorage.getItem('pixfolio-theme')) {
-        setTheme(e.matches ? 'dark' : 'light')
+
+    const handleChange = () => {
+      if (theme === 'system') {
+        const root = window.document.documentElement
+        const isDark = mediaQuery.matches
+        root.classList.remove('light', 'dark')
+        root.classList.add(isDark ? 'dark' : 'light')
+
+        const themeColor = isDark ? '#1e1b14' : '#f8f7f6'
+        const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+        if (metaThemeColor) metaThemeColor.content = themeColor
       }
     }
-    
+
     mediaQuery.addEventListener('change', handleChange)
     return () => mediaQuery.removeEventListener('change', handleChange)
-  }, [])
+  }, [theme])
 
   const toggleTheme = () => {
-    setTheme(prev => prev === 'light' ? 'dark' : 'light')
+    setTheme(prev => {
+      if (prev === 'light') return 'dark'
+      if (prev === 'dark') return 'system'
+      return 'light'
+    })
   }
 
   const value = {
@@ -81,8 +79,8 @@ export const ThemeProvider = ({ children }) => {
     setTheme,
     toggleTheme,
     isMounted,
-    isDark: theme === 'dark',
-    isLight: theme === 'light'
+    isDark: theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches),
+    isLight: theme === 'light' || (theme === 'system' && !window.matchMedia('(prefers-color-scheme: dark)').matches)
   }
 
   return (

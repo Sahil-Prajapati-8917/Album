@@ -76,7 +76,7 @@ export function AppSidebar() {
     ],
     pages: [
       { name: 'Profile', href: '/profile', icon: User },
-      { name: 'Billing history', href: '/recharge', icon: CreditCard },
+      { name: 'Billing', href: '/recharge', icon: CreditCard },
     ],
     other: [
       { name: 'Settings', href: '/settings', icon: Settings },
@@ -226,11 +226,11 @@ export function AppSidebar() {
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => navigate('/recharge')}>
                     <CreditCard className="mr-2 h-4 w-4" />
-                    Billing history
+                    Billing
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem className="text-red-500 focus:text-red-500 focus:bg-red-50/10">
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>

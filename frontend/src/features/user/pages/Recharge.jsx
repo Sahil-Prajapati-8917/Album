@@ -71,9 +71,9 @@ const Recharge = () => {
         </p>
       </div>
 
-      {/* Current Plan */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
+      {/* 1) Active subscription */}
+      <div className="grid gap-6">
+        <Card className="full-width">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -89,7 +89,7 @@ const Recharge = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div>
                 <p className="text-sm text-muted-foreground">Plan</p>
                 <p className="text-lg font-semibold">{currentPlan.name}</p>
@@ -109,48 +109,11 @@ const Recharge = () => {
             <Button>Manage Billing</Button>
           </CardFooter>
         </Card>
-
-        {/* Billing History */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm flex items-center gap-2">
-              <History className="h-4 w-4" />
-              Billing History
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="pl-6">Invoice</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead className="text-right pr-6">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {billingHistory.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="pl-6">
-                      <p className="text-sm font-medium">{item.id}</p>
-                      <p className="text-xs text-muted-foreground">{item.date}</p>
-                    </TableCell>
-                    <TableCell className="font-medium">{item.amount}</TableCell>
-                    <TableCell className="text-right pr-6">
-                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-200">
-                        {item.status}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
       </div>
 
       <Separator />
 
-      {/* Pricing Plans */}
+      {/* 2) Available Plans */}
       <div className="space-y-6">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">Available Plans</h2>
@@ -194,6 +157,47 @@ const Recharge = () => {
             </Card>
           ))}
         </div>
+      </div>
+
+      <Separator />
+
+      {/* 3) biling history */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Billing History</h2>
+          <p className="text-muted-foreground">View and download your past invoices.</p>
+        </div>
+        <Card>
+          <CardContent className="p-0">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="pl-6">Invoice</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Plan</TableHead>
+                  <TableHead className="text-right pr-6">Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {billingHistory.map((item) => (
+                  <TableRow key={item.id}>
+                    <TableCell className="pl-6">
+                      <p className="text-sm font-medium">{item.id}</p>
+                      <p className="text-xs text-muted-foreground">{item.date}</p>
+                    </TableCell>
+                    <TableCell className="font-medium">{item.amount}</TableCell>
+                    <TableCell>{item.plan}</TableCell>
+                    <TableCell className="text-right pr-6">
+                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-200">
+                        {item.status}
+                      </Badge>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

@@ -37,16 +37,7 @@ export default function HelpCenter() {
 
     return (
         <div className="flex-1 space-y-8">
-            <div className="text-center space-y-4 py-8 bg-muted/30 rounded-2xl border">
-                <h1 className="text-4xl font-bold tracking-tight">How can we help?</h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                    Search our knowledge base or get in touch with our support team.
-                </p>
-                <div className="max-w-xl mx-auto relative px-4">
-                    <Search className="absolute left-7 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input className="pl-12 h-12 text-lg shadow-sm" placeholder="Search for answers..." />
-                </div>
-            </div>
+
 
             <div className="grid gap-8 md:grid-cols-2">
                 <Card>
