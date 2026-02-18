@@ -236,7 +236,7 @@ const Dashboard = () => {
       <div className="grid gap-4 md:grid-cols-7">
 
         {/* Album Performance Graph - Vibrant Gradient */}
-        <Card className="col-span-4 lg:col-span-5">
+        <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Activity Overview</CardTitle>
             <CardDescription>
@@ -278,36 +278,6 @@ const Dashboard = () => {
           </CardContent>
         </Card>
 
-        {/* Quick Actions Panel */}
-        <Card className="col-span-3 lg:col-span-2 flex flex-col">
-          <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
-            <CardDescription>Manage your workspace</CardDescription>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            <Button variant="outline" className="w-full justify-start h-12 hover:border-orange-200 hover:bg-orange-50 dark:hover:bg-orange-950/20" onClick={() => navigate('/create')}>
-              <Plus className="mr-2 h-4 w-4 text-orange-500" />
-              Create New Album
-            </Button>
-            <Button variant="outline" className="w-full justify-start h-12 hover:border-blue-200 hover:bg-blue-50 dark:hover:bg-blue-950/20" onClick={() => navigate('/create')}>
-              <Upload className="mr-2 h-4 w-4 text-blue-500" />
-              Upload Photos
-            </Button>
-            <Button variant="outline" className="w-full justify-start h-12 hover:border-emerald-200 hover:bg-emerald-50 dark:hover:bg-emerald-950/20">
-              <Share2 className="mr-2 h-4 w-4 text-emerald-500" />
-              Generate Share Link
-            </Button>
-            <Button variant="outline" className="w-full justify-start h-12 hover:border-purple-200 hover:bg-purple-50 dark:hover:bg-purple-950/20" onClick={() => navigate('/pricing')}>
-              <CreditCard className="mr-2 h-4 w-4 text-purple-500" />
-              Upgrade Plan
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* 3. Bottom Section - Album Trends & Top Albums */}
-      <div className="grid gap-4 md:grid-cols-7">
-
         {/* Album Creation Trend - Teal Bars */}
         <Card className="col-span-3">
           <CardHeader>
@@ -334,9 +304,13 @@ const Dashboard = () => {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+      </div>
+
+      {/* 3. Bottom Section - Album Trends & Top Albums */}
+      <div className="grid gap-4 md:grid-cols-7">
 
         {/* Top Performing Albums Table */}
-        <Card className="col-span-4">
+        <Card className="col-span-7">
           <CardHeader>
             <CardTitle>Top Performing Albums</CardTitle>
             <CardDescription>Most viewed albums this week</CardDescription>
