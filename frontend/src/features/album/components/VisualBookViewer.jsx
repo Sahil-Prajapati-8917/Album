@@ -160,12 +160,17 @@ const Page = React.forwardRef((props, ref) => {
 
 Page.displayName = 'Page'
 
-const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover = null, backCover = null }) => {
+const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover = null, backCover = null, scale = 'normal' }) => {
   const { id } = useParams()
   const navigate = useNavigate()
   const flipBookRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
+
+  const scaleClasses = {
+    normal: "scale-[0.35] min-[400px]:scale-[0.45] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-[1.0]",
+    small: "scale-[0.15] min-[400px]:scale-[0.25] sm:scale-[0.35] md:scale-[0.5] lg:scale-[0.6] xl:scale-[0.7]"
+  }
 
   // Mock data for initial view if none provided
   const [bookData, setBookData] = useState({
@@ -291,7 +296,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
         <h2 className="text-slate-400/60 font-serif font-light text-[9px] tracking-[0.5em] uppercase">{bookData.title}</h2>
       </div>
 
-      <div className="relative book-perspective scale-[0.35] min-[400px]:scale-[0.45] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-[1.0]">
+      <div className={`relative book-perspective ${scaleClasses[scale] || scaleClasses.normal}`}>
         {/* The Fine Spine and Depth Effect */}
         <div
           className="absolute inset-y-0 left-1/2 -translate-x-1/2 z-20 w-[1px] opacity-30"

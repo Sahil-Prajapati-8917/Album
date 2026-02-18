@@ -65,6 +65,7 @@ const VisualBookDemo = () => {
     <VisualBookViewer
       spreads={demoSpreads}
       title="Pixfolio Demo Collection"
+      scale="small"
     />
   )
 }
