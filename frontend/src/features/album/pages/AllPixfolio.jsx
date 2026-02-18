@@ -3,9 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import {
   Search,
   Trash2,
-  ArrowUpDown,
   ChevronDown,
-  CirclePlus,
   Circle,
   CheckCircle2,
   XCircle,
@@ -49,10 +47,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 import VisualBookViewer from '../components/VisualBookViewer'
+import QRCodeModal from '../components/QRCodeModal'
+import { toast } from "sonner"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const statusOptions = ['Backlog', 'Todo', 'In Progress', 'Done', 'Cancelled']
 const priorityOptions = ['Low', 'Medium', 'High']
-const labelOptions = ['Documentation', 'Bug', 'Feature']
 
 const getStatusIcon = (status) => {
   switch (status) {
@@ -74,14 +80,6 @@ const getPriorityIcon = (priority) => {
   }
 }
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-
 const AllPixfolio = () => {
   const navigate = useNavigate()
   const [albums, setAlbums] = useState([])
@@ -92,6 +90,7 @@ const AllPixfolio = () => {
   const [deleteId, setDeleteId] = useState(null)
   const [viewId, setViewId] = useState(null)
   const [viewData, setViewData] = useState(null)
+  const [qrCodeAlbum, setQrCodeAlbum] = useState(null)
 
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
@@ -163,6 +162,12 @@ const AllPixfolio = () => {
     }
   }
 
+  const handleCopyLink = (id) => {
+    const url = `${window.location.origin}/viewer/${id}`
+    navigator.clipboard.writeText(url)
+    toast.success("Link copied to clipboard")
+  }
+
   const filteredAlbums = albums.filter(album => {
     const matchesSearch =
       album.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -195,7 +200,7 @@ const AllPixfolio = () => {
                   placeholder="Filter albums..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 h-9 w-[250px] lg:w-[300px]"
+                  className="pl-8 h-9 w-full sm:w-[250px] lg:w-[300px]"
                 />
               </div>
               <DropdownMenu>
@@ -298,7 +303,12 @@ const AllPixfolio = () => {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8"
+                          onClick={() => setQrCodeAlbum(album)}
+                        >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="16"
@@ -331,7 +341,7 @@ const AllPixfolio = () => {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8"
-                          onClick={() => navigator.clipboard.writeText(album.id)}
+                          onClick={() => handleCopyLink(album.id)}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -457,6 +467,16 @@ const AllPixfolio = () => {
             </Button>
           </div>
         </div>
+      )}
+
+      {/* QR Code Modal */}
+      {qrCodeAlbum && (
+        <QRCodeModal
+          isOpen={!!qrCodeAlbum}
+          onClose={() => setQrCodeAlbum(null)}
+          title={qrCodeAlbum.clientName || 'Pixfolio'}
+          url={`${window.location.origin}/viewer/${qrCodeAlbum.id}`}
+        />
       )}
     </div>
   )
