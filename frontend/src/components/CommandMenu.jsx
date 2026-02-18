@@ -15,7 +15,7 @@ import {
     Search
 } from 'lucide-react'
 import { useTheme } from '@/contexts/ThemeContext'
-import { Button } from '@/components/ui/button'
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 
 const CommandMenu = () => {
     const [open, setOpen] = useState(false)
@@ -40,100 +40,111 @@ const CommandMenu = () => {
         command()
     }
 
+    if (!Command) return null
+
     return (
-        <Command.Dialog
-            open={open}
-            onOpenChange={setOpen}
-            label="Global Command Menu"
-            className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm"
-        >
-            <div className="w-full max-w-[640px] bg-popover rounded-xl border shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
-                <div className="flex items-center border-b px-4 py-3">
-                    <Search className="mr-3 h-5 w-5 text-muted-foreground shrink-0" />
-                    <Command.Input
-                        placeholder="Type a command or search..."
-                        className="w-full bg-transparent border-none outline-none text-base placeholder:text-muted-foreground h-8"
-                    />
-                </div>
+        <DialogPrimitive.Root open={open} onOpenChange={setOpen}>
+            <DialogPrimitive.Portal>
+                <DialogPrimitive.Overlay className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm animate-in fade-in duration-300" />
+                <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-[101] w-full max-w-[640px] translate-x-[-50%] translate-y-[-50%] p-4 animate-in fade-in zoom-in duration-200">
+                    <Command className="w-full bg-popover rounded-xl border shadow-2xl overflow-hidden flex flex-col">
+                        <div className="flex items-center border-b px-4 py-3">
+                            <Search className="mr-3 h-5 w-5 text-muted-foreground shrink-0" />
+                            <Command.Input
+                                placeholder="Type a command or search..."
+                                className="w-full bg-transparent border-none outline-none text-base placeholder:text-muted-foreground h-10"
+                            />
+                        </div>
 
-                <Command.List className="max-h-[400px] overflow-y-auto p-2">
-                    <Command.Empty className="py-6 text-center text-sm text-muted-foreground font-medium">
-                        No results found.
-                    </Command.Empty>
+                        <Command.List className="max-h-[400px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted">
+                            <Command.Empty className="py-12 text-center text-sm text-muted-foreground font-medium">
+                                No results found.
+                            </Command.Empty>
 
-                    <Command.Group heading="Navigation" className="px-2 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        <Item onSelect={() => runCommand(() => navigate('/dashboard'))}>
-                            <LayoutDashboard className="mr-3 h-4 w-4" />
-                            <span>Dashboard</span>
-                            <Command.Shortcut className="ml-auto text-xs opacity-50">G D</Command.Shortcut>
-                        </Item>
-                        <Item onSelect={() => runCommand(() => navigate('/all-pixfolio'))}>
-                            <FolderOpen className="mr-3 h-4 w-4" />
-                            <span>All Pixfolios</span>
-                            <Command.Shortcut className="ml-auto text-xs opacity-50">G A</Command.Shortcut>
-                        </Item>
-                        <Item onSelect={() => runCommand(() => navigate('/create'))}>
-                            <Plus className="mr-3 h-4 w-4" />
-                            <span>Create New Pixfolio</span>
-                            <Command.Shortcut className="ml-auto text-xs opacity-50">C N</Command.Shortcut>
-                        </Item>
-                    </Command.Group>
+                            <Command.Group heading="Navigation" className="px-2 py-3 text-xs font-bold text-primary uppercase tracking-widest opacity-70">
+                                <Item onSelect={() => runCommand(() => navigate('/dashboard'))}>
+                                    <LayoutDashboard className="mr-3 h-4 w-4" />
+                                    <span>Dashboard</span>
+                                    <div className="ml-auto flex gap-1">
+                                        <kbd className="p-1 rounded bg-muted border text-[10px]">G</kbd>
+                                        <kbd className="p-1 rounded bg-muted border text-[10px]">D</kbd>
+                                    </div>
+                                </Item>
+                                <Item onSelect={() => runCommand(() => navigate('/all-pixfolio'))}>
+                                    <FolderOpen className="mr-3 h-4 w-4" />
+                                    <span>All Pixfolios</span>
+                                    <div className="ml-auto flex gap-1">
+                                        <kbd className="p-1 rounded bg-muted border text-[10px]">G</kbd>
+                                        <kbd className="p-1 rounded bg-muted border text-[10px]">A</kbd>
+                                    </div>
+                                </Item>
+                                <Item onSelect={() => runCommand(() => navigate('/create'))}>
+                                    <Plus className="mr-3 h-4 w-4" />
+                                    <span>Create New Pixfolio</span>
+                                    <div className="ml-auto flex gap-1">
+                                        <kbd className="p-1 rounded bg-muted border text-[10px]">C</kbd>
+                                        <kbd className="p-1 rounded bg-muted border text-[10px]">N</kbd>
+                                    </div>
+                                </Item>
+                            </Command.Group>
 
-                    <Command.Separator className="h-px bg-border my-2" />
+                            <Command.Separator className="h-px bg-border my-2" />
 
-                    <Command.Group heading="Account" className="px-2 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        <Item onSelect={() => runCommand(() => navigate('/profile'))}>
-                            <User className="mr-3 h-4 w-4" />
-                            <span>Profile Settings</span>
-                        </Item>
-                        <Item onSelect={() => runCommand(() => navigate('/settings'))}>
-                            <Settings className="mr-3 h-4 w-4" />
-                            <span>Global Settings</span>
-                        </Item>
-                        <Item onSelect={() => runCommand(() => navigate('/help'))}>
-                            <HelpCircle className="mr-3 h-4 w-4" />
-                            <span>Help Center</span>
-                        </Item>
-                    </Command.Group>
+                            <Command.Group heading="Account" className="px-2 py-3 text-xs font-bold text-primary uppercase tracking-widest opacity-70">
+                                <Item onSelect={() => runCommand(() => navigate('/profile'))}>
+                                    <User className="mr-3 h-4 w-4" />
+                                    <span>Profile Settings</span>
+                                </Item>
+                                <Item onSelect={() => runCommand(() => navigate('/settings'))}>
+                                    <Settings className="mr-3 h-4 w-4" />
+                                    <span>Global Settings</span>
+                                </Item>
+                                <Item onSelect={() => runCommand(() => navigate('/help'))}>
+                                    <HelpCircle className="mr-3 h-4 w-4" />
+                                    <span>Help Center</span>
+                                </Item>
+                            </Command.Group>
 
-                    <Command.Separator className="h-px bg-border my-2" />
+                            <Command.Separator className="h-px bg-border my-2" />
 
-                    <Command.Group heading="Theme" className="px-2 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        <Item onSelect={() => runCommand(() => setTheme('light'))} active={theme === 'light'}>
-                            <Sun className="mr-3 h-4 w-4" />
-                            <span>Light Theme</span>
-                        </Item>
-                        <Item onSelect={() => runCommand(() => setTheme('dark'))} active={theme === 'dark'}>
-                            <Moon className="mr-3 h-4 w-4" />
-                            <span>Dark Theme</span>
-                        </Item>
-                        <Item onSelect={() => runCommand(() => setTheme('system'))} active={theme === 'system'}>
-                            <Laptop className="mr-3 h-4 w-4" />
-                            <span>System Default</span>
-                        </Item>
-                    </Command.Group>
+                            <Command.Group heading="Theme" className="px-2 py-3 text-xs font-bold text-primary uppercase tracking-widest opacity-70">
+                                <Item onSelect={() => runCommand(() => setTheme('light'))} active={theme === 'light'}>
+                                    <Sun className="mr-3 h-4 w-4" />
+                                    <span>Light Theme</span>
+                                </Item>
+                                <Item onSelect={() => runCommand(() => setTheme('dark'))} active={theme === 'dark'}>
+                                    <Moon className="mr-3 h-4 w-4" />
+                                    <span>Dark Theme</span>
+                                </Item>
+                                <Item onSelect={() => runCommand(() => setTheme('system'))} active={theme === 'system'}>
+                                    <Laptop className="mr-3 h-4 w-4" />
+                                    <span>System Default</span>
+                                </Item>
+                            </Command.Group>
 
-                    <Command.Separator className="h-px bg-border my-2" />
+                            <Command.Separator className="h-px bg-border my-2" />
 
-                    <Command.Group heading="Action" className="px-2 py-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                        <Item onSelect={() => runCommand(() => console.log('logging out'))} className="text-red-500 hover:text-red-500">
-                            <LogOut className="mr-3 h-4 w-4" />
-                            <span>Log out</span>
-                        </Item>
-                    </Command.Group>
-                </Command.List>
+                            <Command.Group heading="Action" className="px-2 py-3 text-xs font-bold text-primary uppercase tracking-widest opacity-70">
+                                <Item onSelect={() => runCommand(() => console.log('logging out'))} className="text-red-500 data-[selected=true]:bg-red-500/10 data-[selected=true]:text-red-500">
+                                    <LogOut className="mr-3 h-4 w-4" />
+                                    <span>Log out</span>
+                                </Item>
+                            </Command.Group>
+                        </Command.List>
 
-                <div className="border-t px-4 py-2 bg-muted/20 flex items-center justify-between text-[10px] text-muted-foreground">
-                    <div className="flex items-center gap-3">
-                        <span className="flex items-center gap-1"><span className="p-0.5 rounded border bg-background px-1">↑↓</span> to navigate</span>
-                        <span className="flex items-center gap-1"><span className="p-0.5 rounded border bg-background px-1">enter</span> to select</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                        <span className="p-0.5 rounded border bg-background px-1">esc</span> to close
-                    </div>
-                </div>
-            </div>
-        </Command.Dialog>
+                        <div className="border-t px-4 py-3 bg-muted/20 flex items-center justify-between text-[11px] text-muted-foreground font-medium">
+                            <div className="flex items-center gap-4">
+                                <span className="flex items-center gap-1.5"><kbd className="px-1.5 py-0.5 rounded border bg-background font-sans shadow-sm">↑↓</kbd> navigate</span>
+                                <span className="flex items-center gap-1.5"><kbd className="px-1.5 py-0.5 rounded border bg-background font-sans shadow-sm">enter</kbd> select</span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                                <kbd className="px-1.5 py-0.5 rounded border bg-background font-sans shadow-sm">esc</kbd> close
+                            </div>
+                        </div>
+                    </Command>
+                </DialogPrimitive.Content>
+            </DialogPrimitive.Portal>
+        </DialogPrimitive.Root>
     )
 }
 
@@ -141,7 +152,7 @@ function Item({ children, onSelect, active, className = "" }) {
     return (
         <Command.Item
             onSelect={onSelect}
-            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm cursor-pointer select-none outline-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground ${active ? 'bg-muted/50 font-medium' : ''} ${className}`}
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm cursor-pointer select-none outline-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground transition-all duration-200 ${active ? 'bg-primary/5 font-semibold text-primary' : ''} ${className}`}
         >
             {children}
         </Command.Item>

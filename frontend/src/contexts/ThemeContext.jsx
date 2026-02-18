@@ -1,14 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
-const ThemeContext = createContext()
+const ThemeContext = createContext({
+  theme: 'system',
+  setTheme: () => null,
+  toggleTheme: () => null,
+  isMounted: false,
+  isDark: false,
+  isLight: true
+})
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext)
-  if (!context) {
-    throw new Error('useTheme must be used within a ThemeProvider')
-  }
-  return context
-}
+export const useTheme = () => useContext(ThemeContext)
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
@@ -45,7 +46,7 @@ export const ThemeProvider = ({ children }) => {
     localStorage.setItem('pixfolio-theme', theme)
   }, [theme])
 
-  // Listen for system theme changes
+  // Listen for system theme changes and update if 'system' is active
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
 
@@ -60,6 +61,11 @@ export const ThemeProvider = ({ children }) => {
         const metaThemeColor = document.querySelector('meta[name="theme-color"]')
         if (metaThemeColor) metaThemeColor.content = themeColor
       }
+    }
+
+    // Initial sync for system theme
+    if (theme === 'system') {
+      handleChange()
     }
 
     mediaQuery.addEventListener('change', handleChange)
