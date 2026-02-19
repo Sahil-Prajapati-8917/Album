@@ -343,7 +343,7 @@ export default function Profile() {
 
       {/* Edit Profile Modal */}
       <Dialog open={isEditProfileOpen} onOpenChange={setIsEditProfileOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto bg-white">
+        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Profile Information</DialogTitle>
             <DialogDescription>
@@ -450,7 +450,7 @@ export default function Profile() {
 
       {/* Edit Social Links Modal */}
       <Dialog open={isEditSocialOpen} onOpenChange={setIsEditSocialOpen}>
-        <DialogContent className="sm:max-w-[500px] bg-white">
+        <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
             <DialogTitle>Edit Social Links</DialogTitle>
             <DialogDescription>
