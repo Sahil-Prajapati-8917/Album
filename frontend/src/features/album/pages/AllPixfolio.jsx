@@ -4,21 +4,14 @@ import {
   Search,
   Trash2,
   ChevronDown,
-  Circle,
-  CheckCircle2,
-  XCircle,
-  Timer,
-  CircleHelp,
   ArrowUp,
   ArrowDown,
   ArrowRight,
   Eye,
   Pencil,
-  BookOpen,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,7 +39,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
-import VisualBookViewer from '../components/VisualBookViewer'
 import QRCodeModal from '../components/QRCodeModal'
 import { toast } from "sonner"
 import {
@@ -57,19 +49,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-const statusOptions = ['Backlog', 'Todo', 'In Progress', 'Done', 'Cancelled']
 const priorityOptions = ['Low', 'Medium', 'High']
-
-const getStatusIcon = (status) => {
-  switch (status) {
-    case 'Backlog': return <CircleHelp className="h-4 w-4 text-muted-foreground" />
-    case 'Todo': return <Circle className="h-4 w-4 text-muted-foreground" />
-    case 'In Progress': return <Timer className="h-4 w-4 text-blue-500" />
-    case 'Done': return <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-    case 'Cancelled': return <XCircle className="h-4 w-4 text-red-500" />
-    default: return <Circle className="h-4 w-4 text-muted-foreground" />
-  }
-}
 
 const getPriorityIcon = (priority) => {
   switch (priority) {
@@ -84,26 +64,22 @@ const AllPixfolio = () => {
   const navigate = useNavigate()
   const [albums, setAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [selectedRows, setSelectedRows] = useState(new Set())
-  const [statusFilter, setStatusFilter] = useState('All')
   const [priorityFilter, setPriorityFilter] = useState('All')
   const [deleteId, setDeleteId] = useState(null)
-  const [viewId, setViewId] = useState(null)
-  const [viewData, setViewData] = useState(null)
   const [qrCodeAlbum, setQrCodeAlbum] = useState(null)
 
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
     if (storedAlbums.length === 0) {
       const mockAlbums = [
-        { id: 'TASK-8782', clientName: "Sarah Johnson", functionDate: "2025-01-15", functionType: "wedding", songName: "Perfect - Ed Sheeran", views: "1.2k", status: "Done", priority: "Medium", label: "Documentation" },
-        { id: 'TASK-7878', clientName: "Mike Chen", functionDate: "2025-02-20", functionType: "birthday", songName: "Happy Birthday", views: "850", status: "In Progress", priority: "High", label: "Feature" },
-        { id: 'TASK-7839', clientName: "TechCorp Inc", functionDate: "2025-03-10", functionType: "corporate", songName: "Corporate Vibes", views: "420", status: "Todo", priority: "Low", label: "Bug" },
-        { id: 'TASK-5562', clientName: "Alex Rivera", functionDate: "2025-04-05", functionType: "engagement", songName: "A Thousand Years", views: "2.1k", status: "In Progress", priority: "Medium", label: "Feature" },
-        { id: 'TASK-8686', clientName: "The Garcias", functionDate: "2025-05-12", functionType: "family", songName: "Family Portait", views: "310", status: "Backlog", priority: "Low", label: "Documentation" },
-        { id: 'TASK-1280', clientName: "StartupXYZ", functionDate: "2025-06-01", functionType: "corporate", songName: "Success Anthem", views: "1.5k", status: "Cancelled", priority: "High", label: "Bug" },
-        { id: 'TASK-7262', clientName: "University Hall", functionDate: "2025-07-20", functionType: "graduation", songName: "Pomp and Circumstance", views: "980", status: "Done", priority: "Medium", label: "Feature" },
-        { id: 'TASK-1138', clientName: "The Patels", functionDate: "2025-08-14", functionType: "anniversary", songName: "All of Me", views: "1.1k", status: "Todo", priority: "High", label: "Documentation" },
+        { id: 'TASK-8782', clientName: "Sarah Johnson", functionDate: "2025-01-15", functionType: "wedding", songName: "Perfect - Ed Sheeran", views: "1.2k", priority: "Medium", label: "Documentation" },
+        { id: 'TASK-7878', clientName: "Mike Chen", functionDate: "2025-02-20", functionType: "birthday", songName: "Happy Birthday", views: "850", priority: "High", label: "Feature" },
+        { id: 'TASK-7839', clientName: "TechCorp Inc", functionDate: "2025-03-10", functionType: "corporate", songName: "Corporate Vibes", views: "420", priority: "Low", label: "Bug" },
+        { id: 'TASK-5562', clientName: "Alex Rivera", functionDate: "2025-04-05", functionType: "engagement", songName: "A Thousand Years", views: "2.1k", priority: "Medium", label: "Feature" },
+        { id: 'TASK-8686', clientName: "The Garcias", functionDate: "2025-05-12", functionType: "family", songName: "Family Portait", views: "310", priority: "Low", label: "Documentation" },
+        { id: 'TASK-1280', clientName: "StartupXYZ", functionDate: "2025-06-01", functionType: "corporate", songName: "Success Anthem", views: "1.5k", priority: "High", label: "Bug" },
+        { id: 'TASK-7262', clientName: "University Hall", functionDate: "2025-07-20", functionType: "graduation", songName: "Pomp and Circumstance", views: "980", priority: "Medium", label: "Feature" },
+        { id: 'TASK-1138', clientName: "The Patels", functionDate: "2025-08-14", functionType: "anniversary", songName: "All of Me", views: "1.1k", priority: "High", label: "Documentation" },
       ]
       setTimeout(() => setAlbums(mockAlbums), 0)
     } else {
@@ -113,7 +89,6 @@ const AllPixfolio = () => {
         clientName: a.clientName || a.albumName || 'Unknown Client',
         songName: a.songName || 'Standard Track',
         views: a.views || '0',
-        status: a.status || 'Todo',
         priority: a.priority || 'Medium',
         label: a.label || 'Feature',
       }))
@@ -124,11 +99,6 @@ const AllPixfolio = () => {
   useEffect(() => {
     loadAlbums()
   }, [])
-
-  const handleShow = (album) => {
-    setViewId(album.id)
-    setViewData(album)
-  }
 
   const handleDelete = (id) => {
     setDeleteId(id)
@@ -144,24 +114,6 @@ const AllPixfolio = () => {
     }
   }
 
-  const toggleRow = (id) => {
-    const newSelected = new Set(selectedRows)
-    if (newSelected.has(id)) {
-      newSelected.delete(id)
-    } else {
-      newSelected.add(id)
-    }
-    setSelectedRows(newSelected)
-  }
-
-  const toggleAll = () => {
-    if (selectedRows.size === filteredAlbums.length) {
-      setSelectedRows(new Set())
-    } else {
-      setSelectedRows(new Set(filteredAlbums.map(a => a.id)))
-    }
-  }
-
   const handleCopyLink = (id) => {
     const url = `${window.location.origin}/viewer/${id}`
     navigator.clipboard.writeText(url)
@@ -174,10 +126,9 @@ const AllPixfolio = () => {
       album.songName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       album.id.toLowerCase().includes(searchTerm.toLowerCase())
 
-    const matchesStatus = statusFilter === 'All' || album.status === statusFilter
     const matchesPriority = priorityFilter === 'All' || album.priority === priorityFilter
 
-    return matchesSearch && matchesStatus && matchesPriority
+    return matchesSearch && matchesPriority
   })
 
   return (
@@ -206,21 +157,6 @@ const AllPixfolio = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm" className="h-9">
-                    Status <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                  <DropdownMenuItem onClick={() => setStatusFilter('All')}>All Statuses</DropdownMenuItem>
-                  {statusOptions.map(s => (
-                    <DropdownMenuItem key={s} onClick={() => setStatusFilter(s)}>
-                      {getStatusIcon(s)} <span className="ml-2">{s}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9">
                     Priority <ChevronDown className="ml-2 h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
@@ -245,7 +181,6 @@ const AllPixfolio = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Task ID</DropdownMenuItem>
                 <DropdownMenuItem>Title</DropdownMenuItem>
-                <DropdownMenuItem>Status</DropdownMenuItem>
                 <DropdownMenuItem>Priority</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -256,36 +191,21 @@ const AllPixfolio = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[40px]">
-                    <Checkbox
-                      checked={selectedRows.size === filteredAlbums.length && filteredAlbums.length > 0}
-                      onCheckedChange={toggleAll}
-                      aria-label="Select all"
-                    />
-                  </TableHead>
                   <TableHead className="w-[60px]">S.No</TableHead>
                   <TableHead>Client Name</TableHead>
                   <TableHead>Function</TableHead>
                   <TableHead>Date</TableHead>
                   <TableHead>Song Name</TableHead>
                   <TableHead>Views</TableHead>
-                  <TableHead>Status</TableHead>
                   <TableHead>QR Code</TableHead>
                   <TableHead>Copy</TableHead>
-                  <TableHead className="w-[100px] text-right">Action</TableHead>
+                  <TableHead className="w-[100px] text-right">View</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredAlbums.length > 0 ? (
                   filteredAlbums.map((album, index) => (
-                    <TableRow key={album.id} data-state={selectedRows.has(album.id) ? "selected" : undefined}>
-                      <TableCell>
-                        <Checkbox
-                          checked={selectedRows.has(album.id)}
-                          onCheckedChange={() => toggleRow(album.id)}
-                          aria-label={`Select ${album.clientName}`}
-                        />
-                      </TableCell>
+                    <TableRow key={album.id}>
                       <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell>{album.clientName}</TableCell>
                       <TableCell>
@@ -296,12 +216,6 @@ const AllPixfolio = () => {
                       <TableCell>{album.functionDate}</TableCell>
                       <TableCell className="max-w-[150px] truncate">{album.songName}</TableCell>
                       <TableCell>{album.views}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          {getStatusIcon(album.status)}
-                          <span className="text-sm">{album.status}</span>
-                        </div>
-                      </TableCell>
                       <TableCell>
                         <Button
                           variant="ghost"
@@ -365,16 +279,7 @@ const AllPixfolio = () => {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-indigo-500 hover:text-indigo-600"
-                            onClick={() => handleShow(album)}
-                            title="Show Visual Book"
-                          >
-                            <BookOpen className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-blue-500 hover:text-blue-600"
+                            className="h-8 w-8 text-blue-500 hover:text-blue-600 bg-blue-50 dark:bg-blue-900/20"
                             onClick={() => navigate(`/viewer/${album.id}`)}
                             title="Open in Viewer"
                           >
@@ -385,6 +290,7 @@ const AllPixfolio = () => {
                             size="icon"
                             className="h-8 w-8 text-yellow-600 hover:text-yellow-700"
                             onClick={() => navigate(`/create?edit=${album.id}`)}
+                            title="Edit"
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -393,6 +299,7 @@ const AllPixfolio = () => {
                             size="icon"
                             className="h-8 w-8 text-red-500 hover:text-red-600"
                             onClick={() => handleDelete(album.id)}
+                            title="Delete"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -402,7 +309,7 @@ const AllPixfolio = () => {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={11} className="h-24 text-center">
+                    <TableCell colSpan={9} className="h-24 text-center">
                       No results.
                     </TableCell>
                   </TableRow>
@@ -411,11 +318,7 @@ const AllPixfolio = () => {
             </Table>
           </div>
 
-          {/* Pagination Info */}
-          <div className="flex items-center justify-between text-sm text-muted-foreground">
-            <div>
-              {selectedRows.size} of {filteredAlbums.length} row(s) selected.
-            </div>
+          <div className="flex items-center justify-end text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" disabled>Previous</Button>
               <Button variant="outline" size="sm" disabled>Next</Button>
@@ -444,30 +347,6 @@ const AllPixfolio = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-
-      {/* Visual Book Viewer Modal */}
-      {viewId && (
-        <div className="fixed inset-0 z-[100] bg-background">
-          <VisualBookViewer
-            spreads={viewData?.spreads || []}
-            title={viewData?.clientName || "Pixfolio"}
-            frontCover={viewData?.frontCover}
-            backCover={viewData?.backCover}
-          />
-          <div className="fixed bottom-8 right-8 z-[110]">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setViewId(null)
-                setViewData(null)
-              }}
-              className="bg-white/40 backdrop-blur-md border-slate-200/50 hover:bg-white transition-all duration-300 shadow-sm"
-            >
-              Close Preview
-            </Button>
-          </div>
-        </div>
-      )}
 
       {/* QR Code Modal */}
       {qrCodeAlbum && (
