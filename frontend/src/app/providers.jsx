@@ -1,16 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { ThemeProvider } from '../contexts/ThemeContext';
+import { ThemeWrapper } from '../contexts/ThemeContext';
 import { TooltipProvider } from '@/components/ui/tooltip';
 
 export function Providers({ children }) {
     return (
         <Router>
-            <ThemeProvider>
+            <ThemeWrapper>
                 <TooltipProvider>
                     {children}
                 </TooltipProvider>
-            </ThemeProvider>
+            </ThemeWrapper>
         </Router>
     );
 }

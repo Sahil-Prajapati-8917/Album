@@ -11,10 +11,19 @@ export const ThemeToggle = ({
   showLabel = false,
   className = ''
 }) => {
-  const { theme, toggleTheme, isMounted, isDark } = useTheme()
+  const { theme, setTheme, toggleTheme, isMounted, isDark } = useTheme()
 
   if (!isMounted) {
     return <div className={cn("w-9 h-9 opacity-0", className)} />
+  }
+
+  const getThemeIcon = () => {
+    if (theme === 'system') return <Search className="h-[1.2rem] w-[1.2rem] transition-all" /> // Just a placeholder for now, let's use Moon/Sun based on isDark
+    return isDark ? (
+      <Moon className="h-[1.2rem] w-[1.2rem] transition-all" />
+    ) : (
+      <Sun className="h-[1.2rem] w-[1.2rem] transition-all" />
+    )
   }
 
   return (
@@ -26,7 +35,7 @@ export const ThemeToggle = ({
         "relative overflow-hidden transition-all duration-300",
         className
       )}
-      title={`Switch to ${isDark ? 'light' : 'dark'} mode`}
+      title={`Current: ${theme} (Switch to ${theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light'})`}
     >
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -46,12 +55,13 @@ export const ThemeToggle = ({
       </AnimatePresence>
       {showLabel && (
         <span className="ml-2 text-xs font-bold uppercase tracking-wider">
-          {isDark ? 'Dark' : 'Light'}
+          {theme}
         </span>
       )}
       <span className="sr-only">Toggle theme</span>
     </Button>
   )
 }
+
 
 export default ThemeToggle
