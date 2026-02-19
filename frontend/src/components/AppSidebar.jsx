@@ -17,6 +17,8 @@ import {
   AlertTriangle,
   Lock,
   Users,
+  Shield,
+  FileText,
 } from 'lucide-react'
 import {
   Sidebar,
@@ -227,6 +229,18 @@ export function AppSidebar() {
                   <DropdownMenuItem onClick={() => navigate('/recharge')}>
                     <CreditCard className="mr-2 h-4 w-4" />
                     Billing
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/privacy-policy')}>
+                    <Shield className="mr-2 h-4 w-4" />
+                    Privacy Policy
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/refund-policy')}>
+                    <CreditCard className="mr-2 h-4 w-4" />
+                    Refund Policy
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate('/terms-and-conditions')}>
+                    <FileText className="mr-2 h-4 w-4" />
+                    Term & Condition
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />

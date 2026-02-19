@@ -47,7 +47,7 @@ const CommandMenu = () => {
             <DialogPrimitive.Portal>
                 <DialogPrimitive.Overlay className="fixed inset-0 z-[100] bg-background/80 backdrop-blur-sm animate-in fade-in duration-300" />
                 <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-[101] w-full max-w-[640px] translate-x-[-50%] translate-y-[-50%] p-4 animate-in fade-in zoom-in duration-200">
-                    <Command className="w-full bg-popover rounded-xl border shadow-2xl overflow-hidden flex flex-col">
+                    <Command className="w-full bg-white rounded-xl border shadow-2xl overflow-hidden flex flex-col">
                         <div className="flex items-center border-b px-4 py-3">
                             <Search className="mr-3 h-5 w-5 text-muted-foreground shrink-0" />
                             <Command.Input
@@ -56,7 +56,7 @@ const CommandMenu = () => {
                             />
                         </div>
 
-                        <Command.List className="max-h-[400px] overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-muted">
+                        <Command.List className="max-h-[400px] overflow-y-auto p-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                             <Command.Empty className="py-12 text-center text-sm text-muted-foreground font-medium">
                                 No results found.
                             </Command.Empty>
@@ -132,7 +132,7 @@ const CommandMenu = () => {
                             </Command.Group>
                         </Command.List>
 
-                        <div className="border-t px-4 py-3 bg-muted/20 flex items-center justify-between text-[11px] text-muted-foreground font-medium">
+                        <div className="border-t px-4 py-3 bg-white flex items-center justify-between text-[11px] text-muted-foreground font-medium">
                             <div className="flex items-center gap-4">
                                 <span className="flex items-center gap-1.5"><kbd className="px-1.5 py-0.5 rounded border bg-background font-sans shadow-sm">↑↓</kbd> navigate</span>
                                 <span className="flex items-center gap-1.5"><kbd className="px-1.5 py-0.5 rounded border bg-background font-sans shadow-sm">enter</kbd> select</span>

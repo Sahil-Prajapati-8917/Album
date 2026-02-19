@@ -37,6 +37,11 @@ import AdminHelp from '../features/admin/components/dashboard/AdminHelp';
 import VisualBookViewer from '../features/album/components/VisualBookViewer';
 import LumaSpinDemo from '../components/ui/luma-spin-demo';
 
+// Policy Pages
+import PrivacyPolicy from '../pages/PrivacyPolicy';
+import RefundPolicy from '../pages/RefundPolicy';
+import TermsAndConditions from '../pages/TermsAndConditions';
+
 export function AppRoutes() {
     return (
         <Routes>
@@ -83,6 +88,9 @@ export function AppRoutes() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/help" element={<HelpCenter />} />
+                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/refund-policy" element={<RefundPolicy />} />
+                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
             </Route>
 
             {/* 404 Route */}
