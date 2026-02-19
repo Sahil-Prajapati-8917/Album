@@ -5,6 +5,7 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
+    CardFooter,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -18,113 +19,148 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select"
+import { AlertTriangle, ShieldCheck, Zap } from 'lucide-react'
 
 export default function Settings() {
     return (
-        <div className="max-w-4xl mx-auto py-10 px-4 space-y-10">
-            <div className="text-center space-y-2">
-                <h1 className="text-4xl font-extrabold tracking-tight">Settings</h1>
-                <p className="text-muted-foreground text-lg">
-                    Customize your account and application preferences.
-                </p>
-            </div>
+        <div className="flex-1 space-y-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Settings</CardTitle>
+                    <CardDescription>
+                        Manage your application preferences and account security.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-8">
+                    {/* Plan Overview - Inspired by target UI Banner */}
+                    <Card className="border-none shadow-sm bg-primary/5 border border-primary/10">
+                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                            <div className="space-y-1">
+                                <CardTitle className="text-lg font-bold">Pro Visionary Plan</CardTitle>
+                                <CardDescription>You are currently on the professional plan with full access.</CardDescription>
+                            </div>
+                            <Zap className="h-5 w-5 text-primary fill-primary" />
+                        </CardHeader>
+                        <CardContent>
+                            <div className="flex items-center gap-4 mt-2">
+                                <Button size="sm">Upgrade Plan</Button>
+                                <Button size="sm" variant="outline">View Usage</Button>
+                            </div>
+                        </CardContent>
+                    </Card>
 
-            <Separator />
+                    {/* Site Configuration */}
+                    <Card className="border shadow-sm">
+                        <CardHeader>
+                            <CardTitle className="text-xl">Site Configuration</CardTitle>
+                            <CardDescription>Customize how your Pixfolio appears to others.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="grid gap-6 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="siteName" className="text-sm font-medium">Site Name</Label>
+                                    <Input id="siteName" defaultValue="Pixfolio" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="language" className="text-sm font-medium">Display Language</Label>
+                                    <Select defaultValue="en">
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select language" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="en">English (US)</SelectItem>
+                                            <SelectItem value="es">Spanish</SelectItem>
+                                            <SelectItem value="fr">French</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between space-x-2">
+                                <div className="space-y-0.5">
+                                    <Label className="text-sm font-medium">Auto-save changes</Label>
+                                    <p className="text-xs text-muted-foreground">Automatically save changes as you type.</p>
+                                </div>
+                                <Switch defaultChecked />
+                            </div>
+                        </CardContent>
+                        <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-end">
+                            <Button size="sm">Save Changes</Button>
+                        </CardFooter>
+                    </Card>
 
-            <div className="space-y-8">
-                {/* General Settings */}
-                <Card className="border-none shadow-sm bg-muted/30">
-                    <CardHeader>
-                        <CardTitle className="text-2xl">General Settings</CardTitle>
-                        <CardDescription>Update your basic account information.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        <div className="grid gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
-                                <Label htmlFor="siteName" className="font-semibold">Site Name</Label>
-                                <Input id="siteName" defaultValue="Pixfolio" className="bg-background" />
+                    {/* Security Section */}
+                    <Card id="security" className="border shadow-sm">
+                        <CardHeader>
+                            <CardTitle className="text-xl">Security & Privacy</CardTitle>
+                            <CardDescription>Manage your account security and password.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="grid gap-6 md:grid-cols-2">
+                                <div className="space-y-2">
+                                    <Label htmlFor="current-password">Current Password</Label>
+                                    <Input id="current-password" type="password" />
+                                </div>
+                                <div className="space-y-2">
+                                    <Label htmlFor="new-password">New Password</Label>
+                                    <Input id="new-password" type="password" />
+                                </div>
                             </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="language" className="font-semibold">Display Language</Label>
-                                <Select defaultValue="en">
-                                    <SelectTrigger className="bg-background">
-                                        <SelectValue placeholder="Select language" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="en">English (US)</SelectItem>
-                                        <SelectItem value="es">Spanish</SelectItem>
-                                        <SelectItem value="fr">French</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                            <Separator />
+                            <div className="flex items-center justify-between space-x-2">
+                                <div className="space-y-0.5">
+                                    <Label className="text-sm font-medium">Two-step verification</Label>
+                                    <p className="text-xs text-muted-foreground">Add an extra layer of security to your account.</p>
+                                </div>
+                                <Switch />
                             </div>
-                        </div>
-                        <div className="flex items-center justify-between rounded-xl border bg-background p-5 shadow-sm transition-all hover:border-primary/50">
-                            <div className="space-y-0.5">
-                                <Label className="text-base font-bold">Auto-save changes</Label>
-                                <p className="text-sm text-muted-foreground">Automatically save changes as you type.</p>
-                            </div>
-                            <Switch />
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                        <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-end">
+                            <Button size="sm">Update Password</Button>
+                        </CardFooter>
+                    </Card>
 
-                {/* Notifications */}
-                <Card className="border-none shadow-sm bg-muted/30">
-                    <CardHeader>
-                        <CardTitle className="text-2xl">Notification Preferences</CardTitle>
-                        <CardDescription>Control how you receive updates and alerts.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="flex items-center justify-between rounded-xl border bg-background p-5 shadow-sm transition-all hover:border-primary/50">
-                            <div className="space-y-0.5">
-                                <Label className="text-base font-bold">Email Notifications</Label>
-                                <p className="text-sm text-muted-foreground">Receive updates about your pixfolios via email.</p>
+                    {/* Notifications Section */}
+                    <Card id="notifications" className="border shadow-sm">
+                        <CardHeader>
+                            <CardTitle className="text-xl">Notification Preferences</CardTitle>
+                            <CardDescription>Control how you receive updates and alerts.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex items-center justify-between space-x-2">
+                                <div className="space-y-0.5">
+                                    <Label className="text-sm font-medium">Email Notifications</Label>
+                                    <p className="text-xs text-muted-foreground">Receive updates about your pixfolios via email.</p>
+                                </div>
+                                <Switch defaultChecked />
                             </div>
-                            <Switch defaultChecked />
-                        </div>
-                        <div className="flex items-center justify-between rounded-xl border bg-background p-5 shadow-sm transition-all hover:border-primary/50">
-                            <div className="space-y-0.5">
-                                <Label className="text-base font-bold">Marketing Emails</Label>
-                                <p className="text-sm text-muted-foreground">Stay tuned with new features and offers.</p>
+                            <div className="flex items-center justify-between space-x-2">
+                                <div className="space-y-0.5">
+                                    <Label className="text-sm font-medium">Marketing Emails</Label>
+                                    <p className="text-xs text-muted-foreground">Stay tuned with new features and offers.</p>
+                                </div>
+                                <Switch />
                             </div>
-                            <Switch />
-                        </div>
-                    </CardContent>
-                </Card>
+                        </CardContent>
+                    </Card>
 
-                {/* Security */}
-                <Card className="border-none shadow-sm bg-muted/30">
-                    <CardHeader>
-                        <CardTitle className="text-2xl">Security</CardTitle>
-                        <CardDescription>Manage your account security and password.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-6">
-                        <div className="grid gap-4 md:grid-cols-2">
-                            <div className="space-y-2">
-                                <Label htmlFor="current-password text-base font-bold">Current Password</Label>
-                                <Input id="current-password" type="password" className="bg-background" />
-                            </div>
-                            <div className="space-y-2">
-                                <Label htmlFor="new-password text-base font-bold">New Password</Label>
-                                <Input id="new-password" type="password" className="bg-background" />
-                            </div>
-                        </div>
-                        <div className="flex items-center justify-between rounded-xl border bg-background p-5 shadow-sm transition-all hover:border-primary/50">
-                            <div className="space-y-0.5">
-                                <Label className="text-base font-bold">Two-step verification</Label>
-                                <p className="text-sm text-muted-foreground">Add an extra layer of security to your account.</p>
-                            </div>
-                            <Switch />
-                        </div>
-                    </CardContent>
-                </Card>
-
-                <div className="flex justify-center pt-6">
-                    <Button size="lg" className="px-12 h-12 text-lg font-bold rounded-full shadow-lg hover:shadow-primary/20 transition-all">
-                        Save All Changes
-                    </Button>
-                </div>
-            </div>
+                    {/* Account Management - Danger Zone */}
+                    <Card className="border-destructive/20 shadow-sm bg-destructive/5">
+                        <CardHeader>
+                            <CardTitle className="text-xl text-destructive">Account Management</CardTitle>
+                            <CardDescription>Permanently delete or deactivate your account.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <p className="text-sm text-muted-foreground">
+                                Once you delete your account, there is no going back. Please be certain.
+                            </p>
+                        </CardContent>
+                        <CardFooter className="border-t border-destructive/10 px-6 py-4 flex flex-col sm:flex-row gap-4">
+                            <Button variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">Deactivate Account</Button>
+                            <Button variant="destructive">Delete Account</Button>
+                        </CardFooter>
+                    </Card>
+                </CardContent>
+            </Card>
         </div>
     )
 }

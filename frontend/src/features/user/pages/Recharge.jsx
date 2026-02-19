@@ -1,4 +1,5 @@
-import { Check, CreditCard, History, Zap, ShieldCheck, Crown } from 'lucide-react'
+import React from 'react'
+import { Check, CreditCard, History, Zap, ShieldCheck, Crown, Download } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -63,25 +64,25 @@ const Recharge = () => {
   ]
 
   return (
-    <div className="flex-1 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Plan & Subscription</h1>
-        <p className="text-muted-foreground">
+    <div className="max-w-4xl mx-auto space-y-8 pb-12">
+      {/* Header */}
+      <div className="flex flex-col gap-2">
+        <h1 className="text-3xl font-bold tracking-tight">Billing & Plans</h1>
+        <p className="text-muted-foreground text-lg">
           Manage your subscription and billing history.
         </p>
       </div>
 
-      {/* 1) Active subscription */}
-      <div className="grid gap-6">
-        <Card className="full-width">
+      <Separator />
+
+      <div className="space-y-6">
+        {/* Active subscription */}
+        <Card className="border shadow-sm">
           <CardHeader>
             <div className="flex items-center justify-between">
-              <div>
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Active Subscription
-                </CardTitle>
-                <CardDescription>Your current plan details.</CardDescription>
+              <div className="space-y-1">
+                <CardTitle className="text-xl">Active Subscription</CardTitle>
+                <CardDescription>Your current plan details and billing cycle.</CardDescription>
               </div>
               <Badge variant="default" className="bg-emerald-500/10 text-emerald-600 border-emerald-200">
                 Active
@@ -89,52 +90,44 @@ const Recharge = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-2">
               <div>
-                <p className="text-sm text-muted-foreground">Plan</p>
-                <p className="text-lg font-semibold">{currentPlan.name}</p>
+                <p className="text-sm font-medium text-muted-foreground">Plan</p>
+                <p className="text-lg font-bold">{currentPlan.name}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Next Billing</p>
-                <p className="text-lg font-semibold">{currentPlan.expiryDate}</p>
+                <p className="text-sm font-medium text-muted-foreground">Next Billing</p>
+                <p className="text-lg font-bold">{currentPlan.expiryDate}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Price</p>
-                <p className="text-lg font-semibold">{currentPlan.price}<span className="text-sm text-muted-foreground">{currentPlan.period}</span></p>
+                <p className="text-sm font-medium text-muted-foreground">Price</p>
+                <p className="text-lg font-bold">{currentPlan.price}<span className="text-sm font-normal text-muted-foreground">{currentPlan.period}</span></p>
               </div>
             </div>
           </CardContent>
-          <CardFooter className="border-t pt-6 flex justify-between">
-            <Button variant="ghost" className="text-muted-foreground">Cancel Subscription</Button>
-            <Button>Manage Billing</Button>
+          <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-between">
+            <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive hover:bg-destructive/10">Cancel Subscription</Button>
+            <Button size="sm">Manage Billing</Button>
           </CardFooter>
         </Card>
-      </div>
 
-      <Separator />
-
-      {/* 2) Available Plans */}
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Available Plans</h2>
-          <p className="text-muted-foreground">Choose the plan that fits your needs.</p>
-        </div>
+        {/* Available Plans */}
         <div className="grid gap-6 md:grid-cols-3">
           {plans.map((plan) => (
-            <Card key={plan.name} className={`relative ${plan.popular ? 'border-primary shadow-md' : ''}`}>
+            <Card key={plan.name} className={`relative flex flex-col ${plan.popular ? 'border-primary shadow-md' : 'shadow-sm'}`}>
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge>Recommended</Badge>
+                  <Badge className="bg-primary text-primary-foreground">Recommended</Badge>
                 </div>
               )}
               <CardHeader className="pt-8">
                 <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center mb-2">
                   <plan.icon className="h-5 w-5" />
                 </div>
-                <CardTitle>{plan.name}</CardTitle>
-                <CardDescription>{plan.description}</CardDescription>
+                <CardTitle className="text-lg">{plan.name}</CardTitle>
+                <CardDescription className="text-xs">{plan.description}</CardDescription>
               </CardHeader>
-              <CardContent className="space-y-6">
+              <CardContent className="space-y-6 flex-1">
                 <div>
                   <span className="text-3xl font-bold">{plan.price}</span>
                   <span className="text-sm text-muted-foreground">{plan.period}</span>
@@ -142,55 +135,55 @@ const Recharge = () => {
                 <Separator />
                 <ul className="space-y-3">
                   {plan.features.map(feature => (
-                    <li key={feature} className="flex items-center text-sm gap-2">
-                      <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+                    <li key={feature} className="flex items-start text-xs gap-2">
+                      <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
                       <span>{feature}</span>
                     </li>
                   ))}
                 </ul>
               </CardContent>
-              <CardFooter>
-                <Button className="w-full" variant={plan.popular ? "default" : "outline"}>
-                  {plan.popular ? "Current Plan" : "Select Plan"}
+              <CardFooter className="pt-4 pb-6">
+                <Button className="w-full" variant={plan.name === currentPlan.name ? "outline" : (plan.popular ? "default" : "outline")} size="sm">
+                  {plan.name === currentPlan.name ? "Current Plan" : "Select Plan"}
                 </Button>
               </CardFooter>
             </Card>
           ))}
         </div>
-      </div>
 
-      <Separator />
-
-      {/* 3) biling history */}
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Billing History</h2>
-          <p className="text-muted-foreground">View and download your past invoices.</p>
-        </div>
-        <Card>
+        {/* Billing history */}
+        <Card className="border shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl">Billing History</CardTitle>
+            <CardDescription>View and download your past invoices.</CardDescription>
+          </CardHeader>
           <CardContent className="p-0">
             <Table>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="pl-6">Invoice</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Plan</TableHead>
-                  <TableHead className="text-right pr-6">Status</TableHead>
+                <TableRow className="bg-muted/50">
+                  <TableHead className="pl-6 py-3">Invoice</TableHead>
+                  <TableHead className="py-3 text-center">Amount</TableHead>
+                  <TableHead className="py-3 text-center">Status</TableHead>
+                  <TableHead className="text-right pr-6 py-3">Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {billingHistory.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="pl-6">
-                      <p className="text-sm font-medium">{item.id}</p>
+                  <TableRow key={item.id} className="hover:bg-muted/30 transition-colors">
+                    <TableCell className="pl-6 py-4">
+                      <p className="text-sm font-semibold">{item.id}</p>
                       <p className="text-xs text-muted-foreground">{item.date}</p>
                     </TableCell>
-                    <TableCell className="font-medium">{item.amount}</TableCell>
-                    <TableCell>{item.plan}</TableCell>
-                    <TableCell className="text-right pr-6">
-                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-200">
+                    <TableCell className="font-medium text-center py-4">{item.amount}</TableCell>
+                    <TableCell className="text-center py-4">
+                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-200 text-[10px] font-bold">
                         {item.status}
                       </Badge>
+                    </TableCell>
+                    <TableCell className="text-right pr-6 py-4">
+                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Download className="h-4 w-4" />
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
