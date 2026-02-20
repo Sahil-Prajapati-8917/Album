@@ -51,7 +51,13 @@
   --color-brand-green: #043927;
   --color-archive-bg-light: #ffffff;
   --color-archive-bg-dark: #10221c;
-  --font-display: "Inter", sans-serif;
+
+  /* Custom variables for Auth Refactor */
+  --color-background-light: #f6f8f7;
+  --color-background-dark: #10221c;
+  --color-primary: #043927;
+  --font-display: "Manrope", sans-serif;
+  --font-serif: "Playfair Display", serif;
   --font-serif-elegant: "Playfair Display", serif;
 
   @keyframes accordion-down {
