@@ -45,7 +45,7 @@ const LoginForm = () => {
     return (
         <form className="space-y-8" onSubmit={handleSubmit}>
             {error && (
-                <Alert variant="destructive" className="mb-2 rounded-lg border-none bg-red-50 text-red-600">
+                <Alert variant="destructive" className="mb-2 rounded-lg border-none bg-red-50 text-red-600 animate-in fade-in">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription className="font-medium text-sm ml-2">{error}</AlertDescription>
                 </Alert>
@@ -54,14 +54,14 @@ const LoginForm = () => {
             <div className="space-y-6">
                 {/* Email/Mobile Field */}
                 <div className="group">
-                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-2 group-focus-within:text-primary transition-colors">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-2 group-focus-within:text-primary transition-colors duration-300">
                         Identity
                     </label>
                     <input
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-base placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900"
+                        className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-[15px] placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900 outline-none"
                         placeholder="Email or Mobile Number"
                         type="text"
                         required
@@ -70,7 +70,7 @@ const LoginForm = () => {
 
                 {/* Password Field */}
                 <div className="group relative">
-                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-2 group-focus-within:text-primary transition-colors">
+                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-2 group-focus-within:text-primary transition-colors duration-300">
                         Security
                     </label>
                     <div className="relative flex items-center">
@@ -78,8 +78,8 @@ const LoginForm = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-base placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900"
-                            placeholder="Enter Password"
+                            className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-[15px] placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900 outline-none"
+                            placeholder="••••••••"
                             type={showPassword ? "text" : "password"}
                             required
                         />
@@ -97,43 +97,40 @@ const LoginForm = () => {
             </div>
 
             {/* Auxiliary Controls */}
-            <div className="flex items-center justify-between">
-                <label className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center justify-center">
-                        <input
-                            name="rememberMe"
-                            checked={formData.rememberMe}
-                            onChange={handleChange}
-                            className="peer appearance-none w-4 h-4 rounded border border-slate-300 checked:bg-primary checked:border-primary transition-all cursor-pointer"
-                            type="checkbox"
-                        />
-                        <span className="material-symbols-outlined text-[12px] text-white absolute hidden peer-checked:block pointer-events-none">check</span>
-                    </div>
-                    <span className="text-xs font-medium text-slate-500 group-hover:text-slate-700 transition-colors">Remember me</span>
-                </label>
-                <Link to="/forgot-password" className="text-xs font-medium text-primary/70 hover:text-primary transition-colors underline underline-offset-4">
+            <div className="flex items-center justify-end">
+                <Link to="/forgot-password" className="text-[11px] font-semibold tracking-wide uppercase text-slate-400 hover:text-primary transition-colors duration-300">
                     Forgot Password?
                 </Link>
             </div>
 
             {/* Primary Action */}
-            <div className="pt-4">
+            <div className="pt-2">
                 <button
                     type="submit"
                     disabled={isLoading}
                     className={cn(
-                        "w-full bg-primary hover:bg-primary/90 text-white font-bold py-5 rounded-lg tracking-widest uppercase text-[11px] shadow-xl shadow-primary/10 transition-all active:scale-[0.98] flex items-center justify-center gap-2",
+                        "w-full bg-primary hover:bg-primary/95 text-white font-bold py-4 rounded-lg transition-all duration-300 shadow-xl shadow-primary/10 flex justify-center items-center gap-2 uppercase tracking-widest text-[11px]",
                         isLoading && "opacity-80 pointer-events-none"
                     )}
+                    style={{ letterSpacing: '0.15em' }}
                 >
-                    {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-                    {isLoading ? 'ACCESSING SESSION' : 'ACCESS WORKSPACE'}
+                    {isLoading ? (
+                        <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <span>ACCESSING SESSION</span>
+                        </>
+                    ) : (
+                        <span>ACCESS WORKSPACE</span>
+                    )}
                 </button>
             </div>
 
-            <div className="text-center pt-2">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
-                    Not part of the collective? <Link to="/signup" className="text-primary font-bold hover:underline">Apply Here</Link>
+            <div className="text-center pt-4">
+                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-semibold">
+                    Not part of the collective?{' '}
+                    <Link to="/signup" className="text-primary font-bold hover:underline underline-offset-4 transition-all duration-300">
+                        Apply Here
+                    </Link>
                 </p>
             </div>
         </form>

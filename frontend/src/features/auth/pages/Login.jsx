@@ -25,28 +25,28 @@ const Login = () => {
   return (
     <div className="bg-background-light text-slate-900 overflow-hidden h-screen w-screen flex flex-col font-display selection:bg-primary/20">
       {/* Top Navigation Bar */}
-      <header className="w-full px-8 py-6 flex justify-between items-center absolute top-0 left-0 z-10">
-        <Link to="/" className="flex items-center gap-2 cursor-pointer group">
-          <div className="text-primary group-hover:scale-105 transition-transform">
-            <svg fill="none" height="24" viewBox="0 0 48 48" width="24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z" fill="currentColor"></path>
+      <header className="w-full px-8 md:px-12 py-8 flex justify-between items-center absolute top-0 left-0 z-20">
+        <Link to="/" className="flex items-center gap-3 cursor-pointer group">
+          <div className="size-6 text-primary group-hover:scale-105 transition-transform flex items-center justify-center">
+            <svg className="w-full h-full" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
             </svg>
           </div>
-          <span className="font-serif text-2xl font-bold tracking-tight text-primary">Pixfolio</span>
+          <span className="font-serif text-[22px] font-extrabold uppercase tracking-widest text-primary" style={{ letterSpacing: '0.15em' }}>Pixfolio</span>
         </Link>
-        <div className="hidden md:flex gap-6 items-center">
-          <a className="text-xs font-semibold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors" href="#">System Status</a>
-          <a className="text-xs font-semibold tracking-widest uppercase text-slate-500 hover:text-primary transition-colors" href="/privacy">Privacy</a>
+        <div className="hidden md:flex gap-8 items-center">
+          <a className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 hover:text-slate-900 transition-colors duration-300" href="#">System Status</a>
+          <a className="text-[10px] font-bold tracking-[0.2em] uppercase text-slate-400 hover:text-slate-900 transition-colors duration-300" href="/privacy">Privacy</a>
         </div>
       </header>
 
       {/* Main Content Area: Massive Whitespace & Centered Form */}
       <main className="flex-1 flex flex-col items-center justify-center px-6">
-        <div className="w-full max-w-[420px] space-y-12 z-10 animate-fade-in">
+        <div className="w-full max-w-[380px] space-y-12 z-10 animate-fade-in">
           {/* Branding & Title */}
-          <div className="text-center space-y-3">
-            <h1 className="font-serif text-5xl text-slate-900 font-normal">Welcome back.</h1>
-            <p className="text-slate-500 font-light tracking-wide text-sm">Enter your workspace to continue.</p>
+          <div className="text-center space-y-4">
+            <h1 className="font-serif text-[56px] leading-tight text-slate-900 font-normal tracking-tight">Welcome back.</h1>
+            <p className="text-slate-500 font-light tracking-wide text-[15px]">Enter your workspace to continue.</p>
           </div>
 
           {/* Form Component */}
@@ -61,13 +61,13 @@ const Login = () => {
       </main>
 
       {/* Footer */}
-      <footer className="w-full p-8 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 absolute bottom-0 left-0 z-10">
+      <footer className="w-full p-8 md:px-12 flex flex-col md:flex-row justify-between items-center text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 absolute bottom-0 left-0 z-10">
         <div className="mb-4 md:mb-0">
           © 2024 Pixfolio Elite Portfolios.
         </div>
         <div className="flex gap-8">
-          <a className="hover:text-primary transition-colors" href="#">Help Center</a>
-          <a className="hover:text-primary transition-colors" href="/terms">Terms of Service</a>
+          <a className="hover:text-slate-900 transition-colors duration-300" href="#">Help Center</a>
+          <a className="hover:text-slate-900 transition-colors duration-300" href="/terms">Terms of Service</a>
         </div>
       </footer>
 
