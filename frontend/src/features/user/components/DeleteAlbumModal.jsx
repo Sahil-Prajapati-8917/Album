@@ -8,7 +8,7 @@ const DeleteAlbumModal = ({ isOpen, onClose, onConfirm, albumName }) => {
 
     return (
         <AnimatePresence>
-            <div className="fixed inset-0 bg-background/80 backdrop-blur-sm overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
+            <div className="fixed inset-0 bg-transparent backdrop-blur-md overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4">
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
