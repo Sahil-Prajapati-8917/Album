@@ -15,6 +15,18 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Password is required'],
     minlength: [6, 'Password must be at least 6 characters long']
   },
+  accountType: {
+    type: String,
+    enum: ['photographer', 'lab'],
+    required: [true, 'Account type is required']
+  },
+  credits: {
+    type: Number,
+    default: 0
+  },
+  creditValidity: {
+    type: Date
+  },
   personalName: {
     type: String,
     trim: true,
@@ -30,6 +42,44 @@ const userSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+  state: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  city: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  // Photographer Specific Fields
+  specialty: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  // Lab Specific Fields
+  ownerName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  teamSize: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  photographersServed: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  gstNumber: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  // Legacy / Other
   address: {
     type: String,
     trim: true,
@@ -71,10 +121,10 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
   // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) return next();
-  
+
   try {
     // Hash password with cost of 12
     const salt = await bcrypt.genSalt(12);
@@ -86,12 +136,12 @@ userSchema.pre('save', async function(next) {
 });
 
 // Method to check password
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
 // Method to get user data without password
-userSchema.methods.toJSON = function() {
+userSchema.methods.toJSON = function () {
   const userObject = this.toObject();
   delete userObject.password;
   return userObject;
