@@ -48,15 +48,58 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 
-const priorityOptions = ['Low', 'Medium', 'High']
+const functionTypesOptions = [
+  "Wedding", "Pre Wedding", "Engagement", "Reception", "Birthday",
+  "Maternity", "Newborn", "Family", "Corporate", "Other"
+]
 
-const getPriorityIcon = (priority) => {
-  switch (priority) {
-    case 'High': return <ArrowUp className="h-4 w-4 text-red-500" />
-    case 'Medium': return <ArrowRight className="h-4 w-4 text-yellow-500" />
-    case 'Low': return <ArrowDown className="h-4 w-4 text-blue-500" />
-    default: return <ArrowRight className="h-4 w-4" />
+const parseViews = (viewsStr) => {
+  if (!viewsStr) return 0
+  if (typeof viewsStr === 'number') return viewsStr
+  const str = viewsStr.toString().toLowerCase()
+  if (str.endsWith('k')) {
+    return parseFloat(str) * 1000
+  }
+  if (str.endsWith('m')) {
+    return parseFloat(str) * 1000000
+  }
+  return parseFloat(str) || 0
+}
+
+const isDateInRange = (dateStr, rangeStr) => {
+  if (rangeStr === 'all') return true
+
+  // Assuming dateStr is in YYYY-MM-DD format
+  const itemDate = new Date(dateStr)
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  switch (rangeStr) {
+    case 'today':
+      return itemDate.getTime() === today.getTime()
+    case '7days': {
+      const sevenDaysAgo = new Date(today)
+      sevenDaysAgo.setDate(today.getDate() - 7)
+      return itemDate >= sevenDaysAgo
+    }
+    case '30days': {
+      const thirtyDaysAgo = new Date(today)
+      thirtyDaysAgo.setDate(today.getDate() - 30)
+      return itemDate >= thirtyDaysAgo
+    }
+    case 'thisMonth': {
+      return itemDate.getMonth() === today.getMonth() && itemDate.getFullYear() === today.getFullYear()
+    }
+    default:
+      return true
   }
 }
 
@@ -64,7 +107,9 @@ const AllPixfolio = () => {
   const navigate = useNavigate()
   const [albums, setAlbums] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [priorityFilter, setPriorityFilter] = useState('All')
+  const [functionType, setFunctionType] = useState('all')
+  const [sortBy, setSortBy] = useState('latest')
+  const [dateFilter, setDateFilter] = useState('all')
   const [deleteId, setDeleteId] = useState(null)
   const [qrCodeAlbum, setQrCodeAlbum] = useState(null)
 
@@ -120,16 +165,37 @@ const AllPixfolio = () => {
     toast.success("Link copied to clipboard")
   }
 
-  const filteredAlbums = albums.filter(album => {
-    const matchesSearch =
-      album.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      album.songName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      album.id.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredAlbums = [...albums]
+    .filter(album => {
+      const searchLower = searchTerm.toLowerCase()
+      const matchesSearch =
+        (album.clientName && album.clientName.toLowerCase().includes(searchLower)) ||
+        (album.songName && album.songName.toLowerCase().includes(searchLower)) ||
+        (album.id && album.id.toLowerCase().includes(searchLower)) ||
+        (album.functionType && album.functionType.toLowerCase().includes(searchLower))
 
-    const matchesPriority = priorityFilter === 'All' || album.priority === priorityFilter
+      const matchesFunction = functionType === 'all' ||
+        (album.functionType && album.functionType.toLowerCase() === functionType.toLowerCase())
 
-    return matchesSearch && matchesPriority
-  })
+      const matchesDate = isDateInRange(album.functionDate, dateFilter)
+
+      return matchesSearch && matchesFunction && matchesDate
+    })
+    .sort((a, b) => {
+      if (sortBy === 'latest') {
+        return new Date(b.functionDate) - new Date(a.functionDate)
+      }
+      if (sortBy === 'oldest') {
+        return new Date(a.functionDate) - new Date(b.functionDate)
+      }
+      if (sortBy === 'most_viewed') {
+        return parseViews(b.views) - parseViews(a.views)
+      }
+      if (sortBy === 'least_viewed') {
+        return parseViews(a.views) - parseViews(b.views)
+      }
+      return 0
+    })
 
   return (
     <div className="flex-1 space-y-6">
@@ -144,46 +210,54 @@ const AllPixfolio = () => {
 
           {/* Toolbar */}
           <div className="flex items-center justify-between">
-            <div className="flex flex-1 items-center space-x-2">
-              <div className="relative w-full max-w-sm">
+            <div className="flex flex-1 items-center gap-2 flex-wrap md:flex-nowrap">
+              <div className="relative w-full md:max-w-xs">
                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Filter albums..."
+                  placeholder="Universal search..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 h-9 w-full sm:w-[250px] lg:w-[300px]"
+                  className="pl-8 h-9 w-full"
                 />
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="h-9">
-                    Priority <ChevronDown className="ml-2 h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start">
-                  <DropdownMenuItem onClick={() => setPriorityFilter('All')}>All Priorities</DropdownMenuItem>
-                  {priorityOptions.map(p => (
-                    <DropdownMenuItem key={p} onClick={() => setPriorityFilter(p)}>
-                      {getPriorityIcon(p)} <span className="ml-2">{p}</span>
-                    </DropdownMenuItem>
+
+              <Select value={functionType} onValueChange={setFunctionType}>
+                <SelectTrigger className="w-full md:w-[140px] h-9">
+                  <SelectValue placeholder="Function Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  {functionTypesOptions.map(type => (
+                    <SelectItem key={type} value={type.toLowerCase()}>{type}</SelectItem>
                   ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                </SelectContent>
+              </Select>
+
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full md:w-[140px] h-9">
+                  <SelectValue placeholder="Sort By" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="latest">Latest First</SelectItem>
+                  <SelectItem value="oldest">Oldest First</SelectItem>
+                  <SelectItem value="most_viewed">Most Viewed</SelectItem>
+                  <SelectItem value="least_viewed">Least Viewed</SelectItem>
+                </SelectContent>
+              </Select>
+
+              <Select value={dateFilter} onValueChange={setDateFilter}>
+                <SelectTrigger className="w-full md:w-[140px] h-9">
+                  <SelectValue placeholder="Date Filter" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Time</SelectItem>
+                  <SelectItem value="today">Today</SelectItem>
+                  <SelectItem value="7days">Last 7 Days</SelectItem>
+                  <SelectItem value="30days">Last 30 Days</SelectItem>
+                  <SelectItem value="thisMonth">This Month</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-9 ml-auto">
-                  View <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>Task ID</DropdownMenuItem>
-                <DropdownMenuItem>Title</DropdownMenuItem>
-                <DropdownMenuItem>Priority</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
 
           {/* Data Table */}
