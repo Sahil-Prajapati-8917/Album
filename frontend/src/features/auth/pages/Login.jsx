@@ -45,10 +45,10 @@ const AuthContainer = ({ children, title, subtitle }) => {
 
             {/* Auth Toggle */}
             <div className="flex p-1 bg-gray-100 rounded-full mb-10 mx-auto w-fit">
-              <Link to="/signup" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", !isLogin ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-gray-900")}>
+              <Link to="/signup" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", !isLogin ? "bg-black text-black shadow-md" : "text-black hover:text-black")}>
                 Register
               </Link>
-              <Link to="/login" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", isLogin ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-gray-900")}>
+              <Link to="/login" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", isLogin ? "bg-black text-black shadow-md" : "text-black hover:text-black")}>
                 Login
               </Link>
             </div>

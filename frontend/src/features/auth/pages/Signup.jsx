@@ -45,10 +45,10 @@ const AuthContainer = ({ children, title, subtitle }) => {
 
             {/* Auth Toggle */}
             <div className="flex p-1 bg-gray-100 rounded-full mb-10 mx-auto w-fit">
-              <Link to="/signup" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", !isLogin ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-gray-900")}>
+              <Link to="/signup" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", !isLogin ? "bg-black text-black shadow-md" : "text-gray-500 hover:text-gray-900")}>
                 Register
               </Link>
-              <Link to="/login" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", isLogin ? "bg-black text-white shadow-md" : "text-gray-500 hover:text-gray-900")}>
+              <Link to="/login" className={cn("px-8 py-2.5 rounded-full text-sm font-semibold transition-all", isLogin ? "bg-black text-black shadow-md" : "text-gray-500 hover:text-gray-900")}>
                 Login
               </Link>
             </div>
@@ -100,10 +100,10 @@ const AuthContainer = ({ children, title, subtitle }) => {
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
           <div className="relative h-full w-full flex flex-col justify-end pb-12 px-8">
-            <h2 className="text-white text-4xl xl:text-5xl font-bold leading-tight mb-4">
+            <h2 className="text-black text-4xl xl:text-5xl font-bold leading-tight mb-4">
               Your next adventure<br />starts <span className="inline-block bg-[#B2D8D8] text-teal-900 px-4 py-1 rounded-full italic transform -rotate-2">here</span>
             </h2>
-            <p className="text-gray-200 text-lg max-w-md mb-12">
+            <p className="text-black text-lg max-w-md mb-12">
               Discover the best RV, camper van or travel trailer rental for your next vacation.
             </p>
 

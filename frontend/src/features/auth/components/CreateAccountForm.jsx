@@ -363,7 +363,7 @@ const CreateAccountForm = () => {
                         type="submit"
                         disabled={isLoading}
                         className={cn(
-                            "w-full bg-black text-white font-bold text-lg rounded-2xl py-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-gray-800 hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black relative overflow-hidden",
+                            "w-full bg-black text-black font-bold text-lg rounded-2xl py-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-gray-800 hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black relative overflow-hidden",
                             isLoading && "opacity-80 pointer-events-none"
                         )}
                     >
