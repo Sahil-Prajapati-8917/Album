@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import HTMLFlipBook from 'react-pageflip'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, ArrowLeft, Maximize2, Minimize2 } from 'lucide-react'
+import { Maximize2, Minimize2, Play, Pause, User, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, MessageCircle, Share2 } from 'lucide-react'
 
 // Realistic Paper Texture Component
 const PaperTexture = () => (
@@ -14,61 +14,6 @@ const PaperTexture = () => (
     </filter>
     <rect width="100%" height="100%" filter="url(#paper-grain)" />
   </svg>
-)
-
-// Premium Full-Screen Cinematic Background
-const CinematicBackground = () => (
-  <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-[#f8f9fa]">
-    {/* Cinematic Gradient Waves - Breathing Depth */}
-    <div className="absolute inset-0">
-      <motion.div
-        animate={{
-          scale: [1, 1.1, 1],
-          rotate: [0, 45, 0],
-          x: ['-5%', '5%', '-5%'],
-        }}
-        transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[-20%] left-[-20%] w-[140%] h-[140%] bg-[radial-gradient(circle_at_30%_30%,rgba(56,189,248,0.07)_0%,transparent_50%)] blur-[120px]"
-      />
-      <motion.div
-        animate={{
-          scale: [1.1, 1, 1.1],
-          rotate: [0, -45, 0],
-          x: ['5%', '-5%', '5%'],
-        }}
-        transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute bottom-[-20%] right-[-20%] w-[140%] h-[140%] bg-[radial-gradient(circle_at_70%_70%,rgba(245,158,11,0.05)_0%,transparent_50%)] blur-[120px]"
-      />
-    </div>
-
-    {/* Elegant Floating Light Particles - Full Screen Depth */}
-    <svg className="absolute inset-0 w-full h-full opacity-40">
-      {[...Array(24)].map((_, i) => (
-        <motion.circle
-          key={i}
-          cx={`${(i * 137.5) % 100}%`}
-          cy={`${(i * 123.4) % 100}%`}
-          r={Math.random() * 1.5 + 0.5}
-          fill="#64748b"
-          initial={{ opacity: 0.05 }}
-          animate={{
-            y: [0, -60, 0],
-            x: [0, 20, 0],
-            opacity: [0.05, 0.2, 0.05]
-          }}
-          transition={{
-            duration: 20 + (i % 8) * 5,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-      ))}
-    </svg>
-
-    {/* Artistic Vignette and Polish */}
-    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.015)_100%)] pointer-events-none"></div>
-    <div className="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-white/60 pointer-events-none"></div>
-  </div>
 )
 
 // Page component with forwardRef for react-pageflip
@@ -166,6 +111,8 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
   const flipBookRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(false)
+  const autoPlayRef = useRef(null)
 
   const scaleClasses = {
     normal: "scale-[0.35] min-[400px]:scale-[0.45] sm:scale-[0.6] md:scale-[0.75] lg:scale-[0.85] xl:scale-[1.0]",
@@ -224,6 +171,27 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
     }
   }
 
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying)
+  }
+
+  useEffect(() => {
+    if (isPlaying) {
+      autoPlayRef.current = setInterval(() => {
+        if (flipBookRef.current) {
+          flipBookRef.current.getPageFlip().flipNext()
+        }
+      }, 3000)
+    } else {
+      if (autoPlayRef.current) {
+        clearInterval(autoPlayRef.current)
+      }
+    }
+    return () => {
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current)
+    }
+  }, [isPlaying])
+
   // Generate all pages
   const renderPages = () => {
     const pages = []
@@ -265,35 +233,65 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center relative overflow-hidden font-sans">
-      <CinematicBackground />
+    <div className="min-h-screen bg-[#070707] flex items-center justify-center relative overflow-hidden font-sans">
 
-      {/* Soft Studio Lighting - Light Theme */}
-      <div className="absolute top-0 left-1/4 w-[800px] h-[800px] bg-blue-100/20 blur-[200px] pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-[800px] h-[800px] bg-amber-100/10 blur-[200px] pointer-events-none"></div>
-      <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-white pointer-events-none opacity-80"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.02)_100%)] pointer-events-none"></div>
+      {/* Background Polish */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_100%)] pointer-events-none"></div>
 
-      {/* Floating Premium Back Button */}
-      <button
-        onClick={() => navigate(-1)}
-        className="fixed top-8 left-8 sm:top-12 sm:left-12 group flex items-center gap-3 px-6 py-2.5 rounded-full border border-slate-200/50 bg-white/40 backdrop-blur-md hover:bg-white hover:border-slate-300 transition-all duration-700 shadow-sm z-[100]"
-      >
-        <ArrowLeft size={16} className="text-slate-500 transition-transform group-hover:-translate-x-1" />
-        <span className="text-[11px] tracking-[0.25em] uppercase text-slate-500 font-medium font-serif">Back</span>
-      </button>
+      {/* Header Section */}
+      <div className="fixed top-0 left-0 w-full p-4 flex justify-between items-start z-[100] pointer-events-none">
+        {/* Left: Logo (Placeholder for FA logo) */}
+        <div className="pointer-events-auto">
+          <div className="flex items-center gap-1 cursor-pointer" onClick={() => navigate(-1)}>
+            <div className="text-3xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-green-500 pr-2 pb-1" style={{ transform: 'skewX(-15deg)' }}>FA</div>
+          </div>
+        </div>
 
-      {/* Floating Fullscreen Control */}
-      <button
-        onClick={toggleFullscreen}
-        className="fixed top-8 right-8 sm:top-12 sm:right-12 p-3 rounded-full border border-slate-200/50 bg-white/40 backdrop-blur-md hover:bg-white hover:border-slate-300 text-slate-400 hover:text-slate-900 transition-all duration-500 shadow-sm z-[100]"
-      >
-        {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
-      </button>
+        {/* Center: Photographer Info */}
+        <div className="pointer-events-auto mt-2 hidden md:flex items-center gap-4 px-6 py-2 rounded-md bg-[#111111]/80 border border-white/5 backdrop-blur-md shadow-lg">
+          <div className="flex items-center gap-2 text-gray-300">
+            <User size={14} className="text-blue-500" />
+            <span className="text-xs uppercase tracking-wider font-medium">RAM PHOTOGRAPHY</span>
+          </div>
+          <div className="w-px h-4 bg-white/10"></div>
+          <div className="flex items-center gap-2 text-gray-300">
+            <Phone size={14} className="text-green-500" />
+            <span className="text-xs">+91 8405954138</span>
+          </div>
+          <div className="w-px h-4 bg-white/10"></div>
+          <div className="flex items-center gap-2 text-gray-300">
+            <MapPin size={14} className="text-yellow-500" />
+            <span className="text-xs uppercase tracking-wider">PATNA</span>
+          </div>
+        </div>
 
-      {/* Album Title - Floating minimal */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 sm:static sm:absolute sm:top-12 sm:left-1/2 sm:-translate-x-1/2 flex flex-col items-center gap-1 z-50 pointer-events-none">
-        <h2 className="text-slate-400/60 font-serif font-light text-[9px] tracking-[0.5em] uppercase">{bookData.title}</h2>
+        {/* Right: Album Info */}
+        <div className="pointer-events-auto mt-2 text-right bg-[#111111]/80 px-4 py-2 rounded-md border border-white/5 backdrop-blur-md">
+          <h2 className="text-white text-xs font-semibold tracking-wider uppercase mb-1">{bookData.title}</h2>
+          <div className="text-yellow-500 text-[10px] tracking-wide">Wednesday-01-May-2024</div>
+        </div>
+      </div>
+
+      {/* Floating Social Sidebar (Right) */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-[100] pointer-events-auto">
+        <button className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Facebook size={18} fill="currentColor" className="border-none" />
+        </button>
+        <button className="w-10 h-10 rounded-full bg-black border border-white/20 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Twitter size={18} fill="currentColor" />
+        </button>
+        <button className="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Instagram size={18} />
+        </button>
+        <button className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Linkedin size={18} fill="currentColor" />
+        </button>
+        <button className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <MessageCircle size={18} fill="currentColor" />
+        </button>
+        <button className="w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer mt-2">
+          <Share2 size={18} />
+        </button>
       </div>
 
       <div className={`relative book-perspective ${scaleClasses[scale] || scaleClasses.normal}`}>
@@ -337,24 +335,22 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
         </HTMLFlipBook>
       </div>
 
-      {/* Elegant Infinite Navigation */}
-      <div className="absolute bottom-8 sm:bottom-12 flex items-center gap-8 sm:gap-16 z-50">
+      {/* Bottom Controls */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto">
         <button
-          onClick={() => flipBookRef.current.getPageFlip().flipPrev()}
-          className="text-slate-300 hover:text-slate-900 transition-all duration-500"
+          onClick={togglePlay}
+          className="w-14 h-10 bg-yellow-500 hover:bg-yellow-600 text-black flex items-center justify-center transition-colors rounded shadow-lg"
         >
-          <ChevronLeft className="size-6 sm:size-8" strokeWidth={1} />
+          {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-1" />}
         </button>
+      </div>
 
-        <div className="text-slate-300 font-serif text-[9px] tracking-[0.8em] uppercase select-none">
-          Spread {Math.floor(currentPage / 2) + 1}
-        </div>
-
+      <div className="fixed bottom-6 right-6 z-[100] pointer-events-auto">
         <button
-          onClick={() => flipBookRef.current.getPageFlip().flipNext()}
-          className="text-slate-300 hover:text-slate-900 transition-all duration-500"
+          onClick={toggleFullscreen}
+          className="w-10 h-10 bg-yellow-500 hover:bg-yellow-600 text-black flex items-center justify-center transition-colors rounded shadow-lg"
         >
-          <ChevronRight className="size-6 sm:size-8" strokeWidth={1} />
+          {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
         </button>
       </div>
 

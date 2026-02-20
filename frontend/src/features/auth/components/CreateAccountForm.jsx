@@ -1,9 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Eye, EyeOff, Loader2, AlertCircle, Check } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
@@ -14,6 +11,10 @@ import {
     SelectValue,
 } from "@/components/ui/select"
 import { registerUser } from '@/services/api'
+import { cn } from '@/lib/utils'
+
+const inputStyles = "w-full bg-[#F1F1F1] border-transparent focus:border-black focus:ring-1 focus:ring-black rounded-2xl px-5 py-3.5 text-[#111111] font-medium placeholder:text-[#CCCCCC] placeholder:font-normal outline-none transition-all"
+const labelStyles = "text-xs font-semibold text-[#999999] uppercase tracking-wide ml-1"
 
 const CreateAccountForm = () => {
     const navigate = useNavigate()
@@ -123,23 +124,23 @@ const CreateAccountForm = () => {
     return (
         <div className="w-full">
             {error && (
-                <Alert variant="destructive" className="mb-6 rounded-md border-destructive/20 bg-destructive/10 text-destructive">
+                <Alert variant="destructive" className="mb-6 rounded-2xl border-none bg-red-50 text-red-600">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertDescription className="font-medium text-xs ml-2">{error}</AlertDescription>
+                    <AlertDescription className="font-medium text-sm ml-2">{error}</AlertDescription>
                 </Alert>
             )}
 
             <Tabs
                 defaultValue="photographer"
-                className="w-full mb-6"
+                className="w-full mb-8"
                 onValueChange={(value) => {
                     setFormData(prev => ({ ...prev, accountType: value }))
                     setError('')
                 }}
             >
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="photographer">Creator</TabsTrigger>
-                    <TabsTrigger value="lab">Photo Lab</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2 bg-[#F1F1F1] rounded-2xl p-1 h-14">
+                    <TabsTrigger value="photographer" className="rounded-xl text-[#777777] data-[state=active]:text-[#111111] data-[state=active]:bg-white data-[state=active]:shadow-sm font-semibold transition-all h-full">Creator</TabsTrigger>
+                    <TabsTrigger value="lab" className="rounded-xl text-[#777777] data-[state=active]:text-[#111111] data-[state=active]:bg-white data-[state=active]:shadow-sm font-semibold transition-all h-full">Photo Lab</TabsTrigger>
                 </TabsList>
             </Tabs>
 
@@ -147,40 +148,42 @@ const CreateAccountForm = () => {
 
                 {/* Dynamic Name Fields based on Account Type */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="nameInput" className="text-sm font-medium">
-                            {isPhotographer ? "Full Name" : "Owner Name"} <span className="text-destructive">*</span>
-                        </Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="nameInput" className={labelStyles}>
+                            {isPhotographer ? "Full Name" : "Owner Name"} <span className="text-red-500">*</span>
+                        </label>
+                        <input
                             id="nameInput"
                             name={isPhotographer ? "fullName" : "ownerName"}
                             required
                             value={isPhotographer ? formData.fullName : formData.ownerName}
                             onChange={handleInputChange}
                             placeholder={isPhotographer ? "John Doe" : "Jane Smith"}
+                            className={inputStyles}
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="studioInput" className="text-sm font-medium">
-                            {isPhotographer ? "Studio Name" : "Lab Name"} {!isPhotographer && <span className="text-destructive">*</span>}
-                        </Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="studioInput" className={labelStyles}>
+                            {isPhotographer ? "Studio Name" : "Lab Name"} {!isPhotographer && <span className="text-red-500">*</span>}
+                        </label>
+                        <input
                             id="studioInput"
                             name={isPhotographer ? "studioName" : "labName"}
                             required={!isPhotographer}
                             value={isPhotographer ? formData.studioName : formData.labName}
                             onChange={handleInputChange}
                             placeholder={isPhotographer ? "Lens Studio (Optional)" : "Pro Photo Lab"}
+                            className={inputStyles}
                         />
                     </div>
                 </div>
 
                 {/* Email & Phone */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="email" className="text-sm font-medium">Email <span className="text-destructive">*</span></Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="email" className={labelStyles}>Email <span className="text-red-500">*</span></label>
+                        <input
                             id="email"
                             name="email"
                             type="email"
@@ -188,12 +191,13 @@ const CreateAccountForm = () => {
                             value={formData.email}
                             onChange={handleInputChange}
                             placeholder="name@example.com"
+                            className={inputStyles}
                         />
                     </div>
 
-                    <div className="space-y-2">
-                        <Label htmlFor="phoneNumber" className="text-sm font-medium">Phone Number <span className="text-destructive">*</span></Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="phoneNumber" className={labelStyles}>Phone Number <span className="text-red-500">*</span></label>
+                        <input
                             id="phoneNumber"
                             name="phoneNumber"
                             required
@@ -201,19 +205,20 @@ const CreateAccountForm = () => {
                             onChange={handleInputChange}
                             maxLength={10}
                             placeholder="Enter 10-digit number"
+                            className={inputStyles}
                         />
                     </div>
                 </div>
 
                 {/* Photographer Specifics */}
                 {isPhotographer && (
-                    <div className="space-y-2">
-                        <Label className="text-sm font-medium">Photography Specialty</Label>
+                    <div className="space-y-1">
+                        <label className={labelStyles}>Photography Specialty</label>
                         <Select onValueChange={(v) => handleSelectChange('specialty', v)} value={formData.specialty}>
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select primary specialty" />
+                            <SelectTrigger className={cn(inputStyles, "h-[52px]")}>
+                                <SelectValue placeholder={<span className="text-[#CCCCCC]">Select primary specialty</span>} />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="rounded-xl">
                                 <SelectItem value="wedding">Wedding Photography</SelectItem>
                                 <SelectItem value="portrait">Portrait & Headshots</SelectItem>
                                 <SelectItem value="real-estate">Real Estate</SelectItem>
@@ -227,13 +232,13 @@ const CreateAccountForm = () => {
                 {/* Lab Specifics */}
                 {!isPhotographer && (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="space-y-2">
-                            <Label className="text-sm font-medium">Team Size</Label>
+                        <div className="space-y-1">
+                            <label className={labelStyles}>Team Size</label>
                             <Select onValueChange={(v) => handleSelectChange('teamSize', v)} value={formData.teamSize}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select team size" />
+                                <SelectTrigger className={cn(inputStyles, "h-[52px]")}>
+                                    <SelectValue placeholder={<span className="text-[#CCCCCC]">Select team size</span>} />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="rounded-xl">
                                     <SelectItem value="1-5">1-5 Members</SelectItem>
                                     <SelectItem value="6-20">6-20 Members</SelectItem>
                                     <SelectItem value="21-50">21-50 Members</SelectItem>
@@ -241,13 +246,13 @@ const CreateAccountForm = () => {
                                 </SelectContent>
                             </Select>
                         </div>
-                        <div className="space-y-2">
-                            <Label className="text-sm font-medium">Photographers Served</Label>
+                        <div className="space-y-1">
+                            <label className={labelStyles}>Photographers Served</label>
                             <Select onValueChange={(v) => handleSelectChange('photographersServed', v)} value={formData.photographersServed}>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Estimated clients" />
+                                <SelectTrigger className={cn(inputStyles, "h-[52px]")}>
+                                    <SelectValue placeholder={<span className="text-[#CCCCCC]">Estimated clients</span>} />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="rounded-xl">
                                     <SelectItem value="1-50">1-50 Photographers</SelectItem>
                                     <SelectItem value="51-200">51-200 Photographers</SelectItem>
                                     <SelectItem value="200+">200+ Photographers</SelectItem>
@@ -259,116 +264,132 @@ const CreateAccountForm = () => {
 
                 {/* Location */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="city" className="text-sm font-medium">City</Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="city" className={labelStyles}>City</label>
+                        <input
                             id="city"
                             name="city"
                             value={formData.city}
                             onChange={handleInputChange}
                             placeholder="Enter city"
+                            className={inputStyles}
                         />
                     </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="state" className="text-sm font-medium">State</Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="state" className={labelStyles}>State</label>
+                        <input
                             id="state"
                             name="state"
                             value={formData.state}
                             onChange={handleInputChange}
                             placeholder="Enter state"
+                            className={inputStyles}
                         />
                     </div>
                 </div>
 
                 {/* GST for Labs Only */}
                 {!isPhotographer && (
-                    <div className="space-y-2">
-                        <Label htmlFor="gstNumber" className="text-sm font-medium">GST Number (Optional)</Label>
-                        <Input
+                    <div className="space-y-1">
+                        <label htmlFor="gstNumber" className={labelStyles}>GST Number (Optional)</label>
+                        <input
                             id="gstNumber"
                             name="gstNumber"
                             value={formData.gstNumber}
                             onChange={handleInputChange}
                             placeholder="Enter GST Number"
+                            className={inputStyles}
                         />
                     </div>
                 )}
 
                 {/* Password Fields */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="password" className="text-sm font-medium">Password <span className="text-destructive">*</span></Label>
-                        <div className="relative">
-                            <Input
+                    <div className="space-y-1">
+                        <label htmlFor="password" className={labelStyles}>Password <span className="text-red-500">*</span></label>
+                        <div className="relative flex items-center bg-[#F1F1F1] rounded-2xl focus-within:ring-1 focus-within:ring-black focus-within:bg-white transition-all overflow-hidden pr-3">
+                            <input
                                 id="password"
                                 name="password"
                                 type={showPassword ? 'text' : 'password'}
                                 required
                                 value={formData.password}
                                 onChange={handleInputChange}
-                                className="pr-10"
+                                className="w-full bg-transparent border-none px-5 py-3.5 text-[#111111] font-medium placeholder:text-[#CCCCCC] placeholder:font-normal outline-none"
                                 placeholder="********"
                             />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="text-muted-foreground hover:text-foreground focus:outline-none transition-colors"
-                                >
-                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
-                            </div>
+                            {/* Fake Password Strength Indicator */}
+                            {formData.password.length > 5 && (
+                                <div className="hidden sm:flex items-center gap-1 bg-green-50 text-green-600 px-2 py-1 rounded-md mr-1 whitespace-nowrap">
+                                    <span className="text-[10px] font-bold uppercase tracking-wider">Strong</span>
+                                    <Check className="w-3 h-3" />
+                                </div>
+                            )}
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="p-2 text-gray-400 hover:text-gray-800 transition-colors bg-white rounded-xl shadow-sm border border-gray-100 flex-shrink-0"
+                            >
+                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            </button>
                         </div>
                     </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="confirmPassword" className="text-sm font-medium">Confirm Password <span className="text-destructive">*</span></Label>
-                        <div className="relative">
-                            <Input
+                    <div className="space-y-1">
+                        <label htmlFor="confirmPassword" className={labelStyles}>Confirm Password <span className="text-red-500">*</span></label>
+                        <div className="relative flex items-center bg-[#F1F1F1] rounded-2xl focus-within:ring-1 focus-within:ring-black focus-within:bg-white transition-all overflow-hidden pr-3">
+                            <input
                                 id="confirmPassword"
                                 name="confirmPassword"
                                 type={showConfirmPassword ? 'text' : 'password'}
                                 required
                                 value={formData.confirmPassword}
                                 onChange={handleInputChange}
-                                className="pr-10"
+                                className="w-full bg-transparent border-none px-5 py-3.5 text-[#111111] font-medium placeholder:text-[#CCCCCC] placeholder:font-normal outline-none"
                                 placeholder="********"
                             />
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <button
-                                    type="button"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                    className="text-muted-foreground hover:text-foreground focus:outline-none transition-colors"
-                                >
-                                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
-                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="p-2 text-gray-400 hover:text-gray-800 transition-colors bg-white rounded-xl shadow-sm border border-gray-100 flex-shrink-0"
+                            >
+                                {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div className="pt-2">
-                    <Button
+                <div className="pt-6">
+                    <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full bg-primary text-primary-foreground font-medium rounded-md shadow"
-                    >
-                        {isLoading ? (
-                            <div className="flex items-center justify-center gap-2">
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                                Please wait
-                            </div>
-                        ) : (
-                            'Create Account'
+                        className={cn(
+                            "w-full bg-black text-white font-bold text-lg rounded-2xl py-4 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-gray-800 hover:shadow-[0_8px_30px_rgb(0,0,0,0.2)] transition-all active:scale-[0.98] outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-black relative overflow-hidden",
+                            isLoading && "opacity-80 pointer-events-none"
                         )}
-                    </Button>
+                    >
+                        {/* Decorative dotted pattern overlay to match dribbble button */}
+                        <div className="absolute inset-0 opacity-[0.15]"
+                            style={{ backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)', backgroundSize: '12px 12px' }}
+                        />
+
+                        <div className="relative flex items-center justify-center gap-2">
+                            {isLoading ? (
+                                <>
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                    <span>Creating Account...</span>
+                                </>
+                            ) : (
+                                'Start your adventure'
+                            )}
+                        </div>
+                    </button>
                 </div>
             </form>
-            <div className="text-center text-xs text-muted-foreground mt-4 pt-4 border-t">
+            <div className="text-center text-xs text-[#666666] mt-6 font-medium">
                 By creating an account, you agree to our{" "}
-                <a href="/terms" className="underline underline-offset-4 hover:text-primary">Terms of Service</a>{" "}
+                <a href="/terms" className="text-[#111111] hover:underline transition-colors">Terms of Service</a>{" "}
                 and{" "}
-                <a href="/privacy" className="underline underline-offset-4 hover:text-primary">Privacy Policy</a>.
+                <a href="/privacy" className="text-[#111111] hover:underline transition-colors">Privacy Policy</a>.
             </div>
         </div>
     )
