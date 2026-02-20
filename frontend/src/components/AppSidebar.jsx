@@ -79,6 +79,7 @@ export function AppSidebar() {
     pages: [
       { name: 'Profile', href: '/profile', icon: User },
       { name: 'Billing', href: '/recharge', icon: CreditCard },
+      { name: 'Photographers', href: '/photographers', icon: Users },
     ],
     other: [
       { name: 'Settings', href: '/settings', icon: Settings },

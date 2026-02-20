@@ -1,5 +1,5 @@
-import React from 'react'
-import { Check, CreditCard, History, Zap, ShieldCheck, Crown, Download } from 'lucide-react'
+import React, { useState } from 'react'
+import { Check, CreditCard, History, Zap, ShieldCheck, Crown, Download, Building2, UserCircle } from 'lucide-react'
 import {
   Card,
   CardContent,
@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Table,
   TableBody,
@@ -22,40 +23,78 @@ import { Separator } from '@/components/ui/separator'
 
 const Recharge = () => {
   const currentPlan = {
-    name: 'Pro Visionary',
+    name: 'Yearly Plan',
     status: 'Active',
     expiryDate: '2026-01-15',
-    price: '₹2,999',
+    price: '₹1,299',
     period: '/year',
+    type: 'Photographer',
+    albumsUsed: 42,
+    albumsRemaining: 158
   }
 
-  const plans = [
+  const [userType, setUserType] = useState('Photographer')
+  const [selectedPlan, setSelectedPlan] = useState(null)
+
+  const photographerPlans = [
     {
       name: "Pay Per Album",
-      price: "₹19",
+      price: 19,
+      displayPrice: "₹19",
       period: "/album",
       description: "For occasional users who need flexibility.",
-      features: ["One high-quality album", "All essential features", "Secure sharing links", "Standard support"],
+      features: ["1 Album = ₹19", "All essential features", "QR code included", "Secure sharing link"],
       icon: ShieldCheck,
+      type: 'Photographer'
     },
     {
       name: "Monthly Plan",
-      price: "₹149",
+      price: 149,
+      displayPrice: "₹149",
       period: "/month",
-      description: "Perfect for active photographers with regular clients.",
-      features: ["10–20 albums per month", "Basic analytics", "Priority support", "Watermark protection", "Standard templates"],
+      description: "Perfect for regular photographers.",
+      features: ["15–20 albums per month", "Basic analytics", "Standard support", "Watermark protection"],
       icon: Zap,
+      type: 'Photographer'
     },
     {
       name: "Yearly Plan",
-      price: "₹1,499",
+      price: 1299,
+      displayPrice: "₹1299",
       period: "/year",
-      description: "Best for professional studios and high-volume work.",
-      features: ["150–200 albums per year", "Advanced analytics", "Custom branding", "Priority support", "All premium templates"],
+      description: "Best value for active professionals.",
+      features: ["200+ albums per year", "Advanced analytics", "Priority support", "Best savings option"],
       popular: true,
       icon: Crown,
+      type: 'Photographer'
     }
   ]
+
+  const labPlans = [
+    {
+      name: "Lab Starter",
+      price: 999,
+      displayPrice: "₹999",
+      period: "/month",
+      description: "Scalable solutions for small teams.",
+      features: ["200 albums per month", "2 team members", "Multi-photographer support", "Basic credit management"],
+      icon: Building2,
+      type: 'Lab'
+    },
+    {
+      name: "Lab Pro",
+      price: 2499,
+      displayPrice: "₹2499",
+      period: "/month",
+      description: "Complete studio management system.",
+      features: ["800 albums per month", "5 team members", "Credit distribution system", "Advanced analytics", "Priority support"],
+      popular: true,
+      icon: Crown,
+      type: 'Lab'
+    }
+  ]
+
+  const activePlans = userType === 'Photographer' ? photographerPlans : labPlans;
 
   const billingHistory = [
     { id: 'INV-001', date: '2025-01-15', amount: '₹2,999', status: 'Paid', plan: 'Pro Visionary' },
@@ -66,11 +105,22 @@ const Recharge = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       {/* Header */}
-      <div className="flex flex-col gap-2">
-        <h1 className="text-3xl font-bold tracking-tight">Billing & Plans</h1>
-        <p className="text-muted-foreground text-lg">
-          Manage your subscription and billing history.
-        </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-3xl font-bold tracking-tight">Billing & Plans</h1>
+          <p className="text-muted-foreground text-lg">
+            Manage your subscription and billing history.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium text-muted-foreground">Account Type:</span>
+          <Tabs value={userType} onValueChange={setUserType} className="w-[240px]">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="Photographer"><UserCircle className="w-4 h-4 mr-2" /> Creator</TabsTrigger>
+              <TabsTrigger value="Lab"><Building2 className="w-4 h-4 mr-2" /> Lab</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
       </div>
 
       <Separator />
@@ -90,18 +140,26 @@ const Recharge = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-2">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-6 py-2">
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Plan</p>
+                <p className="text-sm font-medium text-muted-foreground">Plan Name</p>
                 <p className="text-lg font-bold">{currentPlan.name}</p>
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Next Billing</p>
+                <p className="text-sm font-medium text-muted-foreground">Plan Type</p>
+                <p className="text-lg font-bold">{currentPlan.type}</p>
+              </div>
+              <div className="hidden md:block">
+                <p className="text-sm font-medium text-muted-foreground">Next Renewal</p>
                 <p className="text-lg font-bold">{currentPlan.expiryDate}</p>
               </div>
               <div>
-                <p className="text-sm font-medium text-muted-foreground">Price</p>
-                <p className="text-lg font-bold">{currentPlan.price}<span className="text-sm font-normal text-muted-foreground">{currentPlan.period}</span></p>
+                <p className="text-sm font-medium text-muted-foreground">Usage</p>
+                <p className="text-lg font-bold">{currentPlan.albumsUsed} <span className="text-sm font-normal text-muted-foreground">used</span></p>
+              </div>
+              <div>
+                <p className="text-sm font-medium text-muted-foreground">Remaining</p>
+                <p className="text-lg font-bold">{currentPlan.albumsRemaining}</p>
               </div>
             </div>
           </CardContent>
@@ -112,44 +170,89 @@ const Recharge = () => {
         </Card>
 
         {/* Available Plans */}
-        <div className="grid gap-6 md:grid-cols-3">
-          {plans.map((plan) => (
-            <Card key={plan.name} className={`relative flex flex-col ${plan.popular ? 'border-primary shadow-md' : 'shadow-sm'}`}>
-              {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <Badge className="bg-primary text-primary-foreground">Recommended</Badge>
-                </div>
-              )}
-              <CardHeader className="pt-8">
-                <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center mb-2">
-                  <plan.icon className="h-5 w-5" />
-                </div>
-                <CardTitle className="text-lg">{plan.name}</CardTitle>
-                <CardDescription className="text-xs">{plan.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6 flex-1">
-                <div>
-                  <span className="text-3xl font-bold">{plan.price}</span>
-                  <span className="text-sm text-muted-foreground">{plan.period}</span>
-                </div>
-                <Separator />
-                <ul className="space-y-3">
-                  {plan.features.map(feature => (
-                    <li key={feature} className="flex items-start text-xs gap-2">
-                      <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CardContent>
-              <CardFooter className="pt-4 pb-6">
-                <Button className="w-full" variant={plan.name === currentPlan.name ? "outline" : (plan.popular ? "default" : "outline")} size="sm">
-                  {plan.name === currentPlan.name ? "Current Plan" : "Select Plan"}
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
+        <div className="space-y-4">
+          <h2 className="text-xl font-semibold">Available Upgrades</h2>
+          <div className={`grid gap-6 ${userType === 'Photographer' ? 'md:grid-cols-3' : 'md:grid-cols-2 max-w-3xl'}`}>
+            {activePlans.map((plan) => (
+              <Card
+                key={plan.name}
+                className={`relative flex flex-col cursor-pointer transition-all ${selectedPlan?.name === plan.name ? 'ring-2 ring-primary border-transparent' : 'hover:border-primary/50'} ${plan.popular && selectedPlan?.name !== plan.name ? 'border-primary/50 shadow-md' : 'shadow-sm'}`}
+                onClick={() => setSelectedPlan(plan)}
+              >
+                {plan.popular && (
+                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                    <Badge className="bg-primary text-primary-foreground">Recommended</Badge>
+                  </div>
+                )}
+                <CardHeader className="pt-8">
+                  <div className="h-10 w-10 rounded-lg bg-muted flex items-center justify-center mb-2">
+                    <plan.icon className="h-5 w-5" />
+                  </div>
+                  <CardTitle className="text-lg">{plan.name}</CardTitle>
+                  <CardDescription className="text-xs">{plan.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6 flex-1">
+                  <div>
+                    <span className="text-3xl font-bold">{plan.displayPrice}</span>
+                    <span className="text-sm text-muted-foreground">{plan.period}</span>
+                  </div>
+                  <Separator />
+                  <ul className="space-y-3">
+                    {plan.features.map(feature => (
+                      <li key={feature} className="flex items-start text-xs gap-2">
+                        <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0 mt-0.5" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <CardFooter className="pt-4 pb-6">
+                  <Button
+                    className="w-full"
+                    variant={plan.name === currentPlan.name ? "secondary" : (selectedPlan?.name === plan.name ? "default" : "outline")}
+                    size="sm"
+                  >
+                    {plan.name === currentPlan.name ? "Current Plan" : (selectedPlan?.name === plan.name ? "Selected" : "Select Plan")}
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </div>
+
+        {/* Payment Summary Section */}
+        {selectedPlan && selectedPlan.name !== currentPlan.name && (
+          <Card className="border-2 border-primary/20 bg-primary/5 shadow-md">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <CreditCard className="w-5 h-5 text-primary" />
+                Checkout Summary
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center text-sm font-medium">
+                  <span className="text-muted-foreground">{selectedPlan.name} Subscription {selectedPlan.period}</span>
+                  <span>₹{selectedPlan.price.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm text-muted-foreground">
+                  <span>GST (18%)</span>
+                  <span>₹{(selectedPlan.price * 0.18).toFixed(2)}</span>
+                </div>
+                <Separator className="my-2 bg-primary/20" />
+                <div className="flex justify-between items-center font-bold text-lg">
+                  <span>Total Payable</span>
+                  <span className="text-primary">₹{(selectedPlan.price * 1.18).toFixed(2)}</span>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full text-md h-12">
+                Proceed to Secure Payment
+              </Button>
+            </CardFooter>
+          </Card>
+        )}
 
         {/* Billing history */}
         <Card className="border shadow-sm">
@@ -161,7 +264,7 @@ const Recharge = () => {
             <Table>
               <TableHeader>
                 <TableRow className="bg-muted/50">
-                  <TableHead className="pl-6 py-3">Invoice</TableHead>
+                  <TableHead className="pl-6 py-3">Invoice Details</TableHead>
                   <TableHead className="py-3 text-center">Amount</TableHead>
                   <TableHead className="py-3 text-center">Status</TableHead>
                   <TableHead className="text-right pr-6 py-3">Action</TableHead>
@@ -171,8 +274,11 @@ const Recharge = () => {
                 {billingHistory.map((item) => (
                   <TableRow key={item.id} className="hover:bg-muted/30 transition-colors">
                     <TableCell className="pl-6 py-4">
-                      <p className="text-sm font-semibold">{item.id}</p>
-                      <p className="text-xs text-muted-foreground">{item.date}</p>
+                      <p className="text-sm font-semibold">{item.plan}</p>
+                      <div className="flex items-center gap-2 mt-1">
+                        <span className="text-xs text-muted-foreground font-mono bg-muted px-1.5 py-0.5 rounded">{item.id}</span>
+                        <span className="text-xs text-muted-foreground">{item.date}</span>
+                      </div>
                     </TableCell>
                     <TableCell className="font-medium text-center py-4">{item.amount}</TableCell>
                     <TableCell className="text-center py-4">

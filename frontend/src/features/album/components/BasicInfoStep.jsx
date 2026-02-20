@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
 import { Input } from '@/components/ui/input'
@@ -20,6 +20,15 @@ import {
 import DateSelector from '@/components/DateSelector'
 
 const BasicInfoStep = ({ formData, setFormData, errors, setErrors, functionTypes, toTitleCase }) => {
+    const [photographers, setPhotographers] = useState([])
+
+    useEffect(() => {
+        const saved = localStorage.getItem('photographers')
+        if (saved) {
+            setPhotographers(JSON.parse(saved))
+        }
+    }, [])
+
     const handleInputChange = (e) => {
         const { name, value } = e.target
         setFormData(prev => ({
@@ -90,7 +99,28 @@ const BasicInfoStep = ({ formData, setFormData, errors, setErrors, functionTypes
                             )}
                         </div>
 
-                        <div className="md:col-span-2 space-y-2">
+                        <div className="space-y-2">
+                            <Label>Photographer (Optional)</Label>
+                            <Select
+                                onValueChange={(value) => {
+                                    setFormData(prev => ({ ...prev, photographerId: value }))
+                                    if (errors.photographerId) setErrors(prev => ({ ...prev, photographerId: '' }))
+                                }}
+                                value={formData.photographerId}
+                            >
+                                <SelectTrigger className={errors.photographerId ? 'border-destructive' : ''}>
+                                    <SelectValue placeholder="Select photographer" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="none">None</SelectItem>
+                                    {photographers.map(p => (
+                                        <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        <div className="space-y-2">
                             <DateSelector
                                 value={formData.functionDate}
                                 onChange={(value) => {

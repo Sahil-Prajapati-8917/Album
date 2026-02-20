@@ -6,11 +6,17 @@ import {
   Plus,
   Upload,
   Share2,
-  CreditCard,
   Heart,
   Eye,
   Image as ImageIcon,
-  Users
+  Users,
+  CreditCard,
+  Maximize2,
+  MessageCircle,
+  Twitter,
+  Facebook,
+  Linkedin,
+  Instagram
 } from 'lucide-react'
 import {
   AreaChart, Area, BarChart, Bar,
@@ -162,7 +168,7 @@ const Dashboard = () => {
       </div>
 
       {/* 1. Top Cards (Product Metrics) */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {/* Total Albums - Orange Theme */}
         <Card className="overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -223,6 +229,29 @@ const Dashboard = () => {
                 </p>
               </div>
               <Sparkline data={sparklines.views} color="#8b5cf6" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Active Plan - Blue Theme */}
+        <Card className="overflow-hidden">
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Active Plan
+            </CardTitle>
+            <CreditCard className="h-4 w-4 text-blue-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <div>
+                <div className="text-2xl font-bold">Free Credit</div>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Expires in 14 days
+                </p>
+              </div>
+              <div className="h-8 flex items-center">
+                <Button variant="outline" size="sm" className="h-7 text-xs bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 dark:bg-blue-900/20 dark:text-blue-400 dark:border-blue-800" onClick={() => navigate('/recharge')}>Upgrade</Button>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -303,10 +332,10 @@ const Dashboard = () => {
       </div>
 
       {/* 3. Bottom Section - Album Trends & Top Albums */}
-      <div className="grid gap-4 md:grid-cols-7">
+      <div className="grid gap-4 md:grid-cols-10">
 
         {/* Top Performing Albums Table */}
-        <Card className="col-span-7">
+        <Card className="col-span-10 lg:col-span-7">
           <CardHeader>
             <CardTitle>Top Performing Albums</CardTitle>
             <CardDescription>Most viewed albums this week</CardDescription>
@@ -349,6 +378,49 @@ const Dashboard = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Digital Album Preview */}
+        <Card className="col-span-10 lg:col-span-3">
+          <CardHeader>
+            <CardTitle>Album Preview</CardTitle>
+            <CardDescription>Interactive 3D digital sample</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-muted group cursor-pointer border shadow-sm" onClick={() => navigate('/demo')}>
+              <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80" alt="Sample Album Preview" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <Maximize2 className="h-8 w-8 text-white mb-2" />
+                <span className="text-white font-medium text-sm">Open 3D Viewer</span>
+              </div>
+              {/* Simulated Book Overlay Elements */}
+              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/30 drop-shadow-md"></div>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <div>
+                <h4 className="font-semibold text-sm">Raja Weds Rani</h4>
+                <p className="text-xs text-muted-foreground">Sample Cinematic Album</p>
+              </div>
+              <Button variant="secondary" size="sm" onClick={() => navigate('/demo')}>View</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Social Share Floating Sidebar */}
+      <div className="fixed top-1/2 -translate-y-1/2 right-4 z-50 flex flex-col gap-2 hidden sm:flex">
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#25D366] transition-colors"><MessageCircle className="h-4 w-4" /></Button>
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#E1306C] transition-colors"><Instagram className="h-4 w-4" /></Button>
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#1877F2] transition-colors"><Facebook className="h-4 w-4" /></Button>
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-black dark:hover:text-white transition-colors"><Twitter className="h-4 w-4" /></Button>
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#0A66C2] transition-colors"><Linkedin className="h-4 w-4" /></Button>
+      </div>
+
+      {/* Primary WhatsApp Support Button */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button className="h-12 px-4 rounded-full shadow-lg bg-[#25D366] hover:bg-[#1fa951] text-white flex items-center gap-2 border-none">
+          <MessageCircle className="h-5 w-5" />
+          <span className="font-semibold hidden sm:inline">Chat with us</span>
+        </Button>
       </div>
 
     </div>

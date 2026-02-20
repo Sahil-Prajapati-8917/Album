@@ -17,6 +17,7 @@ import Recharge from '../features/user/pages/Recharge';
 import Profile from '../features/user/pages/Profile';
 import Settings from '../features/user/pages/Settings';
 import HelpCenter from '../features/user/pages/HelpCenter';
+import Photographers from '../features/user/pages/Photographers';
 import NotFound from '../pages/NotFound';
 import ZoomParallaxDemo from '../pages/ZoomParallaxDemo';
 import VisualBookDemo from '../pages/VisualBookDemo';
@@ -87,6 +88,7 @@ export function AppRoutes() {
                 <Route path="/recharge" element={<Recharge />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/photographers" element={<Photographers />} />
                 <Route path="/help" element={<HelpCenter />} />
                 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                 <Route path="/refund-policy" element={<RefundPolicy />} />
