@@ -40,6 +40,12 @@ Pixfolio is a comprehensive platform that combines a React frontend with a Node.
 - **Role Management**: Control user roles and permissions.
 - **Moderation Tools**: Content moderation capabilities.
 
+### 🔬 Lab Portal & Features (New)
+- **Specialized Dashboard (Main Hub)**: Features Album Analytics, Credit Status with quick recharge, Active Plan details, and an interactive 3D Digital Album Preview.
+- **Advanced Album Management**: Comprehensive album creation with client info, event details, music selection, and drag-and-drop visual uploads. Includes a centralized list view with QR generation, analytics, and sharing tools.
+- **Partner Management**: Dedicated "Your Photographers" mini-database to add, edit, and manage photography vendors, plus a detailed Recharge History for billing tracking.
+- **Support & Global Interface**: Integrated FAQ, direct WhatsApp support, responsive modern collapsing sidebar, and quick-access header tools.
+
 
 ### 🎪 Advanced UI Components & Effects
 - **Scroll Morph Hero**: Interactive hero with morphing animations
