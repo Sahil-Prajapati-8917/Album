@@ -109,7 +109,7 @@ const LoginForm = () => {
                     type="submit"
                     disabled={isLoading}
                     className={cn(
-                        "w-full bg-primary hover:bg-primary/95 text-white font-bold py-4 rounded-lg transition-all duration-300 shadow-xl shadow-primary/10 flex justify-center items-center gap-2 uppercase tracking-widest text-[11px]",
+                        "w-full bg-primary hover:bg-primary/95 text-black font-bold py-4 rounded-lg transition-all duration-300 shadow-xl shadow-primary/10 flex justify-center items-center gap-2 uppercase tracking-widest text-[11px]",
                         isLoading && "opacity-80 pointer-events-none"
                     )}
                     style={{ letterSpacing: '0.15em' }}
