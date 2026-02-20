@@ -27,7 +27,7 @@ const LandingHeader = () => {
     const isHome = location.pathname === '/'
 
     return (
-        <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-border/5 ${scrolled || !isHome ? 'bg-background/80 backdrop-blur-md border-border/10 shadow-sm' : 'bg-transparent'}`}>
+        <header className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-border/5 ${scrolled || !isHome ? 'bg-white dark:bg-black border-border/10 shadow-sm' : 'bg-white dark:bg-black'}`}>
             <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
                 <Link to="/" className="flex items-center gap-2">
                     <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="h-8 w-auto" />
