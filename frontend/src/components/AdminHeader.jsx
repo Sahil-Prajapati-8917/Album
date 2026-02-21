@@ -45,14 +45,27 @@ export function AdminHeader({ user }) {
             </div>
 
             <div className="flex-1 max-w-sm hidden md:block">
-                <div className="relative">
+                <div
+                    className="relative cursor-pointer group"
+                    onClick={() => {
+                        document.dispatchEvent(
+                            new KeyboardEvent("keydown", {
+                                key: "k",
+                                metaKey: true,
+                                bubbles: true,
+                            })
+                        )
+                    }}
+                >
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                     <Input
                         type="search"
                         placeholder="Search..."
-                        className="pl-8 h-9 w-full bg-muted/40 border-none"
+                        className="pl-8 h-9 w-full bg-muted/40 border-none cursor-pointer pointer-events-none text-muted-foreground"
+                        readOnly
+                        tabIndex={-1}
                     />
-                    <kbd className="pointer-events-none absolute right-2.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                    <kbd className="pointer-events-none absolute right-2.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-muted/80 transition-colors">
                         <span className="text-xs">⌘</span>K
                     </kbd>
                 </div>

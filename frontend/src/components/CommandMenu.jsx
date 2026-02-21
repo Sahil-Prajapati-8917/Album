@@ -52,7 +52,7 @@ const CommandMenu = () => {
                             <Search className="mr-3 h-5 w-5 text-muted-foreground shrink-0" />
                             <Command.Input
                                 placeholder="Type a command or search..."
-                                className="w-full bg-transparent border-none outline-none text-base placeholder:text-muted-foreground h-10"
+                                className="w-full bg-transparent border-none outline-none text-base text-foreground dark:text-white placeholder:text-muted-foreground h-10"
                             />
                         </div>
 

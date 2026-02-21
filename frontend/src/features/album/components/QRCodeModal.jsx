@@ -49,7 +49,7 @@ const QRCodeModal = ({ isOpen, onClose, url, title }) => {
 
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="sm:max-w-md bg-white text-black">
+            <DialogContent className="sm:max-w-md bg-background text-foreground dark:text-white">
                 <DialogHeader>
                     <DialogTitle className="text-center text-xl">
                         {title}
