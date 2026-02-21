@@ -209,18 +209,18 @@ const AllPixfolio = () => {
         <CardContent className="space-y-6">
 
           {/* Toolbar */}
-          <div className="flex items-center justify-between">
-            <div className="flex flex-1 items-center gap-2 flex-wrap md:flex-nowrap">
-              <div className="relative w-full md:max-w-xs">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                  placeholder="Universal search..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 h-9 w-full"
-                />
-              </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="relative w-full md:max-w-md">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Universal search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-8 h-9 w-full"
+              />
+            </div>
 
+            <div className="flex items-center gap-2 flex-wrap md:flex-nowrap w-full md:w-auto">
               <Select value={functionType} onValueChange={setFunctionType}>
                 <SelectTrigger className="w-full md:w-[140px] h-9">
                   <SelectValue placeholder="Function Type" />
