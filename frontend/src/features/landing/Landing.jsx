@@ -10,6 +10,7 @@ import { Pricing } from './sections/Pricing';
 import { FAQ } from './sections/FAQ';
 import { Footer } from './sections/Footer';
 import { siteConfig } from './config.js';
+import { BackToTop } from './components/BackToTop';
 import './landing.css';
 
 function Landing() {
@@ -32,7 +33,7 @@ function Landing() {
   }, []);
 
   return (
-    <main className="landing-root relative w-full overflow-x-hidden">
+    <main id="top" className="landing-root relative w-full overflow-x-hidden">
       {/* Hero Section - Parallax Layering */}
       <Hero />
 
@@ -59,6 +60,7 @@ function Landing() {
 
       {/* Footer - White Section with Massive Typography */}
       <Footer />
+      <BackToTop />
     </main>
   );
 }
