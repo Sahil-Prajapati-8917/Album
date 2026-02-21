@@ -406,23 +406,6 @@ const Dashboard = () => {
         </Card>
       </div>
 
-      {/* Social Share Floating Sidebar */}
-      <div className="fixed top-1/2 -translate-y-1/2 right-4 z-50 flex flex-col gap-2 hidden sm:flex">
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#25D366] transition-colors"><MessageCircle className="h-4 w-4" /></Button>
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#E1306C] transition-colors"><Instagram className="h-4 w-4" /></Button>
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#1877F2] transition-colors"><Facebook className="h-4 w-4" /></Button>
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-black dark:hover:text-white transition-colors"><Twitter className="h-4 w-4" /></Button>
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full shadow-sm bg-background border-muted hover:text-[#0A66C2] transition-colors"><Linkedin className="h-4 w-4" /></Button>
-      </div>
-
-      {/* Primary WhatsApp Support Button */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button className="h-12 px-4 rounded-full shadow-lg bg-[#25D366] hover:bg-[#1fa951] text-white flex items-center gap-2 border-none">
-          <MessageCircle className="h-5 w-5" />
-          <span className="font-semibold hidden sm:inline">Chat with us</span>
-        </Button>
-      </div>
-
     </div>
   )
 }
