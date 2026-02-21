@@ -22,6 +22,31 @@ export function useLenis() {
         // Connect Lenis to GSAP ScrollTrigger
         lenis.on('scroll', ScrollTrigger.update);
 
+        // Keep ScrollTrigger in sync with layout changes (image loading, etc.)
+        const resizeObserver = new ResizeObserver(() => {
+            ScrollTrigger.refresh();
+        });
+        resizeObserver.observe(document.body);
+
+        // Robust initial load recalculation
+        const handleLoad = () => ScrollTrigger.refresh();
+        if (document.readyState === 'complete') {
+            requestAnimationFrame(() => ScrollTrigger.refresh());
+        } else {
+            window.addEventListener('load', handleLoad);
+        }
+
+        // Ensure webfonts don't break dimensions
+        if (document.fonts) {
+            document.fonts.ready.then(() => {
+                ScrollTrigger.refresh();
+            });
+        }
+
+        const t1 = setTimeout(() => ScrollTrigger.refresh(), 100);
+        const t2 = setTimeout(() => ScrollTrigger.refresh(), 500);
+        const t3 = setTimeout(() => ScrollTrigger.refresh(), 1500);
+
         gsap.ticker.add((time) => {
             lenis.raf(time * 1000);
         });
@@ -49,6 +74,11 @@ export function useLenis() {
 
         return () => {
             lenis.destroy();
+            resizeObserver.disconnect();
+            window.removeEventListener('load', handleLoad);
+            clearTimeout(t1);
+            clearTimeout(t2);
+            clearTimeout(t3);
             document.removeEventListener('click', handleAnchorClick);
             gsap.ticker.remove((time) => {
                 lenis.raf(time * 1000);

@@ -78,7 +78,7 @@ export function Services() {
                         <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight leading-tight">
                             {servicesConfig.titleLine1}
                             <br />
-                            <span className="font-serif italic font-normal text-white/80">
+                            <span className="font-serif italic font-normal text-white">
                                 {servicesConfig.titleLine2Italic}
                             </span>
                         </h2>
@@ -96,22 +96,22 @@ export function Services() {
                             return (
                                 <div
                                     key={index}
-                                    className="service-card group bg-forest-dark p-6 md:p-8 transition-all duration-500 hover:bg-forest-mid cursor-pointer"
+                                    className="service-card group bg-[#0A0A0A] p-6 md:p-8 flex flex-col h-full transition-all duration-500 hover:bg-[#1A221E] cursor-pointer"
                                 >
-                                    <div className="mb-4">
-                                        <Icon className="w-8 h-8 text-[#C6A75E] group-hover:text-[#E8D8B3] transition-colors duration-300" strokeWidth={1.5} />
+                                    <div className="mb-6 md:mb-8">
+                                        <Icon className="w-7 h-7 text-[#C6A75E] transition-colors duration-300" strokeWidth={1.5} />
                                     </div>
                                     <h3 className="text-lg md:text-xl font-sans font-semibold text-white mb-3 group-hover:text-[#C6A75E] transition-all duration-300">
                                         {service.title}
                                     </h3>
-                                    <p className="text-sm text-white/50 font-body leading-relaxed group-hover:text-white/70 transition-colors duration-300">
+                                    <p className="text-sm text-white/50 font-body leading-relaxed group-hover:text-white/90 transition-colors duration-300">
                                         {service.description}
                                     </p>
 
-                                    {/* Arrow indicator */}
-                                    <div className="mt-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                    {/* Arrow indicator (pushed to bottom) */}
+                                    <div className="mt-auto pt-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
                                         <svg
-                                            className="w-5 h-5 text-white/60"
+                                            className="w-5 h-5 text-white/80"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"

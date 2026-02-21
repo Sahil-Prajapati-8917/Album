@@ -86,6 +86,8 @@ export function Testimonials() {
                     centeredSlides={true}
                     loop={true}
                     speed={800}
+                    observer={true}
+                    observeParents={true}
                     autoplay={{
                         delay: 4000,
                         disableOnInteraction: false,

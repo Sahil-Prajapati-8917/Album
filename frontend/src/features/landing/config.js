@@ -86,30 +86,30 @@ export const featuredProjectsConfig = {
 // Services Section - Core Value Proposition
 
 export const servicesConfig = {
-    subtitle: "What We Offer",
-    titleLine1: "Everything You Need to",
-    titleLine2Italic: "Deliver a Premium Experience",
-    description: "Pixfolio brings together album creation, studio workflow, and client delivery into one refined platform built exclusively for modern photographers.",
+    subtitle: "WHAT WE OFFER",
+    titleLine1: "Everything You Need",
+    titleLine2Italic: "To Tell Your Story",
+    description: "From album creation to client delivery, Pixfolio provides the tools professional photographers need to showcase their work with elegance.",
     services: [
         {
             iconName: "Camera",
             title: "Elegant Digital Albums",
-            description: "Design cinematic albums with immersive page-flip viewing, customizable layouts, and carefully crafted premium templates.",
+            description: "Design cinematic albums that feel timeless with customizable layouts and premium templates.",
         },
         {
             iconName: "Diamond",
             title: "Studio Management",
-            description: "Organize clients, bookings, albums, and deliveries in one structured, elegant workspace built for efficiency.",
+            description: "Organize clients, albums, and workflows in one beautiful, intuitive workspace.",
         },
         {
             iconName: "Users",
-            title: "Seamless Mobile Experience",
-            description: "Deliver a flawless, touch-optimized viewing experience across all devices, ensuring your clients relive their memories beautifully.",
+            title: "Mobile Experience",
+            description: "Deliver beautiful viewing experiences on any device with responsive, touch-optimized galleries.",
         },
         {
             iconName: "Sparkles",
-            title: "Custom Branding Control",
-            description: "Personalize every album with your studio’s identity — logo placement, color schemes, typography, and watermark protection.",
+            title: "Custom Branding",
+            description: "Make every album uniquely yours with logo placement, color schemes, and typography control.",
         },
     ],
 };
