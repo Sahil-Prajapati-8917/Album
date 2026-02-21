@@ -17,12 +17,14 @@ function Landing() {
   useLenis();
 
   useEffect(() => {
-    if (siteConfig.siteTitle) {
+    if (siteConfig.siteTitle && document.title !== siteConfig.siteTitle) {
       document.title = siteConfig.siteTitle;
     }
     if (siteConfig.siteDescription) {
       const meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute('content', siteConfig.siteDescription);
+      if (meta && meta.getAttribute('content') !== siteConfig.siteDescription) {
+        meta.setAttribute('content', siteConfig.siteDescription);
+      }
     }
     if (siteConfig.language) {
       document.documentElement.lang = siteConfig.language;

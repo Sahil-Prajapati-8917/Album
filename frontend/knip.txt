@@ -1,0 +1,202 @@
+Unused files (130)
+lib/utils.js                                                
+lib/utils1.js                                               
+src/components/Aurora.jsx                                   
+src/components/blocks/feature-section-with-hover-effects.jsx
+src/components/custom/AuthCard.jsx                          
+src/components/custom/DashboardCard.jsx                     
+src/components/custom/DataTableWrapper.jsx                  
+src/components/custom/EmptyState.jsx                        
+src/components/custom/FormInput.jsx                         
+src/components/custom/FormSection.jsx                       
+src/components/custom/LoadingState.jsx                      
+src/components/custom/PageContainer.jsx                     
+src/components/custom/PremiumModal.jsx                      
+src/components/custom/PrimaryButton.jsx                     
+src/components/custom/SecondaryButton.jsx                   
+src/components/custom/SectionHeader.jsx                     
+src/components/FlowingMenu.jsx                              
+src/components/Header.jsx                                   
+src/components/Lamp.jsx                                     
+src/components/landing-ui/alert-dialog.jsx                  
+src/components/landing-ui/alert.jsx                         
+src/components/landing-ui/aspect-ratio.jsx                  
+src/components/landing-ui/avatar.jsx                        
+src/components/landing-ui/badge.jsx                         
+src/components/landing-ui/breadcrumb.jsx                    
+src/components/landing-ui/button-group.jsx                  
+src/components/landing-ui/button.jsx                        
+src/components/landing-ui/calendar.jsx                      
+src/components/landing-ui/card.jsx                          
+src/components/landing-ui/carousel.jsx                      
+src/components/landing-ui/chart.jsx                         
+src/components/landing-ui/checkbox.jsx                      
+src/components/landing-ui/collapsible.jsx                   
+src/components/landing-ui/command.jsx                       
+src/components/landing-ui/context-menu.jsx                  
+src/components/landing-ui/dialog.jsx                        
+src/components/landing-ui/drawer.jsx                        
+src/components/landing-ui/dropdown-menu.jsx                 
+src/components/landing-ui/form.jsx                          
+src/components/landing-ui/hover-card.jsx                    
+src/components/landing-ui/input-otp.jsx                     
+src/components/landing-ui/input.jsx                         
+src/components/landing-ui/label.jsx                         
+src/components/landing-ui/menubar.jsx                       
+src/components/landing-ui/navigation-menu.jsx               
+src/components/landing-ui/pagination.jsx                    
+src/components/landing-ui/popover.jsx                       
+src/components/landing-ui/progress.jsx                      
+src/components/landing-ui/radio-group.jsx                   
+src/components/landing-ui/resizable.jsx                     
+src/components/landing-ui/scroll-area.jsx                   
+src/components/landing-ui/select.jsx                        
+src/components/landing-ui/separator.jsx                     
+src/components/landing-ui/sheet.jsx                         
+src/components/landing-ui/skeleton.jsx                      
+src/components/landing-ui/slider.jsx                        
+src/components/landing-ui/sonner.jsx                        
+src/components/landing-ui/switch.jsx                        
+src/components/landing-ui/table.jsx                         
+src/components/landing-ui/tabs.jsx                          
+src/components/landing-ui/textarea.jsx                      
+src/components/landing-ui/toggle-group.jsx                  
+src/components/landing-ui/toggle.jsx                        
+src/components/landing-ui/tooltip.jsx                       
+src/components/layout/AuthLayout.jsx                        
+src/components/login-form.jsx                               
+src/components/Logo.jsx                                     
+src/components/Navigation.jsx                               
+src/components/NavUser.jsx                                  
+src/components/PricingCard.jsx                              
+src/components/PricingSection.jsx                           
+src/components/ScrollReveal.jsx                             
+src/components/ScrollStackItem.jsx                          
+src/components/signup-form.jsx                              
+src/components/Sparkles.jsx                                 
+src/components/SplitText.jsx                                
+src/components/ui/accordion-05.jsx                          
+src/components/ui/animated-modal.jsx                        
+src/components/ui/animated-testimonials.jsx                 
+src/components/ui/animated-text.jsx                         
+src/components/ui/bento-grid.jsx                            
+src/components/ui/card-stack.jsx                            
+src/components/ui/container-scroll-animation.jsx            
+src/components/ui/container-text-flip.jsx                   
+src/components/ui/cover.jsx                                 
+src/components/ui/field.jsx                                 
+src/components/ui/flip-words.jsx                            
+src/components/ui/floating-navbar.jsx                       
+src/components/ui/google-gemini-effect.jsx                  
+src/components/ui/grid-pattern.jsx                          
+src/components/ui/icon-cloud.jsx                            
+src/components/ui/infinite-moving-cards.jsx                 
+src/components/ui/interactive-hover-button.jsx              
+src/components/ui/modem-animated-footer.jsx                 
+src/components/ui/morphing-cursor.jsx                       
+src/components/ui/multi-step-loader.jsx                     
+src/components/ui/orbiting-circles.jsx                      
+src/components/ui/pixel-image.jsx                           
+src/components/ui/radio-group.jsx                           
+src/components/ui/resizable-navbar.jsx                      
+src/components/ui/scroll-based-velocity.jsx                 
+src/components/ui/scroll-morph-hero.jsx                     
+src/components/ui/sparkles-text.jsx                         
+src/components/ui/sparkles.jsx                              
+src/components/ui/sticky-scroll-reveal.jsx                  
+src/components/ui/text-arc-effect.jsx                       
+src/components/ui/text-hover-effect.jsx                     
+src/components/ui/theme.jsx                                 
+src/components/ui/toast.jsx                                 
+src/components/ui/toaster.jsx                               
+src/components/ui/typewriter-effect.jsx                     
+src/components/ui/use-toast.js                              
+src/components/UserNav.jsx                                  
+src/features/album/albumService.js                          
+src/features/album/components/PreviewStep.jsx               
+src/features/auth/authService.js                            
+src/features/user/components/AlbumFilters.jsx               
+src/features/user/components/AlbumTable.jsx                 
+src/features/user/components/ArchiveHeader.jsx              
+src/features/user/components/BillingHistory.jsx             
+src/features/user/components/CurrentPlanCard.jsx            
+src/features/user/components/DashboardShortcuts.jsx         
+src/features/user/components/DashboardStats.jsx             
+src/features/user/components/DeleteAlbumModal.jsx           
+src/features/user/components/RecentActivity.jsx             
+src/features/user/components/WelcomeHeader.jsx              
+src/features/user/userService.js                            
+src/services/apiClient.js                                   
+src/shared/utils/helpers.js                                 
+src/ui/sparkles.jsx                                         
+Unused dependencies (18)
+@gsap/react                  package.json:13:6
+@radix-ui/react-label        package.json:20:6
+@radix-ui/react-radio-group  package.json:21:6
+@radix-ui/react-separator    package.json:23:6
+@radix-ui/react-slider       package.json:24:6
+@radix-ui/react-toast        package.json:28:6
+@tabler/icons-react          package.json:30:6
+@tanstack/react-table        package.json:32:6
+@tsparticles/engine          package.json:33:6
+@tsparticles/react           package.json:34:6
+@tsparticles/slim            package.json:35:6
+country-state-city           package.json:39:6
+motion                       package.json:44:6
+ogl                          package.json:46:6
+react-hook-form              package.json:50:6
+react-icons                  package.json:51:6
+uc.micro                     package.json:61:6
+zod                          package.json:62:6
+Unused devDependencies (1)
+tw-animate-css  package.json:73:6
+Unlisted dependencies (1)
+@radix-ui/react-progress  src/components/ui/progress.jsx:2:37
+Unused exports (44)
+default                   src/components/ThemeToggle.jsx:67:16     
+AlertDialogPortal         src/components/ui/alert-dialog.jsx:92:5  
+AlertDialogOverlay        src/components/ui/alert-dialog.jsx:93:5  
+AlertDialogTrigger        src/components/ui/alert-dialog.jsx:94:5  
+AlertTitle                src/components/ui/alert.jsx:49:17        
+badgeVariants             src/components/ui/badge.jsx:31:17        
+BreadcrumbEllipsis        src/components/ui/breadcrumb.jsx:95:5    
+CardAction                src/components/ui/card.jsx:98:3          
+DialogPortal              src/components/ui/dialog.jsx:85:5        
+DialogOverlay             src/components/ui/dialog.jsx:86:5        
+DialogClose               src/components/ui/dialog.jsx:87:5        
+DialogTrigger             src/components/ui/dialog.jsx:88:5        
+DropdownMenuPortal        src/components/ui/dropdown-menu.jsx:207:3
+DropdownMenuCheckboxItem  src/components/ui/dropdown-menu.jsx:213:3
+DropdownMenuRadioGroup    src/components/ui/dropdown-menu.jsx:214:3
+DropdownMenuRadioItem     src/components/ui/dropdown-menu.jsx:215:3
+DropdownMenuShortcut      src/components/ui/dropdown-menu.jsx:217:3
+DropdownMenuSub           src/components/ui/dropdown-menu.jsx:218:3
+DropdownMenuSubTrigger    src/components/ui/dropdown-menu.jsx:219:3
+DropdownMenuSubContent    src/components/ui/dropdown-menu.jsx:220:3
+SelectGroup               src/components/ui/select.jsx:159:3       
+SelectLabel               src/components/ui/select.jsx:163:3       
+SelectSeparator           src/components/ui/select.jsx:165:3       
+SelectScrollUpButton      src/components/ui/select.jsx:166:3       
+SelectScrollDownButton    src/components/ui/select.jsx:167:3       
+SheetClose                src/components/ui/sheet.jsx:134:3        
+SheetFooter               src/components/ui/sheet.jsx:137:3        
+SidebarGroupAction        src/components/ui/sidebar.jsx:662:3      
+SidebarInput              src/components/ui/sidebar.jsx:666:3      
+SidebarMenuAction         src/components/ui/sidebar.jsx:669:3      
+SidebarMenuBadge          src/components/ui/sidebar.jsx:670:3      
+SidebarMenuSkeleton       src/components/ui/sidebar.jsx:673:3      
+SidebarRail               src/components/ui/sidebar.jsx:678:3      
+SidebarSeparator          src/components/ui/sidebar.jsx:679:3      
+useSidebar                src/components/ui/sidebar.jsx:681:3      
+TableFooter               src/components/ui/table.jsx:116:3        
+TableCaption              src/components/ui/table.jsx:120:3        
+ThemeProvider             src/contexts/ThemeContext.jsx:15:14      
+logoutUser                src/services/api.js:87:14                
+getCurrentUser            src/services/api.js:92:14                
+getUserProfile            src/services/api.js:106:14               
+updateUserProfile         src/services/api.js:110:14               
+isAuthenticated           src/services/api.js:124:14               
+initializeAuth            src/services/api.js:129:14               
+Duplicate exports (1)
+ThemeToggle|default  src/components/ThemeToggle.jsx
+Configuration hints (1)
