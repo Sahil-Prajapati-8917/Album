@@ -91,12 +91,16 @@ export function IntroGrid() {
                             );
 
                             // Opacity fade-in (ensure it's visible if JS fails)
-                            gsap.from(item, {
-                                opacity: 0,
-                                duration: 1,
-                                ease: 'power2.out',
-                                delay: cfg.delay
-                            });
+                            gsap.fromTo(
+                                item,
+                                { opacity: 0 },
+                                {
+                                    opacity: 1,
+                                    duration: 1,
+                                    ease: 'power2.out',
+                                    delay: cfg.delay
+                                }
+                            );
 
                             if (img) {
                                 // Scale zoom-out (Ken Burns)
@@ -188,11 +192,12 @@ export function IntroGrid() {
                     {introGridConfig.portfolioImages.map((image, index) => (
                         <div
                             key={index}
-                            className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer 
+                            className={`grid-item relative overflow-hidden rounded-lg group cursor-pointer opacity-0
                                 ${index === 0 ? 'sm:col-span-2 md:col-span-1 md:row-span-2' : ''} 
                                 ${index === 3 ? 'md:row-span-2' : ''}
                                 ${index === 4 ? 'sm:col-span-2 md:col-span-1' : ''}
                             `}
+                            style={{ clipPath: imageAnimConfigs[index]?.clipFrom || 'inset(0)' }}
                         >
                             <img
                                 src={image.src}

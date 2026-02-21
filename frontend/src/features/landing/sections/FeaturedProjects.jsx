@@ -53,9 +53,10 @@ export function FeaturedProjects() {
                                 // Animate clip-path
                                 gsap.fromTo(
                                     imageWrap,
-                                    { clipPath: fromClip },
+                                    { clipPath: fromClip, opacity: 0 },
                                     {
                                         clipPath: 'inset(0% 0% 0% 0%)',
+                                        opacity: 1,
                                         duration: 1.4,
                                         ease: 'power4.inOut',
                                     }
@@ -157,8 +158,11 @@ export function FeaturedProjects() {
                         >
                             {/* Image with Viewfinder */}
                             <div
-                                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer order-1
+                                className={`project-image-wrap relative overflow-hidden rounded-lg group cursor-pointer order-1 opacity-0
                                     ${index % 2 === 1 ? 'md:order-2' : 'md:order-1'}`}
+                                style={{
+                                    clipPath: index % 2 === 0 ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)'
+                                }}
                             >
                                 <div className="aspect-[4/3] overflow-hidden">
                                     <img

@@ -83,9 +83,10 @@ export function WhyChooseMe() {
                         onEnter: () => {
                             gsap.fromTo(
                                 card,
-                                { clipPath: 'inset(100% 0 0 0)' },
+                                { clipPath: 'inset(100% 0 0 0)', opacity: 0 },
                                 {
                                     clipPath: 'inset(0% 0% 0% 0%)',
+                                    opacity: 1,
                                     duration: 1.2,
                                     ease: 'power4.inOut',
                                     delay: i * 0.15,
@@ -161,9 +162,10 @@ export function WhyChooseMe() {
                     onEnter: () => {
                         gsap.fromTo(
                             wideWrap,
-                            { clipPath: 'inset(15% 5% 15% 5%)' },
+                            { clipPath: 'inset(15% 5% 15% 5%)', opacity: 0 },
                             {
                                 clipPath: 'inset(0% 0% 0% 0%)',
+                                opacity: 1,
                                 duration: 1.4,
                                 ease: 'power4.inOut',
                             }
@@ -244,7 +246,7 @@ export function WhyChooseMe() {
                 <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                     {/* Feature Cards with Images */}
                     {whyChooseMeConfig.featureCards.map((card, index) => (
-                        <div key={index} className="feature-card-image group">
+                        <div key={index} className="feature-card-image group opacity-0" style={{ clipPath: 'inset(100% 0 0 0)' }}>
                             <div className="relative aspect-[3/4] md:aspect-[3/4] rounded-lg overflow-hidden bg-[#111111]">
                                 <img
                                     src={card.image}
@@ -299,7 +301,7 @@ export function WhyChooseMe() {
 
                 {/* Wide Landscape Image */}
                 {whyChooseMeConfig.wideImage && (
-                    <div ref={wideRef} className="mt-16 md:mt-24 relative rounded-lg overflow-hidden group">
+                    <div ref={wideRef} className="mt-16 md:mt-24 relative rounded-lg overflow-hidden group opacity-0" style={{ clipPath: 'inset(15% 5% 15% 5%)' }}>
                         <div className="aspect-[4/3] md:aspect-[3/1] overflow-hidden">
                             <img
                                 src={whyChooseMeConfig.wideImage}

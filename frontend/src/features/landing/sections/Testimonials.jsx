@@ -39,13 +39,16 @@ export function Testimonials() {
                 trigger: carouselRef.current,
                 start: 'top 85%',
                 onEnter: () => {
-                    gsap.from(carouselRef.current, {
-                        y: 40,
-                        opacity: 0,
-                        duration: 1,
-                        ease: 'power3.out',
-                        delay: 0.2
-                    });
+                    gsap.fromTo(carouselRef.current,
+                        { y: 40, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: 'power3.out',
+                            delay: 0.2
+                        }
+                    );
                 },
                 once: true,
             });
@@ -75,7 +78,7 @@ export function Testimonials() {
             </div>
 
             {/* Testimonials Carousel */}
-            <div ref={carouselRef} className="relative">
+            <div ref={carouselRef} className="relative opacity-0">
                 <Swiper
                     modules={[Autoplay, FreeMode]}
                     spaceBetween={24}
