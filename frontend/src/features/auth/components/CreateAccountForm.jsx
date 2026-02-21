@@ -380,7 +380,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                             className="appearance-none h-4 w-4 rounded-sm border border-slate-300 text-black checked:bg-black checked:border-black focus:ring-1 focus:ring-black/20 transition-all cursor-pointer relative before:content-[''] before:block before:w-1 bg-white before:h-2 before:absolute before:border-r-2 before:border-b-2 before:border-white before:top-[50%] before:left-[50%] before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-45 before:opacity-0 checked:before:opacity-100"
                         />
                         <label htmlFor="terms" className="cursor-pointer select-none text-xs text-slate-600 font-medium">
-                            I accept the <Link to="/terms" className="text-black hover:underline transition-colors font-semibold">Terms &amp; Conditions</Link>
+                            I accept the <Link to="/term" className="text-black hover:underline transition-colors font-semibold">Terms &amp; Conditions</Link>
                         </label>
                     </div>
 

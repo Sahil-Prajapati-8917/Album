@@ -42,6 +42,7 @@ import LumaSpinDemo from '../components/ui/luma-spin-demo';
 import PrivacyPolicy from '../pages/PrivacyPolicy';
 import RefundPolicy from '../pages/RefundPolicy';
 import TermsAndConditions from '../pages/TermsAndConditions';
+import Term from '../pages/Term';
 
 export function AppRoutes() {
     return (
@@ -79,6 +80,7 @@ export function AppRoutes() {
             {/* Auth Routes (Standalone) */}
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/term" element={<Term />} />
 
             {/* Protected/Dashboard Routes with Dashboard Layout */}
             <Route element={<DashboardLayout />}>
