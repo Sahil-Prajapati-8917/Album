@@ -1,46 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Search,
-  Trash2,
-  ChevronDown,
-  ArrowUp,
-  ArrowDown,
-  ArrowRight,
-  Eye,
-  Pencil,
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Badge } from '@/components/ui/badge'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import QRCodeModal from '../components/QRCodeModal'
 import { toast } from "sonner"
+
+// UI Components
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -48,60 +11,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
-const functionTypesOptions = [
-  "Wedding", "Pre Wedding", "Engagement", "Reception", "Birthday",
-  "Maternity", "Newborn", "Family", "Corporate", "Other"
-]
-
-const parseViews = (viewsStr) => {
-  if (!viewsStr) return 0
-  if (typeof viewsStr === 'number') return viewsStr
-  const str = viewsStr.toString().toLowerCase()
-  if (str.endsWith('k')) {
-    return parseFloat(str) * 1000
-  }
-  if (str.endsWith('m')) {
-    return parseFloat(str) * 1000000
-  }
-  return parseFloat(str) || 0
-}
-
-const isDateInRange = (dateStr, rangeStr) => {
-  if (rangeStr === 'all') return true
-
-  // Assuming dateStr is in YYYY-MM-DD format
-  const itemDate = new Date(dateStr)
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  switch (rangeStr) {
-    case 'today':
-      return itemDate.getTime() === today.getTime()
-    case '7days': {
-      const sevenDaysAgo = new Date(today)
-      sevenDaysAgo.setDate(today.getDate() - 7)
-      return itemDate >= sevenDaysAgo
-    }
-    case '30days': {
-      const thirtyDaysAgo = new Date(today)
-      thirtyDaysAgo.setDate(today.getDate() - 30)
-      return itemDate >= thirtyDaysAgo
-    }
-    case 'thisMonth': {
-      return itemDate.getMonth() === today.getMonth() && itemDate.getFullYear() === today.getFullYear()
-    }
-    default:
-      return true
-  }
-}
+// Custom Components
+import QRCodeModal from '../components/QRCodeModal'
+import { ConfirmDialog } from '@/components/common/ConfirmDialog'
+import { AllPixfolioToolbar } from '../components/AllPixfolioToolbar'
+import { AllPixfolioTable } from '../components/AllPixfolioTable'
+import { functionTypesOptions, parseViews, isDateInRange } from '../utils/albumUtils'
 
 const AllPixfolio = () => {
   const navigate = useNavigate()
@@ -156,6 +72,7 @@ const AllPixfolio = () => {
       localStorage.setItem('albums', JSON.stringify(updated))
       setAlbums(prev => prev.filter(a => a.id !== deleteId))
       setDeleteId(null)
+      toast.success("Pixfolio deleted")
     }
   }
 
@@ -164,6 +81,9 @@ const AllPixfolio = () => {
     navigator.clipboard.writeText(url)
     toast.success("Link copied to clipboard")
   }
+
+  const handleView = (id) => navigate(`/viewer/${id}`)
+  const handleEdit = (id) => navigate(`/create?edit=${id}`)
 
   const filteredAlbums = [...albums]
     .filter(album => {
@@ -208,189 +128,26 @@ const AllPixfolio = () => {
         </CardHeader>
         <CardContent className="space-y-6">
 
-          {/* Toolbar */}
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="relative w-full md:max-w-md">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Universal search..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8 h-9 w-full"
-              />
-            </div>
+          <AllPixfolioToolbar
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            functionType={functionType}
+            setFunctionType={setFunctionType}
+            functionTypesOptions={functionTypesOptions}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            dateFilter={dateFilter}
+            setDateFilter={setDateFilter}
+          />
 
-            <div className="flex items-center gap-2 flex-wrap md:flex-nowrap w-full md:w-auto">
-              <Select value={functionType} onValueChange={setFunctionType}>
-                <SelectTrigger className="w-full md:w-[140px] h-9">
-                  <SelectValue placeholder="Function Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  {functionTypesOptions.map(type => (
-                    <SelectItem key={type} value={type.toLowerCase()}>{type}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full md:w-[140px] h-9">
-                  <SelectValue placeholder="Sort By" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="latest">Latest First</SelectItem>
-                  <SelectItem value="oldest">Oldest First</SelectItem>
-                  <SelectItem value="most_viewed">Most Viewed</SelectItem>
-                  <SelectItem value="least_viewed">Least Viewed</SelectItem>
-                </SelectContent>
-              </Select>
-
-              <Select value={dateFilter} onValueChange={setDateFilter}>
-                <SelectTrigger className="w-full md:w-[140px] h-9">
-                  <SelectValue placeholder="Date Filter" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Time</SelectItem>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="7days">Last 7 Days</SelectItem>
-                  <SelectItem value="30days">Last 30 Days</SelectItem>
-                  <SelectItem value="thisMonth">This Month</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Data Table */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[60px]">S.No</TableHead>
-                  <TableHead>Client Name</TableHead>
-                  <TableHead>Function</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Song Name</TableHead>
-                  <TableHead>Views</TableHead>
-                  <TableHead>QR Code</TableHead>
-                  <TableHead>Copy</TableHead>
-                  <TableHead className="w-[100px] text-right">View</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredAlbums.length > 0 ? (
-                  filteredAlbums.map((album, index) => (
-                    <TableRow key={album.id}>
-                      <TableCell className="font-medium">{index + 1}</TableCell>
-                      <TableCell>{album.clientName}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline" className="capitalize">
-                          {album.functionType}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{album.functionDate}</TableCell>
-                      <TableCell className="max-w-[150px] truncate">{album.songName}</TableCell>
-                      <TableCell>{album.views}</TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => setQrCodeAlbum(album)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-qr-code"
-                          >
-                            <rect width="5" height="5" x="3" y="3" rx="1" />
-                            <rect width="5" height="5" x="16" y="3" rx="1" />
-                            <rect width="5" height="5" x="3" y="16" rx="1" />
-                            <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
-                            <path d="M21 21v.01" />
-                            <path d="M12 7v3a2 2 0 0 1-2 2H7" />
-                            <path d="M3 12h.01" />
-                            <path d="M12 3h.01" />
-                            <path d="M12 16h.01" />
-                            <path d="M16 12h1" />
-                            <path d="M21 12h.01" />
-                            <path d="M12 21v-1" />
-                          </svg>
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8"
-                          onClick={() => handleCopyLink(album.id)}
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="lucide lucide-copy"
-                          >
-                            <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-                            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-                          </svg>
-                        </Button>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-blue-500 hover:text-blue-600 bg-blue-50 dark:bg-blue-900/20"
-                            onClick={() => navigate(`/viewer/${album.id}`)}
-                            title="Open in Viewer"
-                          >
-                            <Eye className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-yellow-600 hover:text-yellow-700"
-                            onClick={() => navigate(`/create?edit=${album.id}`)}
-                            title="Edit"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-red-500 hover:text-red-600"
-                            onClick={() => handleDelete(album.id)}
-                            title="Delete"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={9} className="h-24 text-center">
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+          <AllPixfolioTable
+            albums={filteredAlbums}
+            onView={handleView}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            onCopyLink={handleCopyLink}
+            onOpenQRCode={setQrCodeAlbum}
+          />
 
           <div className="flex items-center justify-end text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
@@ -401,28 +158,16 @@ const AllPixfolio = () => {
         </CardContent>
       </Card>
 
-      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete a Pixfolio</AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              Pixfolio and remove its data from our servers.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={confirmDelete}
-              className="bg-red-500 hover:bg-red-600 focus:ring-red-500"
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <ConfirmDialog
+        isOpen={!!deleteId}
+        onClose={() => setDeleteId(null)}
+        onConfirm={confirmDelete}
+        title="Delete a Pixfolio"
+        description="This action cannot be undone. This will permanently delete the Pixfolio and remove its data from our servers."
+        confirmText="Delete"
+        confirmVariant="destructive"
+      />
 
-      {/* QR Code Modal */}
       {qrCodeAlbum && (
         <QRCodeModal
           isOpen={!!qrCodeAlbum}
