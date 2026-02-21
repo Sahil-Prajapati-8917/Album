@@ -301,15 +301,6 @@ img {
     transition: opacity 0.3s ease;
 }
 
-img[loading="lazy"] {
-    opacity: 0;
-}
-
-img[loading="lazy"][data-loaded],
-img:not([loading="lazy"]) {
-    opacity: 1;
-}
-
 /* Custom scrollbar for desktop */
 @media (min-width: 768px) {
     ::-webkit-scrollbar {
