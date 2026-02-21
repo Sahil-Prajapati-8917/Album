@@ -68,7 +68,7 @@ const AdminAnalytics = () => {
                     <CardContent>
                         <div className="text-2xl font-bold mb-4">$45,231.89</div>
                         <div className="h-[200px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
+                            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                                 <AreaChart data={revenueData}>
                                     <defs>
                                         <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
@@ -94,7 +94,7 @@ const AdminAnalytics = () => {
                     <CardContent>
                         <div className="text-2xl font-bold mb-4">+2350</div>
                         <div className="h-[200px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
+                            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                                 <BarChart data={subscriptionData}>
                                     <Tooltip
                                         cursor={{ fill: 'transparent' }}
@@ -116,7 +116,7 @@ const AdminAnalytics = () => {
                     <CardContent>
                         <div className="text-2xl font-bold mb-4">+12,234</div>
                         <div className="h-[200px] w-full">
-                            <ResponsiveContainer width="100%" height="100%">
+                            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                                 <LineChart data={activeUsageData}>
                                     <Tooltip
                                         contentStyle={{ backgroundColor: 'var(--background)', borderRadius: '8px', border: '1px solid var(--border)' }}
@@ -137,7 +137,7 @@ const AdminAnalytics = () => {
                 </CardHeader>
                 <CardContent>
                     <div className="h-[350px] w-full">
-                        <ResponsiveContainer width="100%" height="100%">
+                        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
                             <AreaChart data={revenueData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                                 <defs>
                                     <linearGradient id="colorTraffic" x1="0" y1="0" x2="0" y2="1">

@@ -36,7 +36,7 @@ import {
 // Sparkline Component
 const Sparkline = ({ data, color }) => (
   <div className="h-[40px] w-[100px]">
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
       <AreaChart data={data}>
         <defs>
           <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
@@ -269,7 +269,7 @@ const Dashboard = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pl-2">
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={300} minWidth={1} minHeight={1}>
               <AreaChart data={viewHistory}>
                 <defs>
                   <linearGradient id="colorViewsMain" x1="0" y1="0" x2="0" y2="1">
@@ -310,7 +310,7 @@ const Dashboard = () => {
             <CardDescription>Albums created per month</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={250} minWidth={1} minHeight={1}>
               <BarChart data={creationTrend}>
                 <CartesianGrid strokeDasharray="3 3" className="stroke-muted/40" vertical={false} />
                 <XAxis dataKey="month" className="text-xs" tickLine={false} axisLine={false} />

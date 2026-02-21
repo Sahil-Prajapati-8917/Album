@@ -25,6 +25,8 @@ const AdminPasswordPage = () => {
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="rounded-md shadow-sm -space-y-px">
+                        {/* Hidden username field for accessibility as requested by browser */}
+                        <input type="text" name="username" autoComplete="username" defaultValue="admin" style={{ display: 'none' }} />
                         <div>
                             <input
                                 id="password"

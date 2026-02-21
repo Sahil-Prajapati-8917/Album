@@ -91,7 +91,7 @@ const AdminOverview = () => {
                         <CardTitle>Overview</CardTitle>
                     </CardHeader>
                     <CardContent className="pl-2">
-                        <ResponsiveContainer width="100%" height={350}>
+                        <ResponsiveContainer width="100%" height={350} minWidth={1} minHeight={1}>
                             <BarChart data={chartData}>
                                 <XAxis
                                     dataKey="name"

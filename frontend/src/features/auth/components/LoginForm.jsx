@@ -61,6 +61,7 @@ const LoginForm = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
+                        autoComplete="username"
                         className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-[15px] placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900 outline-none"
                         placeholder="Email or Mobile Number"
                         type="text"
@@ -78,6 +79,7 @@ const LoginForm = () => {
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
+                            autoComplete="current-password"
                             className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-[15px] placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900 outline-none"
                             placeholder="••••••••"
                             type={showPassword ? "text" : "password"}
@@ -127,9 +129,9 @@ const LoginForm = () => {
 
             <div className="text-center pt-4">
                 <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-semibold">
-                    Not part of the collective?{' '}
+                    Don't have an account?{' '}
                     <Link to="/signup" className="text-primary font-bold hover:underline underline-offset-4 transition-all duration-300">
-                        Apply Here
+                        Create Account
                     </Link>
                 </p>
             </div>

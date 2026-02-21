@@ -358,6 +358,7 @@ export default function Profile() {
                   id="edit-fullName"
                   value={tempProfile.fullName}
                   onChange={(e) => setTempProfile({ ...tempProfile, fullName: e.target.value })}
+                  autoComplete="name"
                 />
               </div>
               <div className="space-y-2">
@@ -366,6 +367,7 @@ export default function Profile() {
                   id="edit-studioName"
                   value={tempProfile.studioName}
                   onChange={(e) => setTempProfile({ ...tempProfile, studioName: e.target.value })}
+                  autoComplete="organization"
                 />
               </div>
               <div className="space-y-2 text-muted-foreground">
@@ -375,6 +377,7 @@ export default function Profile() {
                   value={tempProfile.email}
                   disabled
                   className="bg-muted/50"
+                  autoComplete="email"
                 />
                 <p className="text-[10px]">Email cannot be changed contact support.</p>
               </div>
@@ -384,6 +387,7 @@ export default function Profile() {
                   id="edit-mobile"
                   value={tempProfile.mobile}
                   onChange={(e) => setTempProfile({ ...tempProfile, mobile: e.target.value })}
+                  autoComplete="tel"
                 />
               </div>
               <div className="space-y-2">
@@ -392,6 +396,7 @@ export default function Profile() {
                   id="edit-whatsapp"
                   value={tempProfile.whatsapp}
                   onChange={(e) => setTempProfile({ ...tempProfile, whatsapp: e.target.value })}
+                  autoComplete="tel"
                 />
               </div>
               <div className="space-y-2">
@@ -409,6 +414,7 @@ export default function Profile() {
                 id="edit-address"
                 value={tempProfile.address}
                 onChange={(e) => setTempProfile({ ...tempProfile, address: e.target.value })}
+                autoComplete="street-address"
               />
             </div>
             <div className="grid gap-4 md:grid-cols-3">
@@ -418,6 +424,7 @@ export default function Profile() {
                   id="edit-city"
                   value={tempProfile.city}
                   onChange={(e) => setTempProfile({ ...tempProfile, city: e.target.value })}
+                  autoComplete="address-level2"
                 />
               </div>
               <div className="space-y-2">
@@ -426,6 +433,7 @@ export default function Profile() {
                   id="edit-state"
                   value={tempProfile.state}
                   onChange={(e) => setTempProfile({ ...tempProfile, state: e.target.value })}
+                  autoComplete="address-level1"
                 />
               </div>
               <div className="space-y-2">
@@ -434,6 +442,7 @@ export default function Profile() {
                   id="edit-pincode"
                   value={tempProfile.pincode}
                   onChange={(e) => setTempProfile({ ...tempProfile, pincode: e.target.value })}
+                  autoComplete="postal-code"
                 />
               </div>
             </div>

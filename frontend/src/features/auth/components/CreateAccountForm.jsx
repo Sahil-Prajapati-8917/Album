@@ -179,6 +179,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.full_name}
                                         onChange={handleInputChange}
+                                        autoComplete="name"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-primary px-0 py-3 text-sm font-light placeholder:text-slate-400 placeholder:uppercase placeholder:tracking-widest transition-all text-slate-900"
                                     />
                                 </div>
@@ -205,6 +206,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.email}
                                         onChange={handleInputChange}
+                                        autoComplete="email"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-primary px-0 py-3 text-sm font-light placeholder:text-slate-400 placeholder:uppercase placeholder:tracking-widest transition-all text-slate-900"
                                     />
                                 </div>
@@ -217,6 +219,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.mobile}
                                         onChange={handleInputChange}
+                                        autoComplete="tel"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-primary px-0 py-3 text-sm font-light placeholder:text-slate-400 placeholder:uppercase placeholder:tracking-widest transition-all text-slate-900"
                                     />
                                 </div>
@@ -284,6 +287,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.labName}
                                         onChange={handleInputChange}
+                                        autoComplete="organization"
                                         className="w-full bg-transparent border-0 border-b border-slate-200 py-3 px-1 focus:ring-0 focus:border-primary transition-all duration-300 text-base placeholder:text-slate-300 font-light text-slate-900"
                                     />
                                 </div>
@@ -296,6 +300,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.ownerName}
                                         onChange={handleInputChange}
+                                        autoComplete="name"
                                         className="w-full bg-transparent border-0 border-b border-slate-200 py-3 px-1 focus:ring-0 focus:border-primary transition-all duration-300 text-base placeholder:text-slate-300 font-light text-slate-900"
                                     />
                                 </div>
@@ -311,6 +316,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.email}
                                         onChange={handleInputChange}
+                                        autoComplete="email"
                                         className="w-full bg-transparent border-0 border-b border-slate-200 py-3 px-1 focus:ring-0 focus:border-primary transition-all duration-300 text-base placeholder:text-slate-300 font-light text-slate-900"
                                     />
                                 </div>
@@ -323,6 +329,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                         required
                                         value={formData.mobile}
                                         onChange={handleInputChange}
+                                        autoComplete="tel"
                                         className="w-full bg-transparent border-0 border-b border-slate-200 py-3 px-1 focus:ring-0 focus:border-primary transition-all duration-300 text-base placeholder:text-slate-300 font-light text-slate-900"
                                     />
                                 </div>
@@ -415,6 +422,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                     required
                                     value={formData.password}
                                     onChange={handleInputChange}
+                                    autoComplete="new-password"
                                     className={cn(
                                         "w-full bg-transparent border-0 border-b focus:ring-0 focus:border-primary transition-all font-light text-slate-900",
                                         isPhotographer
@@ -441,6 +449,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                 required
                                 value={formData.confirm_password}
                                 onChange={handleInputChange}
+                                autoComplete="new-password"
                                 className={cn(
                                     "w-full bg-transparent border-0 border-b focus:ring-0 focus:border-primary transition-all font-light text-slate-900",
                                     isPhotographer

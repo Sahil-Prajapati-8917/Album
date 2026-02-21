@@ -89,35 +89,37 @@ export default function Settings() {
                     </Card>
 
                     {/* Security Section */}
-                    <Card id="security" className="border shadow-sm">
-                        <CardHeader>
-                            <CardTitle className="text-xl">Security & Privacy</CardTitle>
-                            <CardDescription>Manage your account security and password.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            <div className="grid gap-6 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label htmlFor="current-password">Current Password</Label>
-                                    <Input id="current-password" type="password" />
+                    <form onSubmit={(e) => e.preventDefault()}>
+                        <Card id="security" className="border shadow-sm">
+                            <CardHeader>
+                                <CardTitle className="text-xl">Security & Privacy</CardTitle>
+                                <CardDescription>Manage your account security and password.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                <div className="grid gap-6 md:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="current-password">Current Password</Label>
+                                        <Input id="current-password" type="password" autoComplete="current-password" />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="new-password">New Password</Label>
+                                        <Input id="new-password" type="password" autoComplete="new-password" />
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="new-password">New Password</Label>
-                                    <Input id="new-password" type="password" />
+                                <Separator />
+                                <div className="flex items-center justify-between space-x-2">
+                                    <div className="space-y-0.5">
+                                        <Label className="text-sm font-medium">Two-step verification</Label>
+                                        <p className="text-xs text-muted-foreground">Add an extra layer of security to your account.</p>
+                                    </div>
+                                    <Switch />
                                 </div>
-                            </div>
-                            <Separator />
-                            <div className="flex items-center justify-between space-x-2">
-                                <div className="space-y-0.5">
-                                    <Label className="text-sm font-medium">Two-step verification</Label>
-                                    <p className="text-xs text-muted-foreground">Add an extra layer of security to your account.</p>
-                                </div>
-                                <Switch />
-                            </div>
-                        </CardContent>
-                        <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-end">
-                            <Button size="sm">Update Password</Button>
-                        </CardFooter>
-                    </Card>
+                            </CardContent>
+                            <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-end">
+                                <Button type="submit" size="sm">Update Password</Button>
+                            </CardFooter>
+                        </Card>
+                    </form>
 
                     {/* Notifications Section */}
                     <Card id="notifications" className="border shadow-sm">

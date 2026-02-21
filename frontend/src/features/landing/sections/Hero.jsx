@@ -161,7 +161,7 @@ export function Hero() {
 
             {/* Navigation */}
             <nav className="absolute top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between">
-                <Link to="/" className="text-white font-sans font-bold text-xl md:text-2xl tracking-tight flex items-center gap-2 z-50">
+                <Link to="/" className="text-white font-sans font-bold text-xl md:text-2xl tracking-tight flex items-center z-50">
                     <span className="text-[#C6A75E]">P</span>
                     {heroConfig.brandName?.slice(1)}
                 </Link>
