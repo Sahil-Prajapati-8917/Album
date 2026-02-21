@@ -3,11 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import HTMLFlipBook from 'react-pageflip'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Maximize2, Minimize2, Play, Pause, User, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, MessageCircle, Share2, Music } from 'lucide-react'
-import ShareModal from './ShareModal'
-
-// Static Shutter Image for Cover Replica
-const SHUTTER_COVER_URL = 'https://picsum.photos/seed/shutter/800/600' // Use random placeholder styled as shutter as fallback since original might be blocked by CORS
+import { Maximize2, Minimize2, Play, Pause, User, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, MessageCircle, Share2 } from 'lucide-react'
 
 // Realistic Paper Texture Component
 const PaperTexture = () => (
@@ -24,29 +20,40 @@ const PaperTexture = () => (
 const Page = React.forwardRef((props, ref) => {
   const { spread, pageNumber, isLeft, isCover, children, image } = props
 
-  const [imgError, setImgError] = useState(false)
-
   if (isCover) {
     return (
       <div
         ref={ref}
-        className={`book-cover ${isLeft ? 'cover-left' : 'cover-right'} flex items-center justify-center relative overflow-hidden`}
+        className={`book-cover ${isLeft ? 'cover-left' : 'cover-right'}`}
         style={{
           width: '100%',
           height: '100%',
-          backgroundColor: '#1c1917', // Dark stone base
+          backgroundColor: '#2c3e50', // Premium dark leather
+          backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 100%)',
+          boxShadow: isLeft
+            ? 'inset -10px 0 20px rgba(0,0,0,0.5), -5px 0 15px rgba(0,0,0,0.3)'
+            : 'inset 10px 0 20px rgba(0,0,0,0.5), 5px 0 15px rgba(0,0,0,0.3)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: '#ecf0f1',
+          fontFamily: "'Playfair Display', serif",
+          border: '1px solid rgba(0,0,0,0.2)',
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
-        {image && !imgError ? (
-          <img
-            src={image}
-            className="absolute inset-0 w-full h-full object-cover shadow-[0_0_15px_rgba(0,0,0,0.8)]"
-            alt="Cover"
-            onError={() => setImgError(true)}
-          />
+        {/* Leather grain texture for cover */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/black-leather.png")' }}></div>
+
+        {image ? (
+          <img src={image} className="absolute inset-0 w-full h-full object-cover" alt="Cover" />
         ) : (
-          <div className="relative z-10 w-full h-full flex items-center justify-center">{children}</div>
+          <div className="relative z-10">{children}</div>
         )}
+
+        {/* Gold foil effect for border */}
+        {!image && <div className="absolute inset-4 border border-[#d4af37]/30 pointer-events-none"></div>}
       </div>
     )
   }
@@ -102,14 +109,9 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
   const { id } = useParams()
   const navigate = useNavigate()
   const flipBookRef = useRef(null)
-  const audioRef = useRef(null)
-
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMusicPlaying, setIsMusicPlaying] = useState(false)
-  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
-
   const autoPlayRef = useRef(null)
 
   const scaleClasses = {
@@ -122,8 +124,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
     title: title,
     frontCover: frontCover,
     backCover: backCover,
-    spreads: spreads.length > 0 ? spreads : [],
-    musicTrack: '/audio/romantic-wedding.mp3' // Default mock audio path
+    spreads: spreads.length > 0 ? spreads : []
   })
 
   useEffect(() => {
@@ -137,8 +138,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
             title: album.albumName || title,
             spreads: album.spreads || [],
             frontCover: album.frontCover || null,
-            backCover: album.backCover || null,
-            musicTrack: album.musicTrack ? `/audio/${album.musicTrack}` : '/audio/romantic-wedding.mp3'
+            backCover: album.backCover || null
           })
         }
       } catch (e) {
@@ -150,8 +150,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
         title: title,
         spreads: spreads,
         frontCover: frontCover,
-        backCover: backCover,
-        musicTrack: '/audio/romantic-wedding.mp3'
+        backCover: backCover
       })
     }
   }, [id, title, spreads, frontCover, backCover])
@@ -176,17 +175,6 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
     setIsPlaying(!isPlaying)
   }
 
-  const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isMusicPlaying) {
-        audioRef.current.pause()
-      } else {
-        audioRef.current.play().catch(e => console.error("Audio playback failed:", e))
-      }
-      setIsMusicPlaying(!isMusicPlaying)
-    }
-  }
-
   useEffect(() => {
     if (isPlaying) {
       autoPlayRef.current = setInterval(() => {
@@ -208,16 +196,16 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
   const renderPages = () => {
     const pages = []
 
-    // PERFECT REPLICA: Front Cover is the shutter
-    // If user provided a frontCover, use it, otherwise fallback to the exact shutter image style Flipix uses.
-    const actualCover = bookData.frontCover || SHUTTER_COVER_URL
-
+    // Front Cover
     pages.push(
-      <Page key="front-cover" isCover={true} isLeft={false} image={actualCover}>
-        {/* Fallback if no image loads */}
-        <div className="w-full h-full bg-stone-900 border border-stone-800 flex items-center justify-center">
-          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-camera opacity-20"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z" /><circle cx="12" cy="13" r="3" /></svg>
-        </div>
+      <Page key="front-cover" isCover={true} isLeft={false} image={bookData.frontCover}>
+        {!bookData.frontCover && (
+          <div className="text-center p-12">
+            <h1 className="text-4xl font-serif text-[#d4af37] mb-4 tracking-tight">{bookData.title}</h1>
+            <div className="w-24 h-px bg-[#d4af37]/30 mx-auto my-6"></div>
+            <p className="text-[10px] tracking-[0.4em] uppercase text-[#d4af37]/60">Fine Art Panoramic Volume</p>
+          </div>
+        )}
       </Page>
     )
 
@@ -236,7 +224,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
     pages.push(
       <Page key="back-cover" isCover={true} isLeft={true} image={bookData.backCover}>
         {!bookData.backCover && (
-          <div className="w-full h-full bg-stone-900 flex items-center justify-center opacity-30 text-[10px] tracking-[0.5em] uppercase">Pixfolio</div>
+          <div className="opacity-20 text-[8px] tracking-[0.5em] scale-75 uppercase">Pixfolio Legacy Edition</div>
         )}
       </Page>
     )
@@ -244,102 +232,65 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
     return pages
   }
 
-  // Pre-generate the URL for sharing based on the current environment
-  const shareUrl = id ? `${window.location.origin}/viewer/${id}` : window.location.href
-
   return (
-    <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden font-sans"
-      style={{
-        backgroundColor: '#0c0a09', // Perfect Stone-950 base
-        boxShadow: 'inset 0 0 120px rgba(0, 50, 255, 0.15)' // Subtle blue ambient glow from the reference
-      }}
-    >
-
-      {/* Background Music Audio Element */}
-      <audio
-        ref={audioRef}
-        src={bookData.musicTrack}
-        loop
-        preload="auto"
-      />
+    <div className="min-h-screen bg-[#070707] flex items-center justify-center relative overflow-hidden font-sans">
 
       {/* Background Polish */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_100%)] pointer-events-none"></div>
 
-      {/* Header Section Replica */}
+      {/* Header Section */}
       <div className="fixed top-0 left-0 w-full p-4 flex justify-between items-start z-[100] pointer-events-none">
-        {/* Left: Logo (Exact visual placement) */}
+        {/* Left: Logo (Placeholder for FA logo) */}
         <div className="pointer-events-auto">
           <div className="flex items-center gap-1 cursor-pointer" onClick={() => navigate(-1)}>
-            <div className="text-[40px] leading-tight font-black italic bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-green-500 pr-2" style={{ transform: 'skewX(-15deg)' }}>FA</div>
+            <div className="text-3xl font-black italic bg-clip-text text-transparent bg-gradient-to-r from-orange-400 to-green-500 pr-2 pb-1" style={{ transform: 'skewX(-15deg)' }}>FA</div>
           </div>
         </div>
 
-        {/* Center: Photographer Info Replica */}
-        <div className="pointer-events-auto mt-2 hidden md:flex items-center rounded bg-[#0c0a09]/60 border border-[#292524] backdrop-blur-sm shadow-xl px-4 py-2">
-          <div className="flex flex-col gap-1 pr-4">
-            <div className="flex items-center gap-2">
-              <User size={13} className="text-blue-500 stroke-[2.5]" />
-              <span className="text-[13px] text-white">Storiograph Company</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Phone size={13} className="text-green-500 stroke-[2.5]" />
-              <span className="text-[13px] text-white">+91 0000000000</span>
-            </div>
+        {/* Center: Photographer Info */}
+        <div className="pointer-events-auto mt-2 hidden md:flex items-center gap-4 px-6 py-2 rounded-md bg-[#111111]/80 border border-white/5 backdrop-blur-md shadow-lg">
+          <div className="flex items-center gap-2 text-gray-300">
+            <User size={14} className="text-blue-500" />
+            <span className="text-xs uppercase tracking-wider font-medium">RAM PHOTOGRAPHY</span>
           </div>
-
-          <div className="w-px h-10 bg-[#292524] mx-2"></div>
-
-          <div className="flex items-center gap-2 pl-2">
-            <MapPin size={16} className="text-yellow-500 stroke-[2.5]" />
-            <span className="text-[14px] text-white">Bengaluru</span>
+          <div className="w-px h-4 bg-white/10"></div>
+          <div className="flex items-center gap-2 text-gray-300">
+            <Phone size={14} className="text-green-500" />
+            <span className="text-xs">+91 8405954138</span>
+          </div>
+          <div className="w-px h-4 bg-white/10"></div>
+          <div className="flex items-center gap-2 text-gray-300">
+            <MapPin size={14} className="text-yellow-500" />
+            <span className="text-xs uppercase tracking-wider">PATNA</span>
           </div>
         </div>
 
-        {/* Right: Album Info Replica */}
-        <div className="pointer-events-auto mt-2 rounded bg-[#0c0a09]/60 border border-[#292524] backdrop-blur-sm shadow-xl px-6 py-2 text-center flex flex-col items-center justify-center min-w-[140px]">
-          <span className="text-white text-[14px] tracking-wide mb-0.5">{bookData.title}</span>
-          <span className="text-[#facc15] text-[11px] tracking-wide">Monday-02-Feb-2026</span>
+        {/* Right: Album Info */}
+        <div className="pointer-events-auto mt-2 text-right bg-[#111111]/80 px-4 py-2 rounded-md border border-white/5 backdrop-blur-md">
+          <h2 className="text-white text-xs font-semibold tracking-wider uppercase mb-1">{bookData.title}</h2>
+          <div className="text-yellow-500 text-[10px] tracking-wide">Wednesday-01-May-2024</div>
         </div>
       </div>
 
-      {/* Floating Social Sidebar Replica (Right) */}
-      <div className="fixed right-4 sm:right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-[100] pointer-events-auto">
-        <button
-          onClick={() => window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank')}
-          className="w-9 h-9 rounded-full bg-[#3b5998] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer"
-        >
-          <Facebook size={16} fill="currentColor" strokeWidth={0} />
+      {/* Floating Social Sidebar (Right) */}
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-[100] pointer-events-auto">
+        <button className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Facebook size={18} fill="currentColor" className="border-none" />
         </button>
-        <button
-          onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent('Check out this photo album: ' + bookData.title)}`, '_blank')}
-          className="w-9 h-9 rounded-full bg-black border border-white/10 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer"
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true" className="w-[14px] h-[14px] fill-current text-white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        <button className="w-10 h-10 rounded-full bg-black border border-white/20 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Twitter size={18} fill="currentColor" />
         </button>
-        <button
-          onClick={() => window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this photo album: ' + bookData.title + ' ' + shareUrl)}`, '_blank')}
-          className="w-9 h-9 rounded-full bg-[#25d366] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer"
-        >
-          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-message-circle"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>
+        <button className="w-10 h-10 rounded-full bg-pink-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Instagram size={18} />
         </button>
-        <button
-          className="w-9 h-9 rounded-full bg-[#0077b5] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer"
-        >
-          <Linkedin size={14} fill="currentColor" strokeWidth={0} />
+        <button className="w-10 h-10 rounded-full bg-blue-700 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <Linkedin size={18} fill="currentColor" />
         </button>
-        <button
-          className="w-9 h-9 rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer"
-        >
-          <Instagram size={16} />
+        <button className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer">
+          <MessageCircle size={18} fill="currentColor" />
         </button>
-        <button
-          onClick={() => setIsShareModalOpen(true)}
-          className="w-10 h-10 rounded-full bg-[#facc15] text-stone-900 flex items-center justify-center hover:scale-110 transition-all shadow-lg cursor-pointer mt-1 group"
-        >
-          <Share2 size={18} className="group-hover:hidden" />
-          <span className="hidden group-hover:block font-bold text-[10px] tracking-wide">SHARE</span>
+        <button className="w-10 h-10 rounded-full bg-yellow-500 text-black flex items-center justify-center hover:scale-110 transition-transform shadow-lg cursor-pointer mt-2">
+          <Share2 size={18} />
         </button>
       </div>
 
@@ -374,7 +325,7 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
           usePortrait={false}
           startZIndex={0}
           autoSize={true}
-          maxShadowOpacity={0.6}
+          maxShadowOpacity={0.4}
           showCover={true}
           mobileScrollSupport={true}
           onFlip={onFlip}
@@ -384,52 +335,24 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
         </HTMLFlipBook>
       </div>
 
-      {/* Bottom Controls Center Base */}
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto flex items-center justify-center gap-3">
-        {/* Play/Pause Button */}
+      {/* Bottom Controls */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto">
         <button
           onClick={togglePlay}
-          className="w-12 h-8 rounded bg-[#facc15] hover:bg-[#eab308] text-stone-900 flex items-center justify-center transition-colors shadow-lg"
-          title={isPlaying ? "Pause Flip Animation" : "Play Flip Animation"}
+          className="w-14 h-10 bg-yellow-500 hover:bg-yellow-600 text-black flex items-center justify-center transition-colors rounded shadow-lg"
         >
-          {isPlaying ? <Pause size={16} fill="currentColor" strokeWidth={0} /> : <Play size={16} fill="currentColor" strokeWidth={0} className="ml-1" />}
-        </button>
-
-        {/* Music Button */}
-        <button
-          onClick={toggleMusic}
-          className={`w-12 h-8 rounded flex items-center justify-center transition-colors shadow-lg ${isMusicPlaying ? 'bg-pink-600 text-white' : 'bg-transparent border border-[#292524] hover:bg-[#292524] text-zinc-400'}`}
-          title={isMusicPlaying ? "Pause Music" : "Play Music"}
-        >
-          {isMusicPlaying ? (
-            <div className="flex gap-[2px] items-center h-3">
-              <span className="w-1 h-3 bg-white animate-pulse"></span>
-              <span className="w-1 h-4 bg-white animate-pulse delay-75"></span>
-              <span className="w-1 h-2 bg-white animate-pulse delay-150"></span>
-            </div>
-          ) : (
-            <Music size={14} />
-          )}
+          {isPlaying ? <Pause size={18} fill="currentColor" /> : <Play size={18} fill="currentColor" className="ml-1" />}
         </button>
       </div>
 
-      {/* Bottom Right Fullscreen */}
-      <div className="fixed bottom-5 right-5 z-[100] pointer-events-auto">
+      <div className="fixed bottom-6 right-6 z-[100] pointer-events-auto">
         <button
           onClick={toggleFullscreen}
-          className="w-10 h-8 rounded bg-[#facc15] hover:bg-[#eab308] text-stone-900 flex items-center justify-center transition-colors shadow-lg"
+          className="w-10 h-10 bg-yellow-500 hover:bg-yellow-600 text-black flex items-center justify-center transition-colors rounded shadow-lg"
         >
-          {isFullscreen ? <Minimize2 size={16} /> : <Maximize2 size={16} />}
+          {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
         </button>
       </div>
-
-      {/* Share Modal Integration */}
-      <ShareModal
-        isOpen={isShareModalOpen}
-        onClose={() => setIsShareModalOpen(false)}
-        url={shareUrl}
-        title={bookData.title}
-      />
 
       <style>{`
         .book-perspective {

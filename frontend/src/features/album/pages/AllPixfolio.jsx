@@ -39,6 +39,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
+import QRCodeModal from '../components/QRCodeModal'
 import { toast } from "sonner"
 import {
   Card,
@@ -54,9 +55,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-// Using react-qr-code to generate the SVG string directly in memory
-import QRCode from 'react-qr-code'
-import ReactDOMServer from 'react-dom/server'
 
 const functionTypesOptions = [
   "Wedding", "Pre Wedding", "Engagement", "Reception", "Birthday",
@@ -113,6 +111,7 @@ const AllPixfolio = () => {
   const [sortBy, setSortBy] = useState('latest')
   const [dateFilter, setDateFilter] = useState('all')
   const [deleteId, setDeleteId] = useState(null)
+  const [qrCodeAlbum, setQrCodeAlbum] = useState(null)
 
   const loadAlbums = () => {
     const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
@@ -164,37 +163,6 @@ const AllPixfolio = () => {
     const url = `${window.location.origin}/viewer/${id}`
     navigator.clipboard.writeText(url)
     toast.success("Link copied to clipboard")
-  }
-
-  const handleDownloadQR = (album) => {
-    const url = `${window.location.origin}/viewer/${album.id}`
-
-    // Generate SVG string off-screen
-    const svgComponent = <QRCode value={url} size={512} level="H" />
-    const svgString = ReactDOMServer.renderToString(svgComponent)
-
-    const canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
-    const img = new Image()
-
-    img.onload = () => {
-      canvas.width = img.width
-      canvas.height = img.height
-      ctx.fillStyle = "#FFFFFF"
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-      ctx.drawImage(img, 0, 0)
-
-      const pngFile = canvas.toDataURL("image/png")
-      const downloadLink = document.createElement("a")
-      const title = album.clientName || 'Pixfolio'
-      downloadLink.download = `${title.replace(/\s+/g, "-")}-qrcode.png`
-      downloadLink.href = pngFile
-      downloadLink.click()
-
-      toast.success("QR Code downloaded")
-    }
-
-    img.src = "data:image/svg+xml;base64," + btoa(svgString)
   }
 
   const filteredAlbums = [...albums]
@@ -326,9 +294,8 @@ const AllPixfolio = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
-                          onClick={() => handleDownloadQR(album)}
-                          title="Download QR Code"
+                          className="h-8 w-8"
+                          onClick={() => setQrCodeAlbum(album)}
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -340,11 +307,20 @@ const AllPixfolio = () => {
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="lucide lucide-download"
+                            className="lucide lucide-qr-code"
                           >
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <polyline points="7 10 12 15 17 10" />
-                            <line x1="12" x2="12" y1="15" y2="3" />
+                            <rect width="5" height="5" x="3" y="3" rx="1" />
+                            <rect width="5" height="5" x="16" y="3" rx="1" />
+                            <rect width="5" height="5" x="3" y="16" rx="1" />
+                            <path d="M21 16h-3a2 2 0 0 0-2 2v3" />
+                            <path d="M21 21v.01" />
+                            <path d="M12 7v3a2 2 0 0 1-2 2H7" />
+                            <path d="M3 12h.01" />
+                            <path d="M12 3h.01" />
+                            <path d="M12 16h.01" />
+                            <path d="M16 12h1" />
+                            <path d="M21 12h.01" />
+                            <path d="M12 21v-1" />
                           </svg>
                         </Button>
                       </TableCell>
@@ -354,7 +330,6 @@ const AllPixfolio = () => {
                           size="icon"
                           className="h-8 w-8"
                           onClick={() => handleCopyLink(album.id)}
-                          title="Copy Link"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -446,6 +421,16 @@ const AllPixfolio = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* QR Code Modal */}
+      {qrCodeAlbum && (
+        <QRCodeModal
+          isOpen={!!qrCodeAlbum}
+          onClose={() => setQrCodeAlbum(null)}
+          title={qrCodeAlbum.clientName || 'Pixfolio'}
+          url={`${window.location.origin}/viewer/${qrCodeAlbum.id}`}
+        />
+      )}
     </div>
   )
 }
