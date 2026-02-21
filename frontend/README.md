@@ -9,7 +9,9 @@ A modern React application for creating and viewing interactive digital Visual B
 - **Modern Design**: Clean, professional interface built with Tailwind CSS v4
 - **Smooth Animations**: Powered by Framer Motion v12 and GSAP for delightful user experiences
 - **Dark/Light Theme**: Toggle between light and dark themes with persistent preferences
+- **Strict Theme System**: Solid background colors used across the app (Dark: `#020817`, Light: `#ffffff`)
 - **Accessibility First**: WCAG compliant with proper ARIA labels and keyboard navigation
+- **Strict Solid Header**: Non-transparent, solid header design without shadows for a cleaner aesthetic
 - **Resizable Navigation**: Adaptive navbar with mobile menu support
 
 ### 📖 Visual Book Viewer
@@ -36,6 +38,7 @@ A modern React application for creating and viewing interactive digital Visual B
 
 ### 📊 Dashboard & Management
 - **Admin Kit Integration**: Modern dashboard interface with shadcn/ui and admin blocks
+- **Focused Dashboard**: Enhanced productivity by removing floating social sidebars and support widgets
 - **Project Management**: View and manage all your flipbooks (All Pixfolio)
 - **Create New Projects**: Intuitive wizard for building new visual books
 - **Profile Management**: Comprehensive user settings and profile customization

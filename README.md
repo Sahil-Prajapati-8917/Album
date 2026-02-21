@@ -30,6 +30,7 @@ Pixfolio is a comprehensive platform that combines a React frontend with a Node.
 - **Settings & Help Center**: Advanced account configuration and support hub
 - **Recharge System**: Credit/balance management for premium features
 - **Modern Sidebar**: Collapsible navigation with active state tracking
+- **Focused UI**: Improved dashboard performance by removing non-essential social floating sidebars
 
 ### 🛡️ Admin Panel (New)
 - **Secure Access**: Protected via a hidden search query ("admin panel") and password (`admin123`).
@@ -61,6 +62,7 @@ Pixfolio is a comprehensive platform that combines a React frontend with a Node.
 - **Mobile-First Approach**: Optimized for all devices
 - **Touch Gestures**: Swipe and tap interactions
 - **Adaptive Layout**: Dynamic component sizing
+- **Strict Theme System**: Solid theme backgrounds (#020817 for Dark, #ffffff for Light)
 - **Accessibility**: WCAG compliant with ARIA labels
 
 ## 🏗️ Project Architecture

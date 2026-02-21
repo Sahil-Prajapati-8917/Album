@@ -8,7 +8,9 @@ import {
     FileText,
     Shield,
     Terminal,
-    LifeBuoy
+    LifeBuoy,
+    MessageCircle,
+    Phone
 } from 'lucide-react'
 import {
     Card,
@@ -50,85 +52,98 @@ export default function HelpCenter() {
     ]
 
     return (
-        <div className="max-w-4xl mx-auto py-16 px-4 space-y-16">
-            <div className="text-center space-y-6">
-                <Badge variant="secondary" className="px-4 py-1.5 rounded-full font-bold text-xs uppercase tracking-[0.2em] mb-4">Support Center</Badge>
-                <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-tight">
-                    Need a <span className="text-primary italic">hand?</span>
-                </h1>
-                <p className="text-xl text-muted-foreground max-w-2xl mx-auto font-medium">
-                    Explore our guides, FAQs, and reach out to our team if you need personalized assistance.
-                </p>
-            </div>
-
-            <div className="grid gap-8 md:grid-cols-2">
-                <Card className="border-none shadow-xl bg-gradient-to-br from-primary/5 to-primary/10 hover:shadow-primary/5 transition-all">
-                    <CardHeader>
-                        <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center mb-2 shadow-lg shadow-primary/20">
-                            <Book className="h-6 w-6 text-primary-foreground" />
-                        </div>
-                        <CardTitle className="text-2xl">Documentation</CardTitle>
-                        <CardDescription className="text-base">Comprehensive guides on how to use every feature of Pixfolio.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button variant="link" className="px-0 h-auto text-primary font-bold group">
-                            Browse Docs <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                    </CardContent>
-                </Card>
-
-                <Card className="border-none shadow-xl bg-gradient-to-br from-muted/50 to-muted hover:shadow-lg transition-all">
-                    <CardHeader>
-                        <div className="h-12 w-12 rounded-2xl bg-foreground flex items-center justify-center mb-2 shadow-lg shadow-black/10">
-                            <MessageSquare className="h-6 w-6 text-background" />
-                        </div>
-                        <CardTitle className="text-2xl">Contact Support</CardTitle>
-                        <CardDescription className="text-base">Our team is available 24/7 to help you with any issues.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <Button variant="link" className="px-0 h-auto text-foreground font-bold group">
-                            Send a message <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-10">
-                <div className="text-center md:text-left space-y-2">
-                    <h2 className="text-3xl font-black tracking-tight">Frequently Asked Questions</h2>
-                    <p className="text-muted-foreground text-lg">Quick answers to the most common questions.</p>
+        <div className="flex-1 space-y-6 pb-12 transition-all duration-500 animate-in fade-in slide-in-from-bottom-2">
+            {/* Page Header - Matches Dashboard.jsx */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Help Center</h1>
+                    <p className="text-muted-foreground mt-1">Explore our guides and reach out for personalized assistance.</p>
                 </div>
-
-                <Accordion type="single" collapsible className="w-full space-y-4">
-                    {faqs.map((faq, i) => (
-                        <AccordionItem
-                            key={i}
-                            value={`item-${i}`}
-                            className="border rounded-2xl px-6 bg-muted/20 hover:bg-muted/30 transition-colors"
-                        >
-                            <AccordionTrigger className="text-left font-bold text-lg py-6 hover:no-underline">
-                                {faq.q}
-                            </AccordionTrigger>
-                            <AccordionContent className="text-muted-foreground text-base leading-relaxed pb-6">
-                                {faq.a}
-                            </AccordionContent>
-                        </AccordionItem>
-                    ))}
-                </Accordion>
             </div>
 
-            <div className="rounded-3xl bg-primary p-10 text-primary-foreground text-center space-y-6 shadow-2xl shadow-primary/20">
-                <LifeBuoy className="h-16 w-16 mx-auto opacity-50" />
-                <h2 className="text-4xl font-black tracking-tight">Still stuck?</h2>
-                <p className="text-primary-foreground/80 text-lg font-medium max-w-xl mx-auto">
-                    Don't worry, we're here to help. Our support agents are ready to jump in and solve your problem.
-                </p>
-                <Button variant="secondary" size="lg" className="px-12 h-14 text-lg font-black rounded-full shadow-xl">
-                    Get Instant Help
-                </Button>
+            {/* Support Channels Grid */}
+            <div className="grid gap-6 md:grid-cols-2">
+                <Card className="overflow-hidden hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-3 px-6 pt-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <CardTitle className="text-xl font-bold">Documentation</CardTitle>
+                            <Book className="h-5 w-5 text-muted-foreground opacity-70" />
+                        </div>
+                        <CardDescription className="text-sm">
+                            Comprehensive guides on how to use every feature of Pixfolio.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="px-6 pb-6">
+                        <Button variant="outline" className="w-full gap-2 group border-muted">
+                            Browse Docs <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Button>
+                    </CardContent>
+                </Card>
+
+                <Card className="overflow-hidden hover:shadow-md transition-shadow">
+                    <CardHeader className="pb-3 px-6 pt-6">
+                        <div className="flex items-center justify-between mb-4">
+                            <CardTitle className="text-xl font-bold">Priority Support</CardTitle>
+                            <MessageCircle className="h-5 w-5 text-emerald-500 opacity-70" />
+                        </div>
+                        <CardDescription className="text-sm">
+                            Our team is available 24/7 to help you with any issues.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="px-6 pb-6">
+                        <Button variant="outline" className="w-full gap-2 group border-muted">
+                            Send a message <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </Button>
+                    </CardContent>
+                </Card>
             </div>
+
+            {/* FAQs Section Wrapped in Card */}
+            <Card>
+                <CardHeader className="px-6 pt-6 pb-2">
+                    <CardTitle className="text-xl font-bold">Frequently Asked Questions</CardTitle>
+                    <CardDescription>Quick answers to the most common questions.</CardDescription>
+                </CardHeader>
+                <CardContent className="px-6 pb-8">
+                    <Accordion type="single" collapsible className="w-full">
+                        {faqs.map((faq, i) => (
+                            <AccordionItem
+                                key={i}
+                                value={`item-${i}`}
+                                className="border-b last:border-0"
+                            >
+                                <AccordionTrigger className="text-left font-semibold text-base py-4 hover:no-underline">
+                                    {faq.q}
+                                </AccordionTrigger>
+                                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
+                                    {faq.a}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </CardContent>
+            </Card>
+
+            {/* Still Stuck Section Wrapped in Card */}
+            <Card className="bg-muted/30 border-dashed">
+                <CardContent className="p-8 text-center flex flex-col items-center gap-4">
+                    <LifeBuoy className="h-10 w-10 text-primary opacity-30" />
+                    <div className="space-y-1">
+                        <h3 className="text-lg font-bold">Still stuck?</h3>
+                        <p className="text-muted-foreground text-sm max-w-md mx-auto">
+                            Don't worry, we're here to help. Reach out to our team at{" "}
+                            <span className="text-foreground font-semibold underline cursor-pointer hover:text-primary transition-colors">
+                                support@pixfolio.com
+                            </span>.
+                        </p>
+                    </div>
+                    <Button className="mt-2 px-8 font-bold rounded-md">
+                        Get Instant Help
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     )
 }
+
+
