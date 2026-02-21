@@ -53,44 +53,50 @@ const LoginForm = () => {
 
             <div className="space-y-6">
                 {/* Email/Mobile Field */}
-                <div className="group">
-                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-2 group-focus-within:text-primary transition-colors duration-300">
-                        Identity
+                <div className="space-y-1.5">
+                    <label className="block text-xs font-semibold text-slate-700">
+                        Email Address
                     </label>
                     <input
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
                         autoComplete="username"
-                        className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-[15px] placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900 outline-none"
-                        placeholder="Email or Mobile Number"
+                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
+                        placeholder="name@domain.com"
                         type="text"
                         required
                     />
                 </div>
 
                 {/* Password Field */}
-                <div className="group relative">
-                    <label className="block text-[10px] uppercase tracking-[0.2em] font-bold text-slate-400 mb-2 group-focus-within:text-primary transition-colors duration-300">
-                        Security
-                    </label>
+                <div className="space-y-1.5 relative">
+                    <div className="flex justify-between items-center">
+                        <label className="block text-xs font-semibold text-slate-700">
+                            Password
+                        </label>
+                        <Link to="/forgot-password" className="text-xs font-medium text-slate-500 hover:text-black transition-colors">
+                            Forgot Password?
+                        </Link>
+                    </div>
+
                     <div className="relative flex items-center">
                         <input
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
                             autoComplete="current-password"
-                            className="w-full bg-transparent border-0 border-b border-slate-200 focus:ring-0 focus:border-primary px-0 py-3 text-[15px] placeholder:text-slate-300 transition-all duration-300 font-light text-slate-900 outline-none"
+                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none pr-8"
                             placeholder="••••••••"
                             type={showPassword ? "text" : "password"}
                             required
                         />
                         <button
-                            className="absolute right-0 text-slate-300 hover:text-primary transition-colors focus:outline-none"
+                            className="absolute right-0 text-slate-400 hover:text-black transition-colors focus:outline-none pb-1"
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
                         >
-                            <span className="material-symbols-outlined text-xl">
+                            <span className="material-symbols-outlined text-lg">
                                 {showPassword ? 'visibility_off' : 'visibility'}
                             </span>
                         </button>
@@ -98,40 +104,34 @@ const LoginForm = () => {
                 </div>
             </div>
 
-            {/* Auxiliary Controls */}
-            <div className="flex items-center justify-end">
-                <Link to="/forgot-password" className="text-[11px] font-semibold tracking-wide uppercase text-slate-400 hover:text-primary transition-colors duration-300">
-                    Forgot Password?
-                </Link>
-            </div>
+
 
             {/* Primary Action */}
-            <div className="pt-2">
+            <div className="pt-4">
                 <button
                     type="submit"
                     disabled={isLoading}
                     className={cn(
-                        "w-full bg-primary hover:bg-primary/95 text-black font-bold py-4 rounded-lg transition-all duration-300 shadow-xl shadow-primary/10 flex justify-center items-center gap-2 uppercase tracking-widest text-[11px]",
+                        "w-full bg-black hover:bg-slate-800 text-black font-medium py-3 rounded-lg transition-all duration-300 flex justify-center items-center gap-2 text-sm",
                         isLoading && "opacity-80 pointer-events-none"
                     )}
-                    style={{ letterSpacing: '0.15em' }}
                 >
                     {isLoading ? (
                         <>
                             <Loader2 className="h-4 w-4 animate-spin" />
-                            <span>ACCESSING SESSION</span>
+                            <span>Signing in...</span>
                         </>
                     ) : (
-                        <span>ACCESS WORKSPACE</span>
+                        <span>Sign In</span>
                     )}
                 </button>
             </div>
 
-            <div className="text-center pt-4">
-                <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 font-semibold">
+            <div className="text-center pt-2">
+                <p className="text-sm text-slate-500">
                     Don't have an account?{' '}
-                    <Link to="/signup" className="text-primary font-bold hover:underline underline-offset-4 transition-all duration-300">
-                        Create Account
+                    <Link to="/signup" className="text-black font-semibold hover:underline transition-all duration-300">
+                        Sign up for free
                     </Link>
                 </p>
             </div>
