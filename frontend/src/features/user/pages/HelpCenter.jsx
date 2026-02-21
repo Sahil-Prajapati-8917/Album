@@ -34,20 +34,112 @@ import {
 export default function HelpCenter() {
     const faqs = [
         {
-            q: "How do I create my first Pixfolio?",
-            a: "Simply click on 'Create New' in the sidebar. Choose a title, upload your photos, and pick a template. Your pixfolio will be ready in seconds!"
+            q: "1. What is Pixfolio?",
+            a: (
+                <div className="space-y-2">
+                    <p>Pixfolio is a digital visual book platform that allows photographers, studios, and labs to create immersive, interactive page-flipping albums and share them securely with clients online.</p>
+                    <p>It transforms static images into realistic, animated visual books with branding, music, and secure sharing options.</p>
+                </div>
+            )
         },
         {
-            q: "Can I password protect my albums?",
-            a: "Yes! In the album settings, you can enable password protection so only people with the code can view your work."
+            q: "2. How Does Pixfolio Work?",
+            a: (
+                <ul className="list-disc pl-5 space-y-1">
+                    <li>Create an account (Photographer or Lab)</li>
+                    <li>Upload album images</li>
+                    <li>Customize layout, branding, and optional music</li>
+                    <li>Publish the visual book</li>
+                    <li>Share link or QR code with clients</li>
+                    <p className="mt-2 pt-2 border-t border-muted/50">Albums are hosted securely and accessible through any modern browser.</p>
+                </ul>
+            )
         },
         {
-            q: "What is the 'System' theme?",
-            a: "The System theme automatically detects your device's preference (Light or Dark mode) and adjusts the application's appearance accordingly."
+            q: "3. Who Can Use Pixfolio?",
+            a: (
+                <ul className="list-disc pl-5 space-y-1">
+                    <li>Independent Photographers</li>
+                    <li>Wedding Studios</li>
+                    <li>Printing & Design Labs</li>
+                    <li>Event Creators</li>
+                    <li>Content Creators</li>
+                </ul>
+            )
         },
         {
-            q: "How do sharing links work?",
-            a: "Every pixfolio gets a unique, shareable URL. You can copy this link and send it via email, social media, or even generate a QR code for physical prints."
+            q: "4. Can I Add Branding?",
+            a: (
+                <div className="space-y-2">
+                    <p>Yes. Pixfolio allows:</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                        <li>Studio name</li>
+                        <li>Logo</li>
+                        <li>Website link</li>
+                        <li>Social media links</li>
+                        <li>Contact details</li>
+                    </ul>
+                    <p className="text-sm italic mt-2 text-muted-foreground">Branding visibility depends on your active subscription.</p>
+                </div>
+            )
+        },
+        {
+            q: "5. Can I Edit Albums After Creation?",
+            a: (
+                <div className="space-y-2">
+                    <p>Yes. Albums can be edited as long as:</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                        <li>The album is active</li>
+                        <li>Your subscription is valid</li>
+                        <li>The album has not been permanently deleted</li>
+                    </ul>
+                </div>
+            )
+        },
+        {
+            q: "6. Does Pixfolio Work Offline?",
+            a: "No. Pixfolio is a cloud-based platform and requires internet access to view albums."
+        },
+        {
+            q: "7. Is My Data Safe?",
+            a: (
+                <div className="space-y-2">
+                    <p>Yes. Pixfolio uses:</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                        <li>Encrypted data transmission (HTTPS)</li>
+                        <li>Secure JWT authentication</li>
+                        <li>Hashed passwords using bcrypt</li>
+                        <li>Rate limiting protection</li>
+                        <li>Secure server infrastructure</li>
+                    </ul>
+                    <p className="mt-2 font-medium">We do not sell or misuse your data.</p>
+                </div>
+            )
+        },
+        {
+            q: "8. What Happens If My Plan Expires?",
+            a: (
+                <ul className="list-disc pl-5 space-y-1">
+                    <li>Your albums remain stored.</li>
+                    <li>Public viewing may remain active depending on plan.</li>
+                    <li>Branding and editing features may be restricted.</li>
+                    <li>Reactivating your plan restores full features.</li>
+                </ul>
+            )
+        },
+        {
+            q: "9. Is There a Free Trial?",
+            a: (
+                <div className="space-y-2">
+                    <p>Pixfolio may offer:</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                        <li>Limited credit-based trial</li>
+                        <li>Time-limited free access</li>
+                        <li>Feature-limited demo accounts</li>
+                    </ul>
+                    <p className="text-sm italic mt-2 text-muted-foreground">Trial albums may be removed after a certain period if no plan is activated.</p>
+                </div>
+            )
         }
     ]
 

@@ -266,28 +266,38 @@ export const faqConfig = {
     faqs: [
         {
             id: "1",
-            question: "How does album creation work?",
-            answer: "Simply upload your photos, choose from our premium templates or create custom layouts, and arrange your images with our intuitive drag-and-drop interface. Add captions, adjust spacing, and preview in real-time before publishing.",
+            question: "1️⃣ What is Pixfolio?",
+            answer: "Pixfolio is an interactive digital visual book platform that allows photographers and studios to create realistic page-flipping albums and share them securely online with clients.",
         },
         {
             id: "2",
-            question: "Can I fully customize branding for each client?",
-            answer: "Absolutely! Pixfolio allows complete branding customization including logo placement, color schemes, typography, and even custom domains for each album. Your clients will see your brand, not ours.",
+            question: "2️⃣ How does Pixfolio work?",
+            answer: "Simply sign up, upload your album images, customize branding and music, publish the album, and share the secure link or QR code with your clients. No software installation required.",
         },
         {
             id: "3",
-            question: "Is there a limit to photos per album?",
-            answer: "Our Starter plan includes up to 200 photos per album, Professional allows 500, and Studio offers unlimited photos. All plans include unlimited albums and clients.",
+            question: "3️⃣ Is my data safe on Pixfolio?",
+            answer: "Yes. Pixfolio uses secure authentication, encrypted data transmission, and protected cloud infrastructure. Your albums are stored securely and are not shared with third parties.",
         },
         {
             id: "4",
-            question: "How do clients access their digital albums?",
-            answer: "Clients receive a private, secure link to view their album on any device. No app downloads required. Albums are optimized for desktop, tablet, and mobile viewing with touch-friendly navigation.",
+            question: "4️⃣ Can I add my own branding?",
+            answer: "Yes. You can add your studio name, logo, website, social media links, and contact details. Branding visibility depends on your active subscription plan.",
         },
         {
             id: "5",
-            question: "Can I protect my images with watermark controls?",
-            answer: "Yes, all plans include watermark protection options. You can add your logo or custom text watermarks, control opacity and placement, and even enable right-click protection to safeguard your images.",
+            question: "5️⃣ What happens if my subscription expires?",
+            answer: "Your albums remain stored safely. However, editing features and branding visibility may be restricted until your plan is reactivated.",
+        },
+        {
+            id: "6",
+            question: "6️⃣ Is there a free trial available?",
+            answer: "Yes. Pixfolio may offer a limited free trial so you can explore features and create demo albums before purchasing a subscription.",
+        },
+        {
+            id: "7",
+            question: "7️⃣ Do you offer plans for high-volume labs?",
+            answer: "Yes. Pixfolio provides specialized lab plans optimized for bulk album creation and multi-photographer workflows.",
         },
     ],
 };
