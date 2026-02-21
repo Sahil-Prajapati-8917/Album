@@ -165,7 +165,6 @@ export function FeaturedProjects() {
                                         src={project.image}
                                         alt={project.title}
                                         className="project-image w-full h-full object-cover will-change-transform"
-                                        loading="lazy"
                                     />
                                 </div>
 

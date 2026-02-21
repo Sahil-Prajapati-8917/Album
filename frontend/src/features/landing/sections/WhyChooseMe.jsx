@@ -250,7 +250,6 @@ export function WhyChooseMe() {
                                     src={card.image}
                                     alt={card.imageAlt}
                                     className="w-full h-full object-cover will-change-transform"
-                                    loading="lazy"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-[#111111]/80 via-transparent to-transparent" />
                                 <div className="absolute bottom-6 left-6 right-6">
@@ -306,7 +305,6 @@ export function WhyChooseMe() {
                                 src={whyChooseMeConfig.wideImage}
                                 alt={whyChooseMeConfig.wideImageAlt}
                                 className="w-full h-full object-cover will-change-transform"
-                                loading="lazy"
                             />
                         </div>
                         <div className="absolute inset-0 bg-gradient-to-r from-[#111111]/60 via-transparent to-transparent" />

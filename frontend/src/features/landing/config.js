@@ -25,12 +25,12 @@ export const heroConfig = {
 // Intro Grid Section - Value Proposition
 
 export const introGridConfig = {
-    titleLine1: "Crafted for",
-    titleLine2: "Visual Storytellers",
-    accentText: "Designed for Photographers Who See Beyond the Frame",
-    description: "Pixfolio transforms wedding photography into immersive digital experiences. From the first captured glance to the final dance, every moment becomes a beautifully curated visual narrative your clients will treasure for generations.",
+    titleLine1: "",
+    titleLine2: "",
+    accentText: "",
+    description: "Pixfolio empowers wedding photographers to transform their captured moments into elegant, immersive digital experiences that clients cherish forever.",
     portfolioImages: [
-        { src: "/images/product-album-1.jpg", alt: "Premium digital album presentation" },
+        { src: "/images/portfolio-1.jpg", alt: "Premium digital album presentation" },
         { src: "/images/portfolio-2.jpg", alt: "Elegant wedding reception table" },
         { src: "/images/portfolio-3.jpg", alt: "Beautiful bridal bouquet detail" },
         { src: "/images/portfolio-4.jpg", alt: "Wedding ceremony aisle" },
@@ -51,26 +51,26 @@ export const featuredProjectsConfig = {
         {
             id: 1,
             title: "Visual Book Viewer",
-            category: "Core Experience",
+            category: "Core Feature",
             year: "2024",
             image: "/images/product-album-2.jpg",
-            description: "Experience immersive page-flip animation with complete layout control. Deliver cinematic albums that feel like holding a handcrafted masterpiece.",
+            description: "Immersive page-flip animation with premium layout control. Create cinematic viewing experiences that feel like holding a real album.",
         },
         {
             id: 2,
-            title: "Studio Workflow Management",
-            category: "Business Control",
+            title: "Studio Management",
+            category: "Workflow",
             year: "2024",
             image: "/images/feature-studio.jpg",
-            description: "Manage clients, projects, albums, and deliveries within one beautifully structured system. Save time while elevating your professionalism.",
+            description: "Organize clients, albums, and deliveries in one elegant workspace. Streamline your entire photography business with precision.",
         },
         {
             id: 3,
-            title: "Mobile Optimized Experience",
+            title: "Mobile Experience",
             category: "Responsive",
             year: "2024",
             image: "/images/feature-mobile.jpg",
-            description: "Ensure every album looks exceptional across smartphones, tablets, and desktops — giving clients instant access to their memories anywhere.",
+            description: "Beautiful viewing experience on any device. Your clients can relive their special moments anywhere, anytime.",
         },
         {
             id: 4,
@@ -117,34 +117,34 @@ export const servicesConfig = {
 // Why Choose Me Section - Experience & Stats
 
 export const whyChooseMeConfig = {
-    subtitle: "Why Pixfolio",
-    titleRegular: "Built for",
+    subtitle: "WHY PIXFOLIO",
+    titleRegular: "Designed for",
     titleItalic: "Excellence",
-    statsLabel: "By The Numbers",
+    statsLabel: "BY THE NUMBERS",
     stats: [
         { value: 500, suffix: "+", label: "Professional Studios" },
-        { value: 50, suffix: ",000+", label: "Albums Created" },
-        { value: 99, suffix: "%", label: "Client Satisfaction Rate" },
-        { value: 24, suffix: "/7", label: "Dedicated Support" },
+        { value: 50, suffix: "K+", label: "Albums Created" },
+        { value: 99, suffix: "%", label: "Client Satisfaction" },
+        { value: 24, suffix: "/7", label: "Support Available" },
     ],
     featureCards: [
         {
             image: "/images/portfolio-1.jpg",
             imageAlt: "Wedding photography",
-            title: "Precision & Creative Control",
-            description: "Every detail matters. Fine-tune layouts, spacing, image positioning, and presentation flow to ensure every album reflects your artistic vision.",
+            title: "Precision & Control",
+            description: "Every detail matters. From layout spacing to color grading, control every aspect of your album presentation.",
         },
         {
-            image: "/images/portfolio-2.jpg",
+            image: "/images/portfolio-3.jpg",
             imageAlt: "Bridal details",
-            title: "Refined Simplicity",
-            description: "Powerful professional tools, designed with intuitive clarity. Create breathtaking albums without complexity.",
+            title: "Elegant Simplicity",
+            description: "Powerful features wrapped in an intuitive interface. Create stunning albums without the learning curve.",
         },
     ],
     wideImage: "/images/wide-experience.jpg",
     wideImageAlt: "Couple walking in garden",
     wideTitle: "Crafted for Photographers Who Value Storytelling",
-    wideDescription: "Every wedding is a story filled with emotion, elegance, and authenticity. Pixfolio gives you the tools to present those moments with the refinement they deserve.",
+    wideDescription: "We understand that every wedding is a unique story. Pixfolio gives you the tools to tell it beautifully.",
 };
 
 // Testimonials Section

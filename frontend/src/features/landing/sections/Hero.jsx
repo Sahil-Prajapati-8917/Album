@@ -123,7 +123,6 @@ export function Hero() {
                             src={heroConfig.heroImage}
                             alt={heroConfig.heroImageAlt}
                             className="w-full h-auto object-contain"
-                            loading="eager"
                         />
                         {/* Gradient fade at bottom */}
                         <div className="absolute bottom-0 left-0 right-0 h-24 md:h-40 bg-gradient-to-t from-[#111111] to-transparent" />
