@@ -63,7 +63,7 @@ const Recharge = () => {
   const currentPlan = {
     name: user?.currentPlan || 'Free Plan',
     status: 'Active',
-    expiryDate: '2026-01-15',
+    expiryDate: user?.creditValidity ? new Date(user.creditValidity).toLocaleDateString() : 'N/A',
     price: '₹0',
     period: '/year',
     type: user?.accountType || 'Photographer',

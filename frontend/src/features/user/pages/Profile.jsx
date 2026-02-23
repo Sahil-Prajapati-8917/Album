@@ -112,7 +112,9 @@ export default function Profile() {
             city: user.city || "",
             state: user.state || "",
             pincode: user.pincode || "",
-            photo: user.profilePicture || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256&h=256"
+            photo: user.profilePicture || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256&h=256",
+            credits: user.credits || 0,
+            creditValidity: user.creditValidity || null
           }
           const mappedSocial = {
             whatsapp: user.socialMedia?.whatsapp || "",
@@ -335,7 +337,7 @@ export default function Profile() {
             </div>
             <div className="space-y-1">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Expiry Date</p>
-              <p className="text-lg font-medium">Jan 15, 2026</p>
+              <p className="text-lg font-medium">{profileData.creditValidity ? new Date(profileData.creditValidity).toLocaleDateString() : 'N/A'}</p>
             </div>
           </div>
 
@@ -344,19 +346,19 @@ export default function Profile() {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <h4 className="text-sm font-medium">Credit Usage</h4>
-                <p className="text-xs text-muted-foreground">You have used 650 out of 1000 credits.</p>
+                <h4 className="text-sm font-medium">Credits Available</h4>
+                <p className="text-xs text-muted-foreground">You have {profileData.credits} credits to use for creating albums.</p>
               </div>
               <div className="text-right">
-                <p className="text-2xl font-bold">350 <span className="text-sm font-normal text-muted-foreground">Credits Left</span></p>
+                <p className="text-2xl font-bold">{profileData.credits} <span className="text-sm font-normal text-muted-foreground">Credits Left</span></p>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Progress value={creditUsage} className="h-2" />
+              <Progress value={(profileData.credits / 10) * 100} className="h-2" />
               <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Used: 650</span>
-                <span>Total: 1000</span>
+                <span>0</span>
+                <span>Max: 10 (Trial)</span>
               </div>
             </div>
 

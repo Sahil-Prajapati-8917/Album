@@ -109,30 +109,36 @@ const Dashboard = () => {
 
           // Generate Sparkline Data (Mock for visual effect but based on counts)
           setSparklines({
-            albums: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 10) + (totalAlbums > 0 ? 5 : 0) })),
-            public: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 8) + (publicAlbums > 0 ? 2 : 0) })),
-            views: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 1000) + (totalViews > 0 ? 500 : 0) }))
+            albums: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 5) + (totalAlbums > 0 ? 2 : 0) })),
+            public: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 4) + (publicAlbums > 0 ? 1 : 0) })),
+            views: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 50) + (totalViews > 0 ? 20 : 0) }))
           })
+
+          // Calculate Trends from real data
+          const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+          const currentMonthIdx = new Date().getMonth()
+          const last6Months = []
+          for (let i = 5; i >= 0; i--) {
+            const idx = (currentMonthIdx - i + 12) % 12
+            last6Months.push(months[idx])
+          }
+
+          const viewsByMonth = last6Months.map(month => ({ month, views: 0 }))
+          const creationByMonth = last6Months.map(month => ({ month, albums: 0 }))
+
+          storedAlbums.forEach(album => {
+            const date = new Date(album.createdAt)
+            const month = months[date.getMonth()]
+            const vIdx = viewsByMonth.findIndex(m => m.month === month)
+            const cIdx = creationByMonth.findIndex(m => m.month === month)
+
+            if (vIdx !== -1) viewsByMonth[vIdx].views += (parseInt(album.views) || 0)
+            if (cIdx !== -1) creationByMonth[cIdx].albums += 1
+          })
+
+          setViewHistory(viewsByMonth)
+          setCreationTrend(creationByMonth)
         }
-
-        // Mock Trends Data (since we don't have historical analytics endpoints yet)
-        setViewHistory([
-          { month: 'Jan', views: 2400 },
-          { month: 'Feb', views: 1398 },
-          { month: 'Mar', views: 9800 },
-          { month: 'Apr', views: 3908 },
-          { month: 'May', views: 4800 },
-          { month: 'Jun', views: 3800 },
-        ])
-
-        setCreationTrend([
-          { month: 'Jan', albums: 4, images: 120 },
-          { month: 'Feb', albums: 3, images: 80 },
-          { month: 'Mar', albums: 6, images: 200 },
-          { month: 'Apr', albums: 2, images: 50 },
-          { month: 'May', albums: 5, images: 150 },
-          { month: 'Jun', albums: 7, images: 210 },
-        ])
 
       } catch (error) {
         console.error('Failed to load dashboard data:', error)
@@ -244,9 +250,9 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold">Free Credit</div>
+                <div className="text-2xl font-bold">{user?.credits !== undefined ? `${user.credits} Credits` : 'Free Credit'}</div>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Expires in 14 days
+                  {user?.creditValidity ? `Expires ${new Date(user.creditValidity).toLocaleDateString()}` : 'No expiry set'}
                 </p>
               </div>
               <div className="h-8 flex items-center">

@@ -105,6 +105,8 @@ const Page = React.forwardRef((props, ref) => {
 
 Page.displayName = 'Page'
 
+import { getAlbumById } from '@/services/api'
+
 const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover = null, backCover = null, scale = 'normal' }) => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -128,22 +130,25 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
   })
 
   useEffect(() => {
-    // Attempt to load from localStorage if we have an ID
+    // Attempt to load from API if we have an ID
     if (id) {
-      try {
-        const albums = JSON.parse(localStorage.getItem('albums') || '[]')
-        const album = albums.find(a => a.id === id)
-        if (album) {
-          setBookData({
-            title: album.albumName || title,
-            spreads: album.spreads || [],
-            frontCover: album.frontCover || null,
-            backCover: album.backCover || null
-          })
+      const fetchAlbum = async () => {
+        try {
+          const response = await getAlbumById(id)
+          if (response.success && response.data) {
+            const album = response.data
+            setBookData({
+              title: album.albumName || album.clientName || title,
+              spreads: album.spreads || [],
+              frontCover: album.frontCover || null,
+              backCover: album.backCover || null
+            })
+          }
+        } catch (e) {
+          console.error("Error loading album from API:", e)
         }
-      } catch (e) {
-        console.error("Error loading album:", e)
       }
+      fetchAlbum()
     } else {
       // Update state if props change when NO id is in URL (preview mode)
       setBookData({

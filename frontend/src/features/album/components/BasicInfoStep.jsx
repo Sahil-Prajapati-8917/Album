@@ -18,15 +18,23 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import DateSelector from '@/components/DateSelector'
+import { getMyPhotographers } from '@/services/api'
 
 const BasicInfoStep = ({ formData, setFormData, errors, setErrors, functionTypes, toTitleCase }) => {
     const [photographers, setPhotographers] = useState([])
 
     useEffect(() => {
-        const saved = localStorage.getItem('photographers')
-        if (saved) {
-            setPhotographers(JSON.parse(saved))
+        const fetchPhotographers = async () => {
+            try {
+                const response = await getMyPhotographers()
+                if (response.success) {
+                    setPhotographers(response.data)
+                }
+            } catch (error) {
+                console.error("Error fetching photographers:", error)
+            }
         }
+        fetchPhotographers()
     }, [])
 
     const handleInputChange = (e) => {
@@ -114,7 +122,7 @@ const BasicInfoStep = ({ formData, setFormData, errors, setErrors, functionTypes
                                 <SelectContent>
                                     <SelectItem value="none">None</SelectItem>
                                     {photographers.map(p => (
-                                        <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                                        <SelectItem key={p._id || p.id} value={p._id || p.id}>{p.name}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
