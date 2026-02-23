@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { Loader2, AlertCircle } from 'lucide-react'
+import { Loader2, AlertCircle, ChevronDown } from 'lucide-react'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { registerUser } from '@/services/api'
 import { cn } from '@/lib/utils'
+import { Country, State, City } from 'country-state-city/lib/cjs/index.js'
 
 const CreateAccountForm = ({ accountType, setAccountType }) => {
     const navigate = useNavigate()
@@ -19,8 +20,10 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
         password: '',
         confirm_password: '',
         terms: false,
-        city: '',
+        country: 'IN', // Default to India
         state: '',
+        city: '', // Using city as district/city
+        district: '',
 
         // Photographer Fields
         full_name: '',
@@ -35,6 +38,11 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
         gst: ''
     })
 
+    // Memoize location data for performance
+    const countries = useMemo(() => Country.getAllCountries(), [])
+    const states = useMemo(() => State.getStatesOfCountry(formData.country), [formData.country])
+    const cities = useMemo(() => City.getCitiesOfState(formData.country, formData.state), [formData.country, formData.state])
+
     const handleInputChange = (e) => {
         const { name, value, type, checked } = e.target
 
@@ -44,7 +52,17 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
             return
         }
 
-        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+        if (name === 'country') {
+            setFormData(prev => ({ ...prev, [name]: value, state: '', city: '', district: '' }))
+            return
+        }
+
+        if (name === 'state') {
+            setFormData(prev => ({ ...prev, [name]: value, city: '', district: '' }))
+            return
+        }
+
+        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value, district: name === 'city' ? value : prev.district }))
     }
 
     const handleSubmit = async (e) => {
@@ -59,13 +77,18 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
         }
 
         try {
+            const selectedCountry = countries.find(c => c.isoCode === formData.country)?.name
+            const selectedState = states.find(s => s.isoCode === formData.state)?.name
+
             const baseData = {
                 accountType: accountType,
                 email: formData.email,
                 password: formData.password,
                 mobileNumber: formData.mobile,
-                city: formData.city,
-                state: formData.state,
+                country: selectedCountry,
+                state: selectedState,
+                city: formData.city, // The city name
+                district: formData.city, // Same as city for now as per "destrict" request
                 address: ''
             }
 
@@ -105,15 +128,67 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
 
     const isPhotographer = accountType === 'photographer'
 
+    const LocationFields = () => (
+        <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Country</label>
+                    <div className="relative">
+                        <select
+                            name="country" value={formData.country} onChange={handleInputChange} required
+                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
+                        >
+                            {countries.map(country => (
+                                <option key={country.isoCode} value={country.isoCode}>{country.name}</option>
+                            ))}
+                        </select>
+                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    </div>
+                </div>
+                <div className="space-y-1.5">
+                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">State</label>
+                    <div className="relative">
+                        <select
+                            name="state" value={formData.state} onChange={handleInputChange} required
+                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
+                        >
+                            <option value="" disabled>Select State</option>
+                            {states.map(state => (
+                                <option key={state.isoCode} value={state.isoCode}>{state.name}</option>
+                            ))}
+                        </select>
+                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                    </div>
+                </div>
+            </div>
+
+            <div className="space-y-1.5">
+                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">District / City</label>
+                <div className="relative">
+                    <select
+                        name="city" value={formData.city} onChange={handleInputChange} required
+                        disabled={!formData.state}
+                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8 disabled:opacity-50"
+                    >
+                        <option value="" disabled>{formData.state ? "Select District/City" : "Select State first"}</option>
+                        {cities.map(city => (
+                            <option key={city.name} value={city.name}>{city.name}</option>
+                        ))}
+                    </select>
+                    <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                </div>
+            </div>
+        </div>
+    )
+
     return (
         <div className="w-full flex flex-col z-10 pt-2 lg:pt-0">
-
             {/* Header Section */}
             <div className="space-y-3 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <div className="inline-block bg-slate-100 text-slate-600 text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-2">
                     Create Account
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
                     {isPhotographer ? "Elevate your portfolio" : "Establish your lab"}
                 </h1>
                 <p className="text-slate-500 text-sm leading-relaxed max-w-[320px]">
@@ -122,14 +197,14 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
             </div>
 
             {error && (
-                <Alert variant="destructive" className="max-w-[420px] w-full mb-8 rounded-lg border-none bg-red-50 text-red-600 animate-in fade-in">
+                <Alert variant="destructive" className="max-w-[420px] w-full mb-8 rounded-xl border-none bg-red-50 text-red-600 animate-in fade-in">
                     <AlertCircle className="h-4 w-4" />
                     <AlertDescription className="font-medium text-sm ml-2">{error}</AlertDescription>
                 </Alert>
             )}
 
             <div className="w-full transition-all duration-500 animate-in fade-in slide-in-from-bottom-8">
-                <form onSubmit={handleSubmit} className={cn("space-y-6", !isPhotographer && "space-y-8")}>
+                <form onSubmit={handleSubmit} className={cn("space-y-8", !isPhotographer && "space-y-10")}>
 
                     {/* Account Type Selector */}
                     <div className={cn("flex flex-col gap-3 mb-8", isPhotographer ? "" : "border-b border-slate-100 pb-8")}>
@@ -166,7 +241,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                             {/* Photographer Layout */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Full Name</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Full Name</label>
                                     <input
                                         type="text" name="full_name" required value={formData.full_name} onChange={handleInputChange} autoComplete="name"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -174,7 +249,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Studio Name (Optional)</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Studio Name (Optional)</label>
                                     <input
                                         type="text" name="studio_name" value={formData.studio_name} onChange={handleInputChange}
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -185,7 +260,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Email Address</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Email Address</label>
                                     <input
                                         type="email" name="email" required value={formData.email} onChange={handleInputChange} autoComplete="email"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -193,7 +268,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Mobile Number</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Mobile Number</label>
                                     <input
                                         type="tel" name="mobile" required value={formData.mobile} onChange={handleInputChange} autoComplete="tel"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -202,46 +277,32 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">City</label>
-                                    <input
-                                        type="text" name="city" required value={formData.city} onChange={handleInputChange}
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
-                                        placeholder="Mumbai"
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">State</label>
-                                    <input
-                                        type="text" name="state" required value={formData.state} onChange={handleInputChange}
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
-                                        placeholder="Maharashtra"
-                                    />
-                                </div>
-                            </div>
+                            <LocationFields />
 
                             <div className="space-y-1.5">
-                                <label className="block text-xs font-semibold text-slate-700">Specialty</label>
-                                <select
-                                    name="specialty"
-                                    value={formData.specialty}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_center]"
-                                >
-                                    <option value="" disabled className="text-slate-400">Select Specialty *</option>
-                                    <option value="wedding">Wedding</option>
-                                    <option value="pre_wedding">Pre Wedding</option>
-                                    <option value="engagement">Engagement</option>
-                                    <option value="reception">Reception</option>
-                                    <option value="birthday">Birthday</option>
-                                    <option value="maternity">Maternity</option>
-                                    <option value="newborn">Newborn</option>
-                                    <option value="family">Family</option>
-                                    <option value="corporate">Corporate</option>
-                                    <option value="other">Other</option>
-                                </select>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Specialty</label>
+                                <div className="relative">
+                                    <select
+                                        name="specialty"
+                                        value={formData.specialty}
+                                        onChange={handleInputChange}
+                                        required
+                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
+                                    >
+                                        <option value="" disabled>Select Specialty *</option>
+                                        <option value="wedding">Wedding</option>
+                                        <option value="pre_wedding">Pre Wedding</option>
+                                        <option value="engagement">Engagement</option>
+                                        <option value="reception">Reception</option>
+                                        <option value="birthday">Birthday</option>
+                                        <option value="maternity">Maternity</option>
+                                        <option value="newborn">Newborn</option>
+                                        <option value="family">Family</option>
+                                        <option value="corporate">Corporate</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                </div>
                             </div>
                         </>
                     ) : (
@@ -249,7 +310,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                             {/* Lab Layout */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Lab Name</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Lab Name</label>
                                     <input
                                         type="text" name="labName" required value={formData.labName} onChange={handleInputChange} autoComplete="organization"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -257,7 +318,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Owner Full Name</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Owner Full Name</label>
                                     <input
                                         type="text" name="ownerName" required value={formData.ownerName} onChange={handleInputChange} autoComplete="name"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -268,7 +329,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Email Address</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Email Address</label>
                                     <input
                                         type="email" name="email" required value={formData.email} onChange={handleInputChange} autoComplete="email"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -276,7 +337,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                                     />
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Mobile Number</label>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Mobile Number</label>
                                     <input
                                         type="tel" name="mobile" required value={formData.mobile} onChange={handleInputChange} autoComplete="tel"
                                         className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -287,53 +348,42 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Team Size</label>
-                                    <select
-                                        name="teamSize" value={formData.teamSize} onChange={handleInputChange} required
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_center]"
-                                    >
-                                        <option value="" disabled className="text-slate-400">Select Team Size</option>
-                                        <option value="1-5">1-5 Employees</option>
-                                        <option value="6-15">6-15 Employees</option>
-                                        <option value="16-50">16-50 Employees</option>
-                                        <option value="50+">50+ Employees</option>
-                                    </select>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Team Size</label>
+                                    <div className="relative">
+                                        <select
+                                            name="teamSize" value={formData.teamSize} onChange={handleInputChange} required
+                                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
+                                        >
+                                            <option value="" disabled>Select Team Size</option>
+                                            <option value="1-5">1-5 Employees</option>
+                                            <option value="6-15">6-15 Employees</option>
+                                            <option value="16-50">16-50 Employees</option>
+                                            <option value="50+">50+ Employees</option>
+                                        </select>
+                                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                    </div>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">Photographers Served</label>
-                                    <select
-                                        name="photographersServed" value={formData.photographersServed} onChange={handleInputChange} required
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23131313%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:10px_10px] bg-no-repeat bg-[position:right_center]"
-                                    >
-                                        <option value="" disabled className="text-slate-400">Monthly Volume</option>
-                                        <option value="1-50">1-50 clients/mo</option>
-                                        <option value="51-200">51-200 clients/mo</option>
-                                        <option value="200+">200+ clients/mo</option>
-                                    </select>
+                                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Monthly Volume</label>
+                                    <div className="relative">
+                                        <select
+                                            name="photographersServed" value={formData.photographersServed} onChange={handleInputChange} required
+                                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
+                                        >
+                                            <option value="" disabled>Monthly Volume</option>
+                                            <option value="1-50">1-50 clients/mo</option>
+                                            <option value="51-200">51-200 clients/mo</option>
+                                            <option value="200+">200+ clients/mo</option>
+                                        </select>
+                                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">City</label>
-                                    <input
-                                        type="text" name="city" required value={formData.city} onChange={handleInputChange}
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
-                                        placeholder="Mumbai"
-                                    />
-                                </div>
-                                <div className="space-y-1.5">
-                                    <label className="block text-xs font-semibold text-slate-700">State</label>
-                                    <input
-                                        type="text" name="state" required value={formData.state} onChange={handleInputChange}
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
-                                        placeholder="Maharashtra"
-                                    />
-                                </div>
-                            </div>
+                            <LocationFields />
 
                             <div className="space-y-1.5">
-                                <label className="block text-xs font-semibold text-slate-700">GST Number (Optional)</label>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">GST Number (Optional)</label>
                                 <input
                                     type="text" name="gst" value={formData.gst} onChange={handleInputChange}
                                     className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
@@ -344,9 +394,9 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                     )}
 
                     {/* Shared Password Fields */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
                         <div className="space-y-1.5 relative">
-                            <label className="block text-xs font-semibold text-slate-700">Password</label>
+                            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Password</label>
                             <div className="relative flex items-center">
                                 <input
                                     type={showPassword ? "text" : "password"} name="password" required value={formData.password} onChange={handleInputChange} autoComplete="new-password"
@@ -359,7 +409,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                             </div>
                         </div>
                         <div className="space-y-1.5 relative">
-                            <label className="block text-xs font-semibold text-slate-700">Confirm Password</label>
+                            <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Confirm Password</label>
                             <div className="relative flex items-center">
                                 <input
                                     type={showConfirmPassword ? "text" : "password"} name="confirm_password" required value={formData.confirm_password} onChange={handleInputChange} autoComplete="new-password"
@@ -374,21 +424,28 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                     </div>
 
                     {/* Terms */}
-                    <div className="flex items-center gap-2 pt-2">
-                        <input
-                            type="checkbox" name="terms" id="terms" required checked={formData.terms} onChange={handleInputChange}
-                            className="appearance-none h-4 w-4 rounded-sm border border-slate-300 text-black checked:bg-black checked:border-black focus:ring-1 focus:ring-black/20 transition-all cursor-pointer relative before:content-[''] before:block before:w-1 bg-white before:h-2 before:absolute before:border-r-2 before:border-b-2 before:border-white before:top-[50%] before:left-[50%] before:-translate-x-1/2 before:-translate-y-1/2 before:rotate-45 before:opacity-0 checked:before:opacity-100"
-                        />
-                        <label htmlFor="terms" className="cursor-pointer select-none text-xs text-slate-600 font-medium">
-                            I accept the <Link to="/term" className="text-black hover:underline transition-colors font-semibold">Terms &amp; Conditions</Link>
+                    <div className="flex items-center gap-3 pt-2">
+                        <div className="relative flex items-center">
+                            <input
+                                type="checkbox" name="terms" id="terms" required checked={formData.terms} onChange={handleInputChange}
+                                className="peer appearance-none h-5 w-5 rounded-md border-2 border-slate-200 checked:bg-black checked:border-black transition-all cursor-pointer"
+                            />
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-white opacity-0 peer-checked:opacity-100 transition-opacity">
+                                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="4">
+                                    <path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </div>
+                        </div>
+                        <label htmlFor="terms" className="cursor-pointer select-none text-sm text-slate-600 font-medium">
+                            I accept the <Link to="/term" className="text-black hover:underline transition-colors font-bold">Terms & Conditions</Link>
                         </label>
                     </div>
 
                     {/* Action Button */}
                     <div className="pt-4">
-                        <button type="submit" disabled={isLoading} className={cn("w-full bg-black hover:bg-slate-800 text-black font-medium py-3 rounded-lg transition-all duration-300 flex justify-center items-center gap-2 text-sm", isLoading && "opacity-80 pointer-events-none")}>
+                        <button type="submit" disabled={isLoading} className={cn("w-full bg-black hover:bg-slate-900 text-white font-bold py-4 rounded-xl shadow-lg shadow-black/10 hover:shadow-black/20 transform active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-3 text-sm tracking-wide uppercase", isLoading && "opacity-80 pointer-events-none")}>
                             {isLoading ? (
-                                <><Loader2 className="h-4 w-4 animate-spin" /><span>CREATING ACCOUNT...</span></>
+                                <><Loader2 className="h-5 w-5 animate-spin" /><span>CREATING ACCOUNT...</span></>
                             ) : (
                                 <span>{isPhotographer ? "Create Professional Account" : "Create Lab Account"}</span>
                             )}
@@ -396,10 +453,10 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                     </div>
                 </form>
 
-                <div className="text-center mt-6">
+                <div className="text-center mt-10">
                     <p className="text-sm text-slate-500">
                         {isPhotographer ? "Already part of the collective? " : "Already a member? "}
-                        <Link to="/login" className="text-black font-semibold hover:underline transition-all duration-300">Log In</Link>
+                        <Link to="/login" className="text-black font-bold hover:underline transition-all duration-300">Log In</Link>
                     </p>
                 </div>
             </div>

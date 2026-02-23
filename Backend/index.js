@@ -14,6 +14,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/albums", require("./routes/albumRoutes"));
+app.use("/api/photographers", require("./routes/photographerRoutes"));
+app.use("/api/billing", require("./routes/billingRoutes"));
 
 app.get("/", (req, res) => {
   res.send("Pixfolio backend running");

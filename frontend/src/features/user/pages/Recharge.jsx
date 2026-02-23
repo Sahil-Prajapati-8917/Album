@@ -1,40 +1,75 @@
-import React, { useState } from 'react'
-import { Check, CreditCard, History, Zap, ShieldCheck, Crown, Download, Building2, UserCircle } from 'lucide-react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Button } from '@/components/ui/button'
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
+import { getCurrentUser, getBillingHistory, purchaseCredits } from '@/services/api'
+import { toast } from "sonner"
 
 const Recharge = () => {
-  const currentPlan = {
-    name: 'Yearly Plan',
-    status: 'Active',
-    expiryDate: '2026-01-15',
-    price: '₹1,299',
-    period: '/year',
-    type: 'Photographer',
-    albumsUsed: 42,
-    albumsRemaining: 158
-  }
-
+  const [user, setUser] = useState(null)
   const [userType, setUserType] = useState('Photographer')
   const [selectedPlan, setSelectedPlan] = useState(null)
+  const [history, setHistory] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const fetchRechargeData = async () => {
+    setIsLoading(true)
+    try {
+      const [userRes, historyRes] = await Promise.all([
+        getCurrentUser(),
+        getBillingHistory()
+      ])
+
+      if (userRes.success) {
+        setUser(userRes.data)
+        setUserType(userRes.data.accountType || 'Photographer')
+      }
+
+      if (historyRes.success) {
+        setHistory(historyRes.data)
+      }
+    } catch (error) {
+      console.error('Failed to fetch recharge data:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchRechargeData()
+  }, [])
+
+  const handlePurchase = async () => {
+    if (!selectedPlan) return
+
+    setIsSubmitting(true)
+    try {
+      const response = await purchaseCredits({
+        planName: selectedPlan.name,
+        amount: selectedPlan.price,
+        credits: selectedPlan.credits || 100 // Fallback or logic for credits
+      })
+
+      if (response.success) {
+        toast.success("Credits purchased successfully!")
+        fetchRechargeData() // Refresh credits and history
+        setSelectedPlan(null)
+      }
+    } catch (error) {
+      console.error('Purchase failed:', error)
+      toast.error(error.message || "Failed to process payment")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const currentPlan = {
+    name: user?.currentPlan || 'Free Plan',
+    status: 'Active',
+    expiryDate: '2026-01-15',
+    price: '₹0',
+    period: '/year',
+    type: user?.accountType || 'Photographer',
+    albumsUsed: user?.albumsUsed || 0,
+    albumsRemaining: user?.credits || 0
+  }
 
   const photographerPlans = [
     {
@@ -42,6 +77,7 @@ const Recharge = () => {
       price: 19,
       displayPrice: "₹19",
       period: "/album",
+      credits: 1,
       description: "For occasional users who need flexibility.",
       features: ["1 Album = ₹19", "All essential features", "QR code included", "Secure sharing link"],
       icon: ShieldCheck,
@@ -52,6 +88,7 @@ const Recharge = () => {
       price: 149,
       displayPrice: "₹149",
       period: "/month",
+      credits: 20,
       description: "Perfect for regular photographers.",
       features: ["15–20 albums per month", "Basic analytics", "Standard support", "Watermark protection"],
       icon: Zap,
@@ -62,6 +99,7 @@ const Recharge = () => {
       price: 1299,
       displayPrice: "₹1299",
       period: "/year",
+      credits: 250,
       description: "Best value for active professionals.",
       features: ["200+ albums per year", "Advanced analytics", "Priority support", "Best savings option"],
       popular: true,
@@ -76,6 +114,7 @@ const Recharge = () => {
       price: 999,
       displayPrice: "₹999",
       period: "/month",
+      credits: 1000,
       description: "Scalable solutions for small teams.",
       features: ["200 albums per month", "2 team members", "Multi-photographer support", "Basic credit management"],
       icon: Building2,
@@ -86,6 +125,7 @@ const Recharge = () => {
       price: 2499,
       displayPrice: "₹2499",
       period: "/month",
+      credits: 5000,
       description: "Complete studio management system.",
       features: ["800 albums per month", "5 team members", "Credit distribution system", "Advanced analytics", "Priority support"],
       popular: true,
@@ -96,11 +136,13 @@ const Recharge = () => {
 
   const activePlans = userType === 'Photographer' ? photographerPlans : labPlans;
 
-  const billingHistory = [
-    { id: 'INV-001', date: '2025-01-15', amount: '₹2,999', status: 'Paid', plan: 'Pro Visionary' },
-    { id: 'INV-002', date: '2024-12-15', amount: '₹2,999', status: 'Paid', plan: 'Pro Visionary' },
-    { id: 'INV-003', date: '2024-11-15', amount: '₹1,499', status: 'Paid', plan: 'Basics Archiver' },
-  ]
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-[60vh]">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
@@ -247,8 +289,19 @@ const Recharge = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full text-md h-12">
-                Proceed to Secure Payment
+              <Button
+                className="w-full text-md h-12"
+                onClick={handlePurchase}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Zap className="mr-2 h-4 w-4 animate-spin" />
+                    Processing...
+                  </>
+                ) : (
+                  'Proceed to Secure Payment'
+                )}
               </Button>
             </CardFooter>
           </Card>
@@ -271,28 +324,36 @@ const Recharge = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {billingHistory.map((item) => (
-                  <TableRow key={item.id} className="hover:bg-muted/30 transition-colors">
-                    <TableCell className="pl-6 py-4">
-                      <p className="text-sm font-semibold">{item.plan}</p>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs text-muted-foreground font-mono bg-muted px-1.5 py-0.5 rounded">{item.id}</span>
-                        <span className="text-xs text-muted-foreground">{item.date}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="font-medium text-center py-4">{item.amount}</TableCell>
-                    <TableCell className="text-center py-4">
-                      <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-200 text-[10px] font-bold">
-                        {item.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right pr-6 py-4">
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <Download className="h-4 w-4" />
-                      </Button>
+                {history.length > 0 ? (
+                  history.map((item) => (
+                    <TableRow key={item._id} className="hover:bg-muted/30 transition-colors">
+                      <TableCell className="pl-6 py-4">
+                        <p className="text-sm font-semibold">{item.planName || 'Credits'}</p>
+                        <div className="flex items-center gap-2 mt-1">
+                          <span className="text-xs text-muted-foreground font-mono bg-muted px-1.5 py-0.5 rounded">{item.invoiceId}</span>
+                          <span className="text-xs text-muted-foreground">{new Date(item.createdAt).toLocaleDateString()}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="font-medium text-center py-4">₹{item.amount}</TableCell>
+                      <TableCell className="text-center py-4">
+                        <Badge variant="outline" className="bg-emerald-500/10 text-emerald-600 border-emerald-200 text-[10px] font-bold">
+                          {item.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right pr-6 py-4">
+                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                          <Download className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                      No billing history found.
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </CardContent>

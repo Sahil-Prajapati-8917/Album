@@ -56,6 +56,8 @@ const Sparkline = ({ data, color }) => (
   </div>
 )
 
+import { getMyAlbums, getCurrentUser } from '@/services/api'
+
 const Dashboard = () => {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
@@ -77,71 +79,69 @@ const Dashboard = () => {
   })
 
   useEffect(() => {
-    const userData = getUser()
-    if (userData) setUser(userData)
-
-    // Load data from localStorage
-    const loadDashboardData = () => {
-      const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
-
-      // Calculate Stats
-      const totalAlbums = storedAlbums.length
-      const publicAlbums = storedAlbums.filter(a => a.status === 'Done').length
-      const totalViews = storedAlbums.reduce((acc, album) => {
-        let views = 0
-        if (typeof album.views === 'string') {
-          if (album.views.includes('k')) views = parseFloat(album.views) * 1000
-          else views = parseInt(album.views) || 0
-        } else {
-          views = album.views || 0
+    const fetchDashboardData = async () => {
+      try {
+        // Fetch User Data for Credits
+        const userResponse = await getCurrentUser()
+        if (userResponse.success) {
+          setUser(userResponse.data)
         }
-        return acc + views
-      }, 0)
 
-      setStats({
-        totalAlbums,
-        publicAlbums,
-        totalViews: totalViews >= 1000 ? `${(totalViews / 1000).toFixed(1)}k` : totalViews
-      })
+        // Fetch Albums for Stats
+        const albumsResponse = await getMyAlbums()
+        if (albumsResponse.success) {
+          const storedAlbums = albumsResponse.data
 
-      // Generate Sparkline Data (Mock for visual effect)
-      setSparklines({
-        albums: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 10) + 5 })),
-        public: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 8) + 2 })),
-        views: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 1000) + 500 }))
-      })
+          // Calculate Stats
+          const totalAlbums = storedAlbums.length
+          const publicAlbums = storedAlbums.filter(a => a.status === 'Done' || a.status === 'Published').length
+          const totalViews = storedAlbums.reduce((acc, album) => acc + (parseInt(album.views) || 0), 0)
 
-      // Top Albums
-      const sortedByViews = [...storedAlbums].sort((a, b) => {
-        const viewA = typeof a.views === 'string' && a.views.includes('k') ? parseFloat(a.views) * 1000 : parseInt(a.views) || 0
-        const viewB = typeof b.views === 'string' && b.views.includes('k') ? parseFloat(b.views) * 1000 : parseInt(b.views) || 0
-        return viewB - viewA
-      }).slice(0, 5)
-      setTopAlbums(sortedByViews)
+          setStats({
+            totalAlbums,
+            publicAlbums,
+            totalViews: totalViews >= 1000 ? `${(totalViews / 1000).toFixed(1)}k` : totalViews
+          })
 
-      // Mock Charts Data
-      setViewHistory([
-        { month: 'Jan', views: 2400 },
-        { month: 'Feb', views: 1398 },
-        { month: 'Mar', views: 9800 },
-        { month: 'Apr', views: 3908 },
-        { month: 'May', views: 4800 },
-        { month: 'Jun', views: 3800 },
-      ])
+          // Top Albums
+          const sortedByViews = [...storedAlbums].sort((a, b) => (b.views || 0) - (a.views || 0)).slice(0, 5)
+          setTopAlbums(sortedByViews)
 
-      setCreationTrend([
-        { month: 'Jan', albums: 4, images: 120 },
-        { month: 'Feb', albums: 3, images: 80 },
-        { month: 'Mar', albums: 6, images: 200 },
-        { month: 'Apr', albums: 2, images: 50 },
-        { month: 'May', albums: 5, images: 150 },
-        { month: 'Jun', albums: 7, images: 210 },
-      ])
+          // Generate Sparkline Data (Mock for visual effect but based on counts)
+          setSparklines({
+            albums: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 10) + (totalAlbums > 0 ? 5 : 0) })),
+            public: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 8) + (publicAlbums > 0 ? 2 : 0) })),
+            views: Array.from({ length: 10 }, () => ({ value: Math.floor(Math.random() * 1000) + (totalViews > 0 ? 500 : 0) }))
+          })
+        }
 
-      setIsLoading(false)
+        // Mock Trends Data (since we don't have historical analytics endpoints yet)
+        setViewHistory([
+          { month: 'Jan', views: 2400 },
+          { month: 'Feb', views: 1398 },
+          { month: 'Mar', views: 9800 },
+          { month: 'Apr', views: 3908 },
+          { month: 'May', views: 4800 },
+          { month: 'Jun', views: 3800 },
+        ])
+
+        setCreationTrend([
+          { month: 'Jan', albums: 4, images: 120 },
+          { month: 'Feb', albums: 3, images: 80 },
+          { month: 'Mar', albums: 6, images: 200 },
+          { month: 'Apr', albums: 2, images: 50 },
+          { month: 'May', albums: 5, images: 150 },
+          { month: 'Jun', albums: 7, images: 210 },
+        ])
+
+      } catch (error) {
+        console.error('Failed to load dashboard data:', error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    setTimeout(loadDashboardData, 500)
+    fetchDashboardData()
   }, [])
 
   if (isLoading) {

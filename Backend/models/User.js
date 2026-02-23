@@ -52,6 +52,16 @@ const userSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+  country: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  district: {
+    type: String,
+    trim: true,
+    default: ''
+  },
   // Photographer Specific Fields
   specialty: {
     type: String,

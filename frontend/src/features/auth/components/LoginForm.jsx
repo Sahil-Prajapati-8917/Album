@@ -112,7 +112,7 @@ const LoginForm = () => {
                     type="submit"
                     disabled={isLoading}
                     className={cn(
-                        "w-full bg-black hover:bg-slate-800 text-black font-medium py-3 rounded-lg transition-all duration-300 flex justify-center items-center gap-2 text-sm",
+                        "w-full bg-black hover:bg-slate-800 text-white font-medium py-3 rounded-lg transition-all duration-300 flex justify-center items-center gap-2 text-sm",
                         isLoading && "opacity-80 pointer-events-none"
                     )}
                 >

@@ -28,11 +28,19 @@ import {
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
 
+import {
+    getMyPhotographers,
+    createPhotographer,
+    updatePhotographer,
+    deletePhotographer
+} from '@/services/api'
+
 export default function Photographers() {
     const [photographers, setPhotographers] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [isDialogOpen, setIsDialogOpen] = useState(false)
     const [editingId, setEditingId] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const [formData, setFormData] = useState({
         name: '',
@@ -43,28 +51,26 @@ export default function Photographers() {
         status: 'Active'
     })
 
-    // Load from local storage on mount
+    // Load from backend on mount
     useEffect(() => {
-        const saved = localStorage.getItem('photographers')
-        if (saved) {
-            setPhotographers(JSON.parse(saved))
-        } else {
-            // Mock Data
-            const mockData = [
-                { id: '1', name: 'John Doe', mobile: '9876543210', city: 'Mumbai', state: 'Maharashtra', address: '123 Studio Lane', status: 'Active' },
-                { id: '2', name: 'Jane Smith', mobile: '9123456780', city: 'Delhi', state: 'Delhi', address: '45 Camera St.', status: 'Inactive' }
-            ]
-            setPhotographers(mockData)
-            localStorage.setItem('photographers', JSON.stringify(mockData))
-        }
+        fetchPhotographers()
     }, [])
 
-    // Save to local storage whenever photographers state changes
-    useEffect(() => {
-        if (photographers.length > 0) {
-            localStorage.setItem('photographers', JSON.stringify(photographers))
+    const fetchPhotographers = async () => {
+        setIsLoading(true)
+        try {
+            const response = await getMyPhotographers()
+            if (response.success) {
+                // Map _id to id for frontend compatibility
+                const mapped = response.data.map(p => ({ ...p, id: p._id }))
+                setPhotographers(mapped)
+            }
+        } catch (error) {
+            console.error('Failed to fetch photographers:', error)
+        } finally {
+            setIsLoading(false)
         }
-    }, [photographers])
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -82,32 +88,45 @@ export default function Photographers() {
         setIsDialogOpen(true)
     }
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!formData.name || !formData.mobile) return // Basic validation
 
-        if (editingId) {
-            setPhotographers(prev => prev.map(p => p.id === editingId ? { ...formData, id: editingId } : p))
-        } else {
-            const newPhotographer = {
-                ...formData,
-                id: Date.now().toString()
+        try {
+            if (editingId) {
+                const response = await updatePhotographer(editingId, formData)
+                if (response.success) {
+                    setPhotographers(prev => prev.map(p => p.id === editingId ? { ...response.data, id: response.data._id } : p))
+                }
+            } else {
+                const response = await createPhotographer(formData)
+                if (response.success) {
+                    setPhotographers(prev => [...prev, { ...response.data, id: response.data._id }])
+                }
             }
-            setPhotographers(prev => [...prev, newPhotographer])
+            setIsDialogOpen(false)
+        } catch (error) {
+            console.error('Failed to save photographer:', error)
+            alert('Failed to save photographer. Please try again.')
         }
-        setIsDialogOpen(false)
     }
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         if (window.confirm("Are you sure you want to delete this photographer?")) {
-            const updatedList = photographers.filter(p => p.id !== id)
-            setPhotographers(updatedList)
-            localStorage.setItem('photographers', JSON.stringify(updatedList))
+            try {
+                const response = await deletePhotographer(id)
+                if (response.success) {
+                    setPhotographers(prev => prev.filter(p => p.id !== id))
+                }
+            } catch (error) {
+                console.error('Failed to delete photographer:', error)
+                alert('Failed to delete photographer.')
+            }
         }
     }
 
     const filteredPhotographers = photographers.filter(p =>
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.city.toLowerCase().includes(searchQuery.toLowerCase())
+        (p.name?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+        (p.city?.toLowerCase() || '').includes(searchQuery.toLowerCase())
     )
 
     return (

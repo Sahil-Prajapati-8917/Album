@@ -5,6 +5,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
+import { getAlbumById, createAlbum, updateAlbum } from '@/services/api'
 
 // Modular Components
 import CreateSteps from '../components/CreateSteps'
@@ -36,23 +37,31 @@ const CreateNew = () => {
   })
 
   useEffect(() => {
-    if (editId) {
-      const albums = JSON.parse(localStorage.getItem('albums') || '[]')
-      const album = albums.find(a => a.id === editId)
-      if (album) {
-        setFormData({
-          clientName: album.clientName || '',
-          functionType: album.functionType || '',
-          functionDate: album.functionDate || '',
-          photographerId: album.photographerId || '',
-          musicTrack: album.musicTrack || 'romantic-wedding.mp3',
-          volume: album.volume || 60,
-          frontCover: album.frontCover || null,
-          backCover: album.backCover || null,
-          innerSheets: album.innerSheets || []
-        })
+    const fetchAlbum = async () => {
+      if (editId) {
+        try {
+          const response = await getAlbumById(editId)
+          if (response.success) {
+            const album = response.data
+            setFormData({
+              clientName: album.clientName || '',
+              functionType: album.functionType || '',
+              functionDate: album.functionDate || '',
+              photographerId: album.photographerId || '',
+              musicTrack: album.musicTrack || 'romantic-wedding.mp3',
+              volume: album.volume || 60,
+              frontCover: album.frontCover || null,
+              backCover: album.backCover || null,
+              innerSheets: album.spreads ? album.spreads.flatMap(s => [s.leftPage?.image, s.rightPage?.image]).filter(Boolean) : []
+            })
+          }
+        } catch (error) {
+          console.error('Failed to fetch album:', error)
+          alert('Failed to load album data.')
+        }
       }
     }
+    fetchAlbum()
   }, [editId])
 
   const functionTypes = [
@@ -159,56 +168,41 @@ const CreateNew = () => {
     const frontUrl = formData.frontCover ? (formData.frontCover instanceof File ? URL.createObjectURL(formData.frontCover) : formData.frontCover) : null
     const backUrl = formData.backCover ? (formData.backCover instanceof File ? URL.createObjectURL(formData.backCover) : formData.backCover) : null
 
-    setTimeout(() => {
-      const albums = JSON.parse(localStorage.getItem('albums') || '[]')
-
-      if (editId) {
-        // Update existing album
-        const updatedAlbums = albums.map(a => {
-          if (a.id === editId) {
-            return {
-              ...a,
-              albumName: formData.clientName,
-              clientName: formData.clientName,
-              functionDate: formData.functionDate,
-              functionType: formData.functionType,
-              photographerId: formData.photographerId,
-              songName: defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard',
-              totalSheets: formData.innerSheets.length + 2,
-              frontCover: frontUrl,
-              backCover: backUrl,
-              spreads: generateSpreads()
-            }
-          }
-          return a
-        })
-        localStorage.setItem('albums', JSON.stringify(updatedAlbums))
-      } else {
-        // Create new album
-        const albumId = Date.now()
-        const newAlbum = {
-          id: `ALBUM-${albumId.toString().slice(-4)}`,
-          albumName: formData.clientName,
-          clientName: formData.clientName,
-          functionDate: formData.functionDate,
-          functionType: formData.functionType,
-          photographerId: formData.photographerId,
-          songName: defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard',
-          totalSheets: formData.innerSheets.length + 2,
-          status: 'Done',
-          priority: 'High',
-          label: 'Feature',
-          views: '0',
-          frontCover: frontUrl,
-          backCover: backUrl,
-          spreads: generateSpreads()
-        }
-        localStorage.setItem('albums', JSON.stringify([...albums, newAlbum]))
+    try {
+      const albumData = {
+        albumId: editId || `ALBUM-${Date.now().toString().slice(-4)}`,
+        clientName: formData.clientName,
+        functionDate: formData.functionDate,
+        functionType: formData.functionType,
+        photographerId: formData.photographerId || null,
+        songName: defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard Track',
+        frontCover: frontUrl,
+        backCover: backUrl,
+        spreads: generateSpreads(),
+        totalSheets: formData.innerSheets.length + 2,
+        status: 'Done',
+        priority: 'High',
+        label: 'Feature'
       }
 
+      let response
+      if (editId) {
+        response = await updateAlbum(editId, albumData)
+      } else {
+        response = await createAlbum(albumData)
+      }
+
+      if (response.success) {
+        setIsPreviewMode(true)
+      } else {
+        alert(response.message || 'Failed to save album')
+      }
+    } catch (error) {
+      console.error('Save failed:', error)
+      alert(error.message || 'An error occurred while saving.')
+    } finally {
       setIsSubmitting(false)
-      setIsPreviewMode(true)
-    }, 1500)
+    }
   }
 
   if (isPreviewMode) {

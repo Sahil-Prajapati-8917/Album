@@ -5,6 +5,7 @@ const { generateToken } = require('../middleware/auth');
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = async (req, res) => {
+  console.log(`Registration request received for: ${req.body.email}`);
   try {
     const {
       email,
@@ -14,6 +15,8 @@ const registerUser = async (req, res) => {
       // Common location fields
       city,
       state,
+      country,
+      district,
       // Photographer fields
       studioName,
       specialty,
@@ -64,6 +67,8 @@ const registerUser = async (req, res) => {
       creditValidity: validityDate,
       city: city || '',
       state: state || '',
+      country: country || '',
+      district: district || '',
       studioName: studioName || '', // Acts as Lab Name for labs
       specialty: specialty || '',
       ownerName: ownerName || '',

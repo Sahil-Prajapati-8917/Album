@@ -1,27 +1,9 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { toast } from "sonner"
-
-// UI Components
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-
-// Custom Components
-import QRCodeModal from '../components/QRCodeModal'
-import { ConfirmDialog } from '@/components/common/ConfirmDialog'
-import { AllPixfolioToolbar } from '../components/AllPixfolioToolbar'
-import { AllPixfolioTable } from '../components/AllPixfolioTable'
-import { functionTypesOptions, parseViews, isDateInRange } from '../utils/albumUtils'
+import { getMyAlbums, deleteAlbum as apiDeleteAlbum } from '@/services/api'
 
 const AllPixfolio = () => {
   const navigate = useNavigate()
   const [albums, setAlbums] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [functionType, setFunctionType] = useState('all')
   const [sortBy, setSortBy] = useState('latest')
@@ -29,31 +11,27 @@ const AllPixfolio = () => {
   const [deleteId, setDeleteId] = useState(null)
   const [qrCodeAlbum, setQrCodeAlbum] = useState(null)
 
-  const loadAlbums = () => {
-    const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
-    if (storedAlbums.length === 0) {
-      const mockAlbums = [
-        { id: 'TASK-8782', clientName: "Sarah Johnson", functionDate: "2025-01-15", functionType: "wedding", songName: "Perfect - Ed Sheeran", views: "1.2k", priority: "Medium", label: "Documentation" },
-        { id: 'TASK-7878', clientName: "Mike Chen", functionDate: "2025-02-20", functionType: "birthday", songName: "Happy Birthday", views: "850", priority: "High", label: "Feature" },
-        { id: 'TASK-7839', clientName: "TechCorp Inc", functionDate: "2025-03-10", functionType: "corporate", songName: "Corporate Vibes", views: "420", priority: "Low", label: "Bug" },
-        { id: 'TASK-5562', clientName: "Alex Rivera", functionDate: "2025-04-05", functionType: "engagement", songName: "A Thousand Years", views: "2.1k", priority: "Medium", label: "Feature" },
-        { id: 'TASK-8686', clientName: "The Garcias", functionDate: "2025-05-12", functionType: "family", songName: "Family Portait", views: "310", priority: "Low", label: "Documentation" },
-        { id: 'TASK-1280', clientName: "StartupXYZ", functionDate: "2025-06-01", functionType: "corporate", songName: "Success Anthem", views: "1.5k", priority: "High", label: "Bug" },
-        { id: 'TASK-7262', clientName: "University Hall", functionDate: "2025-07-20", functionType: "graduation", songName: "Pomp and Circumstance", views: "980", priority: "Medium", label: "Feature" },
-        { id: 'TASK-1138', clientName: "The Patels", functionDate: "2025-08-14", functionType: "anniversary", songName: "All of Me", views: "1.1k", priority: "High", label: "Documentation" },
-      ]
-      setTimeout(() => setAlbums(mockAlbums), 0)
-    } else {
-      const enhanced = storedAlbums.map((a, i) => ({
-        ...a,
-        id: a.id || `TASK-${1000 + i}`,
-        clientName: a.clientName || a.albumName || 'Unknown Client',
-        songName: a.songName || 'Standard Track',
-        views: a.views || '0',
-        priority: a.priority || 'Medium',
-        label: a.label || 'Feature',
-      }))
-      setTimeout(() => setAlbums(enhanced), 0)
+  const loadAlbums = async () => {
+    setIsLoading(true)
+    try {
+      const response = await getMyAlbums()
+      if (response.success) {
+        const enhanced = response.data.map((a, i) => ({
+          ...a,
+          id: a.albumId || a._id, // Use albumId if available, fallback to _id
+          clientName: a.clientName || 'Unknown Client',
+          songName: a.songName || 'Standard Track',
+          views: a.views?.toString() || '0',
+          priority: a.priority || 'Medium',
+          label: a.label || 'Feature',
+        }))
+        setAlbums(enhanced)
+      }
+    } catch (error) {
+      console.error('Failed to load albums:', error)
+      toast.error("Failed to load albums")
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -62,17 +40,24 @@ const AllPixfolio = () => {
   }, [])
 
   const handleDelete = (id) => {
-    setDeleteId(id)
+    // Need to find the mongo _id for the api call
+    const album = albums.find(a => a.id === id)
+    setDeleteId(album?._id || id)
   }
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (deleteId) {
-      const storedAlbums = JSON.parse(localStorage.getItem('albums') || '[]')
-      const updated = storedAlbums.filter(a => a.id !== deleteId)
-      localStorage.setItem('albums', JSON.stringify(updated))
-      setAlbums(prev => prev.filter(a => a.id !== deleteId))
-      setDeleteId(null)
-      toast.success("Pixfolio deleted")
+      try {
+        const response = await apiDeleteAlbum(deleteId)
+        if (response.success) {
+          setAlbums(prev => prev.filter(a => (a._id !== deleteId && a.id !== deleteId)))
+          setDeleteId(null)
+          toast.success("Pixfolio deleted")
+        }
+      } catch (error) {
+        console.error('Delete failed:', error)
+        toast.error("Failed to delete Pixfolio")
+      }
     }
   }
 
