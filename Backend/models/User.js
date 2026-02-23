@@ -124,6 +124,16 @@ const userSchema = new mongoose.Schema({
       type: String,
       trim: true,
       default: ''
+    },
+    website: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    portfolio: {
+      type: String,
+      trim: true,
+      default: ''
     }
   }
 }, {

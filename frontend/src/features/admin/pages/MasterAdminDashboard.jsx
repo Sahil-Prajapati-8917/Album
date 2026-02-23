@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { logoutUser } from '@/services/api';
 import {
     Users,
     User,
@@ -48,6 +49,11 @@ const AdminSidebar = () => {
     // Helper to check if a route is active
     const isActive = (path) => {
         return location.pathname.includes(`/admin/dashboard/${path}`);
+    };
+
+    const handleLogout = () => {
+        logoutUser();
+        navigate('/login');
     };
 
     return (
@@ -219,7 +225,10 @@ const AdminSidebar = () => {
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem className="text-red-500">
+                                <DropdownMenuItem
+                                    className="text-red-500 cursor-pointer"
+                                    onClick={handleLogout}
+                                >
                                     <LogOut className="mr-2 h-4 w-4" />
                                     Log out
                                 </DropdownMenuItem>

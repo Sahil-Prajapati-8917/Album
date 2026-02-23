@@ -1,5 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { getUserProfile, updateUserProfile } from '@/services/api'
 import {
   User,
   Mail,
@@ -92,30 +93,119 @@ export default function Profile() {
   // Temp states for edits
   const [tempProfile, setTempProfile] = useState(profileData)
   const [tempSocial, setTempSocial] = useState(socialLinks)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const handleSaveProfile = () => {
-    setProfileData(tempProfile)
-    setIsEditProfileOpen(false)
-    toast.success("Profile updated successfully")
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const response = await getUserProfile()
+        if (response.success && response.data) {
+          const user = response.data
+          const mappedProfile = {
+            fullName: user.personalName || "",
+            studioName: user.studioName || "",
+            email: user.email || "",
+            mobile: user.mobileNumber || "",
+            whatsapp: user.socialMedia?.whatsapp || "",
+            gst: user.gstNumber || "",
+            address: user.address || "",
+            city: user.city || "",
+            state: user.state || "",
+            pincode: user.pincode || "",
+            photo: user.profilePicture || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=256&h=256"
+          }
+          const mappedSocial = {
+            whatsapp: user.socialMedia?.whatsapp || "",
+            instagram: user.socialMedia?.instagram || "",
+            facebook: user.socialMedia?.facebook || "",
+            twitter: user.socialMedia?.twitter || "",
+            youtube: user.socialMedia?.youtube || "",
+            website: user.socialMedia?.website || "",
+            portfolio: user.socialMedia?.portfolio || ""
+          }
+          setProfileData(mappedProfile)
+          setSocialLinks(mappedSocial)
+          setTempProfile(mappedProfile)
+          setTempSocial(mappedSocial)
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error)
+        toast.error("Failed to load profile data")
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchProfile()
+  }, [])
+
+  const handleSaveProfile = async () => {
+    try {
+      const updateData = {
+        personalName: tempProfile.fullName,
+        studioName: tempProfile.studioName,
+        mobileNumber: tempProfile.mobile,
+        address: tempProfile.address,
+        city: tempProfile.city,
+        state: tempProfile.state,
+        pincode: tempProfile.pincode,
+        gstNumber: tempProfile.gst
+      }
+      const response = await updateUserProfile(updateData)
+      if (response.success) {
+        setProfileData(tempProfile)
+        setIsEditProfileOpen(false)
+        toast.success("Profile updated successfully")
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error)
+      toast.error("Failed to update profile")
+    }
   }
 
-  const handleSaveSocial = () => {
-    setSocialLinks(tempSocial)
-    setIsEditSocialOpen(false)
-    toast.success("Social links updated successfully")
+  const handleSaveSocial = async () => {
+    try {
+      const updateData = {
+        socialMedia: {
+          whatsapp: tempSocial.whatsapp,
+          instagram: tempSocial.instagram,
+          facebook: tempSocial.facebook,
+          twitter: tempSocial.twitter,
+          youtube: tempSocial.youtube,
+          website: tempSocial.website,
+          portfolio: tempSocial.portfolio
+        }
+      }
+      const response = await updateUserProfile(updateData)
+      if (response.success) {
+        setSocialLinks(tempSocial)
+        setIsEditSocialOpen(false)
+        toast.success("Social links updated successfully")
+      }
+    } catch (error) {
+      console.error("Error updating social links:", error)
+      toast.error("Failed to update social links")
+    }
   }
 
   const handlePhotoClick = () => {
     fileInputRef.current.click()
   }
 
-  const handlePhotoChange = (e) => {
+  const handlePhotoChange = async (e) => {
     const file = e.target.files[0]
     if (file) {
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setProfileData({ ...profileData, photo: reader.result })
-        toast.success("Photo updated successfully")
+      reader.onloadend = async () => {
+        try {
+          const response = await updateUserProfile({ profilePicture: reader.result })
+          if (response.success) {
+            setProfileData({ ...profileData, photo: reader.result })
+            toast.success("Photo updated successfully")
+          }
+        } catch (error) {
+          console.error("Error updating photo:", error)
+          toast.error("Failed to update photo")
+        }
       }
       reader.readAsDataURL(file)
     }

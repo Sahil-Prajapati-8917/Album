@@ -35,7 +35,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
-import { getUser } from '@/services/api'
+import { getUser, logoutUser } from '@/services/api'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -65,6 +65,11 @@ export function AppSidebar() {
     }
     setUser(userData)
   }, [navigate])
+
+  const handleLogout = () => {
+    logoutUser()
+    navigate('/login')
+  }
 
   if (!user) return null
 
@@ -245,7 +250,10 @@ export function AppSidebar() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-red-500 focus:text-red-500 focus:bg-red-50/10">
+                <DropdownMenuItem
+                  className="text-red-500 focus:text-red-500 focus:bg-red-50/10 cursor-pointer"
+                  onClick={handleLogout}
+                >
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>
