@@ -5,6 +5,13 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { registerUser } from '@/services/api'
 import { cn } from '@/lib/utils'
 import { Country, State, City } from 'country-state-city/lib/cjs/index.js'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const CreateAccountForm = ({ accountType, setAccountType }) => {
     const navigate = useNavigate()
@@ -28,7 +35,6 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
         // Photographer Fields
         full_name: '',
         studio_name: '',
-        specialty: '',
 
         // Lab Fields
         labName: '',
@@ -52,6 +58,10 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
             return
         }
 
+        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }))
+    }
+
+    const handleSelectChange = (name, value) => {
         if (name === 'country') {
             setFormData(prev => ({ ...prev, [name]: value, state: '', city: '', district: '' }))
             return
@@ -62,7 +72,12 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
             return
         }
 
-        setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value, district: name === 'city' ? value : prev.district }))
+        if (name === 'city') {
+            setFormData(prev => ({ ...prev, [name]: value, district: value }))
+            return
+        }
+
+        setFormData(prev => ({ ...prev, [name]: value }))
     }
 
     const handleSubmit = async (e) => {
@@ -98,7 +113,6 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                     ...baseData,
                     personalName: formData.full_name,
                     studioName: formData.studio_name,
-                    specialty: formData.specialty || 'other',
                 }
             } else {
                 finalData = {
@@ -133,50 +147,44 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div className="space-y-1.5">
                     <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Country</label>
-                    <div className="relative">
-                        <select
-                            name="country" value={formData.country} onChange={handleInputChange} required
-                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
-                        >
+                    <Select value={formData.country} onValueChange={(v) => handleSelectChange('country', v)}>
+                        <SelectTrigger className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 rounded-none shadow-none h-auto">
+                            <SelectValue placeholder="Select Country" />
+                        </SelectTrigger>
+                        <SelectContent>
                             {countries.map(country => (
-                                <option key={country.isoCode} value={country.isoCode}>{country.name}</option>
+                                <SelectItem key={country.isoCode} value={country.isoCode}>{country.name}</SelectItem>
                             ))}
-                        </select>
-                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                    </div>
+                        </SelectContent>
+                    </Select>
                 </div>
                 <div className="space-y-1.5">
                     <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">State</label>
-                    <div className="relative">
-                        <select
-                            name="state" value={formData.state} onChange={handleInputChange} required
-                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
-                        >
-                            <option value="" disabled>Select State</option>
+                    <Select value={formData.state} onValueChange={(v) => handleSelectChange('state', v)}>
+                        <SelectTrigger className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 rounded-none shadow-none h-auto">
+                            <SelectValue placeholder="Select State" />
+                        </SelectTrigger>
+                        <SelectContent>
                             {states.map(state => (
-                                <option key={state.isoCode} value={state.isoCode}>{state.name}</option>
+                                <SelectItem key={state.isoCode} value={state.isoCode}>{state.name}</SelectItem>
                             ))}
-                        </select>
-                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                    </div>
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
 
             <div className="space-y-1.5">
                 <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">District / City</label>
-                <div className="relative">
-                    <select
-                        name="city" value={formData.city} onChange={handleInputChange} required
-                        disabled={!formData.state}
-                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8 disabled:opacity-50"
-                    >
-                        <option value="" disabled>{formData.state ? "Select District/City" : "Select State first"}</option>
+                <Select value={formData.city} onValueChange={(v) => handleSelectChange('city', v)} disabled={!formData.state}>
+                    <SelectTrigger className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 rounded-none shadow-none h-auto disabled:opacity-50">
+                        <SelectValue placeholder={formData.state ? "Select District/City" : "Select State first"} />
+                    </SelectTrigger>
+                    <SelectContent>
                         {cities.map(city => (
-                            <option key={city.name} value={city.name}>{city.name}</option>
+                            <SelectItem key={city.name} value={city.name}>{city.name}</SelectItem>
                         ))}
-                    </select>
-                    <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                </div>
+                    </SelectContent>
+                </Select>
             </div>
         </div>
     )
@@ -279,31 +287,6 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
 
                             <LocationFields />
 
-                            <div className="space-y-1.5">
-                                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Specialty</label>
-                                <div className="relative">
-                                    <select
-                                        name="specialty"
-                                        value={formData.specialty}
-                                        onChange={handleInputChange}
-                                        required
-                                        className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
-                                    >
-                                        <option value="" disabled>Select Specialty *</option>
-                                        <option value="wedding">Wedding</option>
-                                        <option value="pre_wedding">Pre Wedding</option>
-                                        <option value="engagement">Engagement</option>
-                                        <option value="reception">Reception</option>
-                                        <option value="birthday">Birthday</option>
-                                        <option value="maternity">Maternity</option>
-                                        <option value="newborn">Newborn</option>
-                                        <option value="family">Family</option>
-                                        <option value="corporate">Corporate</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                                </div>
-                            </div>
                         </>
                     ) : (
                         <>
@@ -349,45 +332,41 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <div className="space-y-1.5">
                                     <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Team Size</label>
-                                    <div className="relative">
-                                        <select
-                                            name="teamSize" value={formData.teamSize} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
-                                        >
-                                            <option value="" disabled>Select Team Size</option>
-                                            <option value="1-5">1-5 Employees</option>
-                                            <option value="6-15">6-15 Employees</option>
-                                            <option value="16-50">16-50 Employees</option>
-                                            <option value="50+">50+ Employees</option>
-                                        </select>
-                                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                                    </div>
+                                    <Select value={formData.teamSize} onValueChange={(v) => handleSelectChange('teamSize', v)}>
+                                        <SelectTrigger className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 rounded-none shadow-none h-auto">
+                                            <SelectValue placeholder="Select Team Size" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="1-5">1-5 Employees</SelectItem>
+                                            <SelectItem value="6-15">6-15 Employees</SelectItem>
+                                            <SelectItem value="16-50">16-50 Employees</SelectItem>
+                                            <SelectItem value="50+">50+ Employees</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                                 <div className="space-y-1.5">
                                     <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Monthly Volume</label>
-                                    <div className="relative">
-                                        <select
-                                            name="photographersServed" value={formData.photographersServed} onChange={handleInputChange} required
-                                            className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 outline-none transition-all duration-300 appearance-none pr-8"
-                                        >
-                                            <option value="" disabled>Monthly Volume</option>
-                                            <option value="1-50">1-50 clients/mo</option>
-                                            <option value="51-200">51-200 clients/mo</option>
-                                            <option value="200+">200+ clients/mo</option>
-                                        </select>
-                                        <ChevronDown className="absolute right-0 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-                                    </div>
+                                    <Select value={formData.photographersServed} onValueChange={(v) => handleSelectChange('photographersServed', v)}>
+                                        <SelectTrigger className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm text-slate-900 rounded-none shadow-none h-auto">
+                                            <SelectValue placeholder="Monthly Volume" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="1-50">1-50 clients/mo</SelectItem>
+                                            <SelectItem value="51-200">51-200 clients/mo</SelectItem>
+                                            <SelectItem value="200+">200+ clients/mo</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                             </div>
 
                             <LocationFields />
 
                             <div className="space-y-1.5">
-                                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">GST Number (Optional)</label>
+                                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider">GST Number</label>
                                 <input
-                                    type="text" name="gst" value={formData.gst} onChange={handleInputChange}
+                                    type="text" name="gst" required value={formData.gst} onChange={handleInputChange}
                                     className="w-full bg-transparent border-0 border-b border-slate-300 focus:ring-0 focus:border-black px-0 py-2.5 text-sm placeholder:text-slate-400 transition-all duration-300 text-slate-900 outline-none"
-                                    placeholder="GSTIN..."
+                                    placeholder="Enter GSTIN Number"
                                 />
                             </div>
                         </>
@@ -443,7 +422,7 @@ const CreateAccountForm = ({ accountType, setAccountType }) => {
 
                     {/* Action Button */}
                     <div className="pt-4">
-                        <button type="submit" disabled={isLoading} className={cn("w-full bg-black hover:bg-slate-900 text-white font-bold py-4 rounded-xl shadow-lg shadow-black/10 hover:shadow-black/20 transform active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-3 text-sm tracking-wide uppercase", isLoading && "opacity-80 pointer-events-none")}>
+                        <button type="submit" disabled={isLoading} className={cn("w-full bg-black hover:bg-slate-900 text-black font-bold py-4 rounded-xl shadow-lg shadow-black/10 hover:shadow-black/20 transform active:scale-[0.98] transition-all duration-300 flex justify-center items-center gap-3 text-sm tracking-wide uppercase", isLoading && "opacity-80 pointer-events-none")}>
                             {isLoading ? (
                                 <><Loader2 className="h-5 w-5 animate-spin" /><span>CREATING ACCOUNT...</span></>
                             ) : (
