@@ -71,19 +71,51 @@ The server-side component of the Pixfolio platform, providing a robust RESTful A
 
 #### Get Current User (State Management)
 `GET /api/users/me`
-- **Auth**: Required (Bearer Token)
-- **Description**: Returns current authenticated user data for frontend state initialization.
-
-#### Get User Profile
-`GET /api/users/profile`
-- **Auth**: Required (Bearer Token)
-- **Description**: Retrieves full profile data including social media links.
+- **Auth**: Required
+- **Description**: Returns current authenticated user data.
 
 #### Update User Profile
 `PUT /api/users/profile`
-- **Auth**: Required (Bearer Token)
-- **Body Parameters**: `personalName`, `studioName`, `mobileNumber`, `address`, `profilePicture`, `socialMedia` (nested object)
+- **Auth**: Required
 - **Description**: Updates user details and social media integration.
+
+### Album Management (Protected)
+
+#### Create Pixfolio
+`POST /api/albums`
+- **Auth**: Required
+- **Body**: `clientName`, `functionDate`, `functionType`, `photographerId`, `songName`, `frontCover`, `backCover`, `spreads`
+- **Description**: Creates a new digital album. Deducts 1 credit from user.
+
+#### Get My Albums
+`GET /api/albums`
+- **Auth**: Required
+- **Description**: Retrieves all albums created by the authenticated user.
+
+#### Get Album Details
+`GET /api/albums/:id`
+- **Access**: Public
+- **Description**: Retrieves public data for a specific album (3D viewing).
+
+### Photographer Management (Protected)
+
+#### Manage Partners
+`GET /api/photographers` | `POST /api/photographers`
+- **Auth**: Required
+- **Description**: CRUD operations for managing photography partner profiles.
+
+### Billing & Credits (Protected)
+
+#### Purchase Credits
+`POST /api/billing/purchase`
+- **Auth**: Required
+- **Body**: `planId`, `amount`, `paymentId`
+- **Description**: Processes credit purchases and updates user balance.
+
+#### Billing History
+`GET /api/billing/history`
+- **Auth**: Required
+- **Description**: Retrieves a history of all financial transactions and credit top-ups.
 
 ## 🛡️ Security Features
 
@@ -101,18 +133,18 @@ Backend/
 ├── config/             # Database connection setup
 ├── controllers/        # Logical handlers for API routes
 ├── middleware/         # Auth, validation, and error handlers
-├── models/             # Mongoose schemas (User, etc.)
+├── models/             # Mongoose schemas (User, Album, Photographer, Transaction)
 ├── routes/             # API endpoint definitions
 ├── utils/              # Helper utility functions
 └── index.js            # Main entry point and server setup
 ```
 
-## 🏗️ Data Model (User)
+## 🏗️ Data Model Overview
 
-The platform supports two primary user roles with distinct characteristics:
-- **Photographers**: Independent creators with specific specialties.
-- **Labs**: Organizations providing services to multiple photographers.
-- **Credits System**: Built-in logic for tracking user credits and validity.
+- **User**: Stores profile, studio details, and total available `credits`.
+- **Album**: Stores client info, event meta, and links to visual "spreads" (page pairs).
+- **Photographer**: Stores metadata for partner photographers used in album creation.
+- **Transaction**: Records all credit purchases and billing activity.
 
 ## 🗺️ Future Roadmap
 - [ ] Album Management Strategy (Migration to Database)

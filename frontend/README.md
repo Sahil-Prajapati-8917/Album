@@ -33,61 +33,27 @@ frontend/
 
 ---
 
-## 🛠 Features for Backend Integration
+## 🛠 Core Feature Integration
 
 ### 1. User Authentication & Profile
-- **Status**: **Integrated** with `/api/users`
-- **Logic**: JWT-based auth. Tokens and user state are managed in `src/services/api.js`.
-- **Backend Responsibility**: Passwords must be hashed (bcrypt), JWTs should expire in 30d.
+- **Status**: **Fully Integrated**
+- **Details**: JWT-based auth. Social profile management and studio details synchronization.
 
 ### 2. Pixfolio (Albums) Management
-- **Status**: **Currently Frontend Only** (localStorage: `albums`)
-- **Action Required**: Migrate to `/api/albums`
-- **Data Model**:
-  ```json
-  {
-    "id": "ALBUM-XXXX",
-    "clientName": "John Doe",
-    "functionDate": "2025-05-20",
-    "functionType": "wedding",
-    "photographerId": "UUID",
-    "songName": "Perfect",
-    "views": 1500,
-    "frontCover": "URL",
-    "backCover": "URL",
-    "spreads": [
-      {
-        "id": 1,
-        "leftPage": { "image": "URL", "caption": "" },
-        "rightPage": { "image": "URL", "caption": "" }
-      }
-    ]
-  }
-  ```
+- **Status**: **Fully Integrated**
+- **Details**: Full CRUD support synchronized with the backend MongoDB database. Supports 3D flip effects and dynamic music.
 
 ### 3. Photographer Directory
-- **Status**: **Currently Frontend Only** (localStorage: `photographers`)
-- **Action Required**: Migrate to `/api/photographers`
-- **Data Model**:
-  ```json
-  {
-    "id": "UUID",
-    "name": "Jane Smith",
-    "mobile": "9876543210",
-    "city": "Mumbai",
-    "state": "Maharashtra",
-    "status": "Active"
-  }
-  ```
+- **Status**: **Fully Integrated**
+- **Details**: Management of photography partner profiles, fully persisted in the backend.
 
 ### 4. Billing & Credits
-- **Status**: **UI Only**
-- **Action Required**: Implement `/api/billing`
-- **Logic**: Track "Credits" (Albums remaining). 1 credit per album created. Users can buy plans (Pay Per Album, Monthly, Yearly).
+- **Status**: **Fully Integrated**
+- **Details**: Real-time credit monitoring and billing history retrieval from the API.
 
 ---
 
-## 📡 API Endpoints (Referenced/Expected)
+## 📡 API Endpoints (Referenced)
 
 | Endpoint | Method | Description | Auth Required |
 | :--- | :--- | :--- | :--- |
@@ -98,6 +64,9 @@ frontend/
 | `/api/albums` | GET/POST | Manage pixfolios | Yes |
 | `/api/photographers` | GET/POST | Manage partners | Yes |
 | `/api/billing/history` | GET | Transaction logs | Yes |
+| `/api/billing/purchase` | POST | Credit top-ups | Yes |
+
+---
 
 ---
 
