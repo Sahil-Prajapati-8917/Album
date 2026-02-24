@@ -24,6 +24,7 @@ import VisualBookDemo from '../pages/VisualBookDemo';
 import AdminPasswordPage from '../features/admin/pages/AdminPasswordPage';
 import MasterAdminDashboard from '../features/admin/pages/MasterAdminDashboard';
 import ProtectedAdminRoute from '../features/admin/components/ProtectedAdminRoute';
+import ProtectedRoute from './ProtectedRoute';
 
 import AdminOverview from '../features/admin/components/dashboard/AdminOverview';
 import AdminAnalytics from '../features/admin/components/dashboard/AdminAnalytics';
@@ -83,18 +84,20 @@ export function AppRoutes() {
             <Route path="/term" element={<Term />} />
 
             {/* Protected/Dashboard Routes with Dashboard Layout */}
-            <Route element={<DashboardLayout />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/create" element={<CreateNew />} />
-                <Route path="/all-pixfolio" element={<AllPixfolio />} />
-                <Route path="/recharge" element={<Recharge />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/photographers" element={<Photographers />} />
-                <Route path="/help" element={<HelpCenter />} />
-                <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-                <Route path="/refund-policy" element={<RefundPolicy />} />
-                <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+            <Route element={<ProtectedRoute />}>
+                <Route element={<DashboardLayout />}>
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/create" element={<CreateNew />} />
+                    <Route path="/all-pixfolio" element={<AllPixfolio />} />
+                    <Route path="/recharge" element={<Recharge />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/settings" element={<Settings />} />
+                    <Route path="/photographers" element={<Photographers />} />
+                    <Route path="/help" element={<HelpCenter />} />
+                    <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                    <Route path="/refund-policy" element={<RefundPolicy />} />
+                    <Route path="/terms-and-conditions" element={<TermsAndConditions />} />
+                </Route>
             </Route>
 
             {/* 404 Route */}

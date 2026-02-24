@@ -21,11 +21,7 @@ export default function DashboardLayout() {
   useEffect(() => {
     const fetchUser = () => {
       const userData = getUser()
-      if (userData) {
-        setUser(userData)
-      } else {
-        setUser({ name: 'Demo User', email: 'demo@pixfolio.com' })
-      }
+      setUser(userData)
     }
     fetchUser()
   }, [])
