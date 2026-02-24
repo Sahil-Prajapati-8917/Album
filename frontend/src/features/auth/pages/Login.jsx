@@ -9,7 +9,9 @@ const Login = () => {
     linkSymbols.rel = 'stylesheet'
     document.head.appendChild(linkSymbols)
 
-    return () => { }
+    return () => {
+      if (linkSymbols.parentNode) document.head.removeChild(linkSymbols)
+    }
   }, [])
 
   return (

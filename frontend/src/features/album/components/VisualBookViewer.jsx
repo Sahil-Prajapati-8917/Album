@@ -141,7 +141,11 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
               title: album.albumName || album.clientName || title,
               spreads: album.spreads || [],
               frontCover: album.frontCover || null,
-              backCover: album.backCover || null
+              backCover: album.backCover || null,
+              photographerName: album.photographerName || '',
+              photographerPhone: album.photographerPhone || '',
+              photographerCity: album.photographerCity || '',
+              functionDate: album.functionDate || ''
             })
           }
         } catch (e) {
@@ -256,24 +260,24 @@ const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover
         <div className="pointer-events-auto mt-2 hidden md:flex items-center gap-4 px-6 py-2 rounded-md bg-[#111111]/80 border border-white/5 backdrop-blur-md shadow-lg">
           <div className="flex items-center gap-2 text-gray-300">
             <User size={14} className="text-blue-500" />
-            <span className="text-xs uppercase tracking-wider font-medium">RAM PHOTOGRAPHY</span>
+            <span className="text-xs uppercase tracking-wider font-medium">{bookData.photographerName || 'PHOTOGRAPHER'}</span>
           </div>
           <div className="w-px h-4 bg-white/10"></div>
           <div className="flex items-center gap-2 text-gray-300">
             <Phone size={14} className="text-green-500" />
-            <span className="text-xs">+91 8405954138</span>
+            <span className="text-xs">{bookData.photographerPhone || ''}</span>
           </div>
           <div className="w-px h-4 bg-white/10"></div>
           <div className="flex items-center gap-2 text-gray-300">
             <MapPin size={14} className="text-yellow-500" />
-            <span className="text-xs uppercase tracking-wider">PATNA</span>
+            <span className="text-xs uppercase tracking-wider">{bookData.photographerCity || ''}</span>
           </div>
         </div>
 
         {/* Right: Album Info */}
         <div className="pointer-events-auto mt-2 text-right bg-[#111111]/80 px-4 py-2 rounded-md border border-white/5 backdrop-blur-md">
           <h2 className="text-white text-xs font-semibold tracking-wider uppercase mb-1">{bookData.title}</h2>
-          <div className="text-yellow-500 text-[10px] tracking-wide">Wednesday-01-May-2024</div>
+          <div className="text-yellow-500 text-[10px] tracking-wide">{bookData.functionDate || ''}</div>
         </div>
       </div>
 

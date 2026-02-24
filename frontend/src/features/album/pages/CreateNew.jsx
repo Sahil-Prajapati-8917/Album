@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ChevronRight, ChevronLeft, Wand2, Plus
@@ -6,6 +6,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
 import { getAlbumById, createAlbum, updateAlbum } from '@/services/api'
+import { toast } from 'sonner'
 
 // Modular Components
 import CreateSteps from '../components/CreateSteps'
@@ -23,6 +24,7 @@ const CreateNew = () => {
   const [isPreviewMode, setIsPreviewMode] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
   const [errors, setErrors] = useState({})
+  const blobUrlsRef = useRef([]) // Track blob URLs for cleanup (FE-01)
 
   const [formData, setFormData] = useState({
     clientName: '',
@@ -89,18 +91,43 @@ const CreateNew = () => {
     return str.replace(/-/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')
   }
 
+  // Cleanup blob URLs on unmount to prevent memory leaks (FE-01)
+  useEffect(() => {
+    return () => {
+      blobUrlsRef.current.forEach(url => URL.revokeObjectURL(url))
+      blobUrlsRef.current = []
+    }
+  }, [])
+
+  const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB (ALB-05)
+  const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/bmp']
+
+  const validateFile = (file) => {
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      toast.error(`Invalid file type: ${file.name}. Only images allowed.`)
+      return false
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(`File too large: ${file.name}. Maximum 10MB.`)
+      return false
+    }
+    return true
+  }
+
   const handleFileUpload = (e, field) => {
     const file = e.target.files[0]
-    if (file) {
+    if (file && validateFile(file)) {
       setFormData(prev => ({ ...prev, [field]: file }))
       if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }))
     }
   }
 
   const handleMultipleFileUpload = (e) => {
-    const files = Array.from(e.target.files)
-    setFormData(prev => ({ ...prev, innerSheets: [...prev.innerSheets, ...files] }))
-    if (errors.innerSheets) setErrors(prev => ({ ...prev, innerSheets: '' }))
+    const files = Array.from(e.target.files).filter(validateFile)
+    if (files.length > 0) {
+      setFormData(prev => ({ ...prev, innerSheets: [...prev.innerSheets, ...files] }))
+      if (errors.innerSheets) setErrors(prev => ({ ...prev, innerSheets: '' }))
+    }
   }
 
   const removeFile = (index) => {
@@ -143,7 +170,9 @@ const CreateNew = () => {
 
     const photoUrls = innerPhotos.map(file => {
       if (file instanceof File) {
-        return URL.createObjectURL(file)
+        const url = URL.createObjectURL(file)
+        blobUrlsRef.current.push(url) // Track for cleanup
+        return url
       }
       return file
     })
@@ -165,12 +194,13 @@ const CreateNew = () => {
     setIsSubmitting(true)
 
     // Prepare cover URLs for persistent storage/viewer
-    const frontUrl = formData.frontCover ? (formData.frontCover instanceof File ? URL.createObjectURL(formData.frontCover) : formData.frontCover) : null
-    const backUrl = formData.backCover ? (formData.backCover instanceof File ? URL.createObjectURL(formData.backCover) : formData.backCover) : null
+    let frontUrl = formData.frontCover ? (formData.frontCover instanceof File ? URL.createObjectURL(formData.frontCover) : formData.frontCover) : null
+    let backUrl = formData.backCover ? (formData.backCover instanceof File ? URL.createObjectURL(formData.backCover) : formData.backCover) : null
+    if (frontUrl && frontUrl.startsWith('blob:')) blobUrlsRef.current.push(frontUrl)
+    if (backUrl && backUrl.startsWith('blob:')) blobUrlsRef.current.push(backUrl)
 
     try {
       const albumData = {
-        albumId: editId || `ALBUM-${Date.now().toString().slice(-4)}`,
         clientName: formData.clientName,
         functionDate: formData.functionDate,
         functionType: formData.functionType,
@@ -195,11 +225,11 @@ const CreateNew = () => {
       if (response.success) {
         setIsPreviewMode(true)
       } else {
-        alert(response.message || 'Failed to save album')
+        toast.error(response.message || 'Failed to save album')
       }
     } catch (error) {
       console.error('Save failed:', error)
-      alert(error.message || 'An error occurred while saving.')
+      toast.error(error.message || 'An error occurred while saving.')
     } finally {
       setIsSubmitting(false)
     }

@@ -1,7 +1,8 @@
 const Album = require('../models/Album');
 const User = require('../models/User');
+const { v4: uuidv4 } = require('uuid');
 
-// Create new album
+// Create new album — with ATOMIC credit deduction
 exports.createAlbum = async (req, res) => {
     try {
         const {
@@ -16,17 +17,32 @@ exports.createAlbum = async (req, res) => {
             totalSheets
         } = req.body;
 
-        // Check user credits
-        const user = await User.findById(req.user.id);
+        // ATOMIC credit deduction — prevents race condition (BILL-02)
+        // Only deducts if credits > 0; returns null if insufficient
+        const user = await User.findOneAndUpdate(
+            {
+                _id: req.user.id,
+                credits: { $gt: 0 },
+                // Also check credit validity (BILL-06)
+                $or: [
+                    { creditValidity: { $gte: new Date() } },
+                    { creditValidity: null },
+                    { creditValidity: { $exists: false } }
+                ]
+            },
+            { $inc: { credits: -1 } },
+            { new: true }
+        );
+
         if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
+            return res.status(403).json({
+                success: false,
+                message: 'Insufficient credits or credits expired. Please recharge.'
+            });
         }
 
-        if (user.credits <= 0) {
-            return res.status(403).json({ success: false, message: 'Insufficient credits. Please recharge.' });
-        }
-
-        const albumId = `ALBUM-${Date.now().toString().slice(-4)}`;
+        // Generate unique album ID using UUID (ALB-02)
+        const albumId = `PF-${uuidv4().split('-')[0].toUpperCase()}`;
 
         const album = new Album({
             albumId,
@@ -44,10 +60,6 @@ exports.createAlbum = async (req, res) => {
 
         await album.save();
 
-        // Decrement user credits
-        user.credits -= 1;
-        await user.save();
-
         res.status(201).json({
             success: true,
             message: 'Album created successfully',
@@ -55,58 +67,95 @@ exports.createAlbum = async (req, res) => {
         });
     } catch (error) {
         console.error('Create Album Error:', error);
-        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
-// Get all albums for logged in user
+// Get all albums for logged in user — with pagination (PERF-04)
 exports.getMyAlbums = async (req, res) => {
     try {
-        const albums = await Album.find({ userId: req.user.id }).sort({ createdAt: -1 });
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 50;
+        const skip = (page - 1) * limit;
+
+        // Exclude spreads from list response for performance (PERF-05)
+        const [albums, total] = await Promise.all([
+            Album.find({ userId: req.user.id })
+                .select('-spreads')
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limit),
+            Album.countDocuments({ userId: req.user.id })
+        ]);
+
         res.status(200).json({
             success: true,
-            data: albums
+            data: albums,
+            pagination: {
+                page,
+                limit,
+                total,
+                pages: Math.ceil(total / limit)
+            }
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
-// Get single album by ID (public or private)
+// Get single album by ID (public for viewing, but no owner-sensitive data)
 exports.getAlbumById = async (req, res) => {
     try {
-        const album = await Album.findOne({ albumId: req.params.id });
+        // ATOMIC view increment (PERF-01) — single DB operation instead of read+write
+        const album = await Album.findOneAndUpdate(
+            { albumId: req.params.id },
+            { $inc: { views: 1 } },
+            { new: true }
+        );
+
         if (!album) {
             return res.status(404).json({ success: false, message: 'Album not found' });
         }
-
-        // Increment views
-        album.views += 1;
-        await album.save();
 
         res.status(200).json({
             success: true,
             data: album
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
-// Update album
+// Update album — with field whitelist (ALB-03)
 exports.updateAlbum = async (req, res) => {
     try {
-        let album = await Album.findOne({ albumId: req.params.id, userId: req.user.id });
-        if (!album) {
+        // First verify ownership
+        const existingAlbum = await Album.findOne({ albumId: req.params.id, userId: req.user.id });
+        if (!existingAlbum) {
             return res.status(404).json({ success: false, message: 'Album not found or unauthorized' });
         }
 
-        const updates = req.body;
-        if (updates.photographerId === 'none') updates.photographerId = null;
+        // Whitelist only allowed fields — prevents userId override & prototype pollution
+        const allowedFields = [
+            'clientName', 'functionDate', 'functionType', 'photographerId',
+            'songName', 'frontCover', 'backCover', 'spreads', 'totalSheets',
+            'status', 'priority', 'label'
+        ];
 
-        album = await Album.findOneAndUpdate(
-            { albumId: req.params.id },
-            updates,
+        const sanitizedUpdates = {};
+        for (const field of allowedFields) {
+            if (req.body[field] !== undefined) {
+                sanitizedUpdates[field] = req.body[field];
+            }
+        }
+
+        if (sanitizedUpdates.photographerId === 'none') {
+            sanitizedUpdates.photographerId = null;
+        }
+
+        const album = await Album.findOneAndUpdate(
+            { albumId: req.params.id, userId: req.user.id },
+            sanitizedUpdates,
             { new: true, runValidators: true }
         );
 
@@ -116,7 +165,7 @@ exports.updateAlbum = async (req, res) => {
             data: album
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
@@ -133,6 +182,6 @@ exports.deleteAlbum = async (req, res) => {
             message: 'Album deleted successfully'
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+        res.status(500).json({ success: false, message: 'Server error' });
     }
 };

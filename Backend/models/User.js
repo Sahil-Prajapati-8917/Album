@@ -10,6 +10,12 @@ const userSchema = new mongoose.Schema({
     trim: true,
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
   },
+  normalizedEmail: {
+    type: String,
+    lowercase: true,
+    trim: true,
+    index: true  // Index for duplicate detection
+  },
   password: {
     type: String,
     required: [true, 'Password is required'],
@@ -20,9 +26,15 @@ const userSchema = new mongoose.Schema({
     enum: ['photographer', 'lab'],
     required: [true, 'Account type is required']
   },
+  role: {
+    type: String,
+    enum: ['user', 'admin'],
+    default: 'user'
+  },
   credits: {
     type: Number,
-    default: 0
+    default: 0,
+    min: [0, 'Credits cannot be negative']  // BILL-05: Prevent negative credits
   },
   creditValidity: {
     type: Date
@@ -140,6 +152,9 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Indexes for performance (PERF-02, DB-01)
+userSchema.index({ accountType: 1 });
+
 // Hash password before saving
 userSchema.pre('save', async function () {
   // Only hash the password if it has been modified (or is new)
@@ -159,6 +174,7 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
 userSchema.methods.toJSON = function () {
   const userObject = this.toObject();
   delete userObject.password;
+  delete userObject.normalizedEmail; // Don't expose internal field
   return userObject;
 };
 

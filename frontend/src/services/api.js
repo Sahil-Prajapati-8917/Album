@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 // Store token in localStorage
 const setToken = (token) => {
@@ -20,7 +20,13 @@ const setUser = (user) => {
 
 const getUser = () => {
   const user = localStorage.getItem('user');
-  return user ? JSON.parse(user) : null;
+  try {
+    return user ? JSON.parse(user) : null;
+  } catch (e) {
+    // If user data is corrupted, clean it up
+    localStorage.removeItem('user');
+    return null;
+  }
 };
 
 const removeUser = () => {
@@ -45,6 +51,11 @@ const apiRequest = async (endpoint, options = {}) => {
     const data = await response.json();
 
     if (!response.ok) {
+      // If token expired, clean up and redirect
+      if (response.status === 401) {
+        removeToken();
+        removeUser();
+      }
       throw new Error(data.message || 'API request failed');
     }
 
@@ -84,9 +95,26 @@ export const loginUser = async (credentials) => {
   return response;
 };
 
+// Admin login — uses server-side admin authentication (AUTH-01 fix)
+export const adminLogin = async (credentials) => {
+  const response = await apiRequest('/users/admin-login', {
+    method: 'POST',
+    body: JSON.stringify(credentials),
+  });
+
+  if (response.success) {
+    setToken(response.data.token);
+    setUser(response.data.user);
+    sessionStorage.setItem('isMasterAdmin', 'true');
+  }
+
+  return response;
+};
+
 export const logoutUser = () => {
   removeToken();
   removeUser();
+  sessionStorage.removeItem('isMasterAdmin');
 };
 
 export const getCurrentUser = async () => {
@@ -120,9 +148,19 @@ export const updateUserProfile = async (profileData) => {
   return response;
 };
 
-// Check if user is authenticated
+// Check if user is authenticated — validates token with server on first check
 export const isAuthenticated = () => {
   return !!getToken();
+};
+
+// Validate token with server (used by ProtectedRoute)
+export const validateToken = async () => {
+  try {
+    const response = await apiRequest('/users/me');
+    return response.success;
+  } catch (error) {
+    return false;
+  }
 };
 
 // Initialize auth state from localStorage
@@ -138,8 +176,8 @@ export const initializeAuth = () => {
 };
 
 // Album functions
-export const getMyAlbums = async () => {
-  return await apiRequest('/albums');
+export const getMyAlbums = async (page = 1, limit = 50) => {
+  return await apiRequest(`/albums?page=${page}&limit=${limit}`);
 };
 
 export const getAlbumById = async (id) => {
@@ -201,6 +239,10 @@ export const purchaseCredits = async (purchaseData) => {
     method: 'POST',
     body: JSON.stringify(purchaseData),
   });
+};
+
+export const getPlans = async () => {
+  return await apiRequest('/billing/plans');
 };
 
 // Export getUser for use in components
