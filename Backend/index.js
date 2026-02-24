@@ -3,9 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 const connectDB = require("./config/database");
 
-// Connect to database
-connectDB();
-
+// Database connection is now handled in startServer()
 const app = express();
 
 // Middleware
@@ -32,7 +30,20 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log("Connected to database");
-});
+
+const startServer = async () => {
+  try {
+    // Connect to database first
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`✅ Server running on port ${PORT}`);
+      console.log("🚀 Database integration ready");
+    });
+  } catch (err) {
+    console.error("❌ Failed to start server:", err.message);
+    process.exit(1);
+  }
+};
+
+startServer();

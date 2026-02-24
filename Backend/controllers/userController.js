@@ -5,7 +5,8 @@ const { generateToken } = require('../middleware/auth');
 // @route   POST /api/users/register
 // @access  Public
 const registerUser = async (req, res) => {
-  console.log(`Registration request received for: ${req.body.email}`);
+  const { password, ...logData } = req.body;
+  console.log('Registration request received:', JSON.stringify(logData, null, 2));
   try {
     const {
       email,
@@ -78,6 +79,7 @@ const registerUser = async (req, res) => {
       mobileNumber: mobileNumber || '',
       address: address || ''
     });
+    console.log(`✅ User created successfully: ${user.email} (ID: ${user._id})`);
 
     // Generate token
     const token = generateToken(user._id);
