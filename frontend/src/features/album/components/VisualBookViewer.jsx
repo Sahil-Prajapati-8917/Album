@@ -1,4 +1,5 @@
 // VisualBookViewer.jsx
+import { getAlbumById } from '@/services/api'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import HTMLFlipBook from 'react-pageflip'
@@ -105,7 +106,6 @@ const Page = React.forwardRef((props, ref) => {
 
 Page.displayName = 'Page'
 
-import { getAlbumById } from '@/services/api'
 
 const VisualBookViewer = ({ spreads = [], title = "Memories Eternal", frontCover = null, backCover = null, scale = 'normal' }) => {
   const { id } = useParams()
