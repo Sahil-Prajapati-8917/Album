@@ -10,7 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, removeFile, errors }) => {
+const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, removeFile, errors, isProcessingFiles }) => {
 
     const frontPreview = useMemo(() => {
         if (formData.frontCover && formData.frontCover instanceof File) {
@@ -48,7 +48,12 @@ const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, rem
                                     onChange={(e) => handleFileUpload(e, 'frontCover')}
                                     className="absolute inset-0 opacity-0 cursor-pointer z-10"
                                 />
-                                {frontPreview ? (
+                                {isProcessingFiles ? (
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                                        <p className="text-xs font-medium text-primary">Processing...</p>
+                                    </div>
+                                ) : frontPreview ? (
                                     <img src={frontPreview} alt="Front Preview" className="absolute inset-0 w-full h-full object-cover" />
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
@@ -74,7 +79,12 @@ const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, rem
                                     onChange={(e) => handleFileUpload(e, 'backCover')}
                                     className="absolute inset-0 opacity-0 cursor-pointer z-10"
                                 />
-                                {backPreview ? (
+                                {isProcessingFiles ? (
+                                    <div className="flex flex-col items-center gap-2">
+                                        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                                        <p className="text-xs font-medium text-primary">Processing...</p>
+                                    </div>
+                                ) : backPreview ? (
                                     <img src={backPreview} alt="Back Preview" className="absolute inset-0 w-full h-full object-cover" />
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
@@ -108,13 +118,21 @@ const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, rem
                             onChange={handleMultipleFileUpload}
                             className="absolute inset-0 opacity-0 cursor-pointer z-10"
                         />
-                        <div className="flex flex-col items-center gap-3">
-                            <div className="w-10 h-10 bg-background rounded-full flex items-center justify-center border shadow-sm group-hover:scale-110 transition-transform">
-                                <Plus className="h-5 w-5 text-primary" />
+                        {isProcessingFiles ? (
+                            <div className="flex flex-col items-center gap-3">
+                                <div className="w-10 h-10 border-4 border-primary/20 border-t-primary rounded-full animate-spin flex items-center justify-center shadow-sm" />
+                                <p className="text-sm font-medium text-primary">Processing your high-res photos...</p>
+                                <p className="text-xs text-muted-foreground">Please wait a moment</p>
                             </div>
-                            <p className="text-sm font-medium">Click to add photos or drag and drop</p>
-                            <p className="text-xs text-muted-foreground">{formData.innerSheets.length} files selected</p>
-                        </div>
+                        ) : (
+                            <div className="flex flex-col items-center gap-3">
+                                <div className="w-10 h-10 bg-background rounded-full flex items-center justify-center border shadow-sm group-hover:scale-110 transition-transform">
+                                    <Plus className="h-5 w-5 text-primary" />
+                                </div>
+                                <p className="text-sm font-medium">Click to add photos or drag and drop</p>
+                                <p className="text-xs text-muted-foreground">{formData.innerSheets.length} files selected</p>
+                            </div>
+                        )}
                     </div>
 
                     {formData.innerSheets.length > 0 && (

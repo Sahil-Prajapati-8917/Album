@@ -23,6 +23,7 @@ const CreateNew = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isPreviewMode, setIsPreviewMode] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [isProcessingFiles, setIsProcessingFiles] = useState(false)
   const [errors, setErrors] = useState({})
   const blobUrlsRef = useRef([]) // Track blob URLs for cleanup (FE-01)
 
@@ -114,20 +115,31 @@ const CreateNew = () => {
     return true
   }
 
-  const handleFileUpload = (e, field) => {
+  const handleFileUpload = async (e, field) => {
     const file = e.target.files[0]
-    if (file && validateFile(file)) {
+    if (!file) return;
+    setIsProcessingFiles(true)
+    await new Promise(r => setTimeout(r, 10)) // Allow UI to update
+    if (validateFile(file)) {
       setFormData(prev => ({ ...prev, [field]: file }))
       if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }))
     }
+    setIsProcessingFiles(false)
   }
 
-  const handleMultipleFileUpload = (e) => {
-    const files = Array.from(e.target.files).filter(validateFile)
+  const handleMultipleFileUpload = async (e) => {
+    const rawFiles = Array.from(e.target.files)
+    if (rawFiles.length === 0) return;
+
+    setIsProcessingFiles(true)
+    await new Promise(r => setTimeout(r, 10)) // Allow UI to update
+
+    const files = rawFiles.filter(validateFile)
     if (files.length > 0) {
       setFormData(prev => ({ ...prev, innerSheets: [...prev.innerSheets, ...files] }))
       if (errors.innerSheets) setErrors(prev => ({ ...prev, innerSheets: '' }))
     }
+    setIsProcessingFiles(false)
   }
 
   const removeFile = (index) => {
@@ -181,8 +193,8 @@ const CreateNew = () => {
     for (let i = 0; i < photoUrls.length; i += 2) {
       spreads.push({
         id: Math.floor(i / 2) + 1,
-        leftPage: { image: photoUrls[i], caption: "" },
-        rightPage: { image: photoUrls[i + 1] || photoUrls[i], caption: "" }
+        leftPage: { image: photoUrls[i] || null, caption: "" },
+        rightPage: { image: photoUrls[i + 1] || null, caption: "" }
       })
     }
     return spreads
@@ -193,33 +205,41 @@ const CreateNew = () => {
 
     setIsSubmitting(true)
 
-    // Prepare cover URLs for persistent storage/viewer
-    let frontUrl = formData.frontCover ? (formData.frontCover instanceof File ? URL.createObjectURL(formData.frontCover) : formData.frontCover) : null
-    let backUrl = formData.backCover ? (formData.backCover instanceof File ? URL.createObjectURL(formData.backCover) : formData.backCover) : null
-    if (frontUrl && frontUrl.startsWith('blob:')) blobUrlsRef.current.push(frontUrl)
-    if (backUrl && backUrl.startsWith('blob:')) blobUrlsRef.current.push(backUrl)
-
     try {
-      const albumData = {
-        clientName: formData.clientName,
-        functionDate: formData.functionDate,
-        functionType: formData.functionType,
-        photographerId: formData.photographerId || null,
-        songName: defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard Track',
-        frontCover: frontUrl,
-        backCover: backUrl,
-        spreads: generateSpreads(),
-        totalSheets: formData.innerSheets.length + 2,
-        status: 'Done',
-        priority: 'High',
-        label: 'Feature'
+      // Build FormData instead of JSON for file uploads
+      const formDataToSend = new FormData()
+      formDataToSend.append('clientName', formData.clientName || '')
+      formDataToSend.append('functionDate', formData.functionDate || '')
+      formDataToSend.append('functionType', formData.functionType || '')
+      if (formData.photographerId) {
+        formDataToSend.append('photographerId', formData.photographerId)
       }
+      formDataToSend.append('songName', defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard Track')
+      formDataToSend.append('totalSheets', formData.innerSheets.length + 2)
+      formDataToSend.append('status', 'Done')
+      formDataToSend.append('priority', 'High')
+      formDataToSend.append('label', 'Feature')
+
+      // Append files directly
+      if (formData.frontCover instanceof File) {
+        formDataToSend.append('frontCover', formData.frontCover)
+      }
+      if (formData.backCover instanceof File) {
+        formDataToSend.append('backCover', formData.backCover)
+      }
+
+      // Append inner sheets as multiple files
+      formData.innerSheets.forEach(sheet => {
+        if (sheet instanceof File) {
+          formDataToSend.append('innerSheets', sheet)
+        }
+      })
 
       let response
       if (editId) {
-        response = await updateAlbum(editId, albumData)
+        response = await updateAlbum(editId, formDataToSend)
       } else {
-        response = await createAlbum(albumData)
+        response = await createAlbum(formDataToSend)
       }
 
       if (response.success) {
@@ -309,6 +329,7 @@ const CreateNew = () => {
                 handleMultipleFileUpload={handleMultipleFileUpload}
                 removeFile={removeFile}
                 errors={errors}
+                isProcessingFiles={isProcessingFiles}
               />
             )}
           </AnimatePresence>
@@ -347,6 +368,26 @@ const CreateNew = () => {
           </div>
         </div>
       </div>
+
+      {/* Full Screen Uploading Overlay */}
+      <AnimatePresence>
+        {isSubmitting && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[200] bg-background/80 backdrop-blur-sm flex flex-col items-center justify-center"
+          >
+            <div className="bg-card border shadow-xl rounded-2xl p-8 flex flex-col items-center max-w-sm text-center">
+              <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin mb-6" />
+              <h3 className="text-xl font-semibold mb-2">Uploading Photos...</h3>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                Please wait while we upload your high-resolution images to the secure server. This may take a few moments depending on your network speed.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

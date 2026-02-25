@@ -1,86 +1,94 @@
-# Pixfolio Frontend - Dashboard & Digital Visual Book System
+# Pixfolio Frontend
 
-This is the frontend for **Pixfolio**, a high-end SaaS platform for photographers and digital labs to create, manage, and showcase interactive digital visual books.
+React SPA for the Pixfolio digital album platform. Handles authentication, album creation, a minimal album viewer, photographer management, billing, and an admin dashboard.
 
-## 🚀 Tech Stack
+## Tech Stack
 
-- **Framework**: React 19 (Vite)
-- **Styling**: Tailwind CSS 4.0, Lucide Icons
-- **UI Components**: Shadcn/UI (Radix UI)
-- **Animation**: Framer Motion 12, GSAP, Lenis Smooth Scroll
-- **Specialized**: react-pageflip (3D book physics), Recharts (Analytics), Swiper (Carousels)
+- **React 19** with Vite (rolldown-vite 7.2.2)
+- **Tailwind CSS v4** (`@tailwindcss/vite` plugin)
+- **shadcn/ui** (New York style, Radix primitives)
+- **Framer Motion** for page transitions
+- **Lucide React** for icons
+- **React Router v7** for routing
 
----
+## Project Structure
 
-## 📂 Project Structure
-
-```bash
-frontend/
-├── src/
-│   ├── app/                # Route definitions & global providers
-│   ├── components/         # Shared UI (shadcn), Layouts, and common blocks
-│   ├── features/           # Modular features (Main logic here)
-│   │   ├── admin/          # Master Admin Dashboard & moderation
-│   │   ├── album/          # Album creation (Pixfolio) & 3D Viewer
-│   │   ├── auth/           # Login & Signup flows
-│   │   ├── landing/        # Landing page & Pricing
-│   │   └── user/           # User dashboard, Profile, Recharge, Photographers
-│   ├── services/           # API communication layer (api.js)
-│   ├── utils/              # Formatting, validation, and constants
-│   └── styles/             # Global CSS & Tailwind configuration
-└── public/                 # Static assets
+```
+src/
+├── app/              # Routes (routes.jsx), ProtectedRoute, providers
+├── components/       # Shared UI
+│   ├── ui/           # shadcn components (button, card, input, etc.)
+│   ├── layout/       # DashboardLayout, MainLayout
+│   ├── AdminHeader.jsx
+│   ├── AppSidebar.jsx
+│   ├── ErrorBoundary.jsx
+│   └── Footer.jsx
+├── features/
+│   ├── album/
+│   │   ├── components/
+│   │   │   └── VisualBookViewer.jsx   # Minimal scrollable album viewer
+│   │   └── pages/
+│   │       ├── CreateNew.jsx          # Album creation wizard
+│   │       └── AllPixfolio.jsx        # Album listing + QR codes
+│   ├── auth/
+│   │   ├── components/   # LoginForm, CreateAccountForm
+│   │   └── pages/        # Login, Signup
+│   ├── admin/            # Admin dashboard + sub-pages
+│   ├── landing/          # Landing page + config
+│   └── user/
+│       └── pages/        # Dashboard, Profile, Settings, Recharge, Photographers, HelpCenter
+├── services/
+│   └── api.js            # All API calls (auth, albums, photographers, billing)
+├── styles/
+│   └── index.css         # Global styles, CSS variables, dark mode tokens
+└── lib/
+    └── utils.js          # cn() helper
 ```
 
----
+## Key Pages & Routes
 
-## 🛠 Core Feature Integration
+| Route | Component | Auth | Description |
+|-------|-----------|------|-------------|
+| `/` | Landing | No | Marketing landing page |
+| `/login` | Login | No | Login form |
+| `/signup` | Signup | No | Registration form |
+| `/dashboard` | Dashboard | Yes | Overview with stats |
+| `/create` | CreateNew | Yes | Album creation wizard (3 steps) |
+| `/all-pixfolio` | AllPixfolio | Yes | List all albums, share, QR codes |
+| `/viewer/:id` | VisualBookViewer | No | **Public minimal viewer** — fetches album from API, displays all images |
+| `/profile` | Profile | Yes | User profile & studio details |
+| `/settings` | Settings | Yes | Account settings |
+| `/recharge` | Recharge | Yes | Buy credits |
+| `/photographers` | Photographers | Yes | Manage photographer partners |
+| `/help` | HelpCenter | Yes | FAQ & support |
+| `/admin` | AdminPasswordPage | No | Admin login |
+| `/admin/dashboard/*` | MasterAdminDashboard | Admin | Admin panel (overview, users, albums, etc.) |
 
-### 1. User Authentication & Profile
-- **Status**: **Fully Integrated**
-- **Details**: JWT-based auth. Social profile management and studio details synchronization.
+## Album Viewer
 
-### 2. Pixfolio (Albums) Management
-- **Status**: **Fully Integrated**
-- **Details**: Full CRUD support synchronized with the backend MongoDB database. Supports 3D flip effects and dynamic music.
+`/viewer/:id` is a public, minimal page. It calls `GET /api/albums/:id`, extracts all images (front cover, spread left/right pages, back cover), and renders them in a vertical scroll layout. No flip-book library — just images stacked vertically with lazy loading.
 
-### 3. Photographer Directory
-- **Status**: **Fully Integrated**
-- **Details**: Management of photography partner profiles, fully persisted in the backend.
+Also used inline by `CreateNew.jsx` in preview mode (receives data via props instead of fetching).
 
-### 4. Billing & Credits
-- **Status**: **Fully Integrated**
-- **Details**: Real-time credit monitoring and billing history retrieval from the API.
+## API Layer
 
----
+All API calls go through `src/services/api.js`. Key functions:
 
-## 📡 API Endpoints (Referenced)
+- `loginUser(email, password)` / `registerUser(data)` — auth
+- `getMyAlbums()` / `createAlbum(data)` / `updateAlbum(id, data)` / `deleteAlbum(id)` — albums
+- `getAlbumById(id)` — public album fetch (used by viewer)
+- `getMyPhotographers()` / `createPhotographer(data)` — photographer directory
+- `purchaseCredits(data)` / `getBillingHistory()` — billing
 
-| Endpoint | Method | Description | Auth Required |
-| :--- | :--- | :--- | :--- |
-| `/api/users/register` | POST | Create new account | No |
-| `/api/users/login` | POST | Get JWT token | No |
-| `/api/users/me` | GET | Current user info | Yes |
-| `/api/users/profile` | PUT | Update studio/socials | Yes |
-| `/api/albums` | GET/POST | Manage pixfolios | Yes |
-| `/api/photographers` | GET/POST | Manage partners | Yes |
-| `/api/billing/history` | GET | Transaction logs | Yes |
-| `/api/billing/purchase` | POST | Credit top-ups | Yes |
+## Setup
 
----
+```bash
+npm install
+npm run dev        # http://localhost:5173
+npm run build      # Production build to dist/
+```
 
----
-
-## 🛠 Setup & Development
-
-1. **Install Deps**: `npm install`
-2. **Run Dev**: `npm run dev`
-3. **Environment**: Update `VITE_API_URL` (if added) or modify `src/services/api.js` for custom backend URLs.
-
----
-
-## 🏗 Admin Access
-- **Path**: `/admin`
-- **Master Admin Password**: Currently set in code for demo purposes. Backend should manage admin session validation separately.
+Backend must be running at the URL configured in `api.js` (defaults to `/api` proxy).
 
 ---
-Built with ❤️ by Sahil Prajapati
+Built by Sahil Prajapati

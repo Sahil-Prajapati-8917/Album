@@ -1,69 +1,79 @@
-# Pixfolio - Interactive Digital Visual Books Platform
+# Pixfolio - Digital Album Platform for Photographers
 
-Pixfolio is a premium, full-stack digital album platform designed for photographers and creators to showcase memories through immersive, interactive page-flipping stories. Built with a cutting-edge React frontend and a robust Node.js/Express backend.
+Pixfolio is a full-stack digital album platform for photographers and labs to create, manage, and share photo albums with clients. Built with React 19 and Node.js/Express.
 
-## 🌟 Vision
+## Key Features
 
-Our goal is to transcend traditional photo galleries by providing a realistic, tactile digital experience. With advanced physics-based page turning and artistic post-processing effects, Pixfolio makes digital memories feel alive.
+- **Minimal Album Viewer** — Clean, scrollable viewer that displays all album images. Fetches album data from the database via a public shareable link (`/viewer/:id`).
+- **Album Management** — Full CRUD for albums with cover images, inner page spreads, photographer assignment, and event metadata.
+- **Photographer Directory** — Manage photography partner profiles linked to albums.
+- **Billing & Credits** — Credit-based system for album creation with purchase history.
+- **Engagement Tracking** — View counts per album, tracked automatically on each viewer visit.
+- **QR Code Sharing** — Auto-generated QR codes for instant album sharing.
+- **Auth & Security** — JWT authentication, bcrypt password hashing, rate limiting.
+- **Dark Mode** — Full dark mode support across all dashboard pages.
+- **Admin Dashboard** — Master admin panel for user management, moderation, and analytics.
 
-## ✨ Key Features
+## Tech Stack
 
-- **Realistic 3D Visual Book**: Interactive page-flipping with natural tilt, shadow effects, and background music integration.
-- **Specialized Dashboards**: Tailored management hubs for independent photographers and high-volume digital labs.
-- **Advanced Album Management**:
-  - **Integrated Storage**: Albums, photographers, and billing data are fully synchronized with the backend.
-  - **Engagement Tracking**: Real-time analytics for album views and user interactions.
-  - **Instant Sharing**: One-click sharing via WhatsApp, Instagram, and other social platforms.
-  - **Dynamic QR Codes**: Automated unique QR code generation for every digital book.
-- **Secure Infrastructure**: JWT-based authentication, bcrypt hashing, and rate-limiting protection.
-- **Modern UI/UX**: A dark-mode first design built with Tailwind CSS v4, Framer Motion, and GSAP.
-- **Scalable Architecture**: Flexible MongoDB data models and a feature-based project structure.
+| Layer | Tech |
+|-------|------|
+| Frontend | React 19, Vite (rolldown-vite), Tailwind CSS v4, shadcn/ui, Framer Motion |
+| Backend | Node.js 18+, Express 5, MongoDB + Mongoose 9 |
+| Auth | JWT, bcryptjs (12 salt rounds), rate limiting |
 
-## 🏗️ Project Architecture
+## Project Structure
 
-The project is split into two main components:
-
-### 1. [Frontend (React)](./frontend/README.md)
-A high-performance interactive application built with Vite, React 19, and advanced animation libraries.
-- **Integrated Features**: Authentication, Profile Management, Album Creation, Photographer Directory, and Billing/Credits.
-- **Detailed Docs**: [Click here to view Frontend Documentation](./frontend/README.md)
-
-### 2. [Backend (Express)](./Backend/README.md)
-A secure RESTful API managing user sessions, profile logic, albums, photographers, and credits.
-- **Technologies**: Node.js, Express, MongoDB (Mongoose), JWT, Bcrypt.
-- **Detailed Docs**: [Click here to view Backend Documentation](./Backend/README.md)
-
-## 🚀 Quick Start
-
-1. **Install Prerequisites**: Ensure you have Node.js 18+ and MongoDB installed.
-2. **Setup Backend**:
-   ```bash
-   cd Backend && npm install
-   cp .env.example .env # Update your variables (MONGO_URI, JWT_SECRET)
-   npm run dev
-   ```
-3. **Setup Frontend**:
-   ```bash
-   cd frontend && npm install
-   npm run dev
-   ```
-4. **Access Platform**: Visit `http://localhost:5173`.
-
-## 📁 Repository Structure
-
-```bash
+```
 photo/
-├── README.md               # You are here
-├── LICENSE                 # MIT License details
-├── Backend/                # API Server source code
-├── frontend/               # React Application source code
-├── Lab.md                  # Comprehensive feature list for the Lab version
-└── structure.md            # Detailed file and folder architecture
+├── Backend/          # Express API server
+│   ├── controllers/  # Route handlers
+│   ├── models/       # Mongoose schemas (User, Album, Photographer, Transaction)
+│   ├── routes/       # API endpoint definitions
+│   ├── middleware/    # Auth, validation, rate limiting
+│   └── index.js      # Entry point
+├── frontend/         # React SPA
+│   ├── src/
+│   │   ├── app/          # Routes & providers
+│   │   ├── components/   # Shared UI (shadcn), layouts, sidebar, header
+│   │   ├── features/     # Feature modules
+│   │   │   ├── album/    # Album creation & viewer
+│   │   │   ├── auth/     # Login & signup
+│   │   │   ├── admin/    # Admin dashboard
+│   │   │   ├── landing/  # Landing page
+│   │   │   └── user/     # Dashboard, profile, settings, billing
+│   │   ├── services/     # API client (api.js)
+│   │   └── styles/       # Global CSS
+│   └── public/           # Static assets
+└── README.md
 ```
 
-## 📄 License
+## Quick Start
 
-This project is licensed under the **MIT License**. See the [LICENSE](./LICENSE) file for more information.
+Prerequisites: Node.js 18+, MongoDB (local or Atlas).
+
+```bash
+# Backend
+cd Backend && npm install
+cp .env.example .env   # set MONGO_URI, JWT_SECRET
+npm run dev
+
+# Frontend (new terminal)
+cd frontend && npm install
+npm run dev
+```
+
+Open `http://localhost:5173`.
+
+## Album Viewer
+
+The viewer is a minimal, scrollable page at `/viewer/:id`. It fetches album data from `GET /api/albums/:id` (public endpoint) and renders all images vertically — front cover, every spread page, and back cover. No third-party page-flip libraries; pure React.
+
+Used for sharing albums with clients via direct link or QR code.
+
+## License
+
+MIT — see [LICENSE](./LICENSE).
 
 ---
-Created with passion by [Sahil Prajapati](https://github.com/Sahil-Prajapati-8917)
+Created by [Sahil Prajapati](https://github.com/Sahil-Prajapati-8917)

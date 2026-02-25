@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 // Create new album — with ATOMIC credit deduction
 exports.createAlbum = async (req, res) => {
     try {
-        const {
+        let {
             clientName,
             functionDate,
             functionType,
@@ -13,9 +13,32 @@ exports.createAlbum = async (req, res) => {
             songName,
             frontCover,
             backCover,
-            spreads,
             totalSheets
         } = req.body;
+
+        // Process uploaded files if req.files exists
+        let innerSheetsUrls = [];
+        if (req.files) {
+            if (req.files.frontCover && req.files.frontCover[0]) {
+                frontCover = `/uploads/albums/${req.files.frontCover[0].filename}`;
+            }
+            if (req.files.backCover && req.files.backCover[0]) {
+                backCover = `/uploads/albums/${req.files.backCover[0].filename}`;
+            }
+            if (req.files.innerSheets && req.files.innerSheets.length > 0) {
+                innerSheetsUrls = req.files.innerSheets.map(file => `/uploads/albums/${file.filename}`);
+            }
+        }
+
+        // Generate spreads from innerSheetsUrls
+        const spreads = [];
+        for (let i = 0; i < innerSheetsUrls.length; i += 2) {
+            spreads.push({
+                id: Math.floor(i / 2) + 1,
+                leftPage: { image: innerSheetsUrls[i] || null, caption: "" },
+                rightPage: { image: innerSheetsUrls[i + 1] || null, caption: "" }
+            });
+        }
 
         // ATOMIC credit deduction — prevents race condition (BILL-02)
         // Only deducts if credits > 0; returns null if insufficient
@@ -138,7 +161,7 @@ exports.updateAlbum = async (req, res) => {
         // Whitelist only allowed fields — prevents userId override & prototype pollution
         const allowedFields = [
             'clientName', 'functionDate', 'functionType', 'photographerId',
-            'songName', 'frontCover', 'backCover', 'spreads', 'totalSheets',
+            'songName', 'frontCover', 'backCover', 'totalSheets',
             'status', 'priority', 'label'
         ];
 
@@ -146,6 +169,31 @@ exports.updateAlbum = async (req, res) => {
         for (const field of allowedFields) {
             if (req.body[field] !== undefined) {
                 sanitizedUpdates[field] = req.body[field];
+            }
+        }
+
+        // Process uploaded files for updates
+        let innerSheetsUrls = [];
+        if (req.files) {
+            if (req.files.frontCover && req.files.frontCover[0]) {
+                sanitizedUpdates.frontCover = `/uploads/albums/${req.files.frontCover[0].filename}`;
+            }
+            if (req.files.backCover && req.files.backCover[0]) {
+                sanitizedUpdates.backCover = `/uploads/albums/${req.files.backCover[0].filename}`;
+            }
+            if (req.files.innerSheets && req.files.innerSheets.length > 0) {
+                innerSheetsUrls = req.files.innerSheets.map(file => `/uploads/albums/${file.filename}`);
+
+                // If new inner sheets are provided, update the spreads
+                const spreads = [];
+                for (let i = 0; i < innerSheetsUrls.length; i += 2) {
+                    spreads.push({
+                        id: Math.floor(i / 2) + 1,
+                        leftPage: { image: innerSheetsUrls[i] || null, caption: "" },
+                        rightPage: { image: innerSheetsUrls[i + 1] || null, caption: "" }
+                    });
+                }
+                sanitizedUpdates.spreads = spreads;
             }
         }
 

@@ -3,6 +3,7 @@ import { getAlbumById } from '@/services/api'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Calendar, User, MapPin, ImageOff } from 'lucide-react'
+import ThreeDFlipBook from './ThreeDFlipBook'
 
 const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCover = null }) => {
   const { id } = useParams()
@@ -53,32 +54,42 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
     fetchAlbum()
   }, [id, title, spreads, frontCover, backCover])
 
+  // Helper to ensure image URLs are fully qualified
+  const getImageUrl = (path) => {
+    if (!path) return ''
+    if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) {
+      return path
+    }
+    const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'
+    return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`
+  }
+
   // Collect every image URL from the album data
   const getAllImages = () => {
     if (!album) return []
     const images = []
 
     if (album.frontCover) {
-      images.push({ src: album.frontCover, label: 'Front Cover' })
+      images.push({ src: getImageUrl(album.frontCover), label: 'Front Cover' })
     }
 
     album.spreads.forEach((spread, idx) => {
       if (spread.leftPage?.image) {
         images.push({
-          src: spread.leftPage.image,
+          src: getImageUrl(spread.leftPage.image),
           label: spread.leftPage.caption || `Page ${idx * 2 + 1}`,
         })
       }
       if (spread.rightPage?.image) {
         images.push({
-          src: spread.rightPage.image,
+          src: getImageUrl(spread.rightPage.image),
           label: spread.rightPage.caption || `Page ${idx * 2 + 2}`,
         })
       }
     })
 
     if (album.backCover) {
-      images.push({ src: album.backCover, label: 'Back Cover' })
+      images.push({ src: getImageUrl(album.backCover), label: 'Back Cover' })
     }
 
     return images
@@ -179,28 +190,9 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
         </div>
       </header>
 
-      {/* Image grid */}
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <div className="flex flex-col gap-2">
-          {images.map((img, i) => (
-            <div key={i} className="relative bg-neutral-900 rounded-lg overflow-hidden">
-              <img
-                src={img.src}
-                alt={img.label}
-                loading="lazy"
-                className="w-full h-auto block"
-                onError={(e) => {
-                  e.target.style.display = 'none'
-                  e.target.nextElementSibling.style.display = 'flex'
-                }}
-              />
-              {/* Fallback for broken images */}
-              <div className="hidden items-center justify-center h-48 text-neutral-600">
-                <ImageOff size={24} />
-              </div>
-            </div>
-          ))}
-        </div>
+      {/* Image grid replaced with 3D Flipbook */}
+      <main className="w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <ThreeDFlipBook images={images} />
       </main>
 
       {/* Minimal footer */}

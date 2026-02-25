@@ -1,0 +1,157 @@
+.flipbook-wrapper {
+    perspective: 3500px;
+    width: 100%;
+    max-width: 4800px;
+    /* Two pages side-by-side, each up to 2400px wide */
+    height: 85vh;
+    /* Use viewport height responsive */
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.book-container {
+    width: 100%;
+    /* 6:2 aspect ratio means each page (half the width) is 3:2 */
+    aspect-ratio: 6 / 2;
+    max-height: 85vh;
+    /* Ensure it still fits on screen */
+    position: relative;
+    display: flex;
+    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform-style: preserve-3d;
+}
+
+.book-container.closed-front {
+    transform: translateX(-25%);
+}
+
+.book-container.closed-back {
+    transform: translateX(25%);
+}
+
+.book-container.open {
+    transform: translateX(0);
+}
+
+.book-sheet {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform-origin: left center;
+    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+}
+
+/* Ensure sheets don't intercept clicks when they shouldn't */
+.book-sheet.flipped {
+    transform: rotateY(-180deg);
+}
+
+.page-side {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background-color: #FAFAFA;
+    /* Off-white paper color */
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Base styling for front and back */
+.page-side.front {
+    transform: rotateY(0deg);
+}
+
+.page-side.back {
+    transform: rotateY(180deg);
+}
+
+/* Adds the spine shadow to simulate depth and binding */
+.page-shadow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.25), transparent);
+    pointer-events: none;
+    z-index: 10;
+}
+
+.page-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* Thicker border for covers */
+.book-sheet.is-cover .page-side {
+    background-color: #222;
+    /* Darker back for cover if needed, or white */
+}
+
+.book-controls {
+    margin-top: 30px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.book-control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.book-control-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.05);
+}
+
+.book-control-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.book-play-btn {
+    background: #EAB308;
+    /* yellow-500 equivalent */
+    border-color: #EAB308;
+    color: black;
+}
+
+.book-play-btn:hover:not(:disabled) {
+    background: #FACC15;
+}
+
+/* Play state styling */
+.book-play-btn.playing {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}

@@ -39,12 +39,16 @@ const apiRequest = async (endpoint, options = {}) => {
 
   const config = {
     headers: {
-      'Content-Type': 'application/json',
       ...(token && { Authorization: `Bearer ${token}` }),
       ...options.headers,
     },
     ...options,
   };
+
+  // Only set Content-Type to application/json if we are not sending FormData
+  if (!(options.body instanceof FormData)) {
+    config.headers['Content-Type'] = 'application/json'
+  }
 
   try {
     const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
@@ -187,14 +191,14 @@ export const getAlbumById = async (id) => {
 export const createAlbum = async (albumData) => {
   return await apiRequest('/albums', {
     method: 'POST',
-    body: JSON.stringify(albumData),
+    body: albumData instanceof FormData ? albumData : JSON.stringify(albumData),
   });
 };
 
 export const updateAlbum = async (id, albumData) => {
   return await apiRequest(`/albums/${id}`, {
     method: 'PUT',
-    body: JSON.stringify(albumData),
+    body: albumData instanceof FormData ? albumData : JSON.stringify(albumData),
   });
 };
 

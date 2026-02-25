@@ -1,156 +1,109 @@
-# Pixfolio Backend - API Documentation
+# Pixfolio Backend
 
-The server-side component of the Pixfolio platform, providing a robust RESTful API for user authentication, profile management, and system administration. Built with a focus on security, performance, and scalability.
+REST API for the Pixfolio digital album platform. Handles user auth, album CRUD, photographer management, and billing/credits.
 
-## 🛠️ Technology Stack
+## Tech Stack
 
-- **Node.js 18+** - Modern JavaScript runtime
-- **Express.js 5.2.1** - Fast, unopinionated web framework
-- **MongoDB + Mongoose 9.0.2** - Flexible NoSQL database and ODM
-- **JWT (JSON Web Tokens) 9.0.3** - Secure session management
-- **bcryptjs 3.0.3** - Industrial-strength password hashing (12 salt rounds)
-- **CORS 2.8.5** - Secure cross-origin resource sharing
+- **Node.js 18+** / **Express 5.2**
+- **MongoDB** + **Mongoose 9**
+- **JWT 9.0** for auth, **bcryptjs 3.0** for password hashing
+- **CORS** for cross-origin support
 
-## 📋 Prerequisites
-
-- Node.js 18+ installed on your system
-- A running MongoDB instance (Local or Atlas)
-- npm or yarn package manager
-
-## 🚀 Getting Started
-
-1. **Install Dependencies:**
-   ```bash
-   cd Backend
-   npm install
-   ```
-
-2. **Environment Configuration:**
-   Copy the example environment file and update it with your own credentials:
-   ```bash
-   cp .env.example .env
-   ```
-   *Note: Ensure `MONGO_URI` and `JWT_SECRET` are properly configured in `.env`.*
-
-3. **Run the Server:**
-   - **Development mode** (with nodemon):
-     ```bash
-     npm run dev
-     ```
-   - **Production mode**:
-     ```bash
-     npm start
-     ```
-
-## 🛣️ API Reference
-
-### Authentication Endpoints
-
-#### Register a New User
-`POST /api/users/register`
-- **Access**: Public
-- **Rate Limit**: 5 requests per 15 minutes
-- **Body Parameters**:
-  - `email` (Required): Valid email address
-  - `password` (Required): Min 6 characters
-  - `personalName` (Required): Full name
-  - `accountType` (Required): `photographer` or `lab`
-  - `city`, `state`, `studioName`, `mobileNumber`, `address` (Optional)
-- **Success Response**: `201 Created` with JWT token and user data
-
-#### Login User
-`POST /api/users/login`
-- **Access**: Public
-- **Rate Limit**: 10 requests per 15 minutes
-- **Body Parameters**:
-  - `email` (Required)
-  - `password` (Required)
-- **Success Response**: `200 OK` with JWT token and user data
-
-### User Management (Protected)
-
-#### Get Current User (State Management)
-`GET /api/users/me`
-- **Auth**: Required
-- **Description**: Returns current authenticated user data.
-
-#### Update User Profile
-`PUT /api/users/profile`
-- **Auth**: Required
-- **Description**: Updates user details and social media integration.
-
-### Album Management (Protected)
-
-#### Create Pixfolio
-`POST /api/albums`
-- **Auth**: Required
-- **Body**: `clientName`, `functionDate`, `functionType`, `photographerId`, `songName`, `frontCover`, `backCover`, `spreads`
-- **Description**: Creates a new digital album. Deducts 1 credit from user.
-
-#### Get My Albums
-`GET /api/albums`
-- **Auth**: Required
-- **Description**: Retrieves all albums created by the authenticated user.
-
-#### Get Album Details
-`GET /api/albums/:id`
-- **Access**: Public
-- **Description**: Retrieves public data for a specific album (3D viewing).
-
-### Photographer Management (Protected)
-
-#### Manage Partners
-`GET /api/photographers` | `POST /api/photographers`
-- **Auth**: Required
-- **Description**: CRUD operations for managing photography partner profiles.
-
-### Billing & Credits (Protected)
-
-#### Purchase Credits
-`POST /api/billing/purchase`
-- **Auth**: Required
-- **Body**: `planId`, `amount`, `paymentId`
-- **Description**: Processes credit purchases and updates user balance.
-
-#### Billing History
-`GET /api/billing/history`
-- **Auth**: Required
-- **Description**: Retrieves a history of all financial transactions and credit top-ups.
-
-## 🛡️ Security Features
-
-- **Password Hashing**: Uses bcrypt with a cost factor of 12 for secure storage.
-- **JWT Authentication**: Secure token-based sessions with expiration.
-- **Rate Limiting**: Protection against brute-force attacks on sign-up and login.
-- **Input Validation**: Strict schema validation for all incoming requests.
-- **CORS protection**: Configurable cross-origin resource sharing.
-- **Secure Error Handling**: Formatted error responses without exposing internal server details.
-
-## 📁 Directory Structure
+## Setup
 
 ```bash
-Backend/
-├── config/             # Database connection setup
-├── controllers/        # Logical handlers for API routes
-├── middleware/         # Auth, validation, and error handlers
-├── models/             # Mongoose schemas (User, Album, Photographer, Transaction)
-├── routes/             # API endpoint definitions
-├── utils/              # Helper utility functions
-└── index.js            # Main entry point and server setup
+cd Backend
+npm install
+cp .env.example .env   # set MONGO_URI, JWT_SECRET
+npm run dev             # development (nodemon)
+npm start               # production
 ```
 
-## 🏗️ Data Model Overview
+## API Endpoints
 
-- **User**: Stores profile, studio details, and total available `credits`.
-- **Album**: Stores client info, event meta, and links to visual "spreads" (page pairs).
-- **Photographer**: Stores metadata for partner photographers used in album creation.
-- **Transaction**: Records all credit purchases and billing activity.
+### Auth (Public)
 
-## 🗺️ Future Roadmap
-- [ ] Album Management Strategy (Migration to Database)
-- [ ] AWS S3/Cloudinary Image Upload Integration
-- [ ] Admin Control Panel API Extensions
-- [ ] Real-time Notifications via WebSockets
+| Method | Endpoint | Description | Rate Limit |
+|--------|----------|-------------|------------|
+| POST | `/api/users/register` | Create account | 5 / 15min |
+| POST | `/api/users/login` | Get JWT token | 10 / 15min |
+
+### User (Protected)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/users/me` | Current user data |
+| PUT | `/api/users/profile` | Update profile & studio details |
+
+### Albums
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | `/api/albums` | Yes | List user's albums |
+| POST | `/api/albums` | Yes | Create album (deducts 1 credit) |
+| GET | `/api/albums/:id` | **No** | Public album data (used by viewer). Increments view count. |
+| PUT | `/api/albums/:id` | Yes | Update album (field whitelist enforced) |
+| DELETE | `/api/albums/:id` | Yes | Delete album |
+
+### Photographers (Protected)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/photographers` | List user's photographers |
+| POST | `/api/photographers` | Add photographer |
+| PUT | `/api/photographers/:id` | Update photographer |
+| DELETE | `/api/photographers/:id` | Delete photographer |
+
+### Billing (Protected)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/billing/purchase` | Purchase credits |
+| GET | `/api/billing/history` | Transaction history |
+
+## Data Models
+
+### User
+`email`, `password` (hashed), `personalName`, `accountType` (photographer/lab), `studioName`, `city`, `state`, `mobileNumber`, `address`, `credits`, social links.
+
+### Album
+`albumId` (unique, format `PF-<uuid>`), `clientName`, `functionDate`, `functionType`, `photographerId` (ref), `userId` (ref), `songName`, `frontCover` (URL string), `backCover` (URL string), `spreads` (array), `totalSheets`, `views`, `status`, `priority`, `label`.
+
+**Spread structure:**
+```json
+{
+  "id": 1,
+  "leftPage": { "image": "https://...", "caption": "" },
+  "rightPage": { "image": "https://...", "caption": "" }
+}
+```
+
+### Photographer
+`name`, `phone`, `city`, `userId` (ref).
+
+### Transaction
+`userId` (ref), `planId`, `amount`, `paymentId`, `credits`, `type`.
+
+## Directory Structure
+
+```
+Backend/
+├── config/         # DB connection
+├── controllers/    # Route handlers (userController, albumController, etc.)
+├── middleware/     # auth.js (JWT verify), rate limiters
+├── models/         # Mongoose schemas
+├── routes/         # Express routers
+├── utils/          # Helpers
+└── index.js        # Entry point
+```
+
+## Security
+
+- Passwords hashed with bcrypt (12 salt rounds)
+- JWT tokens with expiration
+- Rate limiting on auth endpoints
+- Field whitelist on album updates (prevents mass assignment)
+- Ownership checks on all mutations (user can only modify their own data)
 
 ---
-Built with Node.js and Passion for the Pixfolio Ecosystem.
+Built by Sahil Prajapati

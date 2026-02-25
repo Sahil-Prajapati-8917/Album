@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require("path");
 require("dotenv").config();
 const connectDB = require("./config/database");
 
@@ -56,6 +57,9 @@ app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/albums", require("./routes/albumRoutes"));
 app.use("/api/photographers", require("./routes/photographerRoutes"));
 app.use("/api/billing", require("./routes/billingRoutes"));
+
+// Serve static uploaded files
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Health check endpoint
 app.get("/health", (req, res) => {

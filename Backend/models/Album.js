@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const PageSchema = new mongoose.Schema({
-    image: { type: String, required: true },
+    image: { type: String, default: null },
     caption: { type: String, default: '' }
 });
 
