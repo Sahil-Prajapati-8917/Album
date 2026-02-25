@@ -48,7 +48,15 @@ const Page = React.forwardRef((props, ref) => {
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/black-leather.png")' }}></div>
 
         {image ? (
-          <img src={image} className="absolute inset-0 w-full h-full object-cover" alt="Cover" />
+          <img
+            src={image}
+            className="absolute inset-0 w-full h-full object-cover"
+            alt="Cover"
+            onError={(e) => {
+              e.target.style.display = 'none'
+              e.target.parentElement.style.background = 'linear-gradient(135deg, #2c3e50, #34495e)'
+            }}
+          />
         ) : (
           <div className="relative z-10">{children}</div>
         )}
@@ -87,9 +95,11 @@ const Page = React.forwardRef((props, ref) => {
           alt={pageData.caption || ''}
           className="w-full h-full object-contain transition-transform duration-700"
           style={{
-            // Premium "printed" look: full-bleed horizontal photos fill the canvas,
-            // vertical photos are centered with intentional white sides.
             backgroundColor: 'white'
+          }}
+          onError={(e) => {
+            e.target.style.display = 'none'
+            e.target.parentElement.style.background = 'linear-gradient(135deg, #f5f5f5, #e0e0e0)'
           }}
         />
         {/* Extremely subtle sheen to simulate printed paper ink reflection */}

@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom'
 
 const Login = () => {
   useEffect(() => {
-    const linkSymbols = document.createElement('link')
-    linkSymbols.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
-    linkSymbols.rel = 'stylesheet'
-    document.head.appendChild(linkSymbols)
-
-    return () => {
-      if (linkSymbols.parentNode) document.head.removeChild(linkSymbols)
+    // Only add the font link once (idempotent) — don't remove on cleanup to avoid React DOM conflicts
+    const fontId = 'material-symbols-font'
+    if (!document.getElementById(fontId)) {
+      const linkSymbols = document.createElement('link')
+      linkSymbols.id = fontId
+      linkSymbols.href = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap'
+      linkSymbols.rel = 'stylesheet'
+      document.head.appendChild(linkSymbols)
     }
   }, [])
 
