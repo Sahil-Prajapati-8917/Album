@@ -1,4 +1,4 @@
-/* Landing Page Styles */
+/* Landing Page Styles
 
 /* From src/landing/index.css */
 
@@ -292,32 +292,32 @@ html.lenis body {
 
 /* Selection styling */
 ::selection {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(198, 167, 94, 0.2);
     color: inherit;
 }
 
 /* Image loading fade */
 img {
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 /* Custom scrollbar for desktop */
 @media (min-width: 768px) {
-    ::-webkit-scrollbar {
-        width: 8px;
+    .landing-root ::-webkit-scrollbar {
+        width: 6px;
     }
 
-    ::-webkit-scrollbar-track {
-        background: #0d1310;
+    .landing-root ::-webkit-scrollbar-track {
+        background: transparent;
     }
 
-    ::-webkit-scrollbar-thumb {
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
+    .landing-root ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 999px;
     }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: rgba(255, 255, 255, 0.3);
+    .landing-root ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.25);
     }
 }
 
@@ -326,12 +326,14 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 /* Focus visible styles */
 *:focus-visible {
-    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
+    border-radius: 4px;
 }
 
 /* Remove default button styles */
@@ -339,14 +341,15 @@ button {
     background: none;
     border: none;
     cursor: pointer;
+    font-family: inherit;
 }
 
 /* Link hover transitions */
 a {
-    transition: color 0.3s ease, opacity 0.3s ease;
+    transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 /* Swiper custom styles */
 .swiper-wrapper {
     transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1) !important;
-}
+} */

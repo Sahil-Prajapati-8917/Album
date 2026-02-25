@@ -162,30 +162,32 @@ const Dashboard = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Overview of your albums and performance.</p>
+          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <p className="text-muted-foreground text-sm mt-0.5">Overview of your albums and performance.</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button onClick={() => navigate('/create')} className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Plus className="mr-2 h-4 w-4" /> New Album
+          <Button onClick={() => navigate('/create')} size="sm">
+            <Plus className="mr-1.5 h-4 w-4" /> New Album
           </Button>
         </div>
       </div>
 
       {/* 1. Top Cards (Product Metrics) */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
         {/* Total Albums - Orange Theme */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
               Total Albums
             </CardTitle>
-            <ImageIcon className="h-4 w-4 text-orange-500" />
+            <div className="h-7 w-7 rounded-lg bg-orange-500/10 flex items-center justify-center">
+              <ImageIcon className="h-3.5 w-3.5 text-orange-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold">{stats.totalAlbums}</div>
+                <div className="text-2xl font-bold tracking-tight">{stats.totalAlbums}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   +{Math.floor(Math.random() * 5)} from last month
                 </p>
@@ -196,17 +198,19 @@ const Dashboard = () => {
         </Card>
 
         {/* Public Albums - Teal Theme */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
               Public Albums
             </CardTitle>
-            <Eye className="h-4 w-4 text-emerald-500" />
+            <div className="h-7 w-7 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+              <Eye className="h-3.5 w-3.5 text-emerald-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold">{stats.publicAlbums}</div>
+              <div className="text-2xl font-bold tracking-tight">{stats.publicAlbums}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {((stats.publicAlbums / (stats.totalAlbums || 1)) * 100).toFixed(0)}% visible
                 </p>
@@ -217,17 +221,19 @@ const Dashboard = () => {
         </Card>
 
         {/* Total Views - Purple Theme */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
               Total Views
             </CardTitle>
-            <Users className="h-4 w-4 text-purple-500" />
+            <div className="h-7 w-7 rounded-lg bg-purple-500/10 flex items-center justify-center">
+              <Users className="h-3.5 w-3.5 text-purple-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold">{stats.totalViews}</div>
+                <div className="text-2xl font-bold tracking-tight">{stats.totalViews}</div>
                 <p className="text-xs text-emerald-500 flex items-center mt-1">
                   <ArrowUpRight className="h-3 w-3 mr-1" />
                   +12.5%
@@ -239,17 +245,19 @@ const Dashboard = () => {
         </Card>
 
         {/* Active Plan - Blue Theme */}
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
+            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
               Active Plan
             </CardTitle>
-            <CreditCard className="h-4 w-4 text-blue-500" />
+            <div className="h-7 w-7 rounded-lg bg-blue-500/10 flex items-center justify-center">
+              <CreditCard className="h-3.5 w-3.5 text-blue-500" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold">{user?.credits !== undefined ? `${user.credits} Credits` : 'Free Credit'}</div>
+                <div className="text-2xl font-bold tracking-tight">{user?.credits !== undefined ? `${user.credits} Credits` : 'Free Credit'}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {user?.creditValidity ? `Expires ${new Date(user.creditValidity).toLocaleDateString()}` : 'No expiry set'}
                 </p>
@@ -263,7 +271,7 @@ const Dashboard = () => {
       </div>
 
       {/* 2. Middle Section - Charts & Quick Actions */}
-      <div className="grid gap-4 md:grid-cols-7">
+      <div className="grid gap-3 md:grid-cols-7">
 
         {/* Album Performance Graph - Vibrant Gradient */}
         <Card className="col-span-4">
@@ -337,7 +345,7 @@ const Dashboard = () => {
       </div>
 
       {/* 3. Bottom Section - Album Trends & Top Albums */}
-      <div className="grid gap-4 md:grid-cols-10">
+      <div className="grid gap-3 md:grid-cols-10">
 
         {/* Top Performing Albums Table */}
         <Card className="col-span-10 lg:col-span-7">

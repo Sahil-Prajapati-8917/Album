@@ -146,12 +146,12 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar collapsible="icon" className="border-r">
+    <Sidebar collapsible="icon" className="border-r border-border/50">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg overflow-hidden bg-muted/50">
                 <img src="/Pixfolio_Logo.svg" alt="Pixfolio" className="size-8 object-contain" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -198,7 +198,7 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent">
+            <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent transition-colors duration-200">
                   <Avatar className="h-8 w-8 rounded-lg">
                     <AvatarImage src={user.avatar} />
                     <AvatarFallback className="rounded-lg">
@@ -251,7 +251,7 @@ export function AppSidebar() {
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="text-red-500 focus:text-red-500 focus:bg-red-50/10 cursor-pointer"
+                  className="text-red-500 focus:text-red-500 focus:bg-red-500/10 cursor-pointer"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />

@@ -26,17 +26,17 @@ export default function Settings() {
         <div className="flex-1 space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Settings</CardTitle>
+                    <CardTitle className="text-lg">Settings</CardTitle>
                     <CardDescription>
                         Manage your application preferences and account security.
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-8">
+                <CardContent className="space-y-6">
                     {/* Plan Overview - Inspired by target UI Banner */}
-                    <Card className="border-none shadow-sm bg-primary/5 border border-primary/10">
+                    <Card className="border-none shadow-none bg-primary/5 border border-primary/10 rounded-lg">
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <div className="space-y-1">
-                                <CardTitle className="text-lg font-bold">Pro Visionary Plan</CardTitle>
+                                <CardTitle className="text-base font-semibold">Pro Visionary Plan</CardTitle>
                                 <CardDescription>You are currently on the professional plan with full access.</CardDescription>
                             </div>
                             <Zap className="h-5 w-5 text-primary fill-primary" />
@@ -50,9 +50,9 @@ export default function Settings() {
                     </Card>
 
                     {/* Site Configuration */}
-                    <Card className="border shadow-sm">
+                    <Card className="border border-border/60 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-xl">Site Configuration</CardTitle>
+                            <CardTitle className="text-base font-semibold">Site Configuration</CardTitle>
                             <CardDescription>Customize how your Pixfolio appears to others.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">
@@ -83,16 +83,16 @@ export default function Settings() {
                                 <Switch defaultChecked />
                             </div>
                         </CardContent>
-                        <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-end">
+                        <CardFooter className="bg-muted/30 border-t border-border/50 px-6 py-3 flex justify-end">
                             <Button size="sm">Save Changes</Button>
                         </CardFooter>
                     </Card>
 
                     {/* Security Section */}
                     <form onSubmit={(e) => e.preventDefault()}>
-                        <Card id="security" className="border shadow-sm">
+                        <Card id="security" className="border border-border/60 shadow-sm">
                             <CardHeader>
-                                <CardTitle className="text-xl">Security & Privacy</CardTitle>
+                                <CardTitle className="text-base font-semibold">Security & Privacy</CardTitle>
                                 <CardDescription>Manage your account security and password.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
@@ -115,16 +115,16 @@ export default function Settings() {
                                     <Switch />
                                 </div>
                             </CardContent>
-                            <CardFooter className="bg-muted/50 border-t px-6 py-4 flex justify-end">
+                            <CardFooter className="bg-muted/30 border-t border-border/50 px-6 py-3 flex justify-end">
                                 <Button type="submit" size="sm">Update Password</Button>
                             </CardFooter>
                         </Card>
                     </form>
 
                     {/* Notifications Section */}
-                    <Card id="notifications" className="border shadow-sm">
+                    <Card id="notifications" className="border border-border/60 shadow-sm">
                         <CardHeader>
-                            <CardTitle className="text-xl">Notification Preferences</CardTitle>
+                            <CardTitle className="text-base font-semibold">Notification Preferences</CardTitle>
                             <CardDescription>Control how you receive updates and alerts.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -146,9 +146,9 @@ export default function Settings() {
                     </Card>
 
                     {/* Account Management - Danger Zone */}
-                    <Card className="border-destructive/20 shadow-sm bg-destructive/5">
+                    <Card className="border-destructive/20 shadow-sm bg-destructive/5 rounded-lg">
                         <CardHeader>
-                            <CardTitle className="text-xl text-destructive">Account Management</CardTitle>
+                            <CardTitle className="text-base font-semibold text-destructive">Account Management</CardTitle>
                             <CardDescription>Permanently delete or deactivate your account.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -156,7 +156,7 @@ export default function Settings() {
                                 Once you delete your account, there is no going back. Please be certain.
                             </p>
                         </CardContent>
-                        <CardFooter className="border-t border-destructive/10 px-6 py-4 flex flex-col sm:flex-row gap-4">
+                        <CardFooter className="border-t border-destructive/10 px-6 py-3 flex flex-col sm:flex-row gap-3">
                             <Button variant="outline" className="border-destructive/20 text-destructive hover:bg-destructive/10">Deactivate Account</Button>
                             <Button variant="destructive">Delete Account</Button>
                         </CardFooter>

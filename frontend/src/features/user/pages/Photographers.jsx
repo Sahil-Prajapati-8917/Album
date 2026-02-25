@@ -133,18 +133,18 @@ export default function Photographers() {
         <div className="flex-1 space-y-6 pb-10 max-w-6xl mx-auto w-full pt-4 md:pt-8 px-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Your Photographers</h1>
-                    <p className="text-muted-foreground mt-1">Manage your photography partners and contacts.</p>
+                    <h1 className="text-2xl font-semibold tracking-tight">Your Photographers</h1>
+                    <p className="text-muted-foreground text-sm mt-0.5">Manage your photography partners and contacts.</p>
                 </div>
                 <Button onClick={() => handleOpenDialog()} className="bg-primary text-primary-foreground">
                     <Plus className="mr-2 h-4 w-4" /> Add New
                 </Button>
             </div>
 
-            <Card className="border shadow-sm">
+            <Card className="border border-border/60 shadow-sm">
                 <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                        <CardTitle className="text-xl">Partners Directory</CardTitle>
+                        <CardTitle className="text-lg">Partners Directory</CardTitle>
                         <div className="relative w-full max-w-sm ml-auto">
                             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                             <Input
@@ -158,7 +158,7 @@ export default function Photographers() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <div className="border rounded-md overflow-hidden">
+                    <div className="border border-border/50 rounded-lg overflow-hidden">
                         <Table>
                             <TableHeader className="bg-muted/50">
                                 <TableRow>
@@ -175,7 +175,7 @@ export default function Photographers() {
                                         <TableRow key={p.id}>
                                             <TableCell className="font-medium">
                                                 <div className="flex items-center gap-2">
-                                                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-sm font-semibold">
                                                         {p.name.charAt(0)}
                                                     </div>
                                                     {p.name}

@@ -11,7 +11,7 @@ import { FAQ } from './sections/FAQ';
 import { Footer } from './sections/Footer';
 import { siteConfig } from './config.js';
 import { BackToTop } from './components/BackToTop';
-import './landing.css';
+// import './landing.css';
 
 function Landing() {
   // Initialize Lenis smooth scroll

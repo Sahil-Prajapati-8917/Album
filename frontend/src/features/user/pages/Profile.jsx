@@ -224,10 +224,10 @@ export default function Profile() {
       />
 
       {/* 🔹 1. Basic Information Section */}
-      <Card className="border shadow-sm">
+      <Card className="border border-border/60 shadow-sm">
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="space-y-1">
-            <CardTitle className="text-xl">Basic Information</CardTitle>
+            <CardTitle className="text-lg">Basic Information</CardTitle>
             <CardDescription>Manage your personal and business presence.</CardDescription>
           </div>
           <Button
@@ -246,7 +246,7 @@ export default function Profile() {
         <CardContent className="space-y-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
             <div className="relative inline-block group cursor-pointer" onClick={handlePhotoClick}>
-              <Avatar className="h-24 w-24 border-2 border-background shadow-sm ring-1 ring-border transition-opacity hover:opacity-80">
+              <Avatar className="h-24 w-24 border-2 border-background shadow-md ring-1 ring-border/40 transition-all duration-200 hover:ring-border hover:opacity-90">
                 <AvatarImage src={profileData.photo} />
                 <AvatarFallback className="text-2xl bg-muted">SP</AvatarFallback>
               </Avatar>
@@ -285,7 +285,7 @@ export default function Profile() {
               { label: "WhatsApp", value: profileData.whatsapp, icon: MessageCircle },
               { label: "GST", value: profileData.gst || "Not provided", icon: FileText },
             ].map((field) => (
-              <div key={field.label} className="space-y-1.5 p-3 rounded-md bg-muted/30 border border-transparent hover:border-border transition-colors">
+              <div key={field.label} className="space-y-1.5 p-3 rounded-lg bg-muted/30 border border-border/40 hover:border-border/70 transition-colors duration-200">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <field.icon className="h-3.5 w-3.5" />
                   <span className="text-[10px] font-bold uppercase tracking-wider">{field.label}</span>
@@ -300,7 +300,7 @@ export default function Profile() {
               <MapPin className="h-4 w-4 text-muted-foreground" />
               <h4 className="text-sm font-medium">Full Address</h4>
             </div>
-            <div className="p-4 rounded-md bg-muted/30 border">
+            <div className="p-4 rounded-lg bg-muted/30 border border-border/40">
               <p className="text-sm">{profileData.address}</p>
               <p className="text-sm font-medium mt-1">{profileData.city}, {profileData.state} - {profileData.pincode}</p>
             </div>
@@ -309,11 +309,11 @@ export default function Profile() {
       </Card>
 
       {/* 🔹 2. Plan & Subscription Section */}
-      <Card className="border shadow-sm">
+      <Card className="border border-border/60 shadow-sm">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-xl">Plan & Subscription</CardTitle>
+              <CardTitle className="text-lg">Plan & Subscription</CardTitle>
               <CardDescription>Manage your subscription and credits.</CardDescription>
             </div>
             <Badge variant="default" className="bg-emerald-500 hover:bg-emerald-600">
@@ -362,7 +362,7 @@ export default function Profile() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/30 p-4 rounded-lg">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/30 p-4 rounded-lg border border-border/40">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-primary/10 rounded-full">
                   <CreditCard className="h-4 w-4 text-primary" />
@@ -388,11 +388,11 @@ export default function Profile() {
       </Card>
 
       {/* 🔹 3. Social Media Links Section */}
-      <Card className="border shadow-sm">
+      <Card className="border border-border/60 shadow-sm">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <CardTitle className="text-xl">Social Media Links</CardTitle>
+              <CardTitle className="text-lg">Social Media Links</CardTitle>
               <CardDescription>Connect with your clients across platforms.</CardDescription>
             </div>
             <Button
@@ -420,7 +420,7 @@ export default function Profile() {
               { label: "Website", value: socialLinks.website, icon: Globe, color: "text-indigo-500" },
               { label: "Portfolio", value: socialLinks.portfolio, icon: Link, color: "text-slate-600" },
             ].map((social) => (
-              <div key={social.label} className="flex items-center gap-3 p-3 border rounded-md bg-muted/20 hover:bg-muted/40 transition-colors">
+              <div key={social.label} className="flex items-center gap-3 p-3 border border-border/40 rounded-lg bg-muted/20 hover:bg-muted/40 hover:border-border/70 transition-all duration-200">
                 <social.icon className={`h-5 w-5 ${social.color}`} />
                 <div className="flex-1 overflow-hidden">
                   <p className="text-xs font-medium text-muted-foreground">{social.label}</p>

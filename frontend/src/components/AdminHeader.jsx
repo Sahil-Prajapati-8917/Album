@@ -23,7 +23,7 @@ export function AdminHeader({ user }) {
         : 'Dashboard'
 
     return (
-        <header className="sticky top-0 z-10 bg-white dark:bg-[#020817] flex h-16 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+        <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-xl backdrop-saturate-150 flex h-14 shrink-0 items-center gap-2 border-b border-border/50 px-4 transition-[width,height] duration-200 ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex items-center gap-2 flex-1">
                 <SidebarTrigger className="-ml-1" />
                 <Separator orientation="vertical" className="mr-2 h-4" />
@@ -61,11 +61,11 @@ export function AdminHeader({ user }) {
                     <Input
                         type="search"
                         placeholder="Search..."
-                        className="pl-8 h-9 w-full bg-muted/40 border-none cursor-pointer pointer-events-none text-muted-foreground"
+                        className="pl-8 h-8 w-full bg-muted/50 border-transparent hover:bg-muted/70 cursor-pointer pointer-events-none text-muted-foreground text-sm rounded-lg transition-colors duration-200"
                         readOnly
                         tabIndex={-1}
                     />
-                    <kbd className="pointer-events-none absolute right-2.5 top-2 hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-muted/80 transition-colors">
+                    <kbd className="pointer-events-none absolute right-2.5 top-1.5 hidden h-5 select-none items-center gap-1 rounded-md border border-border/60 bg-muted/80 px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-muted transition-colors duration-200">
                         <span className="text-xs">⌘</span>K
                     </kbd>
                 </div>

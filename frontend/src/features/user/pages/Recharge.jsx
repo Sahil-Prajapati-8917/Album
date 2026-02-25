@@ -173,9 +173,9 @@ const Recharge = () => {
     <div className="max-w-4xl mx-auto space-y-8 pb-12">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex flex-col gap-2">
-          <h1 className="text-3xl font-bold tracking-tight">Billing & Plans</h1>
-          <p className="text-muted-foreground text-lg">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-semibold tracking-tight">Billing & Plans</h1>
+          <p className="text-muted-foreground text-sm">
             Manage your subscription and billing history.
           </p>
         </div>
@@ -194,11 +194,11 @@ const Recharge = () => {
 
       <div className="space-y-6">
         {/* Active subscription */}
-        <Card className="border shadow-sm">
+        <Card className="border border-border/60 shadow-sm">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <CardTitle className="text-xl">Active Subscription</CardTitle>
+                <CardTitle className="text-lg">Active Subscription</CardTitle>
                 <CardDescription>Your current plan details and billing cycle.</CardDescription>
               </div>
               <Badge variant="default" className="bg-emerald-500/10 text-emerald-600 border-emerald-200">
@@ -243,7 +243,7 @@ const Recharge = () => {
             {activePlans.map((plan) => (
               <Card
                 key={plan.name}
-                className={`relative flex flex-col cursor-pointer transition-all ${selectedPlan?.name === plan.name ? 'ring-2 ring-primary border-transparent' : 'hover:border-primary/50'} ${plan.popular && selectedPlan?.name !== plan.name ? 'border-primary/50 shadow-md' : 'shadow-sm'}`}
+                className={`relative flex flex-col cursor-pointer transition-all duration-200 ${selectedPlan?.name === plan.name ? 'ring-2 ring-primary border-transparent shadow-md' : 'hover:border-primary/50 hover:shadow-md'} ${plan.popular && selectedPlan?.name !== plan.name ? 'border-primary/50 shadow-md' : 'shadow-sm'}`}
                 onClick={() => setSelectedPlan(plan)}
               >
                 {plan.popular && (
@@ -333,9 +333,9 @@ const Recharge = () => {
         )}
 
         {/* Billing history */}
-        <Card className="border shadow-sm">
+        <Card className="border border-border/60 shadow-sm">
           <CardHeader>
-            <CardTitle className="text-xl">Billing History</CardTitle>
+            <CardTitle className="text-lg">Billing History</CardTitle>
             <CardDescription>View and download your past invoices.</CardDescription>
           </CardHeader>
           <CardContent className="p-0">

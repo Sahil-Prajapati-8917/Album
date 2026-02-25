@@ -148,18 +148,20 @@ export default function HelpCenter() {
             {/* Page Header - Matches Dashboard.jsx */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Help Center</h1>
-                    <p className="text-muted-foreground mt-1">Explore our guides and reach out for personalized assistance.</p>
+                    <h1 className="text-2xl font-semibold tracking-tight">Help Center</h1>
+                    <p className="text-muted-foreground text-sm mt-0.5">Explore our guides and reach out for personalized assistance.</p>
                 </div>
             </div>
 
             {/* Support Channels Grid */}
-            <div className="grid gap-6 md:grid-cols-2">
-                <Card className="overflow-hidden hover:shadow-md transition-shadow">
+            <div className="grid gap-4 md:grid-cols-2">
+                <Card className="overflow-hidden hover:shadow-md transition-all duration-200 border-border/60">
                     <CardHeader className="pb-3 px-6 pt-6">
                         <div className="flex items-center justify-between mb-4">
-                            <CardTitle className="text-xl font-bold">Documentation</CardTitle>
-                            <Book className="h-5 w-5 text-muted-foreground opacity-70" />
+                            <CardTitle className="text-lg font-semibold">Documentation</CardTitle>
+                            <div className="h-8 w-8 rounded-lg bg-muted/60 flex items-center justify-center">
+                                <Book className="h-4 w-4 text-muted-foreground" />
+                            </div>
                         </div>
                         <CardDescription className="text-sm">
                             Comprehensive guides on how to use every feature of Pixfolio.
@@ -172,11 +174,13 @@ export default function HelpCenter() {
                     </CardContent>
                 </Card>
 
-                <Card className="overflow-hidden hover:shadow-md transition-shadow">
+                <Card className="overflow-hidden hover:shadow-md transition-all duration-200 border-border/60">
                     <CardHeader className="pb-3 px-6 pt-6">
                         <div className="flex items-center justify-between mb-4">
-                            <CardTitle className="text-xl font-bold">Priority Support</CardTitle>
-                            <MessageCircle className="h-5 w-5 text-emerald-500 opacity-70" />
+                            <CardTitle className="text-lg font-semibold">Priority Support</CardTitle>
+                            <div className="h-8 w-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
+                                <MessageCircle className="h-4 w-4 text-emerald-500" />
+                            </div>
                         </div>
                         <CardDescription className="text-sm">
                             Our team is available 24/7 to help you with any issues.
@@ -191,9 +195,9 @@ export default function HelpCenter() {
             </div>
 
             {/* FAQs Section Wrapped in Card */}
-            <Card>
+            <Card className="border-border/60">
                 <CardHeader className="px-6 pt-6 pb-2">
-                    <CardTitle className="text-xl font-bold">Frequently Asked Questions</CardTitle>
+                    <CardTitle className="text-lg font-semibold">Frequently Asked Questions</CardTitle>
                     <CardDescription>Quick answers to the most common questions.</CardDescription>
                 </CardHeader>
                 <CardContent className="px-6 pb-8">
@@ -204,7 +208,7 @@ export default function HelpCenter() {
                                 value={`item-${i}`}
                                 className="border-b last:border-0"
                             >
-                                <AccordionTrigger className="text-left font-semibold text-base py-4 hover:no-underline">
+                                <AccordionTrigger className="text-left font-medium text-sm py-4 hover:no-underline">
                                     {faq.q}
                                 </AccordionTrigger>
                                 <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-4">
@@ -217,11 +221,11 @@ export default function HelpCenter() {
             </Card>
 
             {/* Still Stuck Section Wrapped in Card */}
-            <Card className="bg-muted/30 border-dashed">
-                <CardContent className="p-8 text-center flex flex-col items-center gap-4">
-                    <LifeBuoy className="h-10 w-10 text-primary opacity-30" />
+            <Card className="bg-muted/20 border-dashed border-border/50">
+                <CardContent className="p-8 text-center flex flex-col items-center gap-3">
+                    <LifeBuoy className="h-9 w-9 text-primary/20" />
                     <div className="space-y-1">
-                        <h3 className="text-lg font-bold">Still stuck?</h3>
+                        <h3 className="text-base font-semibold">Still stuck?</h3>
                         <p className="text-muted-foreground text-sm max-w-md mx-auto">
                             Don't worry, we're here to help. Reach out to our team at{" "}
                             <span className="text-foreground font-semibold underline cursor-pointer hover:text-primary transition-colors">
@@ -229,7 +233,7 @@ export default function HelpCenter() {
                             </span>.
                         </p>
                     </div>
-                    <Button className="mt-2 px-8 font-bold rounded-md">
+                    <Button className="mt-2 px-8 font-medium rounded-md" size="sm">
                         Get Instant Help
                     </Button>
                 </CardContent>

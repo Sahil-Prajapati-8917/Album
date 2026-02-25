@@ -33,8 +33,8 @@ export default function DashboardLayout() {
       <AppSidebar />
       <SidebarInset className="bg-background">
         <AdminHeader user={user} />
-        <div className="flex-1 w-full overflow-y-auto">
-          <main className="max-w-7xl mx-auto p-6 space-y-6">
+        <div className="flex-1 w-full overflow-y-auto scroll-smooth">
+          <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 space-y-6">
             {/* Breadcrumb removed as per request */}
             <Outlet />
           </main>
