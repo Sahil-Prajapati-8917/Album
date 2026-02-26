@@ -12,20 +12,6 @@ import {
 
 const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, removeFile, errors, isProcessingFiles }) => {
 
-    const frontPreview = useMemo(() => {
-        if (formData.frontCover && formData.frontCover instanceof File) {
-            return URL.createObjectURL(formData.frontCover)
-        }
-        return null
-    }, [formData.frontCover])
-
-    const backPreview = useMemo(() => {
-        if (formData.backCover && formData.backCover instanceof File) {
-            return URL.createObjectURL(formData.backCover)
-        }
-        return null
-    }, [formData.backCover])
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -53,8 +39,13 @@ const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, rem
                                         <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                                         <p className="text-xs font-medium text-primary">Processing...</p>
                                     </div>
-                                ) : frontPreview ? (
-                                    <img src={frontPreview} alt="Front Preview" className="absolute inset-0 w-full h-full object-cover" />
+                                ) : formData.frontCover ? (
+                                    <img
+                                        src={formData.frontCoverUrl || (typeof formData.frontCover === 'string' ? formData.frontCover : URL.createObjectURL(formData.frontCover))}
+                                        alt="Front Preview"
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                        crossOrigin="anonymous"
+                                    />
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
                                         <Upload className="h-6 w-6 text-muted-foreground" />
@@ -84,8 +75,13 @@ const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, rem
                                         <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                                         <p className="text-xs font-medium text-primary">Processing...</p>
                                     </div>
-                                ) : backPreview ? (
-                                    <img src={backPreview} alt="Back Preview" className="absolute inset-0 w-full h-full object-cover" />
+                                ) : formData.backCover ? (
+                                    <img
+                                        src={formData.backCoverUrl || (typeof formData.backCover === 'string' ? formData.backCover : URL.createObjectURL(formData.backCover))}
+                                        alt="Back Preview"
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                        crossOrigin="anonymous"
+                                    />
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
                                         <Upload className="h-6 w-6 text-muted-foreground" />
@@ -137,32 +133,28 @@ const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, rem
 
                     {formData.innerSheets.length > 0 && (
                         <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                            {formData.innerSheets.map((file, index) => {
-                                let url = '#'
-                                try {
-                                    if (file instanceof File) {
-                                        url = URL.createObjectURL(file)
-                                    }
-                                } catch (e) { }
-
-                                return (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, scale: 0.9 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        className="relative aspect-square bg-muted rounded-md border overflow-hidden group"
+                            {formData.innerSheetsUrls.map((url, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="relative aspect-square bg-muted rounded-md border overflow-hidden group"
+                                >
+                                    <img
+                                        src={url}
+                                        alt={`Sheet ${index}`}
+                                        className="w-full h-full object-cover"
+                                        crossOrigin="anonymous"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => removeFile(index)}
+                                        className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-sm"
                                     >
-                                        <img src={url} alt={`Sheet ${index}`} className="w-full h-full object-cover" />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeFile(index)}
-                                            className="absolute top-1 right-1 bg-destructive text-destructive-foreground rounded-full p-1 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity shadow-sm"
-                                        >
-                                            <X className="h-3 w-3" />
-                                        </button>
-                                    </motion.div>
-                                )
-                            })}
+                                        <X className="h-3 w-3" />
+                                    </button>
+                                </motion.div>
+                            ))}
                         </div>
                     )}
 

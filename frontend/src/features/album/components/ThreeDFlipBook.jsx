@@ -174,47 +174,6 @@ const ThreeDFlipBook = ({ images = [] }) => {
                 </div>
             </div>
 
-            {/* Controls UI */}
-            <div className="book-controls">
-                <button
-                    onClick={prevPage}
-                    disabled={currentSheetIndex === 0 || isPlaying}
-                    className="book-control-btn"
-                    aria-label="Previous page"
-                >
-                    <ChevronLeft size={24} />
-                </button>
-
-                <button
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    className={`book-control-btn book-play-btn ${isPlaying ? 'playing' : ''}`}
-                    aria-label={isPlaying ? 'Pause auto-play' : 'Start auto-play'}
-                >
-                    {isPlaying ? <Pause size={24} /> : <Play size={24} className="ml-1" />}
-                </button>
-
-                <button
-                    onClick={nextPage}
-                    disabled={currentSheetIndex === numSheets || isPlaying}
-                    className="book-control-btn"
-                    aria-label="Next page"
-                >
-                    <ChevronRight size={24} />
-                </button>
-
-                <button
-                    onClick={toggleFullscreen}
-                    className="book-control-btn md:ml-8"
-                    aria-label="Toggle Fullscreen"
-                >
-                    <Maximize size={20} />
-                </button>
-            </div>
-
-            {/* Help text */}
-            <div className="text-neutral-500 text-sm mt-4 text-center">
-                Click on the pages or use the controls to flip through the album.
-            </div>
         </div>
     )
 }

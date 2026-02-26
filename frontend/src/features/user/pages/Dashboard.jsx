@@ -34,27 +34,32 @@ import {
 } from "@/components/ui/card"
 
 // Sparkline Component
-const Sparkline = ({ data, color }) => (
-  <div className="h-[40px] w-[100px]">
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data}>
-        <defs>
-          <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity={0.4} />
-            <stop offset="100%" stopColor={color} stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <Area
-          type="monotone"
-          dataKey="value"
-          stroke={color}
-          strokeWidth={2}
-          fill={`url(#gradient-${color})`}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
-  </div>
-)
+const Sparkline = ({ data, color }) => {
+  if (!data || data.length === 0) return <div className="h-[40px] w-[100px]" />;
+  
+  return (
+    <div className="h-[40px] w-[100px] flex-shrink-0">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data}>
+          <defs>
+            <linearGradient id={`gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor={color} stopOpacity={0.4} />
+              <stop offset="100%" stopColor={color} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <Area
+            type="monotone"
+            dataKey="value"
+            stroke={color}
+            strokeWidth={2}
+            fill={`url(#gradient-${color})`}
+            isAnimationActive={false}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
+  )
+}
 
 
 const Dashboard = () => {
@@ -210,7 +215,7 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-              <div className="text-2xl font-bold tracking-tight">{stats.publicAlbums}</div>
+                <div className="text-2xl font-bold tracking-tight">{stats.publicAlbums}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {((stats.publicAlbums / (stats.totalAlbums || 1)) * 100).toFixed(0)}% visible
                 </p>
@@ -357,11 +362,19 @@ const Dashboard = () => {
             <div className="space-y-4">
               {topAlbums.length > 0 ? (
                 topAlbums.map((album, i) => (
-                  <div key={album.id} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
+                  <div key={album._id || album.id || i} className="flex items-center justify-between border-b pb-4 last:border-0 last:pb-0">
                     <div className="flex items-center gap-4">
                       <div className="h-10 w-10 rounded bg-muted flex items-center justify-center overflow-hidden">
-                        {album.frontCover ? (
-                          <img src={album.frontCover} alt="Cover" className="h-full w-full object-cover" />
+                        {album.frontCover && !album.frontCover.startsWith('blob:') ? (
+                          <img 
+                            src={album.frontCover} 
+                            alt="Cover" 
+                            className="h-full w-full object-cover" 
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              e.target.parentElement.innerHTML = '<div class="h-full w-full flex items-center justify-center"><svg class="h-5 w-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>';
+                            }}
+                          />
                         ) : (
                           <ImageIcon className="h-5 w-5 text-muted-foreground" />
                         )}

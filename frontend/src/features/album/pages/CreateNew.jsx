@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
-import { getAlbumById, createAlbum, updateAlbum } from '@/services/api'
+import { getAlbumById, createAlbum, updateAlbum, getCurrentUser, getMyPhotographers } from '@/services/api'
 import { toast } from 'sonner'
 
 // Modular Components
@@ -25,6 +25,8 @@ const CreateNew = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isProcessingFiles, setIsProcessingFiles] = useState(false)
   const [errors, setErrors] = useState({})
+  const [currentUser, setCurrentUser] = useState(null)
+  const [photographers, setPhotographers] = useState([])
   const blobUrlsRef = useRef([]) // Track blob URLs for cleanup (FE-01)
 
   const [formData, setFormData] = useState({
@@ -35,8 +37,11 @@ const CreateNew = () => {
     musicTrack: 'romantic-wedding.mp3',
     volume: 60,
     frontCover: null,
+    frontCoverUrl: null,
     backCover: null,
-    innerSheets: []
+    backCoverUrl: null,
+    innerSheets: [],
+    innerSheetsUrls: []
   })
 
   useEffect(() => {
@@ -66,6 +71,33 @@ const CreateNew = () => {
     }
     fetchAlbum()
   }, [editId])
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await getCurrentUser()
+        if (response.success) {
+          setCurrentUser(response.data)
+        }
+      } catch (error) {
+        console.error('Failed to fetch user:', error)
+      }
+    }
+
+    const fetchPhotographers = async () => {
+      try {
+        const response = await getMyPhotographers()
+        if (response.success) {
+          setPhotographers(response.data)
+        }
+      } catch (error) {
+        console.error('Failed to fetch photographers:', error)
+      }
+    }
+
+    fetchUser()
+    fetchPhotographers()
+  }, [])
 
   const functionTypes = [
     'wedding', 'pre-wedding', 'engagement', 'reception',
@@ -121,7 +153,19 @@ const CreateNew = () => {
     setIsProcessingFiles(true)
     await new Promise(r => setTimeout(r, 10)) // Allow UI to update
     if (validateFile(file)) {
-      setFormData(prev => ({ ...prev, [field]: file }))
+      // Clean up old URL if it exists
+      if (formData[`${field}Url`]) {
+        URL.revokeObjectURL(formData[`${field}Url`])
+      }
+
+      const url = URL.createObjectURL(file)
+      blobUrlsRef.current.push(url)
+
+      setFormData(prev => ({
+        ...prev,
+        [field]: file,
+        [`${field}Url`]: url
+      }))
       if (errors[field]) setErrors(prev => ({ ...prev, [field]: '' }))
     }
     setIsProcessingFiles(false)
@@ -136,16 +180,33 @@ const CreateNew = () => {
 
     const files = rawFiles.filter(validateFile)
     if (files.length > 0) {
-      setFormData(prev => ({ ...prev, innerSheets: [...prev.innerSheets, ...files] }))
+      const newUrls = files.map(file => {
+        const url = URL.createObjectURL(file)
+        blobUrlsRef.current.push(url)
+        return url
+      })
+
+      setFormData(prev => ({
+        ...prev,
+        innerSheets: [...prev.innerSheets, ...files],
+        innerSheetsUrls: [...prev.innerSheetsUrls, ...newUrls]
+      }))
       if (errors.innerSheets) setErrors(prev => ({ ...prev, innerSheets: '' }))
     }
     setIsProcessingFiles(false)
   }
 
   const removeFile = (index) => {
+    // Revoke URL if it's a blob
+    const urlToRemove = formData.innerSheetsUrls[index];
+    if (urlToRemove && urlToRemove.startsWith('blob:')) {
+      URL.revokeObjectURL(urlToRemove);
+    }
+
     setFormData(prev => ({
       ...prev,
-      innerSheets: prev.innerSheets.filter((_, i) => i !== index)
+      innerSheets: prev.innerSheets.filter((_, i) => i !== index),
+      innerSheetsUrls: prev.innerSheetsUrls.filter((_, i) => i !== index)
     }))
   }
 
@@ -178,16 +239,7 @@ const CreateNew = () => {
 
   const generateSpreads = () => {
     const spreads = []
-    const innerPhotos = formData.innerSheets || []
-
-    const photoUrls = innerPhotos.map(file => {
-      if (file instanceof File) {
-        const url = URL.createObjectURL(file)
-        blobUrlsRef.current.push(url) // Track for cleanup
-        return url
-      }
-      return file
-    })
+    const photoUrls = formData.innerSheetsUrls || []
 
     // Create spreads (2 photos per spread)
     for (let i = 0; i < photoUrls.length; i += 2) {
@@ -221,17 +273,21 @@ const CreateNew = () => {
       formDataToSend.append('label', 'Feature')
 
       // Append files directly
-      if (formData.frontCover instanceof File) {
+      if (formData.frontCover && typeof formData.frontCover !== 'string') {
         formDataToSend.append('frontCover', formData.frontCover)
       }
-      if (formData.backCover instanceof File) {
+      if (formData.backCover && typeof formData.backCover !== 'string') {
         formDataToSend.append('backCover', formData.backCover)
       }
 
-      // Append inner sheets as multiple files
+      // Append inner sheets (both files and existing URLs)
       formData.innerSheets.forEach(sheet => {
-        if (sheet instanceof File) {
+        if (typeof sheet !== 'string') {
           formDataToSend.append('innerSheets', sheet)
+          formDataToSend.append('innerSheetsOrder', 'FILE')
+        } else {
+          formDataToSend.append('existingInnerSheets', sheet)
+          formDataToSend.append('innerSheetsOrder', 'URL')
         }
       })
 
@@ -249,23 +305,42 @@ const CreateNew = () => {
       }
     } catch (error) {
       console.error('Save failed:', error)
-      toast.error(error.message || 'An error occurred while saving.')
+      const errorMessage = error.message || 'An error occurred while saving.'
+
+      if (errorMessage.includes('credits')) {
+        toast.error('Insufficient Credits', {
+          description: 'You need at least 1 credit to create a new album. Please recharge your account.',
+          action: {
+            label: 'Recharge',
+            onClick: () => navigate('/recharge')
+          }
+        })
+      } else {
+        toast.error(errorMessage)
+      }
     } finally {
       setIsSubmitting(false)
     }
   }
 
   if (isPreviewMode) {
-    const frontUrl = formData.frontCover ? (formData.frontCover instanceof File ? URL.createObjectURL(formData.frontCover) : formData.frontCover) : null
-    const backUrl = formData.backCover ? (formData.backCover instanceof File ? URL.createObjectURL(formData.backCover) : formData.backCover) : null
+    const frontUrl = formData.frontCover ? (typeof formData.frontCover !== 'string' ? URL.createObjectURL(formData.frontCover) : formData.frontCover) : null
+    const backUrl = formData.backCover ? (typeof formData.backCover !== 'string' ? URL.createObjectURL(formData.backCover) : formData.backCover) : null
+
+    // Determine photographer details for preview
+    const selectedPhotographer = photographers.find(p => (p._id || p.id) === formData.photographerId)
+    const pName = selectedPhotographer ? selectedPhotographer.name : (currentUser?.studioName || currentUser?.personalName || '')
+    const pCity = selectedPhotographer ? selectedPhotographer.city : (currentUser?.city || '')
 
     return (
       <div className="fixed inset-0 z-[100] bg-background">
         <VisualBookViewer
           spreads={generateSpreads()}
           title={formData.clientName}
-          frontCover={frontUrl}
-          backCover={backUrl}
+          frontCover={formData.frontCoverUrl || formData.frontCover}
+          backCover={formData.backCoverUrl || formData.backCover}
+          photographerName={pName}
+          photographerCity={pCity}
         />
         <div className="fixed bottom-8 right-8 z-[110] flex gap-4">
           <Button

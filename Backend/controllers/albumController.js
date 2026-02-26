@@ -25,8 +25,36 @@ exports.createAlbum = async (req, res) => {
             if (req.files.backCover && req.files.backCover[0]) {
                 backCover = `/uploads/albums/${req.files.backCover[0].filename}`;
             }
-            if (req.files.innerSheets && req.files.innerSheets.length > 0) {
-                innerSheetsUrls = req.files.innerSheets.map(file => `/uploads/albums/${file.filename}`);
+        }
+
+        // Handle innerSheets (mix of new files and existing URLs - though mostly files on create)
+        if (req.body.innerSheetsOrder || (req.files && req.files.innerSheets)) {
+            let newInnerSheets = req.files ? (req.files.innerSheets || []) : [];
+            let existingInnerSheets = req.body.existingInnerSheets || [];
+            let order = req.body.innerSheetsOrder || [];
+
+            // Ensure they are arrays
+            if (!Array.isArray(existingInnerSheets)) existingInnerSheets = [existingInnerSheets];
+            if (!Array.isArray(order)) order = [order];
+
+            let fileIndex = 0;
+            let urlIndex = 0;
+
+            for (const type of order) {
+                if (type === 'FILE') {
+                    if (newInnerSheets[fileIndex]) {
+                        innerSheetsUrls.push(`/uploads/albums/${newInnerSheets[fileIndex++].filename}`);
+                    }
+                } else if (type === 'URL') {
+                    if (existingInnerSheets[urlIndex]) {
+                        innerSheetsUrls.push(existingInnerSheets[urlIndex++]);
+                    }
+                }
+            }
+
+            // Fallback for older clients
+            if (order.length === 0 && newInnerSheets.length > 0) {
+                innerSheetsUrls = newInnerSheets.map(file => `/uploads/albums/${file.filename}`);
             }
         }
 
@@ -134,7 +162,7 @@ exports.getAlbumById = async (req, res) => {
             { albumId: req.params.id },
             { $inc: { views: 1 } },
             { new: true }
-        );
+        ).populate('photographerId').populate('userId', 'studioName personalName mobileNumber city');
 
         if (!album) {
             return res.status(404).json({ success: false, message: 'Album not found' });
@@ -181,20 +209,48 @@ exports.updateAlbum = async (req, res) => {
             if (req.files.backCover && req.files.backCover[0]) {
                 sanitizedUpdates.backCover = `/uploads/albums/${req.files.backCover[0].filename}`;
             }
-            if (req.files.innerSheets && req.files.innerSheets.length > 0) {
-                innerSheetsUrls = req.files.innerSheets.map(file => `/uploads/albums/${file.filename}`);
+        }
 
-                // If new inner sheets are provided, update the spreads
-                const spreads = [];
-                for (let i = 0; i < innerSheetsUrls.length; i += 2) {
-                    spreads.push({
-                        id: Math.floor(i / 2) + 1,
-                        leftPage: { image: innerSheetsUrls[i] || null, caption: "" },
-                        rightPage: { image: innerSheetsUrls[i + 1] || null, caption: "" }
-                    });
+        // Handle innerSheets (mix of new files and existing URLs)
+        if (req.body.innerSheetsOrder || (req.files && req.files.innerSheets)) {
+            let newInnerSheets = req.files ? (req.files.innerSheets || []) : [];
+            let existingInnerSheets = req.body.existingInnerSheets || [];
+            let order = req.body.innerSheetsOrder || [];
+
+            // Ensure they are arrays
+            if (!Array.isArray(existingInnerSheets)) existingInnerSheets = [existingInnerSheets];
+            if (!Array.isArray(order)) order = [order];
+
+            let fileIndex = 0;
+            let urlIndex = 0;
+
+            for (const type of order) {
+                if (type === 'FILE') {
+                    if (newInnerSheets[fileIndex]) {
+                        innerSheetsUrls.push(`/uploads/albums/${newInnerSheets[fileIndex++].filename}`);
+                    }
+                } else if (type === 'URL') {
+                    if (existingInnerSheets[urlIndex]) {
+                        innerSheetsUrls.push(existingInnerSheets[urlIndex++]);
+                    }
                 }
-                sanitizedUpdates.spreads = spreads;
             }
+
+            // Fallback for older clients
+            if (order.length === 0 && newInnerSheets.length > 0) {
+                innerSheetsUrls = newInnerSheets.map(file => `/uploads/albums/${file.filename}`);
+            }
+
+            // Update the spreads
+            const spreads = [];
+            for (let i = 0; i < innerSheetsUrls.length; i += 2) {
+                spreads.push({
+                    id: Math.floor(i / 2) + 1,
+                    leftPage: { image: innerSheetsUrls[i] || null, caption: "" },
+                    rightPage: { image: innerSheetsUrls[i + 1] || null, caption: "" }
+                });
+            }
+            sanitizedUpdates.spreads = spreads;
         }
 
         if (sanitizedUpdates.photographerId === 'none') {

@@ -5,7 +5,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Calendar, User, MapPin, ImageOff } from 'lucide-react'
 import ThreeDFlipBook from './ThreeDFlipBook'
 
-const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCover = null }) => {
+const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCover = null, photographerName = '', photographerCity = '' }) => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [album, setAlbum] = useState(null)
@@ -20,6 +20,8 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
         spreads,
         frontCover,
         backCover,
+        photographerName,
+        photographerCity,
       })
       return
     }
@@ -31,13 +33,27 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
         const response = await getAlbumById(id)
         if (response.success && response.data) {
           const d = response.data
+          // Determine photographer display name and city
+          let pName = ''
+          let pCity = ''
+
+          if (d.photographerId) {
+            // Selected photographer
+            pName = d.photographerId.name
+            pCity = d.photographerId.city
+          } else if (d.userId) {
+            // No photographer selected, use Studio details
+            pName = d.userId.studioName || d.userId.personalName || ''
+            pCity = d.userId.city || '' // Note: city is not populated in backend yet, let's fix it later or use fallback
+          }
+
           setAlbum({
             title: d.albumName || d.clientName || 'Untitled Album',
             spreads: d.spreads || [],
             frontCover: d.frontCover || null,
             backCover: d.backCover || null,
-            photographerName: d.photographerName || '',
-            photographerCity: d.photographerCity || '',
+            photographerName: pName,
+            photographerCity: pCity,
             functionDate: d.functionDate || '',
           })
         } else {
@@ -52,7 +68,7 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
     }
 
     fetchAlbum()
-  }, [id, title, spreads, frontCover, backCover])
+  }, [id, title, spreads, frontCover, backCover, photographerName, photographerCity])
 
   // Helper to ensure image URLs are fully qualified
   const getImageUrl = (path) => {
