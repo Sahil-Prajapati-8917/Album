@@ -1,15 +1,15 @@
 # Pixfolio Frontend
 
-React SPA for the Pixfolio digital album platform. Handles authentication, album creation, a minimal album viewer, photographer management, billing, and an admin dashboard.
+The React 19 single-page application (SPA) for the Pixfolio platform. It provides a premium dashboard for labs/photographers and a high-performance "Visual Book" viewer for clients.
 
 ## Tech Stack
 
-- **React 19** with Vite (rolldown-vite 7.2.2)
-- **Tailwind CSS v4** (`@tailwindcss/vite` plugin)
-- **shadcn/ui** (New York style, Radix primitives)
-- **Framer Motion** for page transitions
-- **Lucide React** for icons
-- **React Router v7** for routing
+- **React 19** with Vite
+- **Tailwind CSS v4** for high-performance styling
+- **shadcn/ui** (New York style) & Radix primitives for accessible, premium UI
+- **Framer Motion** for smooth cinematic transitions
+- **Lucide React** for consistent iconography
+- **React Router v7** for modern routing architectures
 
 ## Project Structure
 
@@ -19,76 +19,57 @@ src/
 ├── components/       # Shared UI
 │   ├── ui/           # shadcn components (button, card, input, etc.)
 │   ├── layout/       # DashboardLayout, MainLayout
-│   ├── AdminHeader.jsx
-│   ├── AppSidebar.jsx
-│   ├── ErrorBoundary.jsx
-│   └── Footer.jsx
+│   └── ...           # Sidebar, Header, Error Boundary
 ├── features/
 │   ├── album/
 │   │   ├── components/
-│   │   │   └── VisualBookViewer.jsx   # Minimal scrollable album viewer
+│   │   │   └── VisualBookViewer.jsx   # Premium "Visual Book" viewer
 │   │   └── pages/
-│   │       ├── CreateNew.jsx          # Album creation wizard
-│   │       └── AllPixfolio.jsx        # Album listing + QR codes
-│   ├── auth/
-│   │   ├── components/   # LoginForm, CreateAccountForm
-│   │   └── pages/        # Login, Signup
-│   ├── admin/            # Admin dashboard + sub-pages
-│   ├── landing/          # Landing page + config
-│   └── user/
-│       └── pages/        # Dashboard, Profile, Settings, Recharge, Photographers, HelpCenter
+│   │       ├── CreateNew.jsx          # 3-step album creation wizard
+│   │       └── AllPixfolio.jsx        # Album management & QR codes
+│   ├── auth/             # Login, Signup, and account creation
+│   ├── admin/            # Master Admin dashboard
+│   ├── landing/          # Marketing landing page
+│   └── user/             # Profile, Billing, Settings, Photographers
 ├── services/
-│   └── api.js            # All API calls (auth, albums, photographers, billing)
+│   └── api.js            # Central API client (Axios-based)
 ├── styles/
-│   └── index.css         # Global styles, CSS variables, dark mode tokens
+│   └── index.css         # Global design system & dark mode tokens
 └── lib/
-    └── utils.js          # cn() helper
+    └── utils.js          # Tailwind class merging helper
 ```
 
 ## Key Pages & Routes
 
 | Route | Component | Auth | Description |
 |-------|-----------|------|-------------|
-| `/` | Landing | No | Marketing landing page |
-| `/login` | Login | No | Login form |
-| `/signup` | Signup | No | Registration form |
-| `/dashboard` | Dashboard | Yes | Overview with stats |
-| `/create` | CreateNew | Yes | Album creation wizard (3 steps) |
-| `/all-pixfolio` | AllPixfolio | Yes | List all albums, share, QR codes |
-| `/viewer/:id` | VisualBookViewer | No | **Public minimal viewer** — fetches album from API, displays all images |
-| `/profile` | Profile | Yes | User profile & studio details |
-| `/settings` | Settings | Yes | Account settings |
-| `/recharge` | Recharge | Yes | Buy credits |
-| `/photographers` | Photographers | Yes | Manage photographer partners |
-| `/help` | HelpCenter | Yes | FAQ & support |
-| `/admin` | AdminPasswordPage | No | Admin login |
-| `/admin/dashboard/*` | MasterAdminDashboard | Admin | Admin panel (overview, users, albums, etc.) |
+| `/` | Landing | No | High-conversion marketing page |
+| `/login` | Login | No | Secure login portal |
+| `/dashboard` | Dashboard | Yes | Portfolio overview & analytics |
+| `/create` | CreateNew | Yes | Multi-step "Visual Book" builder |
+| `/all-pixfolio` | AllPixfolio | Yes | Album gallery with sharing & QR tools |
+| `/viewer/:id` | VisualBookViewer | No | **Public Visual Book** — Distraction-free photography viewer |
+| `/profile` | Profile | Yes | Studio & Photographer branding settings |
+| `/recharge` | Recharge | Yes | Credit purchase and billing history |
+| `/admin/*` | Admin | Admin | Master platform management |
 
-## Album Viewer
+## The "Visual Book" Experience
 
-`/viewer/:id` is a public, minimal page. It calls `GET /api/albums/:id`, extracts all images (front cover, spread left/right pages, back cover), and renders them in a vertical scroll layout. No flip-book library — just images stacked vertically with lazy loading.
+The viewer at `/viewer/:id` is Pixfolio's flagship feature. It provides an "app-less" mobile-first experience:
+- **Zero Distractions**: All action buttons and UI overlays are removed to focus on the imagery.
+- **Brand First**: The header dynamically pulls Photographer/Studio branding details derived from the backend.
+- **Seamless Flow**: Optimized for vertical scrolling with lazy-loaded high-resolution spreads.
+- **Universal Access**: Shares via a simple URL or auto-generated QR code.
 
-Also used inline by `CreateNew.jsx` in preview mode (receives data via props instead of fetching).
-
-## API Layer
-
-All API calls go through `src/services/api.js`. Key functions:
-
-- `loginUser(email, password)` / `registerUser(data)` — auth
-- `getMyAlbums()` / `createAlbum(data)` / `updateAlbum(id, data)` / `deleteAlbum(id)` — albums
-- `getAlbumById(id)` — public album fetch (used by viewer)
-- `getMyPhotographers()` / `createPhotographer(data)` — photographer directory
-- `purchaseCredits(data)` / `getBillingHistory()` — billing
-
-## Setup
+## Development
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173
-npm run build      # Production build to dist/
+npm run dev        # Local dev server: http://localhost:5173
+npm run build      # Optimized production build
 ```
 
-Backend must be running at the URL configured in `api.js` (defaults to `/api` proxy).
+The frontend uses a proxy configuration to communicate with the Backend API. Ensure the backend is running at the configured URL.
 
 ---
 Built by Sahil Prajapati

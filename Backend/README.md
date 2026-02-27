@@ -1,109 +1,67 @@
 # Pixfolio Backend
 
-REST API for the Pixfolio digital album platform. Handles user auth, album CRUD, photographer management, and billing/credits.
+Robust REST API for the Pixfolio digital album platform. Manages secure authentication, industrial-scale album processing, photographer partnerships, and credit-based transaction logging.
 
 ## Tech Stack
 
-- **Node.js 18+** / **Express 5.2**
-- **MongoDB** + **Mongoose 9**
-- **JWT 9.0** for auth, **bcryptjs 3.0** for password hashing
-- **CORS** for cross-origin support
+- **Node.js 18+** with **Express 5**
+- **MongoDB** with **Mongoose 9** for reliable data modeling
+- **JWT** for stateless authentication
+- **bcryptjs** for industry-standard password security
+- **CORS** & **Helmet** for hardened API security
 
 ## Setup
 
 ```bash
 cd Backend
 npm install
-cp .env.example .env   # set MONGO_URI, JWT_SECRET
-npm run dev             # development (nodemon)
-npm start               # production
+cp .env.example .env   # Configure MONGO_URI, JWT_SECRET, and PORT
+npm run dev             # Hot-reloading development server
 ```
 
-## API Endpoints
+## API Core Architecture
 
-### Auth (Public)
+### Authentication
+| Method | Endpoint | Use Case |
+|--------|----------|----------|
+| POST | `/api/users/register` | New Lab/Photographer signup |
+| POST | `/api/users/login` | Secure JWT acquisition |
 
-| Method | Endpoint | Description | Rate Limit |
-|--------|----------|-------------|------------|
-| POST | `/api/users/register` | Create account | 5 / 15min |
-| POST | `/api/users/login` | Get JWT token | 10 / 15min |
+### "Visual Book" Management
+| Method | Endpoint | Auth | Impact |
+|--------|----------|------|--------|
+| GET | `/api/albums` | Yes | Retrieve user-owned album collection |
+| POST | `/api/albums` | Yes | Provision new album (debits 1 account credit) |
+| GET | `/api/albums/:id` | **No** | Publicly accessible fetch; automatically bumps view metrics |
+| PUT | `/api/albums/:id` | Yes | Update spreads, metadata, or branding |
+| DELETE | `/api/albums/:id` | Yes | Permanent removal of album data |
 
-### User (Protected)
-
+### Photographer Directory
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/api/users/me` | Current user data |
-| PUT | `/api/users/profile` | Update profile & studio details |
+| GET | `/api/photographers` | Fetch linked photographer profiles |
+| POST | `/api/photographers` | Create new photographer identity |
 
-### Albums
+## Data Schemas
 
-| Method | Endpoint | Auth | Description |
-|--------|----------|------|-------------|
-| GET | `/api/albums` | Yes | List user's albums |
-| POST | `/api/albums` | Yes | Create album (deducts 1 credit) |
-| GET | `/api/albums/:id` | **No** | Public album data (used by viewer). Increments view count. |
-| PUT | `/api/albums/:id` | Yes | Update album (field whitelist enforced) |
-| DELETE | `/api/albums/:id` | Yes | Delete album |
+### User (Lab/Photographer Profile)
+Stores core identity and studio branding. Includes `credits` balance and `studioName` which is used for dynamic viewer branding.
 
-### Photographers (Protected)
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/photographers` | List user's photographers |
-| POST | `/api/photographers` | Add photographer |
-| PUT | `/api/photographers/:id` | Update photographer |
-| DELETE | `/api/photographers/:id` | Delete photographer |
-
-### Billing (Protected)
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/billing/purchase` | Purchase credits |
-| GET | `/api/billing/history` | Transaction history |
-
-## Data Models
-
-### User
-`email`, `password` (hashed), `personalName`, `accountType` (photographer/lab), `studioName`, `city`, `state`, `mobileNumber`, `address`, `credits`, social links.
-
-### Album
-`albumId` (unique, format `PF-<uuid>`), `clientName`, `functionDate`, `functionType`, `photographerId` (ref), `userId` (ref), `songName`, `frontCover` (URL string), `backCover` (URL string), `spreads` (array), `totalSheets`, `views`, `status`, `priority`, `label`.
-
-**Spread structure:**
-```json
-{
-  "id": 1,
-  "leftPage": { "image": "https://...", "caption": "" },
-  "rightPage": { "image": "https://...", "caption": "" }
-}
-```
-
-### Photographer
-`name`, `phone`, `city`, `userId` (ref).
+### Album ("Visual Book")
+- `albumId`: Unique platform identifier (format `PF-<uuid>`).
+- `spreads`: Array of logical page pairs (left/right) with high-res image URLs.
+- `views`: Real-time engagement counter.
+- `photographerId`: Join-reference to the specific branding profile.
 
 ### Transaction
-`userId` (ref), `planId`, `amount`, `paymentId`, `credits`, `type`.
+Immutable record of credit purchases, plan types, and payment gateway responses.
 
-## Directory Structure
+## Security & Reliability
 
-```
-Backend/
-├── config/         # DB connection
-├── controllers/    # Route handlers (userController, albumController, etc.)
-├── middleware/     # auth.js (JWT verify), rate limiters
-├── models/         # Mongoose schemas
-├── routes/         # Express routers
-├── utils/          # Helpers
-└── index.js        # Entry point
-```
-
-## Security
-
-- Passwords hashed with bcrypt (12 salt rounds)
-- JWT tokens with expiration
-- Rate limiting on auth endpoints
-- Field whitelist on album updates (prevents mass assignment)
-- Ownership checks on all mutations (user can only modify their own data)
+- **Rate Limiting**: Throttles brute-force attempts on sensitive auth routes.
+- **Data Integrity**: Enforces whitelisted fields on all `PUT` operations to prevent unauthorized field mutation.
+- **Ownership Middleware**: Strict validation ensures users can only access or modify records they own.
+- **Sanitization**: Automatic sanitization of incoming MongoDB queries to prevent NoSQL injection.
 
 ---
-Built by Sahil Prajapati
+Developed by Sahil Prajapati
