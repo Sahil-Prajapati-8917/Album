@@ -1,5 +1,5 @@
 const yts = require('yt-search');
-const ytdl = require('@distube/ytdl-core');
+const ytDlp = require('yt-dlp-exec');
 const fs = require('fs');
 const path = require('path');
 const Song = require('../../data/models/Song');
@@ -25,46 +25,44 @@ class SongService {
             return song;
         }
 
-        const fileName = `song-${videoId}-${Date.now()}.mp4`; // m4a/mp4 audio works well in browser
+        const fileName = `song-${videoId}-${Date.now()}.m4a`; // Use native m4a
         // Need to correctly resolve the uploads directory. It's at Backend/uploads
-        const uploadsDir = path.join(__dirname, '../../../../uploads/songs');
-        
+        const uploadsDir = path.join(__dirname, '..', '..', '..', 'uploads', 'songs');
+
         if (!fs.existsSync(uploadsDir)) {
             fs.mkdirSync(uploadsDir, { recursive: true });
         }
 
         const filePath = path.join(uploadsDir, fileName);
 
-        return new Promise((resolve, reject) => {
-            // It will log warnings but will successfully download standard m4a audio
-            const stream = ytdl(`https://www.youtube.com/watch?v=${videoId}`, {
-                filter: 'audioonly',
-                // lowestaudio bypasses some aggressive cypher blocks while still being acceptable for background music
-                quality: 'lowestaudio' 
+        try {
+            // Using yt-dlp to natively download m4a (supported by all browsers, avoids ffmpeg dependency)
+            await ytDlp(`https://www.youtube.com/watch?v=${videoId}`, {
+               format: 'bestaudio[ext=m4a]',
+                output: filePath,
+                noWarnings: true,
+                noCheckCertificates: true
             });
 
-            stream.pipe(fs.createWriteStream(filePath))
-                .on('finish', async () => {
-                    // Save to DB
-                    const relativePath = `/uploads/songs/${fileName}`;
-                    song = await Song.create({
-                        videoId,
-                        title,
-                        author,
-                        thumbnail,
-                        filePath: relativePath,
-                        durationSeconds
-                    });
-                    resolve(song);
-                })
-                .on('error', (err) => {
-                    // Clean up partial file if error
-                    if (fs.existsSync(filePath)) {
-                        fs.unlinkSync(filePath);
-                    }
-                    reject(err);
-                });
-        });
+            // Save to DB
+            const relativePath = `/uploads/songs/${fileName}`;
+            song = await Song.create({
+                videoId,
+                title,
+                author,
+                thumbnail,
+                filePath: relativePath,
+                durationSeconds
+            });
+            return song;
+
+        } catch (error) {
+            // Clean up partial file if error
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+            throw new Error(`Failed to download audio from YouTube: ${error.message}`);
+        }
     }
 }
 

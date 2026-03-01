@@ -27,6 +27,7 @@ const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, def
     const [isSearching, setIsSearching] = useState(false)
     const [downloadingSongId, setDownloadingSongId] = useState(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [audioDuration, setAudioDuration] = useState(0) // State to force re-render for duration
     const audioRef = useRef(null)
 
     // Handle play/pause logic dynamically for custom music vs default
@@ -36,6 +37,11 @@ const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, def
             if (!audioRef.current) {
                 const url = formData.musicUrl.startsWith('http') ? formData.musicUrl : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${formData.musicUrl}`
                 audioRef.current = new Audio(url)
+                
+                // Add listener to get duration once metadata loads
+                audioRef.current.addEventListener('loadedmetadata', () => {
+                    setAudioDuration(audioRef.current.duration)
+                })
             }
             
             audioRef.current.volume = formData.volume / 100
@@ -102,8 +108,11 @@ const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, def
                 thumbnail: song.thumbnail,
                 durationSeconds: song.duration
             })
+            console.log(res)
             if (res.success) {
+
                 const downloadedSong = res.data
+                console.log(downloadedSong)
                 // Pause current audio if playing
                 if (isPlaying) toggleMusic()
                 if (audioRef.current) {
@@ -215,29 +224,48 @@ const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, def
                     {/* Time Frame Selection */}
                     {formData.musicUrl && (
                         <div className="space-y-4 pt-4 border-t">
-                            <div className="flex justify-between items-center">
+                            <div className="flex justify-between items-center mb-1">
                                 <Label className="flex items-center gap-2">
                                     <Clock className="w-4 h-4 text-primary" />
-                                    Start Time (seconds)
+                                    Start Time
                                 </Label>
-                                <span className="text-sm font-medium text-muted-foreground bg-muted px-2 py-1 rounded">
+                                <span className="text-sm font-medium text-foreground bg-primary/10 text-primary px-2 py-1 rounded">
                                     {handleFormatTime(formData.musicStartTime || 0)}
                                 </span>
                             </div>
-                            <p className="text-xs text-muted-foreground">Choose exactly when the music should start playing when the client opens the first page.</p>
-                            <Input 
-                                type="number" 
-                                min="0" 
-                                value={formData.musicStartTime || 0}
-                                onChange={(e) => {
-                                    const val = parseInt(e.target.value) || 0
-                                    setFormData(prev => ({ ...prev, musicStartTime: val }))
-                                    if (audioRef.current) {
-                                        audioRef.current.currentTime = val
-                                    }
-                                }}
-                                className="w-full max-w-[200px]"
-                            />
+                            <p className="text-xs text-muted-foreground mb-4">Choose exactly when the music should start playing when the client opens the first page.</p>
+                            
+                            <div className="relative w-full h-2 bg-secondary rounded-full mt-8 mb-6">
+                                <input 
+                                    type="range" 
+                                    min="0" 
+                                    max={audioDuration > 0 ? Math.floor(audioDuration) : 300} 
+                                    value={formData.musicStartTime || 0}
+                                    onChange={(e) => {
+                                        const val = parseInt(e.target.value) || 0
+                                        setFormData(prev => ({ ...prev, musicStartTime: val }))
+                                        if (audioRef.current) {
+                                            audioRef.current.currentTime = val
+                                            if (!isPlaying) toggleMusic() // Auto play to let them hear the new start time
+                                        }
+                                    }}
+                                    className="absolute w-full h-full opacity-0 cursor-pointer z-10"
+                                />
+                                <div
+                                    className="absolute h-full bg-primary rounded-full transition-all duration-150"
+                                    style={{ width: `${((formData.musicStartTime || 0) / (audioDuration > 0 ? audioDuration : 300)) * 100}%` }}
+                                />
+                                {/* Current Time Indicator */}
+                                <div 
+                                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-background border-2 border-primary rounded-full shadow transition-all duration-150 pointer-events-none"
+                                    style={{ left: `calc(${((formData.musicStartTime || 0) / (audioDuration > 0 ? audioDuration : 300)) * 100}% - 8px)` }}
+                                />
+                                {/* Duration Labels */}
+                                <div className="absolute -bottom-6 left-0 text-[10px] text-muted-foreground font-medium">0:00</div>
+                                <div className="absolute -bottom-6 right-0 text-[10px] text-muted-foreground font-medium">
+                                    {audioDuration > 0 ? handleFormatTime(audioDuration) : '...'}
+                                </div>
+                            </div>
                         </div>
                     )}
 
@@ -253,25 +281,14 @@ const MusicSelectionStep = ({ formData, setFormData, isPlaying, toggleMusic, def
                             {isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5 ml-1" />}
                         </Button>
 
-                        <div className="flex-1 w-full space-y-3">
-                            <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-                                <span className="flex items-center gap-1.5"><Music className="h-3.5 w-3.5" /> Previewing Track</span>
-                                <span>Volume: {formData.volume}%</span>
+                        <div className="flex-1 w-full space-y-1">
+                            <div className="flex items-center justify-between text-xs font-medium text-foreground">
+                                <span className="flex items-center gap-1.5"><Music className="h-4 w-4 text-primary" /> Previewing Track</span>
+                                {isPlaying && <span className="text-[10px] text-primary animate-pulse">Playing...</span>}
                             </div>
-                            <div className="relative w-full h-1.5 bg-secondary rounded-full">
-                                <input
-                                    type="range"
-                                    min="0"
-                                    max="100"
-                                    value={formData.volume}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, volume: e.target.value }))}
-                                    className="absolute w-full h-full opacity-0 cursor-pointer z-10"
-                                />
-                                <div
-                                    className="absolute h-full bg-primary rounded-full transition-all duration-150"
-                                    style={{ width: `${formData.volume}%` }}
-                                />
-                            </div>
+                            <p className="text-[11px] text-muted-foreground">
+                                Click play to preview exactly how the audio will start in the digital book.
+                            </p>
                         </div>
                     </div>
 

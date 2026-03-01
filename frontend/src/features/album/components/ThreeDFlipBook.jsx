@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
-import { ChevronLeft, ChevronRight, Play, Pause, Maximize, Music } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Play, Pause, Maximize, Music, Volume2, VolumeX } from 'lucide-react'
 import './ThreeDFlipBook.css'
 
 const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, musicStartTime = 0 }) => {
@@ -7,6 +7,7 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
     const [isPlaying, setIsPlaying] = useState(false)
     const [isFullscreen, setIsFullscreen] = useState(false)
     const [hasTurnedFirstPage, setHasTurnedFirstPage] = useState(false)
+    const [isMuted, setIsMuted] = useState(false)
 
     // Audio references for page flip
     const flipAudioRef = useRef(new Audio('/assets/Page-flipix-sound.mp3'))
@@ -22,12 +23,14 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
             bgMusicRef.current = new Audio(url)
             bgMusicRef.current.loop = true
             bgMusicRef.current.volume = 0.5 // Default volume
+            bgMusicRef.current.muted = isMuted
             bgMusicRef.current.currentTime = musicStartTime || 0
         } else if (!musicUrl && musicTrack && !bgMusicRef.current) {
             // Fallback for default tracks
             bgMusicRef.current = new Audio(`/assets/${musicTrack}`)
             bgMusicRef.current.loop = true
             bgMusicRef.current.volume = 0.5
+            bgMusicRef.current.muted = isMuted
         }
 
         return () => {
@@ -36,6 +39,13 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
             }
         }
     }, [musicUrl, musicTrack, musicStartTime])
+
+    // Sync mute state
+    useEffect(() => {
+        if (bgMusicRef.current) {
+            bgMusicRef.current.muted = isMuted
+        }
+    }, [isMuted])
 
     // Trigger music on first page turn
     useEffect(() => {
@@ -127,6 +137,13 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
         } else {
             document.exitFullscreen()
             setIsFullscreen(false)
+        }
+    }
+
+    const toggleMute = () => {
+        if (bgMusicRef.current) {
+            bgMusicRef.current.muted = !isMuted
+            setIsMuted(!isMuted)
         }
     }
 
@@ -253,6 +270,16 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
                 >
                     {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-1" />}
                 </button>
+
+                {(musicUrl || musicTrack) && (
+                    <button
+                        className="control-btn"
+                        onClick={toggleMute}
+                        title={isMuted ? 'Unmute' : 'Mute'}
+                    >
+                        {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                    </button>
+                )}
 
                 <button
                     className="control-btn"
