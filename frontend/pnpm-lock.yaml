@@ -56,9 +56,6 @@ importers:
       cmdk:
         specifier: ^1.1.1
         version: 1.1.1(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      country-state-city:
-        specifier: ^3.2.1
-        version: 3.2.1
       framer-motion:
         specifier: ^12.23.26
         version: 12.34.3(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -74,9 +71,6 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
-      qrcode.react:
-        specifier: ^4.2.0
-        version: 4.2.0(react@19.2.4)
       radix-ui:
         specifier: ^1.4.3
         version: 1.4.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -86,9 +80,6 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.4(react@19.2.4)
-      react-pageflip:
-        specifier: ^2.0.3
-        version: 2.0.3
       react-qr-code:
         specifier: ^2.0.18
         version: 2.0.18(react@19.2.4)
@@ -110,9 +101,6 @@ importers:
       tailwindcss:
         specifier: ^4.1.17
         version: 4.2.1
-      tailwindcss-animate:
-        specifier: ^1.0.7
-        version: 1.0.7(tailwindcss@4.2.1)
     devDependencies:
       '@eslint/js':
         specifier: ^9.39.1
@@ -1428,9 +1416,6 @@ packages:
     resolution: {integrity: sha512-ei8Aos7ja0weRpFzJnEA9UHJ/7XQmqglbRwnf2ATjcB9Wq874VKH9kfjjirM6UhU2/E5fFYadylyhFldcqSidQ==}
     engines: {node: '>=18'}
 
-  country-state-city@3.2.1:
-    resolution: {integrity: sha512-kxbanqMc6izjhc/EHkGPCTabSPZ2G6eG4/97akAYHJUN4stzzFEvQPZoF8oXDQ+10gM/O/yUmISCR1ZVxyb6EA==}
-
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
@@ -1891,9 +1876,6 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
-  page-flip@2.0.7:
-    resolution: {integrity: sha512-96lQFUUz7r/LZzEUZJ3yBIMEKU9+m8HMFDzTvTdD6P7Ag/wXINjp9n0W7b4wanwnDbQETo4uNUoL3zMqpFxwGA==}
-
   parent-module@1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -1931,11 +1913,6 @@ packages:
   qr.js@0.0.0:
     resolution: {integrity: sha512-c4iYnWb+k2E+vYpRimHqSu575b1/wKl4XFeJGpFmrJQz5I88v9aY2czh7s0w36srfCM1sXgC/xpoJz5dJfq+OQ==}
 
-  qrcode.react@4.2.0:
-    resolution: {integrity: sha512-QpgqWi8rD9DsS9EP3z7BT+5lY5SFhsqGjpgW5DY/i3mK4M9DTBNz3ErMi8BWYEfI3L0d8GIbGmcdFAS1uIRGjA==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
   radix-ui@1.4.3:
     resolution: {integrity: sha512-aWizCQiyeAenIdUbqEpXgRA1ya65P13NKn/W8rWkcN0OPkRDxdBVLWnIEDsS2RpwCK2nobI7oMUSmexzTDyAmA==}
     peerDependencies:
@@ -1956,9 +1933,6 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-
-  react-pageflip@2.0.3:
-    resolution: {integrity: sha512-k81mHhRvUM52y8jyzTCh5t4O0lepkLhp+XGSUzq2C3uD+iW99Cv0jfRlqFCjZbD5N3jKkIFr7/3giucoXKDP3Q==}
 
   react-qr-code@2.0.18:
     resolution: {integrity: sha512-v1Jqz7urLMhkO6jkgJuBYhnqvXagzceg3qJUWayuCK/c6LTIonpWbwxR1f1APGd4xrW/QcQEovNrAojbUz65Tg==}
@@ -2142,11 +2116,6 @@ packages:
 
   tailwind-merge@3.5.0:
     resolution: {integrity: sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A==}
-
-  tailwindcss-animate@1.0.7:
-    resolution: {integrity: sha512-bl6mpH3T7I3UFxuvDEXLxy/VuFxBk5bbzplh7tXI68mwMokNYd1t9qPBHlnyTwfa4JGC4zP516I1hYYtQ/vspA==}
-    peerDependencies:
-      tailwindcss: '>=3.0.0 || insiders'
 
   tailwindcss@4.2.1:
     resolution: {integrity: sha512-/tBrSQ36vCleJkAOsy9kbNTgaxvGbyOamC30PRePTQe/o1MFwEKHQk4Cn7BNGaPtjp+PuUrByJehM1hgxfq4sw==}
@@ -3544,8 +3513,6 @@ snapshots:
 
   cookie@1.1.1: {}
 
-  country-state-city@3.2.1: {}
-
   cross-spawn@7.0.6:
     dependencies:
       path-key: 3.1.1
@@ -3931,8 +3898,6 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
-  page-flip@2.0.7: {}
-
   parent-module@1.0.1:
     dependencies:
       callsites: 3.1.0
@@ -3962,10 +3927,6 @@ snapshots:
   punycode@2.3.1: {}
 
   qr.js@0.0.0: {}
-
-  qrcode.react@4.2.0(react@19.2.4):
-    dependencies:
-      react: 19.2.4
 
   radix-ui@1.4.3(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4):
     dependencies:
@@ -4036,10 +3997,6 @@ snapshots:
       scheduler: 0.27.0
 
   react-is@16.13.1: {}
-
-  react-pageflip@2.0.3:
-    dependencies:
-      page-flip: 2.0.7
 
   react-qr-code@2.0.18(react@19.2.4):
     dependencies:
@@ -4192,10 +4149,6 @@ snapshots:
   swiper@12.1.2: {}
 
   tailwind-merge@3.5.0: {}
-
-  tailwindcss-animate@1.0.7(tailwindcss@4.2.1):
-    dependencies:
-      tailwindcss: 4.2.1
 
   tailwindcss@4.2.1: {}
 

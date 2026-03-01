@@ -1,3 +1,6 @@
+ignoredBuiltDependencies:
+  - yt-dlp-exec
+
 onlyBuiltDependencies:
   - mongodb-memory-server
   - unrs-resolver
