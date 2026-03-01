@@ -238,7 +238,7 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
                                         <img
                                             src={sheet.front.src}
                                             alt={sheet.front.label || 'Page image'}
-                                            className={`page-image ${sheet.isSpread ? 'spread-right' : ''}`}
+                                            className={`page-image ${sheet.frontClass || ''}`}
                                             draggable="false"
                                             onError={e => { e.target.style.display = 'none' }}
                                         />
@@ -255,7 +255,7 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
                                         <img
                                             src={sheet.back.src}
                                             alt={sheet.back.label || 'Page image'}
-                                            className={`page-image ${sheet.isSpread ? 'spread-left' : ''}`}
+                                            className={`page-image ${sheet.backClass || ''}`}
                                             draggable="false"
                                             onError={e => { e.target.style.display = 'none' }}
                                         />
