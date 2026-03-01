@@ -1,133 +1,267 @@
+/* =========================================================================
+   Flipix Engine Base Styles (Exact Replica)
+   ========================================================================= */
+
 .flipbook-wrapper {
-    perspective: 3500px;
+    /* To absolutely center the active book just like flipix does */
     width: 100%;
-    max-width: 4800px;
-    /* Reduced max-height slightly to make it look a bit smaller and fit the screen perfectly */
-    height: 70vh;
-    margin: 0 auto;
+    min-height: 100vh;
     display: flex;
-    margin-top: -5% !important;
     align-items: center;
     justify-content: center;
-    padding-inline: 10px;
-    scale: 0.8;
-   
-}
-
-.book-container {
-    width: 100%;
-    /* 6:2 aspect ratio means each page (half the width) is 3:2 */
-    aspect-ratio: 6 / 2;
-    max-height: 70vh;
+    overflow: hidden;
     position: relative;
-    display: flex;
-    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
-    transform-style: preserve-3d;
-    border-radius: 15px;
-    overflow: hidden;
 }
 
-.book-container.closed-front {
-    transform: translateX(-25%);
-}
-
-.book-container.closed-back {
-    transform: translateX(25%);
-}
-
-.book-container.open {
-    transform: translateX(0);
-}
-
-.book-sheet {
+.book {
+    /* Flipbook's original centering logic */
     position: absolute;
-    top: 0;
-    right: 0;
-    width: 50%;
-    height: 100%;
-    transform-style: preserve-3d;
-    transform-origin: left center;
-    transition: transform 1.2s cubic-bezier(0.645, 0.045, 0.355, 1);
-    cursor: pointer;
-    
+    top: 50%;
+    left: 50%;
+    width: 296px;
+    aspect-ratio: 1.5;
+    transition-duration: 1s;
+    perspective: 1500px;
+    transform: translate(-50%, -50%) rotateX(-5deg);
 }
 
-/* Ensure sheets don't intercept clicks when they shouldn't */
-.book-sheet.flipped {
-    transform: rotateY(-180deg);
+.book.portrait {
+    width: 148px;
 }
 
-.page-side {
+.front-cover,
+.back-cover {
     position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
+    border-radius: 0 15px 15px 0;
+    box-shadow: 0 0 5px rgb(41, 41, 41);
+    transform-origin: left;
+}
+
+/* Covers only span 1 page, so they use 100% width, not 200% */
+.front-cover img,
+.back-cover img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.front-cover {
+    z-index: var(--reverse-count);
+    transition: transform 1.5s;
+    /* animation: turnEffect 2s ease-in-out; */
+}
+
+.front-cover.hint-anim {
+    animation: turnEffect 2.5s ease-in-out infinite;
+}
+
+.back-cover {
+    transition: transform 1.5s, z-index 0.5s 0.5s;
+    z-index: var(--reverse-count);
+}
+
+.page {
+    position: absolute;
+    transform-origin: left;
+    transform-style: preserve-3d;
+    transform: rotateY(-20deg);
+}
+
+.inner.page {
+    width: 100%;
+    height: 100%;
+}
+
+.page .blank {
+    background: #FAFAFA;
+}
+
+.page.first-half {
+    transition: transform 1.5s;
+}
+
+.page.last-half {
+    transition: transform 1.5s, z-index 0.5s 0.5s;
+}
+
+/* FLIPIX SPECIFIC: Images inside pages */
+.inner.page img:not(.single-img) {
+    position: absolute;
+    height: 100% !important;
+    width: 200% !important;
+    /* forces the image to map across 2 full pages */
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: fill !important;
+    /* ensures the 32:9 image stretches exactly to fill the 200% width container */
+}
+
+.page img.single-img {
+    position: absolute;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    object-fit: fill !important;
+    right: auto !important;
+    left: auto !important;
+}
+
+.inner.page .front-page img:not(.single-img) {
+    right: 0 !important;
+    /* Align to the right edge for the right page of a spread */
+}
+
+.inner.page .back-page img:not(.single-img) {
+    left: 0 !important;
+    /* Align to the left edge for the left page of a spread */
+}
+
+.front-page,
+.back-page {
+    background: #FAFAFA;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     backface-visibility: hidden;
-    background-color: #FAFAFA;
-    /* Off-white paper color */
-    overflow: hidden;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+    border-radius: 10px;
+
 }
 
-
-/* Base styling for front and back */
-.page-side.front {
-    transform: rotateY(0deg);
+.inner.page .front-page {
+    border-radius: 0 10px 10px 0;
 }
 
-.page-side.back {
+.inner.page .back-page {
+    border-radius: 10px 0 0 10px;
+}
+
+.back-page {
     transform: rotateY(180deg);
+    z-index: 99;
 }
 
-/* Adds the spine shadow to simulate depth and binding */
-.page-shadow {
+/* Flipix originally uses these labels, keeping for compatibility if ever needed */
+.page label {
+    font-size: 14px;
+    font-weight: 700;
+    -webkit-text-stroke: 1px black;
     position: absolute;
-    top: 0;
-    left: 0;
     bottom: 0;
-    width: 60px;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.25), transparent);
-    pointer-events: none;
-    z-index: 10;
+    opacity: 0.8;
 }
 
-.page-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain; /* changed from cover to contain to prevent cropping */
-    background-color: #FAFAFA;
-    user-select: none;
-    -webkit-user-drag: none;
+.front-page label {
+    right: 0;
 }
 
-/* For spread images (32:9 ratio), we need to split them across two pages */
-.page-image.spread-left {
-    object-fit: cover;
-    object-position: left center;
-    width: 200%; /* Make image twice as wide */
-    max-width: 200%;
-    transform: translateX(25%); /* Shift to show left half */
+.back-page label {
+    left: 0;
 }
 
-.page-image.spread-right {
-    object-fit: cover;
-    object-position: right center;
-    width: 200%; /* Make image twice as wide */
-    max-width: 200%;
-    transform: translateX(-25%); /* Shift to show right half */
+.book .page {
+    z-index: var(--reverse-count);
 }
 
-/* Thicker border for covers */
-.book-sheet.is-cover .page-side {
-    background-color: #222;
+/* EXACT FLIPIX CENTERING LOGIC */
+.book.open {
+    /* Desktop flipix uses this specific translation to center the *opened* book */
+    transform: translate(0%, -50%) rotateZ(-2deg) rotateX(-5deg);
 }
 
-/* Beautiful floating bottom bar controls */
+.book.open.portrait {
+    transform: translate(-25%, -50%) rotateZ(-2deg) rotateX(-5deg);
+}
+
+.book.open .front-cover {
+    transition: transform 1.5s, z-index 0.5s 0.5s;
+}
+
+.book.open .page {
+    box-shadow: -1px 0px 4px 0px rgba(99, 98, 98, 0.3);
+}
+
+.book .page.turn {
+    transform: rotateY(-175deg);
+    z-index: var(--count);
+}
+
+.book .page.first-half.turn {
+    transition: transform 1.5s, z-index 0.5s 0.5s;
+}
+
+.book .page.last-half.turn {
+    transition: transform 1.5s;
+}
+
+.book .back-cover.turn {
+    transition: transform 1.5s;
+}
+
+.book.close {
+    /* Translate +50% shifts the spine to the right, perfectly centering the closed back cover which spans leftwards */
+    transform: translate(50%, -50%) rotateZ(0deg) rotateX(-5deg);
+}
+
+.book.close.portrait {
+    transform: translate(25%, -50%) rotateZ(0deg) rotateX(-5deg);
+}
+
+@keyframes turnEffect {
+    0% {
+        transform: rotateY(-20deg);
+    }
+
+    10% {
+        transform: rotateY(-20deg);
+    }
+
+    60% {
+        transform: rotateY(-40deg);
+    }
+
+    100% {
+        transform: rotateY(-20deg);
+    }
+}
+
+/* Flipix Media Query */
+@media only screen and (min-width: 1100px) {
+    .book {
+        width: 500px;
+        /* Note: For vertical center, flipix does margin: 100px auto 0 auto.
+           But to keep it true 100svh centered without scrolling, we override and keep translate */
+        margin: 0;
+    }
+
+    .book.open {
+        /* Open needs to shift right by EXACTLY half its width (250px) to appear centered when spread is 1000px wide */
+        transform: translate(0%, -50%) rotateZ(-2deg) rotateX(-5deg);
+    }
+
+    .book.portrait {
+        width: 400px;
+    }
+
+    .book.open.portrait {
+        transform: translate(-25%, -50%) rotateZ(-2deg) rotateX(-5deg);
+    }
+
+    .book.close.portrait {
+        transform: translate(-50%, -50%);
+    }
+
+    .page label {
+        font-size: 18px;
+    }
+}
+
+
+/* =========================================================================
+   React Wrapper Controls
+   ========================================================================= */
+
 .floating-controls {
     position: fixed;
     bottom: 24px;
@@ -173,12 +307,4 @@
 .control-btn.play-active {
     color: #EAB308;
     background: rgba(234, 179, 8, 0.1);
-}
-
-.page-counter {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 13px;
-    font-weight: 500;
-    padding: 0 8px;
-    font-variant-numeric: tabular-nums;
 }

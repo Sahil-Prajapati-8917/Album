@@ -1,0 +1,1069 @@
+<html lang="en" data-jetski-tab-id="1799612065"><head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Demo</title>
+        <meta property="og:title" content="Demo">
+        <meta property="og:description" content="FlipiX | Feeling Wali Flipbook">
+        <meta property="og:image" content="https://flipix.in/assets/images/rajawedsrani_41_15/og_image.jpg">
+        <meta property="og:url" content="https://flipix.in/v1/?m=cmFqYXdlZHNyYW5pXzQxXzE1">        <!--<meta property="og:image:width" content="1200" />-->
+        <!--<meta property="og:image:height" content="840" />-->
+        <meta property="og:type" content="website">
+        
+        <link rel="icon" type="image/png" href="http://flipix.in/assets/images/Flipix-fevicon.png">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="flipbook.css?v=1.1.3">
+        <style>
+            
+        #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .anim-toggle-btn { position: fixed; bottom: 30px; left: 20px; width: 30px; height: 30px; background: rgba(0,0,0,0.6); border: 1px solid var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.2rem; cursor: pointer; z-index: 2000; transition: 0.3s; backdrop-filter: blur(5px); }
+        .anim-toggle-btn:hover { background: var(--primary); color: #000; box-shadow: 0 0 20px rgba(244,199,32,0.6); }
+        .anim-tooltip { position: absolute; left: 60px; background: rgba(0,0,0,0.8); color: #fff; padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: 0.3s; border: 1px solid var(--primary); }
+        .anim-toggle-btn:hover .anim-tooltip { opacity: 1; transform: translateX(5px); }
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.3);
+                z-index: 1998;
+            }
+        </style>
+    
+        <style>
+            #page8 img {
+                left: unset;
+                right: 0;
+            }
+        </style>
+    <style id="antigravity-scroll-lock-style">
+  html:root body.antigravity-scroll-lock {
+    overflow: hidden !important;
+  }
+</style></head>
+
+    <body id="body" style="background: black" cz-shortcut-listen="true" class="">
+        
+    <canvas id="bg-canvas" width="594" height="752"></canvas>
+        <header>
+                    <img src="../admin/assets/images/badges/golden.png" data-popup="badgePopup" class="badge open-popup">
+                    <div class="logo">
+                        <h2>FlipiX Care (8 Sheets)</h2>
+                        <div class="social-links"></div>
+                    </div>
+                    <div class="client">
+                        
+                        <marquee behavior="alternate" scrollamount="6">
+                            <div class="moving-text">
+                                Demo<br> Thursday 05/09/2024
+                            </div>
+                        </marquee>
+                    </div>
+                    <div class="info">
+                        <p><i class="fa fa-phone" style="margin-right: 12px"></i><a href="tel:9162072838">9162072838</a></p>
+                        <p><i class="fa fa-map-marker" style="margin-right: 15px"></i> 
+                            <span>New Delhi, DL</span></p>
+                    </div>
+                </header>        
+        
+        <!-- Main -->
+        <div class="main">
+            <div class="v2">
+                <a href="https://flipix.in"><img src="https://flipix.in/assets/images/try-it.png" alt="FlipiX"></a>
+            </div>
+            <div class="book open" id="book" style="aspect-ratio: 1.5 / 1;"><div class="front-cover page first-half turn" id="frontCover" style="--count: 1; --reverse-count: 10;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/001Coverfirst.jpg"></div><div class="back-page blank"></div></div><div class="inner page first-half turn" id="page1" style="--count: 2; --reverse-count: 9;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/01.jpg"><label>01b</label></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/03.jpg"><label>03a</label></div></div><div class="inner page first-half turn" id="page2" style="--count: 3; --reverse-count: 8;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/03.jpg"><label>03b</label></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/04.jpg"><label>04a</label></div></div><div class="inner page first-half turn" id="page3" style="--count: 4; --reverse-count: 7;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/04.jpg"><label>04b</label></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/05.jpg"><label>05a</label></div></div><div class="back-cover page last-half" id="backCover" style="--count: 10; --reverse-count: 1;"><div class="front-page blank"></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/001Coverlast.jpg"></div></div><div class="inner page first-half" id="page4" style="--count: 5; --reverse-count: 6;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/05.jpg"><label>05b</label></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/06.jpg"><label>06a</label></div></div><div class="inner page last-half" id="page5" style="--count: 6; --reverse-count: 5;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/06.jpg"><label>06b</label></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/07.jpg"><label>07a</label></div></div><div class="inner page last-half" id="page6" style="--count: 7; --reverse-count: 4;"><div class="front-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/07.jpg"><label>07b</label></div><div class="back-page"><img src="https://flipix.in/assets/images/rajawedsrani_41_15/08.jpg"><label>08a</label></div></div></div>
+            <div class="actions">
+                <span id="playBtn" class="btn play" style="color: red;"><i class="fa fa-play-circle-o"></i></span>
+                <a class="btn" href="whatsapp://send?text=https://flipix.in/v1/?m=cmFqYXdlZHNyYW5pXzQxXzE1"><i class="fa fa-share"></i></a>                <span id="ratingButton" class="btn rating"><i class="fa fa-star"></i></span>
+                <span id="feedback-trigger" class="btn feedback-trigger-btn"><i class="fa fa-comment"></i></span>
+                <span class="btn open-popup" data-popup="infoPopup"><i class="fa fa-info"></i></span>
+                <span id="fullScreenButton" class="btn fullscreen"><i class="fa fa-arrows-alt"></i></span>
+                <span class="lock-msg">Zoom <br>Locked</span>
+            </div>
+        </div>
+
+
+        <!-- Footer -->
+        <footer>
+            <img src="../admin/assets/images/icons/lock.png" class="trust-stamp open-popup" data-popup="securityPopup" alt="Locked">
+            
+            <div>
+                                <a href="https://api.whatsapp.com/send?phone=919162072838&amp;text=https://flipix.in/v1/?m=cmFqYXdlZHNyYW5pXzQxXzE1%0AHi%2C%20I%20found%20this%20amazing%20FlipiX.%20I%20want%20to%20know%20more%20about%20it." target="_blank"><img src="../assets/images/chat-with-photographer.png" alt="Chat with Photographer"></a>
+                            </div>
+        <!--
+            <div class="fx-block">
+            	<div class="toggle">
+            		<div>
+            			<input type="checkbox" id="toggles">
+            			<div data-unchecked="V2" data-checked="V1">
+            			</div>
+            		</div>
+            	</div>
+            </div>
+        -->
+        </footer>
+
+        <div class="welcome">
+            <img src="../assets/images/welcome.png?v=2" alt="Please Rotate You Phone">
+        </div>
+        
+        <style>
+        
+                .warnOverlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    backdrop-filter: blur(2px);
+                    z-index: 1000;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+        
+                .warnPopup {
+                    background: rgba(0, 0, 0, 0.8);
+                    border-radius: 12px;
+                    padding: 40px;
+                    max-width: 450px;
+                    width: 90%;
+                    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+                    text-align: center;
+                    position: relative;
+                    animation: popupSlide 0.3s ease-out;
+                }
+        
+                @keyframes popupSlide {
+                    from {
+                        transform: translateY(-20px);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateY(0);
+                        opacity: 1;
+                    }
+                }
+        
+                .warnPopup h2 {
+                    color: #ddd;
+                    font-size: 1.5rem;
+                    margin-bottom: 10px;
+                    font-weight: 600;
+                }
+        
+                .warnPopup h3 {
+                    color: #e74c3c;
+                    font-size: 1.8rem;
+                    margin-bottom: 20px;
+                    font-weight: 700;
+                }
+        
+                .warnPopup p {
+                    color: #eee;
+                    line-height: 1.6;
+                    margin-bottom: 15px;
+                    font-size: 1rem;
+                }
+        
+                .warning-text {
+                    color: #e67e22;
+                    font-weight: 600;
+                    font-size: 0.95rem;
+                    margin-bottom: 25px;
+                }
+        
+                .contact-btn {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    border: none;
+                    padding: 12px 30px;
+                    border-radius: 25px;
+                    font-size: 1rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+                }
+        
+                .contact-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+                }
+        
+                .contact-btn:active {
+                    transform: translateY(0);
+                }
+        
+                .close-btn {
+                    position: absolute;
+                    top: 15px;
+                    right: 20px;
+                    background: none;
+                    border: none;
+                    font-size: 24px;
+                    color: #999;
+                    cursor: pointer;
+                    transition: color 0.3s ease;
+                }
+        
+                .close-btn:hover {
+                    color: #333;
+                }
+        
+                .flipix-logo {
+                    color: #d3a013;
+                    font-weight: 700;
+                    font-size: 1.1rem;
+                }
+            </style>
+                
+        
+        <!-- Rating Popup -->
+        <div id="ratingPopup" class="rating-popup">
+            <div class="popup-content">
+                <span class="close">×</span>
+                <h5 class="heading">Please Rate Your Experience</h5>
+                <form id="ratingForm">
+        
+                    <label for="photographyRating">Photography:</label>
+                    <div class="star-rating" id="photographyRating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+        
+                    <label for="designRating">Design:</label>
+                    <div class="star-rating" id="designRating">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                    
+                    <button type="submit" class="btn">Submit</button>
+                </form>
+            </div>
+        </div>
+        
+        
+        <!-- Feedback Popup -->
+        <link rel="stylesheet" href="feedback.css?v=1.0.2">
+        <div id="feedback-box">
+            <div class="feedback-form">
+                <p class="feedback-heading">Feedback @ FlipiX India</p>
+                <input type="text" id="feedback-name" placeholder="Your Name" required="">
+                <input type="text" id="feedback-mob" placeholder="Mobile Number" required="">
+                <textarea id="feedback-message" placeholder="Your Feedback" rows="4" required=""></textarea>
+                
+                <div class="feedback-rating">
+                    <i class="icon fa fa-frown-o" data-value="1"></i>
+                    <i class="icon fa fa-meh-o" data-value="2"></i>
+                    <i class="icon fa fa-smile-o" data-value="3"></i>
+                    <i></i>
+                    <span class="btn" id="send-feedback-btn"><i class="fa fa-paper-plane"></i></span>
+                </div>
+
+                <div id="feedback-result-message"></div>
+            </div>
+        </div>
+        <script src="feedback.js?v=1.0.4"></script>
+        
+        <!-- Info popup -->
+        <div class="popup" id="infoPopup">
+            <div class="popup-content">
+                <h4>Views <span>67333</span></h4>
+            </div>
+        </div>
+    <div class="anim-toggle-btn" id="animToggle" onclick="toggleAnimation()">
+        <i class="fa fa-magic"></i>
+        <span class="anim-tooltip" id="animTooltip">Golden Fireflies</span>
+    </div>
+        
+        <!-- Badge popup -->
+        <div class="popup" id="badgePopup">
+            <div class="popup-content">
+                <h4>Verified Studio/Photographer</h4>
+                <div style="display: flex; align-items: center; justify-content: center;">Hold <img src="../admin/assets/images/badges/golden.png" class="badge"> Golden Badge</div>
+            </div>
+        </div>
+
+        <!-- Secuty popup -->
+        <div class="popup" id="securityPopup">
+        <!--    <div class="popup-content">-->
+                <img src="../admin/assets/images/promise.png" class="promise-banner" alt="end-to-end encrypted" width="350">
+        <!--    </div>-->
+        </div>
+
+    <script>
+        const numPages = 8;
+        const frontCoverImg = '001Coverfirst.jpg';
+        const backCoverImg = '001Coverlast.jpg';
+        const innerSheetArray = ["01.jpg","03.jpg","04.jpg","05.jpg","06.jpg","07.jpg","08.jpg","09.jpg","01.jpg"];
+        const bgMusic =  `Jashn-E-Bahaara - Instrumental - Jodhaa Akbar.mp3`;
+        const pageOrientation = 'landscape';
+        const pageRatio = '1.5';
+        const folderName = "rajawedsrani_41_15";
+        const folderPath = `https://flipix.in/assets/images`;
+        const isCropped = 0;
+        
+        
+        // ===================================
+        // ANIMATION ENGINE
+        // ===================================
+
+        var canvas = document.getElementById('bg-canvas');
+        var ctx = canvas.getContext('2d');
+        var tooltip = document.getElementById('animTooltip');
+        var particlesArray = [];
+        var animationMode = 0;
+        var modeNames = ["Golden Fireflies", "Cosmic Network", "Floating Bubbles"];
+
+        function setCanvasSize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        setCanvasSize();
+        window.addEventListener('resize', function() { setCanvasSize(); init(); });
+
+        function toggleAnimation() { animationMode = (animationMode + 1) % 3; tooltip.innerText = modeNames[animationMode]; init(); }
+
+        class FireflyParticle {
+            constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*2; this.speedY=Math.random()*0.5+0.2; this.speedX=(Math.random()-0.5)*0.4; this.opacity=Math.random()*0.5; this.fadeSpeed=Math.random()*0.005+0.002; }
+            update() { this.y-=this.speedY; this.x+=this.speedX; this.opacity+=this.fadeSpeed; if(this.opacity>0.8||this.opacity<0.1) this.fadeSpeed=-this.fadeSpeed; if(this.y<0) this.y=canvas.height; if(this.x>canvas.width) this.x=0; if(this.x<0) this.x=canvas.width; }
+            draw() { ctx.fillStyle='rgba(244,199,32,'+this.opacity+')'; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.shadowBlur=8; ctx.shadowColor='rgba(244,199,32,0.5)'; ctx.fill(); ctx.shadowBlur=0; }
+        }
+        class NetworkParticle {
+            constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*3+1; this.speedX=(Math.random()*1.5)-0.75; this.speedY=(Math.random()*1.5)-0.75; this.hue=45; }
+            update() { this.x+=this.speedX; this.y+=this.speedY; if(this.x>canvas.width||this.x<0) this.speedX*=-1; if(this.y>canvas.height||this.y<0) this.speedY*=-1; }
+            draw() { ctx.fillStyle='hsl('+this.hue+',100%,50%)'; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); }
+        }
+        class BubbleParticle {
+            constructor() { this.x=Math.random()*canvas.width; this.y=Math.random()*canvas.height; this.size=Math.random()*15+5; this.speedY=Math.random()*0.5+0.1; this.speedX=(Math.random()-0.5)*0.2; this.opacity=Math.random()*0.1+0.05; }
+            update() { this.y-=this.speedY; this.x+=this.speedX; if(this.y<-50) this.y=canvas.height+50; }
+            draw() { ctx.fillStyle='rgba(255,255,255,'+this.opacity+')'; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(244,199,32,'+(this.opacity*1.5)+')'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.stroke(); }
+        }
+
+        function init() {
+            particlesArray=[]; var count=0;
+            if(animationMode===0){count=(canvas.width*canvas.height)/10000;for(var i=0;i<count;i++) particlesArray.push(new FireflyParticle());}
+            else if(animationMode===1){count=(canvas.width*canvas.height)/15000;for(var i=0;i<count;i++) particlesArray.push(new NetworkParticle());}
+            else{count=50;for(var i=0;i<count;i++) particlesArray.push(new BubbleParticle());}
+            tooltip.innerText=modeNames[animationMode];
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            if(animationMode===1){for(var i=0;i<particlesArray.length;i++){for(var j=i+1;j<particlesArray.length;j++){var dx=particlesArray[i].x-particlesArray[j].x;var dy=particlesArray[i].y-particlesArray[j].y;var d=Math.sqrt(dx*dx+dy*dy);if(d<150){ctx.strokeStyle='rgba(244,199,32,'+((1-d/150)*0.2)+')';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(particlesArray[i].x,particlesArray[i].y);ctx.lineTo(particlesArray[j].x,particlesArray[j].y);ctx.stroke();}}}}
+            for(var i=0;i<particlesArray.length;i++){particlesArray[i].update();particlesArray[i].draw();}
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+    </script>
+    
+    <script src="main.js?v=4.6.19"></script>
+    <script src="star-rating.js"></script>
+    
+    
+
+
+    
+<div id="preact-border-shadow-host" popover="manual" style="border: none; padding: 0px; margin: 0px; inset: 0px; position: fixed; width: 100vw; height: 100vh; background: transparent; pointer-events: none;"><template shadowrootmode="open"><div id="preact-border-container" style="position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; pointer-events: none;"></div><style>/*! tailwindcss v4.1.14 | MIT License | https://tailwindcss.com */
+@layer properties;
+@layer theme, base, components, utilities;
+@layer theme {
+  #preact-border-container, #preact-border-container :host {
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    --color-neutral-400: oklch(70.8% 0 0);
+    --color-neutral-900: oklch(20.5% 0 0);
+    --color-black: #000;
+    --color-white: #fff;
+    --spacing: 0.25rem;
+    --text-xs: 0.75rem;
+    --text-xs--line-height: calc(1 / 0.75);
+    --font-weight-medium: 500;
+    --radius-md: 0.375rem;
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --blur-sm: 8px;
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    --default-font-family: var(--font-sans);
+    --default-mono-font-family: var(--font-mono);
+    --color-agy-blue-glow: rgba(0, 102, 255, 0.75);
+    --color-agy-blue-light: rgba(120, 185, 255, 0.75);
+    --color-agy-red: rgb(210, 0, 0);
+  }
+}
+@layer base {
+  #preact-border-container *, #preact-border-container ::after, #preact-border-container ::before, #preact-border-container ::backdrop, #preact-border-container ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+  #preact-border-container, #preact-border-container :host {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+      -o-tab-size: 4;
+         tab-size: 4;
+    font-family: var(--default-font-family, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+    font-feature-settings: var(--default-font-feature-settings, normal);
+    font-variation-settings: var(--default-font-variation-settings, normal);
+    -webkit-tap-highlight-color: transparent;
+  }
+  #preact-border-container hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+  #preact-border-container abbr:where([title]) {
+    -webkit-text-decoration: underline dotted;
+    text-decoration: underline dotted;
+  }
+  #preact-border-container h1, #preact-border-container h2, #preact-border-container h3, #preact-border-container h4, #preact-border-container h5, #preact-border-container h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  #preact-border-container a {
+    color: inherit;
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+  }
+  #preact-border-container b, #preact-border-container strong {
+    font-weight: bolder;
+  }
+  #preact-border-container code, #preact-border-container kbd, #preact-border-container samp, #preact-border-container pre {
+    font-family: var(--default-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+    font-feature-settings: var(--default-mono-font-feature-settings, normal);
+    font-variation-settings: var(--default-mono-font-variation-settings, normal);
+    font-size: 1em;
+  }
+  #preact-border-container small {
+    font-size: 80%;
+  }
+  #preact-border-container sub, #preact-border-container sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  #preact-border-container sub {
+    bottom: -0.25em;
+  }
+  #preact-border-container sup {
+    top: -0.5em;
+  }
+  #preact-border-container table {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+  #preact-border-container :-moz-focusring {
+    outline: auto;
+  }
+  #preact-border-container progress {
+    vertical-align: baseline;
+  }
+  #preact-border-container summary {
+    display: list-item;
+  }
+  #preact-border-container ol, #preact-border-container ul, #preact-border-container menu {
+    list-style: none;
+  }
+  #preact-border-container img, #preact-border-container svg, #preact-border-container video, #preact-border-container canvas, #preact-border-container audio, #preact-border-container iframe, #preact-border-container embed, #preact-border-container object {
+    display: block;
+    vertical-align: middle;
+  }
+  #preact-border-container img, #preact-border-container video {
+    max-width: 100%;
+    height: auto;
+  }
+  #preact-border-container button, #preact-border-container input, #preact-border-container select, #preact-border-container optgroup, #preact-border-container textarea, #preact-border-container ::file-selector-button {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  #preact-border-container :where(select:is([multiple], [size])) optgroup {
+    font-weight: bolder;
+  }
+  #preact-border-container :where(select:is([multiple], [size])) optgroup option {
+    padding-inline-start: 20px;
+  }
+  #preact-border-container ::file-selector-button {
+    margin-inline-end: 4px;
+  }
+  #preact-border-container ::-moz-placeholder {
+    opacity: 1;
+  }
+  #preact-border-container ::placeholder {
+    opacity: 1;
+  }
+  @supports (not (-webkit-appearance: -apple-pay-button))  or (contain-intrinsic-size: 1px) {
+    #preact-border-container ::-moz-placeholder {
+      color: currentcolor;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, currentcolor 50%, transparent);
+      }
+    }
+    #preact-border-container ::placeholder {
+      color: currentcolor;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, currentcolor 50%, transparent);
+      }
+    }
+  }
+  #preact-border-container textarea {
+    resize: vertical;
+  }
+  #preact-border-container ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+  #preact-border-container ::-webkit-date-and-time-value {
+    min-height: 1lh;
+    text-align: inherit;
+  }
+  #preact-border-container ::-webkit-datetime-edit {
+    display: inline-flex;
+  }
+  #preact-border-container ::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+  #preact-border-container ::-webkit-datetime-edit, #preact-border-container ::-webkit-datetime-edit-year-field, #preact-border-container ::-webkit-datetime-edit-month-field, #preact-border-container ::-webkit-datetime-edit-day-field, #preact-border-container ::-webkit-datetime-edit-hour-field, #preact-border-container ::-webkit-datetime-edit-minute-field, #preact-border-container ::-webkit-datetime-edit-second-field, #preact-border-container ::-webkit-datetime-edit-millisecond-field, #preact-border-container ::-webkit-datetime-edit-meridiem-field {
+    padding-block: 0;
+  }
+  #preact-border-container ::-webkit-calendar-picker-indicator {
+    line-height: 1;
+  }
+  #preact-border-container :-moz-ui-invalid {
+    box-shadow: none;
+  }
+  #preact-border-container button, #preact-border-container input:where([type="button"], [type="reset"], [type="submit"]), #preact-border-container ::file-selector-button {
+    -webkit-appearance: button;
+       -moz-appearance: button;
+            appearance: button;
+  }
+  #preact-border-container ::-webkit-inner-spin-button, #preact-border-container ::-webkit-outer-spin-button {
+    height: auto;
+  }
+  #preact-border-container [hidden]:where(:not([hidden="until-found"])) {
+    display: none !important;
+  }
+}
+@layer utilities {
+  #preact-border-container .pointer-events-auto {
+    pointer-events: auto;
+  }
+  #preact-border-container .pointer-events-none {
+    pointer-events: none;
+  }
+  #preact-border-container .visible {
+    visibility: visible;
+  }
+  #preact-border-container .absolute {
+    position: absolute;
+  }
+  #preact-border-container .fixed {
+    position: fixed;
+  }
+  #preact-border-container .relative {
+    position: relative;
+  }
+  #preact-border-container .inset-0 {
+    inset: calc(var(--spacing) * 0);
+  }
+  #preact-border-container .bottom-5 {
+    bottom: calc(var(--spacing) * 5);
+  }
+  #preact-border-container .bottom-28 {
+    bottom: calc(var(--spacing) * 28);
+  }
+  #preact-border-container .bottom-full {
+    bottom: 100%;
+  }
+  #preact-border-container .left-1\/2 {
+    left: calc(1/2 * 100%);
+  }
+  #preact-border-container .container {
+    width: 100%;
+    @media (width >= 40rem) {
+      max-width: 40rem;
+    }
+    @media (width >= 48rem) {
+      max-width: 48rem;
+    }
+    @media (width >= 64rem) {
+      max-width: 64rem;
+    }
+    @media (width >= 80rem) {
+      max-width: 80rem;
+    }
+    @media (width >= 96rem) {
+      max-width: 96rem;
+    }
+  }
+  #preact-border-container .mb-2\.5 {
+    margin-bottom: calc(var(--spacing) * 2.5);
+  }
+  #preact-border-container .flex {
+    display: flex;
+  }
+  #preact-border-container .hidden {
+    display: none;
+  }
+  #preact-border-container .inline {
+    display: inline;
+  }
+  #preact-border-container .size-2\.5 {
+    width: calc(var(--spacing) * 2.5);
+    height: calc(var(--spacing) * 2.5);
+  }
+  #preact-border-container .size-6 {
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
+  }
+  #preact-border-container .h-5 {
+    height: calc(var(--spacing) * 5);
+  }
+  #preact-border-container .w-full {
+    width: 100%;
+  }
+  #preact-border-container .w-max {
+    width: -moz-max-content;
+    width: max-content;
+  }
+  #preact-border-container .flex-shrink-0 {
+    flex-shrink: 0;
+  }
+  #preact-border-container .flex-grow {
+    flex-grow: 1;
+  }
+  #preact-border-container .cursor-pointer {
+    cursor: pointer;
+  }
+  #preact-border-container .items-center {
+    align-items: center;
+  }
+  #preact-border-container .justify-between {
+    justify-content: space-between;
+  }
+  #preact-border-container .justify-center {
+    justify-content: center;
+  }
+  #preact-border-container .justify-start {
+    justify-content: flex-start;
+  }
+  #preact-border-container .gap-1\.5 {
+    gap: calc(var(--spacing) * 1.5);
+  }
+  #preact-border-container .truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #preact-border-container .overflow-hidden {
+    overflow: hidden;
+  }
+  #preact-border-container .rounded-\[2px\] {
+    border-radius: 2px;
+  }
+  #preact-border-container .rounded-full {
+    border-radius: calc(infinity * 1px);
+  }
+  #preact-border-container .rounded-md {
+    border-radius: var(--radius-md);
+  }
+  #preact-border-container .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+  #preact-border-container .border-solid {
+    --tw-border-style: solid;
+    border-style: solid;
+  }
+  #preact-border-container .border-white\/10 {
+    border-color: color-mix(in srgb, #fff 10%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-white) 10%, transparent);
+    }
+  }
+  #preact-border-container .border-white\/15 {
+    border-color: color-mix(in srgb, #fff 15%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, var(--color-white) 15%, transparent);
+    }
+  }
+  #preact-border-container .bg-agy-red {
+    background-color: var(--color-agy-red);
+  }
+  #preact-border-container .bg-agy-red\/90 {
+    background-color: color-mix(in srgb, rgb(210, 0, 0) 90%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-agy-red) 90%, transparent);
+    }
+  }
+  #preact-border-container .bg-black\/5 {
+    background-color: color-mix(in srgb, #000 5%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-black) 5%, transparent);
+    }
+  }
+  #preact-border-container .bg-neutral-900 {
+    background-color: var(--color-neutral-900);
+  }
+  #preact-border-container .bg-neutral-900\/75 {
+    background-color: color-mix(in srgb, oklch(20.5% 0 0) 75%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-neutral-900) 75%, transparent);
+    }
+  }
+  #preact-border-container .bg-white\/5 {
+    background-color: color-mix(in srgb, #fff 5%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 5%, transparent);
+    }
+  }
+  #preact-border-container .p-1\.5 {
+    padding: calc(var(--spacing) * 1.5);
+  }
+  #preact-border-container .p-4 {
+    padding: calc(var(--spacing) * 4);
+  }
+  #preact-border-container .px-2 {
+    padding-inline: calc(var(--spacing) * 2);
+  }
+  #preact-border-container .px-3 {
+    padding-inline: calc(var(--spacing) * 3);
+  }
+  #preact-border-container .py-1 {
+    padding-block: calc(var(--spacing) * 1);
+  }
+  #preact-border-container .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
+  #preact-border-container .pb-8 {
+    padding-bottom: calc(var(--spacing) * 8);
+  }
+  #preact-border-container .pl-0 {
+    padding-left: calc(var(--spacing) * 0);
+  }
+  #preact-border-container .pl-3 {
+    padding-left: calc(var(--spacing) * 3);
+  }
+  #preact-border-container .text-xs {
+    font-size: var(--text-xs);
+    line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  #preact-border-container .text-\[13px\] {
+    font-size: 13px;
+  }
+  #preact-border-container .font-medium {
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+  }
+  #preact-border-container .text-agy-red {
+    color: var(--color-agy-red);
+  }
+  #preact-border-container .text-neutral-400 {
+    color: var(--color-neutral-400);
+  }
+  #preact-border-container .text-white {
+    color: var(--color-white);
+  }
+  #preact-border-container .shadow {
+    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  #preact-border-container .shadow-lg {
+    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  #preact-border-container .filter {
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  #preact-border-container .backdrop-blur-sm {
+    --tw-backdrop-blur: blur(var(--blur-sm));
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  #preact-border-container .transition {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to, opacity, box-shadow, transform, translate, scale, rotate, filter, backdrop-filter, display, content-visibility, overlay, pointer-events;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  #preact-border-container .transition-all {
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  #preact-border-container .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+  }
+  #preact-border-container .ease-in-out {
+    --tw-ease: var(--ease-in-out);
+    transition-timing-function: var(--ease-in-out);
+  }
+  #preact-border-container .select-none {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+         user-select: none;
+  }
+}
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+#preact-border-container .animate-breathing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 25px 5px var(--color-agy-blue-light);
+  -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%);
+  mask-image: linear-gradient(to right, black 0%, transparent 100%);
+  animation: breathe 4s ease-in-out infinite;
+}
+#preact-border-container .animate-breathing::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 25px 5px var(--color-agy-blue-glow);
+  -webkit-mask-image: linear-gradient(to left, black 0%, transparent 100%);
+  mask-image: linear-gradient(to left, black 0%, transparent 100%);
+  animation: breathe 4s ease-in-out infinite;
+}
+#preact-border-container .paused::before, #preact-border-container .paused::after {
+  animation-play-state: paused;
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-inset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-ring-inset {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-offset-width {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --tw-ring-offset-color {
+  syntax: "*";
+  inherits: false;
+  initial-value: #fff;
+}
+@property --tw-ring-offset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-drop-shadow-size {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ease {
+  syntax: "*";
+  inherits: false;
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    #preact-border-container *, #preact-border-container ::before, #preact-border-container ::after, #preact-border-container ::backdrop {
+      --tw-border-style: solid;
+      --tw-font-weight: initial;
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-color: initial;
+      --tw-shadow-alpha: 100%;
+      --tw-inset-shadow: 0 0 #0000;
+      --tw-inset-shadow-color: initial;
+      --tw-inset-shadow-alpha: 100%;
+      --tw-ring-color: initial;
+      --tw-ring-shadow: 0 0 #0000;
+      --tw-inset-ring-color: initial;
+      --tw-inset-ring-shadow: 0 0 #0000;
+      --tw-ring-inset: initial;
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-blur: initial;
+      --tw-brightness: initial;
+      --tw-contrast: initial;
+      --tw-grayscale: initial;
+      --tw-hue-rotate: initial;
+      --tw-invert: initial;
+      --tw-opacity: initial;
+      --tw-saturate: initial;
+      --tw-sepia: initial;
+      --tw-drop-shadow: initial;
+      --tw-drop-shadow-color: initial;
+      --tw-drop-shadow-alpha: 100%;
+      --tw-drop-shadow-size: initial;
+      --tw-backdrop-blur: initial;
+      --tw-backdrop-brightness: initial;
+      --tw-backdrop-contrast: initial;
+      --tw-backdrop-grayscale: initial;
+      --tw-backdrop-hue-rotate: initial;
+      --tw-backdrop-invert: initial;
+      --tw-backdrop-opacity: initial;
+      --tw-backdrop-saturate: initial;
+      --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
+      --tw-ease: initial;
+    }
+  }
+}</style></template></div></body></html>
