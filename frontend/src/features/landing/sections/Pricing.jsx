@@ -61,10 +61,10 @@ export function Pricing() {
             <div className="max-w-7xl mx-auto px-6 md:px-12">
                 {/* Section Header */}
                 <div ref={headerRef} className="text-center mb-16 md:mb-20">
-                    <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                    <p className="text-[#C6A75E] text-sm font-body  widest mb-4">
                         {pricingConfig.subtitle}
                     </p>
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tracking-tight">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tight">
                         {pricingConfig.titleRegular} <span className="font-serif italic font-normal text-[#C6A75E]">{pricingConfig.titleItalic}</span>
                     </h2>
                     <p className="mt-6 text-[#111111]/60 font-body text-base md:text-lg max-w-2xl mx-auto">

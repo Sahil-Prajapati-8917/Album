@@ -96,7 +96,7 @@ export function Footer() {
                         {/* Contact Info */}
                         <div>
                             {footerConfig.contactLabel && (
-                                <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                                <p className="text-[#C6A75E] text-sm font-body  widest mb-4">
                                     {footerConfig.contactLabel}
                                 </p>
                             )}
@@ -119,7 +119,7 @@ export function Footer() {
                         {footerConfig.navLinks.length > 0 && (
                             <div>
                                 {footerConfig.navigationLabel && (
-                                    <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                                    <p className="text-[#C6A75E] text-sm font-body  widest mb-4">
                                         {footerConfig.navigationLabel}
                                     </p>
                                 )}
@@ -140,7 +140,7 @@ export function Footer() {
                         {/* Social Links */}
                         <div>
                             {footerConfig.socialLabel && (
-                                <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                                <p className="text-[#C6A75E] text-sm font-body  widest mb-4">
                                     {footerConfig.socialLabel}
                                 </p>
                             )}

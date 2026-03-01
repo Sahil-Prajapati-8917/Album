@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { Upload, Plus, X, AlertCircle } from 'lucide-react'
-import { Label } from '@/components/ui/label'
+import { Label } from '@/shared/ui/label'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
+} from "@/shared/ui/card"
 
 const VisualsStep = ({ formData, handleFileUpload, handleMultipleFileUpload, removeFile, errors, isProcessingFiles }) => {
 

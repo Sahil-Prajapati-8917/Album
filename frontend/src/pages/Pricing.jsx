@@ -1,4 +1,4 @@
-import PricingComponent from '../components/PricingComponent';
+import PricingComponent from '@/shared/ui/PricingComponent';
 
 const Pricing = () => {
   return (

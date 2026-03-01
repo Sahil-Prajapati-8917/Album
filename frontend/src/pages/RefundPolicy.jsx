@@ -5,16 +5,16 @@ const RefundPolicy = () => {
     return (
         <div className="max-w-4xl px-2 py-10 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold  widest text-zinc-500 dark:text-zinc-400">
                     <CreditCard className="size-3" />
                     Payments & Refunds
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white">Refund Policy</h1>
-                <p className="text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">Last updated: February 22, 2026</p>
+                <h1 className="text-4xl md:text-5xl font-bold tight text-zinc-900 dark:text-white">Refund Policy</h1>
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium wide">Last updated: February 22, 2026</p>
             </div>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">1. Refund Eligibility</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">1. Refund Eligibility</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
                     <p>Refunds may be provided if:</p>
                     <ul className="list-disc pl-5 space-y-1">
@@ -26,7 +26,7 @@ const RefundPolicy = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">2. Non-Refundable Cases</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">2. Non-Refundable Cases</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
                     <p>Refunds will not be issued for:</p>
                     <ul className="list-disc pl-5 space-y-1">
@@ -39,7 +39,7 @@ const RefundPolicy = () => {
             </section>
 
             <section className="space-y-6 border-t border-zinc-100 dark:border-zinc-800 pt-12">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">3. Refund Process</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">3. Refund Process</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-4">
                     <p>To request a refund:</p>
                     <ul className="list-decimal pl-5 space-y-1">

@@ -11,10 +11,10 @@ const NotFound = () => {
         <div className="flex items-center justify-between px-6 py-6 sm:px-8 sm:py-8 md:px-12 md:py-10 shrink-0">
           {/* Logo Area */}
           <Link to="/" className="flex flex-col group">
-            <span className="font-bold text-lg sm:text-xl md:text-2xl leading-tight uppercase text-black dark:text-white tracking-widest group-hover:opacity-80 transition-opacity">
+            <span className="font-bold text-lg sm:text-xl md:text-2xl leading-tight  text-black dark:text-white widest group-hover:opacity-80 transition-opacity">
               PIXFOLIO
             </span>
-            <span className="text-[10px] md:text-xs text-black dark:text-gray-400 font-medium tracking-wide lowercase mt-0.5">
+            <span className="text-[10px] md:text-xs text-black dark:text-gray-400 font-medium wide lowercase mt-0.5">
               digital arts archive
             </span>
           </Link>
@@ -27,7 +27,7 @@ const NotFound = () => {
           <div className="flex-1 flex flex-col justify-center py-4 lg:py-0 relative min-h-[220px] sm:min-h-[300px] lg:min-h-0 shrink-0">
             <div className="max-w-xl">
               {/* 404 Typography */}
-              <h1 className="text-[110px] sm:text-[140px] md:text-[180px] lg:text-[220px] xl:text-[280px] font-bold leading-none text-[#E8E8E8] dark:text-[#2A2A2A] tracking-tighter select-none -ml-1 sm:-ml-2 md:-ml-4">
+              <h1 className="text-[110px] sm:text-[140px] md:text-[180px] lg:text-[220px] xl:text-[280px] font-bold leading-none text-[#E8E8E8] dark:text-[#2A2A2A] tighter select-none -ml-1 sm:-ml-2 md:-ml-4">
                 404
               </h1>
               {/* Description text */}

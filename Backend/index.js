@@ -3,7 +3,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 const path = require("path");
 require("dotenv").config();
-const connectDB = require("./config/database");
+const connectDB = require("./src/config/database");
 
 // Fail fast if critical env vars are missing
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.includes('change-this')) {
@@ -14,7 +14,9 @@ if (!process.env.JWT_SECRET || process.env.JWT_SECRET.includes('change-this')) {
 const app = express();
 
 // Security Middleware
-app.use(helmet()); // Sets security headers (X-Frame-Options, CSP, HSTS, etc.)
+app.use(helmet({
+  crossOriginResourcePolicy: false, // Allows cross-origin image loading from the /uploads directory
+})); // Sets security headers (X-Frame-Options, CSP, HSTS, etc.)
 
 // Inline NoSQL injection sanitizer (express-mongo-sanitize is incompatible with Express 5)
 const sanitizeObject = (obj) => {
@@ -37,15 +39,23 @@ app.use((req, res, next) => {
 // CORS — restrict to known origins
 const allowedOrigins = [
   'http://localhost:5173',  // Vite dev server
+  'http://localhost:5174',
   'http://localhost:3000',
+  'http://127.0.0.1:5173',
   process.env.FRONTEND_URL, // Production frontend URL
 ].filter(Boolean);
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin) || process.env.NODE_ENV !== 'production') {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
 }));
 
 // Body parsing with size limit (prevents large payload DoS attacks)
@@ -53,13 +63,19 @@ app.use(express.json({ limit: '2mb' }));
 app.use(express.urlencoded({ extended: true, limit: '2mb' }));
 
 // Routes
-app.use("/api/users", require("./routes/userRoutes"));
-app.use("/api/albums", require("./routes/albumRoutes"));
-app.use("/api/photographers", require("./routes/photographerRoutes"));
-app.use("/api/billing", require("./routes/billingRoutes"));
+app.use("/api/users", require("./src/api/routes/userRoutes"));
+app.use("/api/albums", require("./src/api/routes/albumRoutes"));
+app.use("/api/photographers", require("./src/api/routes/photographerRoutes"));
+app.use("/api/billing", require("./src/api/routes/billingRoutes"));
+app.use("/api/songs", require("./src/api/routes/songRoutes"));
 
 // Serve static uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
+  setHeaders: (res, path, stat) => {
+    res.set('Cross-Origin-Resource-Policy', 'cross-origin');
+    res.set('Access-Control-Allow-Origin', '*');
+  }
+}));
 
 // Health check endpoint
 app.get("/health", (req, res) => {
@@ -87,7 +103,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const startServer = async () => {
   try {

@@ -71,11 +71,11 @@ export function Services() {
                     {/* Left Column - Heading */}
                     <div ref={headingRef}>
                         {servicesConfig.subtitle && (
-                            <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                            <p className="text-[#C6A75E] text-sm font-body  widest mb-4">
                                 {servicesConfig.subtitle}
                             </p>
                         )}
-                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-white tracking-tight leading-tight">
+                        <h2 className="text-4xl md:text-5xl lg:text-6xl font-sans font-bold text-white tight leading-tight">
                             {servicesConfig.titleLine1}
                             <br />
                             <span className="font-serif italic font-normal text-white">

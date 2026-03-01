@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { isAuthenticated, validateToken } from '../services/api';
+import { isAuthenticated, validateToken } from '@/shared/api/api';
 
 const ProtectedRoute = () => {
     const [isChecking, setIsChecking] = useState(true);

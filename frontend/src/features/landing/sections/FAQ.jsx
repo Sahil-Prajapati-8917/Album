@@ -6,7 +6,7 @@ import {
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from '../../../components/landing-ui/accordion';
+} from '@/shared/ui/landing/accordion';
 import { faqConfig } from '../config.js';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -84,11 +84,11 @@ export function FAQ() {
                 {/* Section Header */}
                 <div ref={headerRef} className="text-center mb-16 md:mb-20">
                     {faqConfig.subtitle && (
-                        <p className="text-[#C6A75E] text-sm font-body uppercase tracking-widest mb-4">
+                        <p className="text-[#C6A75E] text-sm font-body  widest mb-4">
                             {faqConfig.subtitle}
                         </p>
                     )}
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-white tracking-tight">
+                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-white tight">
                         {faqConfig.titleRegular} <span className="font-serif italic font-normal text-[#C6A75E]">{faqConfig.titleItalic}</span>
                     </h2>
                 </div>

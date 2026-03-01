@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { adminLogin } from '@/services/api';
+import { adminLogin } from '@/shared/api/api';
 
 const AdminPasswordPage = () => {
     const [email, setEmail] = useState('');

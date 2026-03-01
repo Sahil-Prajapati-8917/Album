@@ -9,21 +9,30 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@distube/ytdl-core": "^4.16.12",
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.2.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.0.2",
     "multer": "^2.0.2",
-    "uuid": "^13.0.0"
+    "uuid": "^13.0.0",
+    "yt-dlp-exec": "^1.0.2",
+    "yt-search": "^2.13.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "@aws-sdk/client-s3": "^3.1000.0",
+    "@aws-sdk/lib-storage": "^3.1000.0",
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^11.0.1",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.2.2"
   }
 }

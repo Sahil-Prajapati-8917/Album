@@ -2,15 +2,50 @@ import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { ChevronLeft, ChevronRight, Play, Pause, Maximize, Music } from 'lucide-react'
 import './ThreeDFlipBook.css'
 
-const ThreeDFlipBook = ({ images = [] }) => {
+const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, musicStartTime = 0 }) => {
     const [currentSheetIndex, setCurrentSheetIndex] = useState(0)
     const [isPlaying, setIsPlaying] = useState(false)
     const [isFullscreen, setIsFullscreen] = useState(false)
+    const [hasTurnedFirstPage, setHasTurnedFirstPage] = useState(false)
 
-    // Audio references (optional)
+    // Audio references for page flip
     const flipAudioRef = useRef(new Audio('/assets/Page-flipix-sound.mp3'))
-    // Mute errors on audio play if the file doesn't exist
     flipAudioRef.current.onerror = () => { }
+
+    // Background music reference
+    const bgMusicRef = useRef(null)
+
+    // Setup background music
+    useEffect(() => {
+        if (musicUrl && !bgMusicRef.current) {
+            const url = musicUrl.startsWith('http') ? musicUrl : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5001'}${musicUrl}`
+            bgMusicRef.current = new Audio(url)
+            bgMusicRef.current.loop = true
+            bgMusicRef.current.volume = 0.5 // Default volume
+            bgMusicRef.current.currentTime = musicStartTime || 0
+        } else if (!musicUrl && musicTrack && !bgMusicRef.current) {
+            // Fallback for default tracks
+            bgMusicRef.current = new Audio(`/assets/${musicTrack}`)
+            bgMusicRef.current.loop = true
+            bgMusicRef.current.volume = 0.5
+        }
+
+        return () => {
+            if (bgMusicRef.current) {
+                bgMusicRef.current.pause()
+            }
+        }
+    }, [musicUrl, musicTrack, musicStartTime])
+
+    // Trigger music on first page turn
+    useEffect(() => {
+        if (currentSheetIndex > 0 && !hasTurnedFirstPage) {
+            setHasTurnedFirstPage(true)
+            if (bgMusicRef.current) {
+                bgMusicRef.current.play().catch(e => console.log('Audio autoplay blocked:', e))
+            }
+        }
+    }, [currentSheetIndex, hasTurnedFirstPage])
 
     // Component container ref for fullscreen
     const containerRef = useRef(null)
@@ -116,7 +151,7 @@ const ThreeDFlipBook = ({ images = [] }) => {
 
     return (
         <div
-            className="flex flex-col items-center justify-center w-full"
+            className="flex flex-col items-center justify-center w-full min-h-[75vh] relative"
             ref={containerRef}
             style={{ backgroundColor: isFullscreen ? '#171717' : 'transparent', padding: isFullscreen ? '40px' : '0' }}
         >
@@ -145,8 +180,19 @@ const ThreeDFlipBook = ({ images = [] }) => {
                                             onError={e => { e.target.style.display = 'none' }}
                                         />
                                     ) : (
-                                        <div className="w-full h-full bg-neutral-100 flex items-center justify-center text-neutral-400">
-                                            Blank Page
+                                        <div className="w-full h-full bg-white flex flex-col items-center justify-center text-white relative overflow-hidden">
+                                            {/* <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 opacity-50"></div> */}
+                                            <div className="relative z-10 flex flex-col items-center">
+                                                <div className="size-16 mb-4 text-black opacity-90">
+                                                    <svg className="w-full h-full" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
+                                                    </svg>
+                                                </div>
+                                                <h2 className="text-2xl font-bold text-black mb-2">Pixfolio</h2>
+                                                <p className="text-sm text-black text-center max-w-[200px] leading-relaxed">
+                                                    Premium Digital Visual Books
+                                                </p>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -163,8 +209,19 @@ const ThreeDFlipBook = ({ images = [] }) => {
                                             onError={e => { e.target.style.display = 'none' }}
                                         />
                                     ) : (
-                                        <div className="w-full h-full bg-neutral-100 flex items-center justify-center text-neutral-400">
-                                            Blank Page
+                                        <div className="w-full h-full bg-white flex flex-col items-center justify-center text-white relative overflow-hidden">
+                                            {/* <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 opacity-50"></div> */}
+                                            <div className="relative z-10 flex flex-col items-center">
+                                                <div className="size-16 mb-4 text-black opacity-90">
+                                                    <svg className="w-full h-full" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
+                                                    </svg>
+                                                </div>
+                                                <h2 className="text-2xl font-bold text-black mb-2">Pixfolio</h2>
+                                                <p className="text-sm text-black text-center max-w-[200px] leading-relaxed">
+                                                    Premium Digital Visual Books
+                                                </p>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
@@ -174,6 +231,46 @@ const ThreeDFlipBook = ({ images = [] }) => {
                 </div>
             </div>
 
+            {/* Floating Navigation Controls */}
+            <div className="floating-controls">
+                <button
+                    className="control-btn"
+                    onClick={prevPage}
+                    disabled={currentSheetIndex === 0}
+                    title="Previous Page"
+                >
+                    <ChevronLeft size={20} />
+                </button>
+
+                <div className="page-counter">
+                    {Math.min(currentSheetIndex * 2, images.length)} / {images.length}
+                </div>
+
+                <button
+                    className={`control-btn ${isPlaying ? 'play-active' : ''}`}
+                    onClick={() => setIsPlaying(!isPlaying)}
+                    title={isPlaying ? 'Pause Autoplay' : 'Autoplay'}
+                >
+                    {isPlaying ? <Pause size={18} /> : <Play size={18} className="ml-1" />}
+                </button>
+
+                <button
+                    className="control-btn"
+                    onClick={toggleFullscreen}
+                    title="Fullscreen"
+                >
+                    <Maximize size={18} />
+                </button>
+
+                <button
+                    className="control-btn"
+                    onClick={nextPage}
+                    disabled={currentSheetIndex >= numSheets}
+                    title="Next Page"
+                >
+                    <ChevronRight size={20} />
+                </button>
+            </div>
         </div>
     )
 }

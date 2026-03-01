@@ -1,7 +1,7 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/shared/ui/landing/accordion";
 import { MessageCircle, FileText, Phone } from "lucide-react";
 
 const AdminHelp = () => {
@@ -9,7 +9,7 @@ const AdminHelp = () => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">Help Center</h2>
+                    <h2 className="text-2xl font-bold tight">Help Center</h2>
                     <p className="text-muted-foreground">Resources and support for admin tasks.</p>
                 </div>
                 <Button>Contact Support</Button>

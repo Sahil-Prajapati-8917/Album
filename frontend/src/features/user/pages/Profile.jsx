@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { getUserProfile, updateUserProfile } from '@/services/api'
+import { getUserProfile, updateUserProfile } from '@/shared/api/api'
 import {
   User,
   Mail,
@@ -36,15 +36,15 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Textarea } from "@/components/ui/textarea"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Progress } from "@/components/ui/progress"
-import { Badge } from "@/components/ui/badge"
+} from "@/shared/ui/card"
+import { Button } from "@/shared/ui/button"
+import { Input } from "@/shared/ui/input"
+import { Label } from "@/shared/ui/label"
+import { Separator } from "@/shared/ui/separator"
+import { Textarea } from "@/shared/ui/textarea"
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
+import { Progress } from "@/shared/ui/progress"
+import { Badge } from "@/shared/ui/badge"
 import {
   Dialog,
   DialogContent,
@@ -52,7 +52,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog"
+} from "@/shared/ui/dialog"
 import { toast } from 'sonner'
 
 export default function Profile() {
@@ -288,7 +288,7 @@ export default function Profile() {
               <div key={field.label} className="space-y-1.5 p-3 rounded-lg bg-muted/30 border border-border/40 hover:border-border/70 transition-colors duration-200">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <field.icon className="h-3.5 w-3.5" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider">{field.label}</span>
+                  <span className="text-[10px] font-bold  wider">{field.label}</span>
                 </div>
                 <p className="text-sm font-semibold truncate">{field.value}</p>
               </div>
@@ -324,19 +324,19 @@ export default function Profile() {
         <CardContent className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="space-y-1">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Active Plan</p>
+              <p className="text-xs font-medium text-muted-foreground  wider">Active Plan</p>
               <p className="text-lg font-bold">Pro Visionary</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Plan Status</p>
+              <p className="text-xs font-medium text-muted-foreground  wider">Plan Status</p>
               <p className="text-lg font-bold text-emerald-600">Active</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Recharge Date</p>
+              <p className="text-xs font-medium text-muted-foreground  wider">Recharge Date</p>
               <p className="text-lg font-medium">Jan 15, 2025</p>
             </div>
             <div className="space-y-1">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Expiry Date</p>
+              <p className="text-xs font-medium text-muted-foreground  wider">Expiry Date</p>
               <p className="text-lg font-medium">{profileData.creditValidity ? new Date(profileData.creditValidity).toLocaleDateString() : 'N/A'}</p>
             </div>
           </div>
@@ -368,7 +368,7 @@ export default function Profile() {
                   <CreditCard className="h-4 w-4 text-primary" />
                 </div>
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase">Coins Used</p>
+                  <p className="text-xs text-muted-foreground font-medium ">Coins Used</p>
                   <p className="font-bold">2,450 Coins</p>
                 </div>
               </div>

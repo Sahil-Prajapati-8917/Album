@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
 import { Plus, Search, Edit2, Trash2, MapPin, Phone, User, CheckCircle2, XCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from '@/shared/ui/button'
+import { Input } from '@/shared/ui/input'
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from '@/components/ui/card'
+} from '@/shared/ui/card'
 import {
     Table,
     TableBody,
@@ -16,7 +16,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from '@/components/ui/table'
+} from '@/shared/ui/table'
 import {
     Dialog,
     DialogContent,
@@ -24,16 +24,16 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-} from '@/components/ui/dialog'
-import { Label } from '@/components/ui/label'
-import { Badge } from '@/components/ui/badge'
+} from '@/shared/ui/dialog'
+import { Label } from '@/shared/ui/label'
+import { Badge } from '@/shared/ui/badge'
 
 import {
     getMyPhotographers,
     createPhotographer,
     updatePhotographer,
     deletePhotographer
-} from '@/services/api'
+} from '@/shared/api/api'
 
 export default function Photographers() {
     const [photographers, setPhotographers] = useState([])
@@ -133,7 +133,7 @@ export default function Photographers() {
         <div className="flex-1 space-y-6 pb-10 max-w-6xl mx-auto w-full pt-4 md:pt-8 px-4">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Your Photographers</h1>
+                    <h1 className="text-2xl font-semibold tight">Your Photographers</h1>
                     <p className="text-muted-foreground text-sm mt-0.5">Manage your photography partners and contacts.</p>
                 </div>
                 <Button onClick={() => handleOpenDialog()} className="bg-primary text-primary-foreground">

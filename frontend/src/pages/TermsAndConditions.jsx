@@ -5,17 +5,17 @@ const TermsAndConditions = () => {
     return (
         <div className="max-w-4xl px-2 py-10 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold  widest text-zinc-500 dark:text-zinc-400">
                     <FileText className="size-3" />
                     Legal Agreement
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white">Terms & Conditions</h1>
-                <p className="text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">Last updated: February 22, 2026</p>
+                <h1 className="text-4xl md:text-5xl font-bold tight text-zinc-900 dark:text-white">Terms & Conditions</h1>
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium wide">Last updated: February 22, 2026</p>
                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed italic">By accessing or using Pixfolio, you agree to the following terms.</p>
             </div>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">1. Services</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">1. Services</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <p>Pixfolio provides:</p>
                     <ul className="list-disc pl-5 space-y-2">
@@ -29,7 +29,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">2. User Accounts</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">2. User Accounts</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <p>You agree to:</p>
                     <ul className="list-disc pl-5 space-y-2">
@@ -43,7 +43,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">3. Data Storage</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">3. Data Storage</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <p>We store created albums on secure servers.</p>
                     <p className="font-bold">Important:</p>
@@ -56,7 +56,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">4. Subscription Plans</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">4. Subscription Plans</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <p>Pixfolio operates on a credit or subscription-based model.</p>
                     <p>Plans may include:</p>
@@ -70,7 +70,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">5. Payments</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">5. Payments</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <ul className="list-disc pl-5 space-y-2">
                         <li>Payments are processed via third-party gateways.</li>
@@ -81,7 +81,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">6. Intellectual Property</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">6. Intellectual Property</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <ul className="list-disc pl-5 space-y-2">
                         <li>Platform code, design, and branding belong to Pixfolio.</li>
@@ -92,7 +92,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">7. Prohibited Activities</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">7. Prohibited Activities</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <p>Users must not:</p>
                     <ul className="list-disc pl-5 space-y-2">
@@ -105,7 +105,7 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">8. Limitation of Liability</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">8. Limitation of Liability</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 leading-relaxed space-y-4">
                     <p>Pixfolio is not liable for:</p>
                     <ul className="list-disc pl-5 space-y-2">
@@ -117,14 +117,14 @@ const TermsAndConditions = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">9. Modifications</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">9. Modifications</h2>
                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
                     Pixfolio may update terms at any time. Continued use means acceptance.
                 </p>
             </section>
 
             <section className="space-y-6 border-t border-zinc-100 dark:border-zinc-800 pt-12 text-center md:text-left">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Questions and Concerns</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">Questions and Concerns</h2>
                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
                     For any questions regarding these terms, please contact our legal team at <span className="text-zinc-900 dark:text-white font-bold underline cursor-pointer hover:text-zinc-500 transition-colors">legal@pixfolio.com</span>.
                 </p>

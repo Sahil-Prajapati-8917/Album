@@ -3,9 +3,9 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import {
   ChevronRight, ChevronLeft, Wand2, Plus
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button } from '@/shared/ui/button'
 import { motion, AnimatePresence } from 'framer-motion'
-import { getAlbumById, createAlbum, updateAlbum, getCurrentUser, getMyPhotographers } from '@/services/api'
+import { getAlbumById, createAlbum, updateAlbum, getCurrentUser, getMyPhotographers } from '@/shared/api/api'
 import { toast } from 'sonner'
 
 // Modular Components
@@ -35,6 +35,8 @@ const CreateNew = () => {
     functionDate: '',
     photographerId: '',
     musicTrack: 'romantic-wedding.mp3',
+    musicUrl: null,
+    musicStartTime: 0,
     volume: 60,
     frontCover: null,
     frontCoverUrl: null,
@@ -51,16 +53,34 @@ const CreateNew = () => {
           const response = await getAlbumById(editId)
           if (response.success) {
             const album = response.data
+            const innerSheetsData = album.spreads ? album.spreads.flatMap(s => [s.leftPage?.image, s.rightPage?.image]).filter(Boolean) : []
+
+            // Helper to ensure image URLs are fully qualified
+            const getImageUrl = (path) => {
+              if (!path) return ''
+              if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) {
+                return path
+              }
+              const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+              const cleanBaseUrl = baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl
+              return `${cleanBaseUrl}${path.startsWith('/') ? '' : '/'}${path}`
+            }
+
             setFormData({
               clientName: album.clientName || '',
               functionType: album.functionType || '',
               functionDate: album.functionDate || '',
               photographerId: album.photographerId || '',
-              musicTrack: album.musicTrack || 'romantic-wedding.mp3',
+              musicTrack: album.songName || 'romantic-wedding.mp3',
+              musicUrl: album.musicUrl || null,
+              musicStartTime: album.musicStartTime || 0,
               volume: album.volume || 60,
               frontCover: album.frontCover || null,
+              frontCoverUrl: album.frontCover ? getImageUrl(album.frontCover) : null,
               backCover: album.backCover || null,
-              innerSheets: album.spreads ? album.spreads.flatMap(s => [s.leftPage?.image, s.rightPage?.image]).filter(Boolean) : []
+              backCoverUrl: album.backCover ? getImageUrl(album.backCover) : null,
+              innerSheets: innerSheetsData,
+              innerSheetsUrls: innerSheetsData.map(getImageUrl)
             })
           }
         } catch (error) {
@@ -266,7 +286,11 @@ const CreateNew = () => {
       if (formData.photographerId) {
         formDataToSend.append('photographerId', formData.photographerId)
       }
-      formDataToSend.append('songName', defaultMusicTracks.find(t => t.file === formData.musicTrack)?.name || 'Standard Track')
+      formDataToSend.append('songName', formData.musicTrack || 'Standard Track')
+      if (formData.musicUrl) {
+        formDataToSend.append('musicUrl', formData.musicUrl)
+      }
+      formDataToSend.append('musicStartTime', formData.musicStartTime || 0)
       formDataToSend.append('totalSheets', formData.innerSheets.length + 2)
       formDataToSend.append('status', 'Done')
       formDataToSend.append('priority', 'High')
@@ -362,7 +386,7 @@ const CreateNew = () => {
   return (
     <div className="flex-1 space-y-8 max-w-4xl mx-auto py-8 px-4">
       <div className="text-center">
-        <h1 className="text-3xl font-bold tracking-tight">{editId ? 'Edit Pixfolio' : 'Create New Pixfolio'}</h1>
+        <h1 className="text-3xl font-bold tight">{editId ? 'Edit Pixfolio' : 'Create New Pixfolio'}</h1>
         <p className="text-muted-foreground">
           {editId ? 'Update your digital album details.' : 'Build a digital album for your client.'}
         </p>

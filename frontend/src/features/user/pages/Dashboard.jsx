@@ -22,21 +22,21 @@ import {
   AreaChart, Area, BarChart, Bar,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts'
-import { getMyAlbums, getCurrentUser } from '@/services/api'
+import { getMyAlbums, getCurrentUser } from '@/shared/api/api'
 import { useNavigate } from 'react-router-dom'
-import { Button } from "@/components/ui/button"
+import { Button } from "@/shared/ui/button"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/shared/ui/card"
 
 // Sparkline Component
 const Sparkline = ({ data, color }) => {
   if (!data || data.length === 0) return <div className="h-[40px] w-[100px]" />;
-  
+
   return (
     <div className="h-[40px] w-[100px] flex-shrink-0">
       <ResponsiveContainer width="100%" height="100%">
@@ -167,7 +167,7 @@ const Dashboard = () => {
       {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
+          <h1 className="text-2xl font-semibold tight">Dashboard</h1>
           <p className="text-muted-foreground text-sm mt-0.5">Overview of your albums and performance.</p>
         </div>
         <div className="flex items-center gap-2">
@@ -182,7 +182,7 @@ const Dashboard = () => {
         {/* Total Albums - Orange Theme */}
         <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+            <CardTitle className="text-xs font-medium text-muted-foreground wide ">
               Total Albums
             </CardTitle>
             <div className="h-7 w-7 rounded-lg bg-orange-500/10 flex items-center justify-center">
@@ -192,7 +192,7 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold tracking-tight">{stats.totalAlbums}</div>
+                <div className="text-2xl font-bold tight">{stats.totalAlbums}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   +{Math.floor(Math.random() * 5)} from last month
                 </p>
@@ -205,7 +205,7 @@ const Dashboard = () => {
         {/* Public Albums - Teal Theme */}
         <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+            <CardTitle className="text-xs font-medium text-muted-foreground wide ">
               Public Albums
             </CardTitle>
             <div className="h-7 w-7 rounded-lg bg-emerald-500/10 flex items-center justify-center">
@@ -215,7 +215,7 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold tracking-tight">{stats.publicAlbums}</div>
+                <div className="text-2xl font-bold tight">{stats.publicAlbums}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {((stats.publicAlbums / (stats.totalAlbums || 1)) * 100).toFixed(0)}% visible
                 </p>
@@ -228,7 +228,7 @@ const Dashboard = () => {
         {/* Total Views - Purple Theme */}
         <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+            <CardTitle className="text-xs font-medium text-muted-foreground wide ">
               Total Views
             </CardTitle>
             <div className="h-7 w-7 rounded-lg bg-purple-500/10 flex items-center justify-center">
@@ -238,7 +238,7 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold tracking-tight">{stats.totalViews}</div>
+                <div className="text-2xl font-bold tight">{stats.totalViews}</div>
                 <p className="text-xs text-emerald-500 flex items-center mt-1">
                   <ArrowUpRight className="h-3 w-3 mr-1" />
                   +12.5%
@@ -252,7 +252,7 @@ const Dashboard = () => {
         {/* Active Plan - Blue Theme */}
         <Card className="overflow-hidden border-border/50">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-muted-foreground tracking-wide uppercase">
+            <CardTitle className="text-xs font-medium text-muted-foreground wide ">
               Active Plan
             </CardTitle>
             <div className="h-7 w-7 rounded-lg bg-blue-500/10 flex items-center justify-center">
@@ -262,7 +262,7 @@ const Dashboard = () => {
           <CardContent>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-2xl font-bold tracking-tight">{user?.credits !== undefined ? `${user.credits} Credits` : 'Free Credit'}</div>
+                <div className="text-2xl font-bold tight">{user?.credits !== undefined ? `${user.credits} Credits` : 'Free Credit'}</div>
                 <p className="text-xs text-muted-foreground mt-1">
                   {user?.creditValidity ? `Expires ${new Date(user.creditValidity).toLocaleDateString()}` : 'No expiry set'}
                 </p>
@@ -366,10 +366,10 @@ const Dashboard = () => {
                     <div className="flex items-center gap-4">
                       <div className="h-10 w-10 rounded bg-muted flex items-center justify-center overflow-hidden">
                         {album.frontCover && !album.frontCover.startsWith('blob:') ? (
-                          <img 
-                            src={album.frontCover} 
-                            alt="Cover" 
-                            className="h-full w-full object-cover" 
+                          <img
+                            src={album.frontCover}
+                            alt="Cover"
+                            className="h-full w-full object-cover"
                             onError={(e) => {
                               e.target.style.display = 'none';
                               e.target.parentElement.innerHTML = '<div class="h-full w-full flex items-center justify-center"><svg class="h-5 w-5 text-muted-foreground" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg></div>';

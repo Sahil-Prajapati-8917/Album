@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { getMyAlbums, deleteAlbum as apiDeleteAlbum } from '@/services/api'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/shared/ui/card'
+import { Button } from '@/shared/ui/button'
+import { getMyAlbums, deleteAlbum as apiDeleteAlbum } from '@/shared/api/api'
 import { functionTypesOptions, parseViews, isDateInRange } from '../utils/albumUtils'
 import AllPixfolioToolbar from '../components/AllPixfolioToolbar'
 import AllPixfolioTable from '../components/AllPixfolioTable'
-import ConfirmDialog from '@/components/common/ConfirmDialog'
+import ConfirmDialog from '@/shared/ui/ConfirmDialog'
 import QRCodeModal from '../components/QRCodeModal'
 
 const AllPixfolio = () => {

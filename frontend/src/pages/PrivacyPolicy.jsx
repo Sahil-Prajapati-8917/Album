@@ -5,17 +5,17 @@ const PrivacyPolicy = () => {
     return (
         <div className="max-w-4xl px-2 py-10 space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-1000">
             <div className="space-y-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-bold  widest text-zinc-500 dark:text-zinc-400">
                     <Shield className="size-3" />
                     Security & Trust
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-zinc-900 dark:text-white">Privacy Policy</h1>
-                <p className="text-zinc-500 dark:text-zinc-400 font-medium tracking-wide">Last updated: February 22, 2026</p>
+                <h1 className="text-4xl md:text-5xl font-bold tight text-zinc-900 dark:text-white">Privacy Policy</h1>
+                <p className="text-zinc-500 dark:text-zinc-400 font-medium wide">Last updated: February 22, 2026</p>
                 <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed italic">Your privacy matters.</p>
             </div>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">1. Information We Collect</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">1. Information We Collect</h2>
                 <div className="grid md:grid-cols-2 gap-8">
                     <div className="space-y-3">
                         <h3 className="font-bold text-zinc-900 dark:text-white">Personal Data:</h3>
@@ -40,7 +40,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">2. How We Use Data</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">2. How We Use Data</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
                     <p>We use data to:</p>
                     <ul className="list-disc pl-5 space-y-2">
@@ -54,7 +54,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">3. Data Security</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">3. Data Security</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
                     <p>Pixfolio implements:</p>
                     <ul className="list-disc pl-5 space-y-2">
@@ -71,7 +71,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">4. Data Sharing</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">4. Data Sharing</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-3">
                     <p className="font-bold text-zinc-900 dark:text-white underline">We do NOT sell user data.</p>
                     <p>We may share data with:</p>
@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
             </section>
 
             <section className="space-y-6 border-t border-zinc-100 dark:border-zinc-800 pt-12">
-                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">5. User Rights</h2>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-white tight">5. User Rights</h2>
                 <div className="text-zinc-600 dark:text-zinc-400 space-y-4">
                     <p>You can:</p>
                     <ul className="list-disc pl-5 space-y-2">

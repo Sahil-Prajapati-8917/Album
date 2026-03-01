@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
 import { Calendar, Download } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, Line, LineChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
@@ -44,7 +44,7 @@ const AdminAnalytics = () => {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold tracking-tight">Analytics</h2>
+                    <h2 className="text-2xl font-bold tight">Analytics</h2>
                     <p className="text-muted-foreground">Detailed insights into platform performance.</p>
                 </div>
                 <div className="flex items-center gap-2">

@@ -1,5 +1,5 @@
 // VisualBookViewer.jsx — Minimal scrollable album viewer
-import { getAlbumById } from '@/services/api'
+import { getAlbumById } from '@/shared/api/api'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { ArrowLeft, Calendar, User, MapPin, ImageOff } from 'lucide-react'
@@ -17,12 +17,13 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
       // Preview mode — use props directly
       setAlbum({
         title: title || 'Untitled Album',
-        spreads,
+        spreads: spreads || [],
         frontCover,
         backCover,
         photographerName,
         photographerCity,
       })
+      setIsLoading(false)
       return
     }
 
@@ -55,6 +56,9 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
             photographerName: pName,
             photographerCity: pCity,
             functionDate: d.functionDate || '',
+            musicUrl: d.musicUrl || null,
+            musicTrack: d.songName || null,
+            musicStartTime: d.musicStartTime || 0,
           })
         } else {
           setError('Album not found')
@@ -68,7 +72,7 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
     }
 
     fetchAlbum()
-  }, [id, title, spreads, frontCover, backCover, photographerName, photographerCity])
+  }, [id]) // Removed other dependencies to prevent infinite re-fetching loops
 
   // Helper to ensure image URLs are fully qualified
   const getImageUrl = (path) => {
@@ -76,8 +80,9 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
     if (path.startsWith('http') || path.startsWith('blob:') || path.startsWith('data:')) {
       return path
     }
-    const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'
-    return `${baseUrl}${path.startsWith('/') ? '' : '/'}${path}`
+    const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:5001'
+    const cleanBaseUrl = baseUrl.endsWith('/api') ? baseUrl.slice(0, -4) : baseUrl
+    return `${cleanBaseUrl}${path.startsWith('/') ? '' : '/'}${path}`
   }
 
   // Collect every image URL from the album data
@@ -89,20 +94,22 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
       images.push({ src: getImageUrl(album.frontCover), label: 'Front Cover' })
     }
 
-    album.spreads.forEach((spread, idx) => {
-      if (spread.leftPage?.image) {
-        images.push({
-          src: getImageUrl(spread.leftPage.image),
-          label: spread.leftPage.caption || `Page ${idx * 2 + 1}`,
-        })
-      }
-      if (spread.rightPage?.image) {
-        images.push({
-          src: getImageUrl(spread.rightPage.image),
-          label: spread.rightPage.caption || `Page ${idx * 2 + 2}`,
-        })
-      }
-    })
+    if (album.spreads && Array.isArray(album.spreads)) {
+      album.spreads.forEach((spread, idx) => {
+        if (spread.leftPage?.image) {
+          images.push({
+            src: getImageUrl(spread.leftPage.image),
+            label: spread.leftPage.caption || `Page ${idx * 2 + 1}`,
+          })
+        }
+        if (spread.rightPage?.image) {
+          images.push({
+            src: getImageUrl(spread.rightPage.image),
+            label: spread.rightPage.caption || `Page ${idx * 2 + 2}`,
+          })
+        }
+      })
+    }
 
     if (album.backCover) {
       images.push({ src: getImageUrl(album.backCover), label: 'Back Cover' })
@@ -162,18 +169,20 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
   }
 
   return (
-    <div className="min-h-screen bg-neutral-950">
+    <div className="h-screen flex flex-col bg-neutral-950 overflow-hidden">
       {/* Sticky header */}
-      <header className="sticky top-0 z-50 bg-neutral-950/80 backdrop-blur-md border-b border-white/5">
+      <header className="shrink-0 bg-neutral-950/80 backdrop-blur-md border-b border-white/5 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
-          {/* Back + title */}
+          {/* Back + title (Back button hidden for cleaner sharing view) */}
           <div className="flex items-center gap-3 min-w-0">
+            {/* 
             <button
               onClick={() => navigate(-1)}
               className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-neutral-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
             >
               <ArrowLeft size={18} />
-            </button>
+            </button> 
+            */}
             <h1 className="text-white text-sm font-medium truncate">
               {album.title}
             </h1>
@@ -207,16 +216,16 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
       </header>
 
       {/* Image grid replaced with 3D Flipbook */}
-      <main className="w-full mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <ThreeDFlipBook images={images} />
+      <main className="flex-1 w-full mx-auto flex items-center justify-center relative">
+        <ThreeDFlipBook 
+          images={images} 
+          musicUrl={album.musicUrl} 
+          musicTrack={album.musicTrack} 
+          musicStartTime={album.musicStartTime} 
+        />
       </main>
 
-      {/* Minimal footer */}
-      <footer className="border-t border-white/5 py-6">
-        <p className="text-center text-neutral-600 text-xs tracking-wide">
-          {album.title}
-        </p>
-      </footer>
+      {/* Minimal footer - Removed client name since it's in the header, now empty or can hold branding later */}
     </div>
   )
 }

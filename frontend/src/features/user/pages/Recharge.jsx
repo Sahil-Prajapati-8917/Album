@@ -10,11 +10,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+} from "@/shared/ui/card"
+import { Button } from "@/shared/ui/button"
+import { Badge } from "@/shared/ui/badge"
+import { Separator } from "@/shared/ui/separator"
+import { Tabs, TabsList, TabsTrigger } from "@/shared/ui/tabs"
 import {
   Table,
   TableBody,
@@ -22,8 +22,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { getCurrentUser, getBillingHistory, purchaseCredits } from '@/services/api'
+} from "@/shared/ui/table"
+import { getCurrentUser, getBillingHistory, purchaseCredits } from '@/shared/api/api'
 import { toast } from "sonner"
 
 const Recharge = () => {
@@ -174,7 +174,7 @@ const Recharge = () => {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="text-2xl font-semibold tracking-tight">Billing & Plans</h1>
+          <h1 className="text-2xl font-semibold tight">Billing & Plans</h1>
           <p className="text-muted-foreground text-sm">
             Manage your subscription and billing history.
           </p>

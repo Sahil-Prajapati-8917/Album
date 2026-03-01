@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 import Lenis from 'lenis';
 
-import { ZoomParallax } from '@/components/ui/zoom-parallax';
+import { ZoomParallax } from '@/shared/ui/zoom-parallax';
 
 export default function ZoomParallaxDemo() {
 

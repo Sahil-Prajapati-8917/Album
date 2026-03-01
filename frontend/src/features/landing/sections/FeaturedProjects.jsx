@@ -130,11 +130,11 @@ export function FeaturedProjects() {
                 <div ref={headerRef} className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-20">
                     <div>
                         {featuredProjectsConfig.subtitle && (
-                            <p className="text-white/50 text-sm font-body uppercase tracking-widest mb-4">
+                            <p className="text-white/50 text-sm font-body  widest mb-4">
                                 {featuredProjectsConfig.subtitle}
                             </p>
                         )}
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tracking-tight">
+                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tight">
                             {featuredProjectsConfig.titleRegular} <span className="font-serif italic font-normal text-[#C6A75E]">{featuredProjectsConfig.titleItalic}</span>
                         </h2>
                     </div>
@@ -198,7 +198,7 @@ export function FeaturedProjects() {
                                     <span className="w-1 h-1 rounded-full bg-[#C6A75E]/50" />
                                     <span className="text-[#111111]/50 font-body text-sm">{project.year}</span>
                                 </div>
-                                <h3 className="project-text-item text-2xl md:text-3xl lg:text-4xl font-sans font-bold text-[#111111] tracking-tight mb-4">
+                                <h3 className="project-text-item text-2xl md:text-3xl lg:text-4xl font-sans font-bold text-[#111111] tight mb-4">
                                     {project.title}
                                 </h3>
                                 <p className="project-text-item text-[#111111]/60 font-body text-base md:text-lg leading-relaxed mb-6">

@@ -159,7 +159,7 @@ export function IntroGrid() {
                                 ref={titleLine1Ref}
                                 className="translate-y-[110%]"
                             >
-                                <span className="block text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tracking-tight">
+                                <span className="block text-3xl md:text-4xl lg:text-5xl font-sans font-bold text-[#111111] tight">
                                     {introGridConfig.titleLine1}
                                 </span>
                             </div>
@@ -220,7 +220,7 @@ export function IntroGrid() {
                 {/* Floating accent text */}
                 {introGridConfig.accentText && (
                     <div className="mt-12 md:mt-16 flex justify-end">
-                        <p className="text-sm text-[#C6A75E] font-body tracking-wider uppercase">
+                        <p className="text-sm text-[#C6A75E] font-body wider ">
                             {introGridConfig.accentText}
                         </p>
                     </div>

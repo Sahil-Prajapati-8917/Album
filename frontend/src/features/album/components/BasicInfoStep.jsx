@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { AlertCircle } from 'lucide-react'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { Input } from '@/shared/ui/input'
+import { Label } from '@/shared/ui/label'
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/shared/ui/select"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import DateSelector from '@/components/DateSelector'
-import { getMyPhotographers } from '@/services/api'
+} from "@/shared/ui/card"
+import DateSelector from '@/shared/ui/DateSelector'
+import { getMyPhotographers } from '@/shared/api/api'
 
 const BasicInfoStep = ({ formData, setFormData, errors, setErrors, functionTypes, toTitleCase }) => {
     const [photographers, setPhotographers] = useState([])

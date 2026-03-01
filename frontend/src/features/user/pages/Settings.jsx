@@ -6,19 +6,19 @@ import {
     CardHeader,
     CardTitle,
     CardFooter,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
+} from "@/shared/ui/card"
+import { Button } from "@/shared/ui/button"
+import { Input } from "@/shared/ui/input"
+import { Label } from "@/shared/ui/label"
+import { Separator } from "@/shared/ui/separator"
+import { Switch } from "@/shared/ui/switch"
 import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "@/components/ui/select"
+} from "@/shared/ui/select"
 import { AlertTriangle, ShieldCheck, Zap } from 'lucide-react'
 
 export default function Settings() {

@@ -19,17 +19,17 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
+} from "@/shared/ui/card"
+import { Button } from "@/shared/ui/button"
+import { Input } from "@/shared/ui/input"
+import { Badge } from "@/shared/ui/badge"
+import { Separator } from "@/shared/ui/separator"
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "@/components/ui/accordion"
+} from "@/shared/ui/landing/accordion"
 
 export default function HelpCenter() {
     const faqs = [
@@ -148,7 +148,7 @@ export default function HelpCenter() {
             {/* Page Header - Matches Dashboard.jsx */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-semibold tracking-tight">Help Center</h1>
+                    <h1 className="text-2xl font-semibold tight">Help Center</h1>
                     <p className="text-muted-foreground text-sm mt-0.5">Explore our guides and reach out for personalized assistance.</p>
                 </div>
             </div>

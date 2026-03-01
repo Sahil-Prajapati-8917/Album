@@ -107,7 +107,7 @@ export function Hero() {
                 ref={textRef}
                 className="absolute inset-0 flex items-center justify-center z-10 will-change-transform"
             >
-                <h1 className="text-[22vw] sm:text-[18vw] md:text-[14vw] font-sans font-extrabold text-white/5 tracking-tighter leading-none select-none whitespace-nowrap">
+                <h1 className="text-[22vw] sm:text-[18vw] md:text-[14vw] font-sans font-extrabold text-white/5 tighter leading-none select-none whitespace-nowrap">
                     {heroConfig.backgroundText}
                 </h1>
             </div>
@@ -135,7 +135,7 @@ export function Hero() {
                 ref={overlayTextRef}
                 className="absolute bottom-[28%] sm:bottom-[25%] left-6 right-6 md:left-[12%] md:right-auto z-30 will-change-transform max-w-xl text-center md:text-left"
             >
-                <p className="font-serif italic text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/90 tracking-wide leading-relaxed mb-4 md:mb-6">
+                <p className="font-serif italic text-xl sm:text-2xl md:text-3xl lg:text-4xl text-white/90 wide leading-relaxed mb-4 md:mb-6">
                     {heroConfig.overlayText}
                 </p>
                 <p className="text-white/60 text-xs sm:text-sm md:text-base font-body mb-6 md:mb-8 max-w-md mx-auto md:mx-0">
@@ -160,7 +160,7 @@ export function Hero() {
 
             {/* Navigation */}
             <nav className="absolute top-0 left-0 right-0 z-50 px-6 md:px-12 py-6 flex items-center justify-between">
-                <Link to="/" className="text-white font-sans font-bold text-xl md:text-2xl tracking-tight flex items-center z-50">
+                <Link to="/" className="text-white font-sans font-bold text-xl md:text-2xl tight flex items-center z-50">
                     <span className="text-[#C6A75E]">P</span>
                     {heroConfig.brandName?.slice(1)}
                 </Link>

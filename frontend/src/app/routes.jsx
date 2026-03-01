@@ -2,8 +2,8 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Layouts
-import MainLayout from '../components/layout/MainLayout';
-import DashboardLayout from '../components/layout/DashboardLayout';
+import MainLayout from '@/widgets/layouts/MainLayout';
+import DashboardLayout from '@/widgets/layouts/DashboardLayout';
 
 // Pages
 import Landing from '../features/landing/Landing';
@@ -37,7 +37,7 @@ import AdminHelp from '../features/admin/components/dashboard/AdminHelp';
 
 // Components
 import VisualBookViewer from '../features/album/components/VisualBookViewer';
-import LumaSpinDemo from '../components/ui/luma-spin-demo';
+import LumaSpinDemo from '@/shared/ui/luma-spin-demo';
 
 // Policy Pages
 import PrivacyPolicy from '../pages/PrivacyPolicy';

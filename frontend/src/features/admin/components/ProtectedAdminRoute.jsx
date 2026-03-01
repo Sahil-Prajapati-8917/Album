@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { validateToken, isAuthenticated } from '@/services/api';
+import { validateToken, isAuthenticated } from '@/shared/api/api';
 
 const ProtectedAdminRoute = () => {
     const [isChecking, setIsChecking] = useState(true);

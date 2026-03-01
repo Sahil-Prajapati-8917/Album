@@ -19,12 +19,12 @@ import {
 } from 'lucide-react';
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/shared/ui/card";
+import { Button } from "@/shared/ui/button";
+import { Badge } from "@/shared/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar";
 
 const AdminOverview = () => {
     // Mock Data
@@ -148,7 +148,7 @@ const AdminOverview = () => {
             {/* User Table */}
             <div className="rounded-md border bg-card text-card-foreground shadow-sm">
                 <div className="p-6 flex items-center justify-between border-b">
-                    <h3 className="font-semibold leading-none tracking-tight">Active Users</h3>
+                    <h3 className="font-semibold leading-none tight">Active Users</h3>
                     <Button size="sm" variant="outline">View All</Button>
                 </div>
                 <div className="relative w-full overflow-auto">
