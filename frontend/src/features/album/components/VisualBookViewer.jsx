@@ -96,16 +96,19 @@ const VisualBookViewer = ({ spreads = [], title = '', frontCover = null, backCov
 
     if (album.spreads && Array.isArray(album.spreads)) {
       album.spreads.forEach((spread, idx) => {
+        // Since spreads are full 32:9 images now, we just grab the leftPage.image 
+        // (which holds the whole spread)
         if (spread.leftPage?.image) {
           images.push({
             src: getImageUrl(spread.leftPage.image),
-            label: spread.leftPage.caption || `Page ${idx * 2 + 1}`,
+            label: spread.leftPage.caption || `Spread ${idx + 1}`,
           })
         }
+        // Fallback in case old data had rightPage images
         if (spread.rightPage?.image) {
           images.push({
             src: getImageUrl(spread.rightPage.image),
-            label: spread.rightPage.caption || `Page ${idx * 2 + 2}`,
+            label: spread.rightPage.caption || `Spread ${idx + 1} (Right)`,
           })
         }
       })

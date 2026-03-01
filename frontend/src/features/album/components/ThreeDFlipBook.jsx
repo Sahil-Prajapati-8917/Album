@@ -64,11 +64,57 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
     // [Cover, S1Left, S1Right, S2Left, S2Right, BackCover]
     // Sheet 0: Front=Cover, Back=S1Left
     // Sheet 1: Front=S1Right, Back=S2Left
+    // Determine how many pages we need and how they map to spreads.
+    // 1. First spread (after cover) -> Left is Blank, Right is First Inner Image (fit entirely)
+    // 2. Middle spreads -> 32:9 panorama spanning both left and right pages
+    // 3. Last spread -> Left is Last Inner Image (fit entirely), Right is Blank
+    // Exception: If only 1 inner image is uploaded, it spans BOTH pages of the first spread.
     const sheets = []
-    for (let i = 0; i < images.length; i += 2) {
+
+    if (images.length === 0) {
+        // Handle empty
+    } else if (images.length === 1) {
+        sheets.push({ front: images[0], back: null })
+    } else if (images.length === 2) {
+        sheets.push({ front: images[0], back: null })
+        sheets.push({ front: null, back: images[1] })
+    } else if (images.length === 3) {
+        // Exactly 1 inner image -> span both pages
+        sheets.push({ 
+            front: images[0], 
+            back: images[1], 
+            backClass: 'spread-left' 
+        })
+        sheets.push({ 
+            front: images[1], 
+            frontClass: 'spread-right', 
+            back: images[2] 
+        })
+    } else {
+        // 2 or more inner images
+        // Sheet 0: Cover / Blank
         sheets.push({
-            front: images[i],
-            back: images[i + 1] || null
+            front: images[0],
+            back: null
+        })
+
+        // Middle sheets
+        for (let i = 1; i < images.length - 2; i++) {
+            const isFirstInner = (i === 1)
+            const isLastInner = (i === images.length - 3)
+            
+            sheets.push({
+                front: images[i],
+                frontClass: isFirstInner ? '' : 'spread-right',
+                back: images[i + 1],
+                backClass: isLastInner ? '' : 'spread-left'
+            })
+        }
+
+        // Last sheet: Blank / BackCover
+        sheets.push({
+            front: null,
+            back: images[images.length - 1]
         })
     }
 
@@ -186,59 +232,35 @@ const ThreeDFlipBook = ({ images = [], musicUrl = null, musicTrack = null, music
                                 onClick={() => isFlipped ? prevPage() : nextPage()}
                             >
                                 {/* Front Side */}
-                                <div className="page-side front">
+                                <div className="page-side front overflow-hidden">
                                     <div className="page-shadow" />
                                     {sheet.front ? (
                                         <img
                                             src={sheet.front.src}
                                             alt={sheet.front.label || 'Page image'}
-                                            className="page-image"
+                                            className={`page-image ${sheet.isSpread ? 'spread-right' : ''}`}
                                             draggable="false"
                                             onError={e => { e.target.style.display = 'none' }}
                                         />
                                     ) : (
-                                        <div className="w-full h-full bg-white flex flex-col items-center justify-center text-white relative overflow-hidden">
-                                            {/* <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 opacity-50"></div> */}
-                                            <div className="relative z-10 flex flex-col items-center">
-                                                <div className="size-16 mb-4 text-black opacity-90">
-                                                    <svg className="w-full h-full" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
-                                                    </svg>
-                                                </div>
-                                                <h2 className="text-2xl font-bold text-black mb-2">Pixfolio</h2>
-                                                <p className="text-sm text-black text-center max-w-[200px] leading-relaxed">
-                                                    Premium Digital Visual Books
-                                                </p>
-                                            </div>
+                                        <div className="w-full h-full bg-[#FAFAFA] flex flex-col items-center justify-center relative overflow-hidden">
                                         </div>
                                     )}
                                 </div>
 
                                 {/* Back Side */}
-                                <div className="page-side back">
+                                <div className="page-side back overflow-hidden">
                                     <div className="page-shadow" />
                                     {sheet.back ? (
                                         <img
                                             src={sheet.back.src}
                                             alt={sheet.back.label || 'Page image'}
-                                            className="page-image"
+                                            className={`page-image ${sheet.isSpread ? 'spread-left' : ''}`}
                                             draggable="false"
                                             onError={e => { e.target.style.display = 'none' }}
                                         />
                                     ) : (
-                                        <div className="w-full h-full bg-white flex flex-col items-center justify-center text-white relative overflow-hidden">
-                                            {/* <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-950 opacity-50"></div> */}
-                                            <div className="relative z-10 flex flex-col items-center">
-                                                <div className="size-16 mb-4 text-black opacity-90">
-                                                    <svg className="w-full h-full" fill="currentColor" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M4 42.4379C4 42.4379 14.0962 36.0744 24 41.1692C35.0664 46.8624 44 42.2078 44 42.2078L44 7.01134C44 7.01134 35.068 11.6577 24.0031 5.96913C14.0971 0.876274 4 7.27094 4 7.27094L4 42.4379Z"></path>
-                                                    </svg>
-                                                </div>
-                                                <h2 className="text-2xl font-bold text-black mb-2">Pixfolio</h2>
-                                                <p className="text-sm text-black text-center max-w-[200px] leading-relaxed">
-                                                    Premium Digital Visual Books
-                                                </p>
-                                            </div>
+                                        <div className="w-full h-full bg-[#FAFAFA] flex flex-col items-center justify-center relative overflow-hidden">
                                         </div>
                                     )}
                                 </div>

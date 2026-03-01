@@ -105,6 +105,23 @@
     -webkit-user-drag: none;
 }
 
+/* For spread images (32:9 ratio), we need to split them across two pages */
+.page-image.spread-left {
+    object-fit: cover;
+    object-position: left center;
+    width: 200%; /* Make image twice as wide */
+    max-width: 200%;
+    transform: translateX(25%); /* Shift to show left half */
+}
+
+.page-image.spread-right {
+    object-fit: cover;
+    object-position: right center;
+    width: 200%; /* Make image twice as wide */
+    max-width: 200%;
+    transform: translateX(-25%); /* Shift to show right half */
+}
+
 /* Thicker border for covers */
 .book-sheet.is-cover .page-side {
     background-color: #222;

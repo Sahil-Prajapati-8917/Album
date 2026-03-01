@@ -261,12 +261,15 @@ const CreateNew = () => {
     const spreads = []
     const photoUrls = formData.innerSheetsUrls || []
 
-    // Create spreads (2 photos per spread)
-    for (let i = 0; i < photoUrls.length; i += 2) {
+    // We no longer split 2 photos per spread
+    // Each inner sheet is a FULL spread (32:9 ratio) spanning both left and right pages.
+    // The VisualBookViewer and ThreeDFlipBook handle the actual splitting across physical pages.
+    // For data format consistency we just attach it to the leftPage, and the viewer extracts it correctly.
+    for (let i = 0; i < photoUrls.length; i++) {
       spreads.push({
-        id: Math.floor(i / 2) + 1,
+        id: i + 1,
         leftPage: { image: photoUrls[i] || null, caption: "" },
-        rightPage: { image: photoUrls[i + 1] || null, caption: "" }
+        rightPage: { image: null, caption: "" } // Handled natively by viewer now
       })
     }
     return spreads
